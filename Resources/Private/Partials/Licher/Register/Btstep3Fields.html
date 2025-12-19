@@ -1,0 +1,16 @@
+<f:render partial="FormErrors" arguments="{field: 'btstep3data.customerid', text : 'Bitte entscheiden Sie sich.'}"/>
+<f:form.hidden property="customerid" value="" />
+<ul>
+	<li>
+		<f:form.radio property="customerid" value="1" />
+		<label for="customeridyes">
+		    <f:translate key="tx_jobrewerytour_domain_model_register.licher_customeridyes" />
+		</label>
+	</li>
+	<li>
+		<f:form.radio property="customerid" value="0" />
+		<label for="customeridno">
+		    <f:translate key="tx_jobrewerytour_domain_model_register.licher_customeridno" />
+		</label>
+	</li>
+</ul>

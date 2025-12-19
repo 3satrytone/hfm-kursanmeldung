@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Bearbeiten des Datensatzes Gebühr mit der ID {gebuehren.uid}</h1>
+
+    <f:flashMessages/>
+
+    <f:render partial="FormErrors"/>
+
+    <f:form action="update" name="gebuehren" object="{gebuehren}">
+        <f:render partial="Gebuehren/FormFields" arguments="{gebuehren:gebuehren}"/>
+        <f:render partial="ButtonBars/Edit" arguments="{name: 'gebuehren'}"/>
+    </f:form>
+</f:section>
+</html>

@@ -1,0 +1,88 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Orte</h1>
+
+    <f:flashMessages/>
+
+    <div class="table-fit">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tr>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.name" default="name"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.ort" default="ort"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.plz" default="plz"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.adresse" default="adresse"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.longi" default="longi"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.lati" default="lati"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_orte.beschreibung" default="beschreibung"/>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            <f:for each="{orte}" as="ort">
+                <tr class="joLastTr">
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}"> {ort.name}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}"> {ort.ort}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}"> {ort.plz}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}">
+                            {ort.adresse}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}"> {ort.longi}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}"> {ort.lati}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="show" arguments="{orte : ort}">
+                            {ort.beschreibung}
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="edit" arguments="{orte : ort}">
+                            <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/>
+                        </f:link.action>
+                    </td>
+                    <td>
+                        <f:link.action action="delete" arguments="{orte : ort}"
+                                       onclick="return confirm('Ist das wirklich eine gute Idee?');">
+                            <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/>
+                        </f:link.action>
+                    </td>
+                </tr>
+            </f:for>
+        </table>
+    </div>
+    <p>
+        <f:render partial="ButtonBars/List" arguments="{name: 'orte'}"/>
+    </p>
+
+</f:section>
+</html>

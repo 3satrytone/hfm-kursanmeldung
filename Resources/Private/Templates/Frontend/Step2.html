@@ -1,0 +1,20 @@
+<f:layout name="Default" />
+
+<f:section name="joProfBox">
+    <f:render partial="JoProfBox/JoProfBox" arguments="{_all}"/>
+</f:section>
+
+<f:section name="main">
+    <h1><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2" /><f:format.html>{kursname}</f:format.html></h1>
+    <f:form action="step2redirect" name="step2data" object="{step2data}" noCache="true" noCacheHash="true">
+    	<f:if condition="{alreadyParticipant}"><script>
+    		title = '<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.alreadyParticipant.title" />';
+    		message = '<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.alreadyParticipant.message" />';
+    		$.toaster({ 'message' : message, 'title' : title, priority : 'danger', 'settings': {'donotdismiss':['success','danger']}});</script></f:if>
+        <f:render partial="Frontend/Step2Fields" arguments="{_all}"/>
+        <f:link.action action="step1" class="formhandler-button formhandler-backward">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.back" />
+        </f:link.action>
+        <f:form.submit value="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step3.next')}" class="formhandler-button" />
+    </f:form>
+</f:section>

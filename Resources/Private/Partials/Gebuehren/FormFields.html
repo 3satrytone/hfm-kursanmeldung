@@ -1,0 +1,54 @@
+<div class="table-fit">
+	<table  class="tx_kursanmeldung table table-striped table-hover" >
+		<tbody>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.anmeldung" />
+			</td>
+			<td>
+				<f:form.textfield property="anmeldung" value="{gebuehren.anmeldung -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.anmeldungerm" />
+			</td>
+			<td>
+				<f:form.textfield property="anmeldungerm" value="{gebuehren.anmeldungerm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.aktivengeb" />
+			</td>
+			<td>
+				<f:form.textfield property="aktivengeb" value="{gebuehren.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.aktivengeberm" />
+			</td>
+			<td>
+				<f:form.textfield property="aktivengeberm" value="{gebuehren.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.passivgeb" />
+			</td>
+			<td>
+				<f:form.textfield property="passivgeb" value="{gebuehren.passivgeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:translate key="tx_kursanmeldung_domain_model_gebuehren.passivgeberm" />
+			</td>
+			<td>
+				<f:form.textfield property="passivgeberm" value="{gebuehren.passivgeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" class="form-control" />
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,45 @@
+<form action="https://payport.novalnet.de/online_transfer_payport" method="post" id="novalnet_form">
+	<input type="hidden" name="utf8" value="1" />
+	<input type="hidden" name="vendor" value="{header.HaendlerID}" />
+	<input type="hidden" name="product" value="{encodeVars.1}" />
+	<input type="hidden" name="key" value="{invoice.payment}" />
+	<input type="hidden" name="tariff" value="{encodeVars.2}" />
+	<input type="hidden" name="auth_code" value="{encodeVars.0}" />
+	<input type="hidden" name="currency" value="EUR" />
+	<input type="hidden" name="amount" value="{encodeVars.3}" />
+	<input type="hidden" name="first_name" value="{customer.first_name}" />
+	<input type="hidden" name="last_name" value="{customer.last_name}" />
+	<input type="hidden" name="gender" value="{customer.gender}" />
+	<input type="hidden" name="email" value="{customer.email}" />
+	<input type="hidden" name="street" value="{customer.street}" />
+	<input type="hidden" name="search_in_street" value="0" />
+	<input type="hidden" name="house_no" value="{customer.house_no}" />
+	<input type="hidden" name="city" value="{customer.city}" />
+	<input type="hidden" name="zip" value="{customer.zip}" />
+	<input type="hidden" name="country_code" value="{customer.country_code}" />
+	<input type="hidden" name="lang" value="{customer.language}" />
+	<input type="hidden" name="remote_ip" value="{invoice.remote_ip}" />
+	<input type="hidden" name="tel" value="{customer.tel}" />
+	<input type="hidden" name="fax" value="{customer.fax}" />
+	<input type="hidden" name="birth_date" value="{customer.birthday}" />
+	<input type="hidden" name="implementation" value="" />
+	<input type="hidden" name="return_url" value="{baseURL}index.php?id=3&tx_jokursanmeldung_jokursanmeldungfe%5Baction%5D=step4redirect&tx_jokursanmeldung_jokursanmeldungfe%5Bcontroller%5D=Frontend&tx_jokursanmeldung_jokursanmeldungfe%5Bp%5D=suc" />
+	<input type="hidden" name="return_method" value="POST" />
+	<input type="hidden" name="error_return_url" value="{baseURL}index.php?id=3&tx_jokursanmeldung_jokursanmeldungfe%5Baction%5D=step4redirect&tx_jokursanmeldung_jokursanmeldungfe%5Bcontroller%5D=Frontend&tx_jokursanmeldung_jokursanmeldungfe%5Bp%5D=err" />
+	<input type="hidden" name="error_return_method" value="POST" />
+	<input type="hidden" name="test_mode" value="{encodeVars.4}" />
+	<input type="hidden" name="order_no" value="" />
+	<input type="hidden" name="user_variable_0" value="web63.server1.justorange.org" />
+	<input type="hidden" name="uniqid" value="{encodeVars.5}" />
+	<input type="hidden" name="hash" value="{encodeVars.6}" />
+	<input type="hidden" name="input1" value="customer_no" />
+	<input type="hidden" name="inputval1" value="{customer.customer_no}" />
+	<input type="hidden" name="system_name" value="Typo3" />
+	<input type="hidden" name="system_version" value="LTS 7.6" />
+	<input type="hidden" name="system_url" value="web63.server1.justorange.org" />
+	<input type="hidden" name="system_ip" value="213.239.241.161" />
+	<input type="hidden" name="user_variable_0" value="https://web63.server1.justorange.org" />
+	<input type="hidden" name="mobile" value="{customer.mobile}" />
+	<input type="submit" name="btnsubmit" value="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step4.next.sofort')}" style="width:auto;" />
+	<f:link.action action="close" class="formhandler-button formhandler-backward"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.close" /></f:link.action>
+</form>

@@ -1,0 +1,60 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+    <h1>Kurse</h1>
+    
+    <f:flashMessages/>
+    <div class="table-fit">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tr>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.aktiv" default="aktiv"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.kursnr" default="kursnr"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.instrument" default="instrument"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitstart" default="kurszeitstart"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitend" default="kurszeitend"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.kursort" default="kursort"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.professor" default="professor"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.orchstudio" default="orchstudio"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.aktivtn" default="aktivtn"/></th>
+                <th><f:translate key="tx_kursanmeldung_domain_model_kurs.passivtn" default="passivtn"/></th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <f:for each="{kurse}" as="kurs">
+                <tr>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.aktiv}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.kursnr}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.instrument}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.kurszeitstart -> f:format.date()}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.kurszeitend -> f:format.date()}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.kursort.0.name}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.professor.0.name}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.orchstudio}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.aktivtn}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{kurs : kurs}"> {kurs.passivtn}</f:link.action></td>
+                    <td><f:link.action action="edit" arguments="{kurs : kurs}" class="joBtn-default-edit" title="bearbeiten">
+                        <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/>
+                    </f:link.action>
+                    </td>
+                    <td><f:link.action action="delete" arguments="{kurs : kurs}" title="löschen" onclick="return confirm('Ist das wirklich eine gute Idee?');">
+                        <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/>
+                    </f:link.action></td>
+                    <td><a href="https://kursanmeldung.hfm-weimar.de/index.php?id={fePid}&tx_jokursanmeldung_jokursanmeldungfe[kurs]={kurs.uid}" target="_blank" class="copyLink" title="Link kopieren deutsch">
+                        <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-copy-de.png" alt=""/>
+                    </a></td>
+                    <td>
+                        <a href="https://kursanmeldung.hfm-weimar.de/index.php?id={fePid}&L=1&tx_jokursanmeldung_jokursanmeldungfe[kurs]={kurs.uid}" target="_blank" class="copyLink" title="Link kopieren englisch">
+                            <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-copy-en.png" alt=""/>
+                        </a>
+                    </td>
+                </tr>
+            </f:for>
+        </table>
+    </div>
+    <p>
+        <f:render partial="ButtonBars/List" arguments="{name: 'kurs'}"/>
+    </p>
+  </f:section>
+</html>

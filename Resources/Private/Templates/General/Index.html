@@ -1,0 +1,69 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="Main">
+    <h1>
+        <f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:module.kursanmeldung" extensionName="Kursanmeldung"/>
+    </h1>
+    <p>
+        <f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:module.kursanmeldung.description" extensionName="Kursanmeldung"/>
+    </p>
+
+    <ul class="hfm-general menustreifen">
+        <li class="str_box">
+            <f:link.action controller="Kurs" action="list">
+                <span><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.kurs"
+                                   extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Gebuehren" action="list">
+                <span>
+                    <f:translate
+                            key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.gebuehren"
+                            extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Orte" action="list">
+                <span><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.orte"
+                                   extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Hotel" action="list">
+                <span>
+                <f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.hotel"
+                             extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Prof" action="list">
+                <span><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.prof"
+                                   extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Teilnehmer" action="list">
+                <span><f:translate
+                        key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.teilnehmer"
+                        extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+        <li class="str_box">
+            <f:link.action controller="Mailing" action="list">
+                <span><f:translate
+                        key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:links.mailing"
+                        extensionName="Kursanmeldung"/>
+                </span>
+            </f:link.action>
+        </li>
+    </ul>
+</f:section>
+</html>

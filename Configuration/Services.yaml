@@ -1,0 +1,48 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+  Hfm\Kursanmeldung\:
+    resource: '..\Classes\*'
+    exclude: '..\Classes\Domain\Model\*'
+  Hfm\Kursanmeldung\Controller\GeneralController:
+    public: true
+  Hfm\Kursanmeldung\Controller\GebuehrenController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\HotelController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\HotelRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\KursanmeldungController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\OrteController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\OrteRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\ProfController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\ProfRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\KursController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\KursRepository:
+    public: true
+  Hfm\Kursanmeldung\Controller\TeilnehmerController:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\TelnehmerRepository:
+    public: true
+  Hfm\Kursanmeldung\Utility\PropertyConverterUtility:
+    public: true
+  Hfm\Kursanmeldung\Utility\FormatUtility:
+    public: true
+  Hfm\Kursanmeldung\Utility\SessionUtility:
+    public: true
+  Hfm\Kursanmeldung\Controller\FrontendController:
+    public: true
+  Hfm\Kursanmeldung\Utility\ParticipantUtility:
+    public: true

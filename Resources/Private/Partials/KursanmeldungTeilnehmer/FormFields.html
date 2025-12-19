@@ -1,0 +1,540 @@
+<f:form.hidden property="tn.uid" value="{kursanmeldung.tn.0.uid}" />
+<f:form.hidden property="kurs.uid" value="{kursanmeldung.kurs.0.uid}" />
+<f:form.hidden property="uid" />
+	<style type="text/css">
+		html{
+			background-color:#f5f5f5;
+		}
+		body,
+		html,
+		textarea,
+		input,
+		select{
+			font-family: Verdana,Arial,Helvetica,sans-serif;
+			font-size:14px;
+		}
+		.joClearfix:after {
+			clear: both;
+			content: ".";
+			display: block;
+			height: 0;
+			visibility: hidden;
+		}
+		.joClearfix {
+			display: inline-block;
+		}
+		.joClearfix {
+			display: block;
+		}
+		html {
+		  -webkit-box-sizing: border-box;
+		  -moz-box-sizing: border-box;
+		  box-sizing: border-box;
+		}
+		*, *:before, *:after {
+		  -webkit-box-sizing: inherit;
+		  -moz-box-sizing: inherit;
+		  box-sizing: inherit;
+		}
+		.tx-jo-kursanmeldung{
+			padding:20px;
+			border: 1px solid #c3c3c3;
+			margin:30px;
+		}
+		.tx-jo-kursanmeldung .joPage-title h1.joHeadline,
+		.tx-jo-kursanmeldung h1{
+			font-size:28px;
+			color:#9D0633;
+			font-weight:normal;
+			padding:0;
+			margin: 20px 0 30px 0;
+		}
+		.joFormWrapper{
+			padding: 7px;
+			width:800px;
+			
+		}
+		.joDownloads,
+		.joFormWrapper label,
+		.joFormWrapper input,
+		.joFormWrapper textarea,
+		.joFormWrapper select{
+			float:left;
+		}
+		.joFormWrapper label{
+			width:30%;
+			font-weight:bold;
+		}
+		.joRightColum,
+		.joDownloads,
+		.joFormWrapper textarea,
+		.joFormWrapper input,
+		.joFormWrapper select{
+			width:70%;
+			padding: 3px;
+		}
+		.joFormWrapper textarea{
+			height:200px;
+		}
+		.joFormWrapper .joCheckbox{
+			width:auto;
+		}
+		div.joFormWrapper:nth-child(even){
+			background-color:#e0e0e0;
+		}
+		.joRightColum{
+			margin-left:30%;
+			padding:20px 0;
+		}
+		.joFormWrapper .joBack,
+		.joFormWrapper .joSubmit{
+			display:inline-block;
+			background-color: #9D0633;
+			color: white;
+			cursor: pointer;
+			border: none;
+			outline: none;
+			padding: 10px;
+			text-align:center;
+			text-decoration:none;
+			float:right;
+			width:200px;
+			height:auto;
+			margin:0;
+		}
+		.joFormWrapper .joBack{
+			background-color:#484848;
+			float:left;
+		}
+		.joFormWrapper .joBack:hover{
+			background-color: #9D0633;
+		}
+		.downloadtmpl.joHide{
+			display:none;
+		}
+		.fa-plus-square-o, .fa-minus-square-o {
+			font-size: 30px;
+			cursor: pointer;
+		}
+		.fa-plus-square-o:before {
+			content: "\f055";
+		}
+		.fa-minus-square-o:before{
+			content: "\f056";
+		}
+		.fa-minus-circle{
+			margin-left: 10px;
+			cursor:pointer;
+			font-size: 20px;
+		}
+		.fa-minus-circle.delete,
+		.fa-minus-square-o.delete{
+			color: red;
+		}
+		span.red{
+			color: red;
+		}
+		label .subscr{
+			font-weight: normal;
+			font-size:12px;
+		}
+		.label30{
+			width:30%;
+			float:left;
+		}
+		.input70{
+			width:70%;
+			float:left;
+		}
+		.joFormWrapper .input70 label,
+		.joFormWrapper .input70 input,
+		.joFormWrapper .input70 select{
+			width: 100%;
+		}
+		.member{
+			margin: 10px 0;
+			padding: 20px 0 10px 0;
+			border-top: 1px solid #999999; 
+		}
+		.deleteEnsemble{
+			float:right;
+			margin-top: 10px;
+		}
+	</style>
+<div class="joFormWrapper joClearfix">
+	<label for="deflang">
+		<f:translate key="be_export.tn_sprache" />
+	</label>
+	<f:form.select property="deflang" options="{deflangOpt}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="anmeldestatus">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.status" default="Status" />
+	</label>
+	<f:form.select property="anmeldestatus" options="{statuus}" value="{kursanmeldung.anmeldestatus}" optionLabelField="anmeldestatus" sortByOptionLabel="FALSE" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}" prependOptionValue="" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="profstatus">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.profstatus" default="Profstatus" />
+	</label>
+	<f:form.select property="profstatus" options="{statuus}" value="{kursanmeldung.profstatus}" optionLabelField="anmeldestatus" sortByOptionLabel="FALSE" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'kursanmeldung.anmeldestatus'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="kurs">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.kurs" default="Kurs" />
+	</label>
+	<f:form.select property="newkursuid" options="{newkurs}" value="{kursanmeldung.kurs.0.uid}" optionLabelField="name" optionValueField="uid" sortByOptionLabel="FALSE" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.kurs.prependLabel',default:'Bitte wählen')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'kursanmeldung.kurs'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.vorname">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.vorname" />
+	</label>
+	<f:form.textfield property="tn.vorname" value="{kursanmeldung.tn.0.vorname}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.nachname">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.nachname" />
+	</label>
+	<f:form.textfield property="tn.nachname" value="{kursanmeldung.tn.0.nachname}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.anrede">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.anrede" />
+	</label>
+	<f:form.select property="tn.anrede" options="{genders}" value="{kursanmeldung.tn.0.anrede}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.gender')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.anrede'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.titel">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.titel" />
+	</label>
+	<f:form.textfield property="tn.titel" value="{kursanmeldung.tn.0.titel}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.matrikel">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.matrikel" />
+	</label>
+	<f:form.textfield property="tn.matrikel" value="{kursanmeldung.tn.0.matrikel}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="studystat">
+		<f:translate key="LLL:EXT:jo_kursanmeldung/Resources/Private/Language/locallang_db.xlf:tx_jokursanmeldung_domain_model_kursanmeldung.studystat" />
+	</label>
+	<f:form.checkbox property="studystat" value="1" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="studentship">
+		<f:translate key="LLL:EXT:jo_kursanmeldung/Resources/Private/Language/locallang_db.xlf:tx_jokursanmeldung_domain_model_kursanmeldung.studentship" />
+	</label>
+	<f:form.checkbox property="studentship" value="1" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="deflang">
+		<f:translate key="LLL:EXT:jo_kursanmeldung/Resources/Private/Language/locallang_db.xlf:tx_jokursanmeldung_domain_model_kursanmeldung.stipendiat" />
+	</label>
+	<f:form.checkbox property="stipendiat" value="1" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.gebdate">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.gebdate" />
+	</label>
+	<f:form.textfield property="tn.gebdate" value="{kursanmeldung.tn.0.gebdate->f:format.date(format:'d-m-Y')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.nation">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.nation" />
+	</label>
+	<f:form.select property="tn.nation" options="{countries}" value="{kursanmeldung.tn.0.nation}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.nationality')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.nation'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.adresse1">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.adresse1" />
+	</label>
+	<f:form.textfield property="tn.adresse1" value="{kursanmeldung.tn.0.adresse1}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.hausnr">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.hausnr" />
+	</label>
+	<f:form.textfield property="tn.hausnr" value="{kursanmeldung.tn.0.hausnr}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.adresse2">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.adresse2" />
+	</label>
+	<f:form.textfield property="tn.adresse2" value="{kursanmeldung.tn.0.adresse2}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.plz">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.plz" />
+	</label>
+	<f:form.textfield property="tn.plz" value="{kursanmeldung.tn.0.plz}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.ort">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.ort" />
+	</label>
+	<f:form.textfield property="tn.ort" value="{kursanmeldung.tn.0.ort}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.land">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.land" />
+	</label>
+	<f:form.select property="tn.land" options="{countries}" value="{kursanmeldung.tn.0.land}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.country')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.land'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.telefon">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.telefon" />
+	</label>
+	<f:form.textfield property="tn.telefon" value="{kursanmeldung.tn.0.telefon}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.mobil">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.mobil" />
+	</label>
+	<f:form.textfield property="tn.mobil" value="{kursanmeldung.tn.0.mobil}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="tn.0.email">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.email" />
+	</label>
+	<f:form.textfield property="tn.email" value="{kursanmeldung.tn.0.email}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gebuehr">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gebuehr" />
+	</label>
+	<f:form.textfield property="gebuehr" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="bezahlt">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.bezahlt" />
+	</label>
+	<f:form.checkbox property="bezahlt" value="1" class="joCheckbox"/>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="zahlart">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.zahlart" />
+	</label>
+	<f:form.select property="zahlart" options="{zahlungsart}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'zahlart'})}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="zahltbis">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.zahltbis" />
+	</label>
+	<f:form.textfield property="zahltbis" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahlt">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gezahlt" />
+	</label>
+	<f:form.textfield property="gezahlt" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="paylaterang">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.paylater.ang" />
+	</label>
+	<input class="linkToCopy" value="{paylater.ang}" />
+	<button class="copyButton">copy</button>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltag">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gebuehrag" />
+	</label>
+	<f:form.textfield property="gebuehrag" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltag">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.bezahltag" />
+	</label>
+	<f:form.checkbox property="bezahltag" value="1" class="joCheckbox"/>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltag">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gezahltag" />
+	</label>
+	<f:form.textfield property="gezahltag" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltag">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gebuehrdat" />
+	</label>
+	<f:form.textfield property="gebuehrdat" value="{kursanmeldung.gebuehrdat->f:format.date(format:'d.m.Y H:i')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltag">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.paylater.tng" />
+	</label>
+	<input class="linkToCopy" value="{paylater.tng}" />
+	<button class="copyButton">copy</button>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="gezahltos">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.gezahltos" />
+	</label>
+	<f:form.textfield property="gezahltos" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="paybyadminlink">
+		<f:translate key="rtechkeditor.payment.paybyadmin" />
+	</label>
+	<f:link.action action="paybyadmin" arguments="{payment:1,reguid:kursanmeldung.uid}" onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">Rechnung jetzt erstellen und sofort via Mail versenden</f:link.action>
+	<br /><f:link.action action="paybyadmin" arguments="{payment:6,reguid:kursanmeldung.uid}" onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">Novalnet-Rechnung jetzt erstellen und sofort via Mail versenden</f:link.action>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="hotel">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.hotel" />
+	</label>
+	<f:form.select property="hotel" options="{hotels.hotel}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.hotel')}" prependOptionValue="0" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="room">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.room" />
+	</label>
+	<f:form.select property="room" options="{hotels.room}" value="{kursanmeldung.room}" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.room')}" prependOptionValue="" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="roomwith">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.roomwith" />
+	</label>
+	<f:form.textfield property="roomwith" />
+</div>	
+<div class="joFormWrapper joClearfix">
+	<label for="roomfrom">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.roomfrom" />
+	</label>
+	<f:form.textfield property="roomfrom" value="{kursanmeldung.roomfrom->f:format.date(format:'d.m.Y H:i')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="roomto">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.roomto" />
+	</label>
+	<f:form.textfield property="roomto" value="{kursanmeldung.roomto->f:format.date(format:'d.m.Y H:i')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="datein">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.datein" />
+	</label>
+	<f:form.textfield property="datein" value="{kursanmeldung.datein->f:format.date(format:'d.m.Y H:i:s')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="teilnahmeart">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.teilnahmeart" />
+	</label>
+	<f:form.select property="teilnahmeart" options="{teilnahmeartOpt}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="programm">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.programm" />
+	</label>
+	<f:form.textarea property="programm" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="orchesterstudio">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.orchesterstudio" />
+	</label>
+	<f:form.textfield property="orchesterstudio" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="duo">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.duo" />
+	</label>
+	<f:form.checkbox property="duo" value="1" class="joCheckbox"/>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="duosel">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.duosel" />
+	</label>
+	<f:form.textfield property="duosel" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="duoname">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.duoname" />
+	</label>
+	<f:form.textfield property="duoname" />
+</div>
+<f:if condition="{kursanmeldung.kurs.0.ensemble} > 0">
+<f:render partial="KursanmeldungTeilnehmer/Ensemble/FormFields" arguments="{ensemble:kursanmeldung.ensemble,kursanmeldung:kursanmeldung,ensembleCheckbox:ensembleCheckbox,countries:countries}" />
+</f:if>
+<div class="joFormWrapper joClearfix">
+	<label for="comment">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.comment" />
+	</label>
+	<f:form.textarea property="comment" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="doitime">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.doitime" />
+	</label>
+	<f:form.textfield property="doitime" value="{kursanmeldung.doitime->f:format.date(format:'d.m.Y H:i')}" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="notice">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.notice" />
+	</label>
+	<f:form.textarea property="notice" />
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="downloads">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.documents" />
+	</label>
+	<div class="joDownloads">
+		<f:for each="{kursanmeldung.uploads}" as="dl">
+			<div>{dl.kat}: <f:link.external uri="{dl.pfad}/{dl.name}" target="_blank">{dl.name}</f:link.external> <i class="fas fa-minus-circle" title="Markieren zum Löschen!"></i><f:form.hidden name="delfiles[{dl.uid}]" value="0" /></div>
+		</f:for>
+	</div>	
+</div>
+<div id="add-new-download" class="joFormWrapper addmore-parent">
+	<div class="downloadtmpl joClearfix joHide">
+		<div class="joItem clearfix">
+			<label for="file.kat">
+				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.documents.kat" />
+			</label>
+			<f:form.select name="newfiles[kat]" options="{uploadTypes}" />
+		</div>
+		<div class="joItem clearfix">
+			<label for="file.link">
+				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.documents.link" />
+			</label>
+			<f:form.textfield name="newfiles[link]" />
+		</div>
+		<div class="joItem clearfix">
+			<label for="file.link">
+				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.documents.upload" />
+			</label>
+			<f:form.upload name="newfiles[file]" />
+		</div>
+	</div>
+	<div class="addmore">
+		<i class="fa fa-plus-square-o" aria-hidden="true" title="Neue Dateien hinzufügen"></i>
+	</div>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="agb">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.agb" />
+	</label>
+	<f:if condition="{kursanmeldung.agb} == 0"><f:then>
+		<span class="red"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.agb.{kursanmeldung.agb}" /></span>
+		</f:then><f:else>
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.agb.{kursanmeldung.agb}" /></f:else>
+	</f:if>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="datenschutz">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.datenschutz" />
+	</label>
+	<f:if condition="{kursanmeldung.datenschutz} == 0"><f:then>
+		<span class="red"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.datenschutz.{kursanmeldung.datenschutz}" /></span>
+		</f:then><f:else>
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.datenschutz.{kursanmeldung.datenschutz}" /></f:else>
+	</f:if>
+</div>
+<div class="joFormWrapper joClearfix">
+	<label for="savedata">
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.savedata" />
+	</label>
+	<f:if condition="{kursanmeldung.savedata} == 0"><f:then>
+		<span class="red"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.savedata.{kursanmeldung.savedata}" /></span>
+		</f:then><f:else>
+		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.savedata.{kursanmeldung.savedata}" /></f:else>
+	</f:if>
+</div>

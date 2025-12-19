@@ -1,0 +1,91 @@
+<div class="joRow clearfix positionrelative">
+    <div class="gender <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.gender\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+        <f:form.radio property="gender" value="f" />
+        <label for="genderwoman">
+            <f:translate key="tx_jobrewerytour_domain_model_register.woman" />
+        </label>
+        <f:form.radio property="gender" value="m" />
+        <label for="genderman">
+            <f:translate key="tx_jobrewerytour_domain_model_register.man" />
+        </label>
+    </div>
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.customerid\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="customerid" class="joSmallLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_customerid" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="customerid" class="formhandler-text joBigFormHandler" tabindex="1" />
+ </div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.firstName\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="firstName" class="joSmallLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_firstName" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="firstName" class="formhandler-text joBigFormHandler" tabindex="2" />
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.lastName\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="lastName" class="joSmallLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_lastName" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="lastName" class="formhandler-text joBigFormHandler" tabindex="3" />
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.address\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="address" class="joSmallLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_address" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="address" class="formhandler-text joBigFormHandler" tabindex="4" />
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.zip\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults> <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.city\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="city" class="joSmallLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_city" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="zip" class="formhandler-text joZipFormHandler" tabindex="5" />
+    <f:form.textfield property="city" class="formhandler-text joCityFormHandler" tabindex="6" />
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.email\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="email" class="joBigLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_email" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="email" class="formhandler-text joSmallFormHandler" tabindex="7" />
+</div>
+<div class="joRow clearfix positionrelative <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.emailrp\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+    <label for="emailrp" class="joBigLabel">
+        <f:translate key="tx_jobrewerytour_domain_model_register.licher_emailrp" /> <span class="required">*</span>
+    </label>
+    <f:form.textfield property="emailrp" class="formhandler-text joSmallFormHandler" tabindex="8" />
+</div>
+<div class="WmdbValidationFields" style="display: none;">
+    <input type="checkbox" name="validate[terms]" value="I have agreed this terms!" />
+    <input type="text" name="validate[email]" value="" />
+</div>
+<f:render partial="FormSingleErrors" arguments="{field: 'btstep4data'}"/>
+
+<f:if condition="{settings.agb}">
+    <div class="privacyhint clearfix">
+        <div class="floatleft box-1">
+            <f:form.checkbox property="privacyhint" class="formhandler-checkbox" value="1" />
+            <f:render partial="FormSingleErrors" arguments="{field: 'btstep4adata.privacyhint_licher'}"/>
+        </div>
+        <div class="floatleft box-2 <f:form.validationResults for='{object}'><f:if condition='{validationResults.flattenedErrors}'><f:for each='{validationResults.flattenedErrors}' key='propertyPath' as='errors'><f:if condition='{0:propertyPath} == {0:\'btstep4adata.privacyhint\'}'>color-form-error</f:if></f:for></f:if></f:form.validationResults>">
+            <div class="introtext">
+                <f:translate key="tx_jobrewerytour_domain_model_register.privacyhint_licher" />
+            </div>
+            <div class="datenschutz">
+                <div class="joCloseLicher">x</div>
+                <div class="joContent">
+                    <f:format.html>{settings.agb}</f:format.html>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:if>
+<f:if condition="{settings.newsletter}">
+    <div class="commercial clearfix">
+        <div class="floatleft box-1">
+            <f:form.checkbox property="commercial" class="formhandler-checkbox" value="1" />
+            <f:render partial="FormSingleErrors" arguments="{field: 'btstep4adata.commercial'}"/>
+        </div>
+        <div class="floatleft box-2">
+            <f:format.html>{settings.newsletter}</f:format.html>
+        </div>
+    </div>
+</f:if>

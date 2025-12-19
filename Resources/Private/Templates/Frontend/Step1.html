@@ -1,0 +1,17 @@
+<f:layout name="Default" />
+
+<f:section name="Main">
+    
+    <h1><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1" /><f:format.html>{kursname}</f:format.html></h1>
+    
+    <f:form action="step1redirect" name="step1data" object="{step1data}" noCache="true" noCacheHash="true">
+        <f:render partial="Frontend/Step1Fields" arguments="{_all}"/>
+        <f:link.action action="kurswahl" class="formhandler-button formhandler-backward" arguments="{kurs:0}">
+        	{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.back')}
+        </f:link.action>
+        <f:form.button type="submit" value="" class="formhandler-button">
+        	{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.step1.next')}
+        </f:form.button>
+
+    </f:form>
+</f:section>

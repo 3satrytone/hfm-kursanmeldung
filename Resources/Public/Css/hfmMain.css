@@ -1,0 +1,72 @@
+.body-bg {
+    -moz-box-shadow: 0 2px 15px 0px black;
+    -webkit-box-shadow: 0 2px 15px 0px black;
+    box-shadow: 0 2px 15px 0px black;
+    position: relative;
+    display: block;
+    max-width: 980px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.bp-page-footer {
+    height: 35px;
+    background-color: #9d0633;
+}
+
+.footer-section {
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bp-page-header {
+    padding: 0 0 35px 0;
+    margin: 0;
+    background-color: #9d0633 !important;
+}
+
+.bp-page-header .container-mainnavigation {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-mainnavigation .navbar-brand-image img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    top: 0;
+    transform: none;
+}
+
+.bp-page-header #mainnavigation,
+.bp-page-header .navbar-toggler {
+    display: none;
+}
+
+
+.footer-section-meta {
+    color: #000000 !important;
+    --frame-color: #000000 !important;
+}
+
+.footer-language #language-menu a span,
+.frame a[class=""],
+.frame a:not([class]) {
+    color: #9d0633 !important;
+}
+
+#hfm-kursanmeldung{
+    position: relative;
+    margin: 0 auto;
+    width: 70%;
+
+}
+
+.tx_jo-kursanmeldung{
+    width: 100%;
+}
+
+

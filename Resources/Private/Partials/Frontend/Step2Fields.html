@@ -1,0 +1,348 @@
+<div class="joRow joClearfix">
+    <div class="tnaction joCol joCol-1">
+       <f:form.select property="tnaction" options="{tnaction}" data="{trtype: 'slide',trsrc:'tnsel',trsel:'selected',trval:'0,'}"/>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.tnaction'}"/>
+    </div>
+</div>
+<div class="additional-text2 no-registration"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.noreg" default="Keine Anmeldung nötig"></f:translate></div>
+<div class="joRow joClearfix">
+    <div class="studystat joCbxTrigger joCol joCol-1">
+        <f:form.checkbox property="studystat" value="1" data="{trtype: 'slide',trsrc:'matrikel',trsel:'checked'}" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.studystat" /></span>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.studystat'}"/>
+    </div>
+</div>
+
+<div class="joRow joClearfix joHide" data-trtrg="matrikel">
+    <div class="matrikel joCol joCol-1">
+        <f:form.textfield property="matrikel" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.matrikel')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}" />
+        <f:render partial="FormTitleError" />
+    </div>
+</div>
+<div class="joRow joClearfix" data-trtrg="tnsel">
+    <div class="programm joCol joCol-1">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.programm.head" /><br />
+        <f:form.textarea property="programm" class="joInpArea" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.programm')}" />
+        <f:render partial="FormSingleErrors" />
+    </div>
+</div>
+<f:if condition="{kursActive.orchstudio}==1"><div class="joRow joClearfix" data-trtrg="tnsel">
+    <div class="orchesterstudio joCol joCol-1">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio.head" /><br />
+        <f:form.textarea property="orchesterstudio" class="joInpArea" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio')}" />
+        <f:render partial="FormSingleErrors"/>
+    </div>
+</div></f:if>
+<f:if condition="{kursActive.stipendien}==1"><div class="studentship joCol joCol-1">
+    <f:form.checkbox property="studentship" class="" value="1" />
+    <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.studentship" />
+    <f:render partial="FormSingleErrors" arguments="{field: 'step2data.studentship'}"/>
+</div></f:if>
+<div class="joRow joClearfix">
+    <div class="enrollmentfee joCol joCol-1">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.enrollmentfee" /><span id="enrollmentfee" data-feeanmeldung="{gebuehr.anmeldung -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" data-feeanmeldungerm="{gebuehr.anmeldungerm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" data-feepassivgeb="{gebuehr.passivgeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" data-feepassivgeberm="{gebuehr.passivgeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{enrollmentfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span><span class="stipendiumhint joHide"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint" /></span>
+    </div>
+</div>
+<div class="joRow joClearfix">
+    <div class="zahlungsart joCol joCol-2">
+        <f:if condition="{zahlungsart}==9"><f:then><f:form.hidden property="zahlungsart" value="{zahlungsart}" /></f:then>
+        <f:else><f:form.select property="zahlungsart" options="{zahlungsart}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}" prependOptionValue="" data="{trtype: 'slide',trsrc:'zahlart',trsel:'selected',trval:'1,2,6'}"/></f:else></f:if>
+        <f:render partial="FormSingleErrors"/>
+    </div>
+    <div class="zahlungstermin joCol joCol-2 joHide" data-trtrg="zahlart"><f:if condition="{settings.hidePaymentDate} != 1">
+			<f:form.hidden property="zahlungstermin" value="{zahlungstermin}" /><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.zahlungstermin" /> {zahlungstermin}
+			<f:render partial="FormSingleErrors" arguments="{field: 'step2data.zahlungstermin'}"/>
+	</f:if></div>
+</div>
+<div class="additional-text" style="<f:if condition='{step2data.zahlungsart} != 4'>display:none;</f:if>" data-selval="4"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort" default="Nur deutsche Kreditinstitute"></f:translate></div>
+<div class="joRow joClearfix">
+    <div class="additionalfee joCol joCol-1">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.additionalfee" /><span id="additionalfee" data-feeaktivengeb="{gebuehr.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}" data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span><span class="stipendiumhint joHide"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint" /></span>
+    </div>
+    <f:if condition="{kursActive.gebuehrcom}"><div class="gebuehrcom joCol joCol-1">
+        {kursActive.gebuehrcom}
+    </div></f:if>
+</div>
+<div class="joRow joClearfix">
+    <div class="hotel joCol">
+        <f:form.select property="hotel" options="{hotel.hotel}" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.hotel')}" prependOptionValue="" data="{trtype: 'slide',trsrc:'hotel',trsel:'selected'}" />
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.hotel'}" />
+    </div>
+    <div class="room joCol joHide" data-trtrg="hotel">
+        <f:form.select property="room" options="{hotel.room}" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.room')}" prependOptionValue="" data="{trtype: 'slide',trsrc:'room',trsel:'selected',trval:'dz2preis,dz2preiserm'}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}" />
+        <f:render partial="FormTitleError" />
+        <div class="roomwith joCol joHide" data-trtrg="room">
+            <f:form.textfield property="roomwith" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.roomwith')}" data="{trtype: 'slide',trsrc:'matrikel'}" />
+            <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomwith'}"/>
+        </div>
+    </div>
+</div>
+
+<div class="joRow joClearfix">
+    <div class="hotelfee joCol">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.hotelfee" />
+        <f:for each="{hotel.price}" key="hoprkey" as="hopr" iteration="hoit"><span id="hotelfee-{hoprkey}" class="hotelfee-row hotelfee-{hoprkey} joHide">
+            <f:for each="{hopr}" key="pricekey" as="price" iteration="prit"><span id="hotelfee-{hoprkey}-{pricekey}" class="hotelfee-price hotelfee-{pricekey}{f:if(condition:prit.isFirst, then:'',else:' joHide')}">{price -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.hotelfee1" /></span></f:for>
+        </span></f:for>
+    </div>
+</div>
+<div class="joRow joClearfix joHide" data-trtrg="hotel">
+    <div class="roomfrom joCol joCol-2">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.roomfrom.head" /><br />
+        <f:form.textfield property="roomfrom" class="joInpText joInpDatepicker" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.roomfrom')}" />
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomfrom'}"/>
+    </div>
+    <div class="roomto joCol joCol-2">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.roomto.head" /><br />
+        <f:form.textfield property="roomto" class="joInpText joInpDatepicker" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.roomto')}" />
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomto'}"/>
+    </div>
+</div>
+<script src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/js/jquery.fileupload.js"></script>
+<f:if condition="{kursActive.maxupload}>0">
+<div class="joRow joClearfix">
+    <div class="filesupload">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.filesupload" />
+    </div>
+</div>
+<div class="joRow joClearfix">
+    <div class="download">
+        <div id="fileuploader">
+            <div id="fileuploadinp">
+                <input id="fileupload" type="file" name="files[]" data-url="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/server/php/">
+                <div id="progress" class="joHide">
+                   <div class="bar" style="width: 0%;"></div>
+                </div>
+                <div id="uploaderrors" class="joHide"></div>
+            </div>
+            <div id="uploadedfiles" class="joHide">
+                <f:if condition="{downloads}"><f:for each="{downloads}" as="dl"><div>
+                    <input type="hidden" name="tx_jokursanmeldung_jokursanmeldungfe[step2data][download][]" value="{dl.src}">{dl.name}<img src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Images/actions-delete.svg" width="16" height="16" alt="" class="delete">
+                </div></f:for></f:if>
+            </div>
+<script>
+$(function () {
+    var mf = '{kursActive.maxupload}';
+    $('#fileupload').fileupload({
+        add: function(e, data) {
+            $('#uploaderrors div').remove();
+            $('#uploaderrors').hide();
+            var uploadErrors = [];
+            var acceptFileTypes = /(\.|\/)(gif|jpe?g|png|mp3|mp4|wav|mpeg|aiff|wmv|pdf)$/i;
+            if(data.originalFiles[0]['type'].length){
+                if(!acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                    uploadErrors.push('Not an accepted file type');
+                }
+            }else{
+                if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                    uploadErrors.push('Not an accepted file type');
+                }
+            }
+            if(typeof(data.originalFiles[0]['size']) == "number" && data.originalFiles[0]['size'] > 500000000) {
+                uploadErrors.push('Filesize is too big');
+            }
+            if(uploadErrors.length > 0) {
+                $.each(uploadErrors, function (index, error) {
+                    $('<div/>').text(error).appendTo($('#uploaderrors'));
+                    $('#uploaderrors').show();
+                });
+            } else {
+                data.submit();
+            }
+        },
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                if(file.error){
+                    $('<div/>').text(file.error).appendTo($('#uploaderrors'));
+                    $('#uploaderrors').show();
+                }else{
+                    $('<div/>').html('<input type="hidden" name="tx_jokursanmeldung_jokursanmeldungfe[step2data][download][]" value="'+file.url+'">'+file.name+'<img src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Images/actions-delete.svg" width="16" height="16" alt="" class="delete">').appendTo($('#uploadedfiles'));
+                    
+                    $('#uploadedfiles img.delete').unbind('click',deleteUploads);
+                    $('#uploadedfiles img.delete').bind('click',deleteUploads);
+                }
+                checkUploads();
+            });
+            $('#progress').hide();
+        },
+        fail: function (e, data) {
+            $.each(data.messages, function (index, error) {
+                $('<div/>').text(error).appendTo($('#uploaderrors'));
+            });
+            $('#uploaderrors').show();
+            $('#progress').hide();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress').show();
+            $('#progress .bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    });
+    deleteUploads = function(){
+        $(this).parent().remove();
+		sessionStorage.setItem('uploadedFiles','');
+		$.each($('#uploadedfiles input'),function(){
+		   uploadfiles.push($(this).val());
+		   sessionStorage.setItem('uploadedFiles',uploadfiles.join(','));
+		});
+        checkUploads();
+    }
+    checkUploads = function(){
+        var uploadfiles = [];
+        if($('#uploadedfiles input').length == 0){
+            $('#uploadedfiles').hide();
+            if(sessionStorage.getItem('uploadedFiles') != null){
+                uploadfiles = sessionStorage.getItem('uploadedFiles').split(',');
+            }
+            if(uploadfiles.length>0){
+                $.each(uploadfiles, function (index, file) {
+                    if(file && file != 'null'){
+                        $('<div/>').html('<input type="hidden" name="tx_jokursanmeldung_jokursanmeldungfe[step2data][download][]" value="'+file+'">'+file.split('/').pop()+'<img src="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Images/actions-delete.svg" width="16" height="16" alt="" class="delete">').appendTo($('#uploadedfiles'));
+                            
+                        $('#uploadedfiles img.delete').unbind('click',deleteUploads);
+                        $('#uploadedfiles img.delete').bind('click',deleteUploads);
+                        $('#uploadedfiles').show();
+                    }
+                });
+                if($('#uploadedfiles input').length >= mf){
+                    $('#fileuploadinp').hide();
+                }
+            }
+        }else{
+            if($('#uploadedfiles input').length >= mf){
+                $('#fileuploadinp').hide();
+            }else{
+                $('#fileuploadinp').show();
+            }
+            $('#uploadedfiles').show();
+            $.each($('#uploadedfiles input'),function(){
+               uploadfiles.push($(this).val());
+               sessionStorage.setItem('uploadedFiles',uploadfiles.join(','));
+            });
+        }
+    }
+    $('#uploadedfiles img.delete').unbind('click',deleteUploads);
+    $('#uploadedfiles img.delete').bind('click',deleteUploads);
+    checkUploads();
+});
+</script>
+        </div>
+    </div>
+</div></f:if>
+<div class="joRow joClearfix">
+    <div class="link">
+        <f:if condition="{kursActive.weblink} == 1">
+        <div>
+            <f:form.textfield property="link" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.link')}" />
+            <f:render partial="FormSingleErrors" arguments="{field: 'step2data.link'}"/>
+        </div></f:if>
+        <f:if condition="{kursActive.youtube} == 1"><div>
+            <f:form.textfield property="youtube" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step2.youtube')}" />
+            <f:render partial="FormSingleErrors" arguments="{field: 'step2data.youtube'}"/>
+        </div></f:if>
+    </div>
+</div>
+<f:if condition="{kursActive.vita}>0">
+<div class="joRow joClearfix">
+    <div class="filesupload">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.vita" />
+    </div>
+</div>
+<div class="joRow joClearfix">
+    <div class="vita">
+        <div id="vitauploadinp">
+            <input id="vitaupload" type="file" name="files[]" data-url="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/server/php/">
+            <div id="progress2" class="joHide">
+               <div class="bar" style="width: 0%;"></div>
+            </div>
+            <div id="vitaerrors" class="joHide"></div>
+        </div>
+        <div id="vitafile" class="joHide"></div>
+    <script>
+    $(function () {
+        $('#vitaupload').fileupload({
+            add: function(e, data) {
+                $('#vitaerrors div').remove();
+                $('#vitaerrors').hide();
+                var uploadErrors = [];
+                var acceptFileTypes = /(\.|\/)(plain|txt|pdf)$/i;
+                if(data.originalFiles[0]['type'].length){
+                    if(!acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                        uploadErrors.push('Not an accepted file type txt, pdf');
+                    }
+                }else{
+                    if(data.originalFiles[0]['name'].length && !acceptFileTypes.test(data.originalFiles[0]['name'])) {
+                        uploadErrors.push('Not an accepted file type txt, pdf');
+                    }
+                }
+                if(typeof(data.originalFiles[0]['size']) == "number" && data.originalFiles[0]['size'] > 50000000) {
+                    uploadErrors.push('Filesize is too big');
+                }
+                if(uploadErrors.length > 0) {
+                    $.each(uploadErrors, function (index, error) {
+                        $('<div/>').text(error).appendTo($('#vitaerrors'));
+                        $('#vitaerrors').show();
+                    });
+                } else {
+                    data.submit();
+                }
+            },
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    if(file.error){
+                        $('<div/>').text(file.error).appendTo($('#vitaerrors'));
+                        $('#vitaerrors').show();
+                    }else{
+                        $('#vitafile div').remove();
+                        $('<div/>').html('<input type="hidden" name="tx_jokursanmeldung_jokursanmeldungfe[step2data][vita]" value="'+file.url+'">'+file.name+'').appendTo($('#vitafile'));
+                        $('#vitafile').show();
+                        sessionStorage.setItem('uploadedVita',file.url);
+                    }
+                });
+                $('#progress2').hide();
+            },
+            fail: function (e, data) {
+                $.each(data.messages, function (index, error) {
+                    $('<div/>').text(error).appendTo($('#vitaerrors'));
+                });
+                $('#vitaerrors').show();
+                $('#progress2').hide();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress2').show();
+                $('#progress2 .bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        });
+    });
+    var uploadVita = sessionStorage.getItem('uploadedVita');
+    if($('#vitafile input').length == 0 && uploadVita && uploadVita != 'null'){
+        $('<div/>').html('<input type="hidden" name="tx_jokursanmeldung_jokursanmeldungfe[step2data][vita]" value="'+uploadVita+'">'+uploadVita.split('/').pop()).appendTo($('#vitafile'));
+        $('#vitafile').show();
+    }
+    </script>
+    </div>
+</div>
+</f:if>
+<f:if condition="{showUploadHint} == 1">
+<div class="joRow joClearfix">
+	<div class="upload-hint" data-action="show-after-load"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.uploadhint" /></div>
+</div>
+</f:if>
+<div class="joRow joClearfix">
+    <div class="bemerkung joCol joCol-1">
+        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.comment" /><br />
+        <f:form.textarea property="comment" class="joInpText" />
+    </div>
+</div>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff">
+  <file source-language="de" datatype="plaintext" original="messages" t3:id="locallang_be">
+    <body>
+      <trans-unit id="module.kursanmeldung">
+        <source>Kursanmeldung</source>
+      </trans-unit>
+      <trans-unit id="module.kursanmeldung.description">
+        <source>Allgemeine Übersicht – wählen Sie eine Funktion aus.</source>
+      </trans-unit>
+      <trans-unit id="links.gebuehren">
+        <source>Gebühren verwalten</source>
+      </trans-unit>
+      <trans-unit id="description.gebuehren">
+        <source>Hier können Sie Kurse hinzufügen, bearbeiten, löschen sowie ein/ausblenden.</source>
+      </trans-unit>
+      <trans-unit id="links.hotel">
+        <source>Hotels verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.kursanmeldung">
+        <source>Kursanmeldungen verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.orte">
+        <source>Orte verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.prof">
+        <source>Professoren verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.kurs">
+        <source>Kurse verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.teilnehmer">
+        <source>Teilnehmer verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.mailing">
+        <source>Mailings verwalten</source>
+      </trans-unit>
+      <trans-unit id="links.mailing">
+        <source>Mailings verwalten</source>
+      </trans-unit>
+      <trans-unit id="upload.notallowed">
+        <source>Bildupload nicht erlaubt</source>
+      </trans-unit>
+      <trans-unit id="upload.invalidextension">
+        <source>Bildupload falsches Format</source>
+      </trans-unit>
+      <trans-unit id="btn.general">
+        <source>Zurück zur Übersicht</source>
+      </trans-unit>
+      <trans-unit id="btn.back">
+        <source>Zurück zur Liste</source>
+      </trans-unit>
+      <trans-unit id="btn.save">
+        <source>Speichern</source>
+      </trans-unit>
+      <trans-unit id="btn.edit">
+        <source>Bearbeiten</source>
+      </trans-unit>
+      <trans-unit id="btn.kurs.new">
+        <source>Neuen Kurs anlegen</source>
+      </trans-unit>
+      <trans-unit id="btn.gebuehren.new">
+        <source>Neue Gebühr anlegen</source>
+      </trans-unit>
+      <trans-unit id="btn.orte.new">
+        <source>Neuen Ort anlegen</source>
+      </trans-unit>
+      <trans-unit id="btn.hotel.new">
+        <source>Neues Hotel anlegen</source>
+      </trans-unit>
+      <trans-unit id="btn.prof.new">
+        <source>Neuen Professor anlegen</source>
+      </trans-unit>
+      <!-- tx_jokursanmeldung_jokursanmeldungfe Flexform -->
+      <trans-unit id="tx_kursanmeldung_flexform.general">
+            <source>Allgemeines Setup</source>
+            <target>Allgemeines Setup</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.banktransfer">
+            <source>Rechnung (WBA)</source>
+            <target>Rechnung (WBA)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.prepayment">
+            <source>Vorauskasse zulassen</source>
+            <target>Vorauskasse zulassen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.paypal">
+            <source>PayPal zulassen (über Novalnet)</source>
+            <target>PayPal zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.onlinetransfer">
+            <source>Onlinebanking zulassen (über Novalnet)</source>
+            <target>Onlinebanking zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.giropay">
+            <source>Giropay zulassen (über Novalnet)</source>
+            <target>Giropay zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.invoice">
+            <source>Rechnung (über Novalnet)</source>
+            <target>Rechnung (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.nopayment">
+            <source>Bereits gezahlt</source>
+            <target>Bereits gezahlt</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email">
+            <source>E-Mail Setup</source>
+            <target>E-Mail Setup</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.email">
+            <source>Absenderemailadresse</source>
+            <target>Absenderemailadresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailhost">
+            <source>Absendername</source>
+            <target>Absendername</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubject">
+            <source>Betreff</source>
+            <target>Betreff</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubjectadmin">
+            <source>Betreff Adminmails</source>
+            <target>Betreff Adminmails</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubjectinfo">
+            <source>Betreff Infomails (ohne Bestätigungslink)</source>
+            <target>Betreff Infomails (ohne Bestätigungslink)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailtoadmin">
+            <source>Administrator Empfang E-Mailadresse</source>
+            <target>Administrator Empfang E-Mailadresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailccuser">
+            <source>CC Empfang E-Mailadress</source>
+            <target>CC Empfang E-Mailadress</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailadminpid">
+            <source>Page Id for Adminmaillayout</source>
+            <target>Seiten ID mit der Adminvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailuserpid">
+            <source>Page Id for confirmation by usermaillayout</source>
+            <target>Seiten ID mit der Kursanmeldung bestätigen E-Mailvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailinfopid">
+            <source>Page Id for info usermaillayout</source>
+            <target>Seiten ID mit der Kursanmeldung Info E-Mailvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.kursids.choice">
+            <source>In dieser Liste angezeigte Kurse</source>
+            <target>In dieser Liste angezeigte Kurse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.records.prof">
+            <source>Ordner mit Professorendaten</source>
+            <target>Ordner mit Professorendaten</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.records.kurs">
+            <source>Ordner mit Kursdaten</source>
+            <target>Ordner mit Kursdaten</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.records.tn">
+            <source>Ordner mit Teilnehmerdaten</source>
+            <target>Ordner mit Teilnehmerdaten</target>
+        </trans-unit>
+    </body>
+  </file>
+</xliff>

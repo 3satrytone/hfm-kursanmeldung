@@ -1,0 +1,23 @@
+<f:render partial="FormErrors" arguments="{field: 'step3data.customerid'}"/>
+<div class="joRow joClearfix">
+    <div class="tnb joCol joCol-1">
+        <f:form.checkbox property="tnb" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.tnb" /></span>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step3data.tnb'}"/>
+    </div>
+</div>
+<div class="joRow joClearfix">
+    <div class="privacy joCol joCol-1">
+        <f:form.checkbox property="privacy" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.privacy" /></span>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step3data.privacy'}"/>
+    </div>
+</div>
+<div class="joRow joClearfix">
+    <div class="savedata joCol joCol-1">
+        <f:form.checkbox property="savedata" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.savedata" /></span>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step3data.savedata'}"/>
+    </div>
+</div>
+<script>
+    sessionStorage.setItem('uploadedFiles',null);
+    sessionStorage.setItem('uploadedVita',null);
+</script>

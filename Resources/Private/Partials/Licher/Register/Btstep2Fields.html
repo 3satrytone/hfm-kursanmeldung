@@ -1,0 +1,35 @@
+{namespace joNamespace=Justorange\JoBrewerytour\ViewHelpers}
+<f:form.hidden name="btstep2data[dateid]"/>
+<f:if condition="{datesArr}">
+	<f:then>
+        <table class="date-listing">
+            <colgroup>
+                <col class="col-1"/>
+                <col class="col-2"/>
+                <!-- <col class="col-3"/> -->
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="col-1"></th>
+                    <th class="col-2"><f:translate key="tx_jobrewerytour_domain_model_register.listing_period" /></th>
+                    <th class="col-3"><f:translate key="tx_jobrewerytour_domain_model_register.listing_places" /></th>
+                 </tr>
+            </thead>
+            <tbody>
+                <f:for each="{datesArr}" as="date" key="number" iteration="itemIteration">
+                    <f:if condition="{date.freeplaces}>0">
+                        <tr>
+                            <td class="col-1"><f:form.radio name="btstep2data[dateid]" value="{date.uid}" /></td>
+                            <td class="col-2">
+                                <div class="start-time">{joNamespace:datumformat(string:'{date.starton}', formstring:'%d.%m.%Y %A - %H:%M')}-{joNamespace:datumformat(string:'{date.endon}', formstring:'%H:%M')}</div></td>
+                            <td class="col-3">({date.freeplaces})</td>
+                        </tr>
+                    </f:if>
+                </f:for>
+            </tbody>
+        </table>
+	</f:then>
+	<f:else>
+		<div><f:translate key="tx_jobrewerytour_domain_model_register.btstep2_p2" /></div>
+	</f:else>
+</f:if>

@@ -1,0 +1,174 @@
+<div class="table-fit">
+    <table class="tx_kursanmeldung table table-striped table-hover">
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.aktiv"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.aktiv" checked="{kurs.aktiv}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kursnr"/>
+            </td>
+            <td>
+                {kurs.kursnr}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.instrument"/>
+            </td>
+            <td>
+                {kurs.instrument}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitstart"/>
+            </td>
+            <td>
+                {kurs.kurszeitstart -> f:format.date(format:'d.m.Y H:i')}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitend"/>
+            </td>
+            <td>
+                {kurs.kurszeitend -> f:format.date(format:'d.m.Y H:i')}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.anreisedate"/>
+            </td>
+            <td>
+                {kurs.anreisedate -> f:format.date(format:'d.m.Y H:i')}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kursort"/>
+            </td>
+            <td>
+                <f:for each="{kurs.kursort}" as="ort">
+                    <div>{ort.name}: {ort.adresse}, {ort.plz} {ort.ort} {ort.ort}</div>
+                </f:for>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.professor"/>
+            </td>
+            <td>
+                <f:for each="{kurs.professor}" as="professor">
+                {professor.name}
+                </f:for>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.gebuehr"/>
+            </td>
+            <td>
+                {kurs.gebuehr}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.gebuehrcom"/>
+            </td>
+            <td>
+                {kurs.gebuehrcom}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.orchstudio"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.orchstudio" checked="{kurs.orchstudio}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.aktivtn"/>
+            </td>
+            <td>
+                {kurs.aktivtn}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.passivtn"/>
+            </td>
+            <td>
+                {kurs.passivtn}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.hotel"/>
+            </td>
+            <td>
+                <f:for each="{kurs.hotel}" as="hotel">
+                    <div>{hotel.hotel}: EZ {hotel.ezpreis -> f:format.number(decimals:2, decimalSeparator:',',
+                        thousandsSeparator:'')}, DZ {hotel.dzpreis -> f:format.number(decimals:2, decimalSeparator:',',
+                        thousandsSeparator:'')}, DZ/2 {hotel.dz2preis -> f:format.number(decimals:2,
+                        decimalSeparator:',', thousandsSeparator:'')}
+                    </div>
+                </f:for>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.youtube"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.youtube" checked="{kurs.youtube}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.vita"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.vita" checked="{kurs.vita}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.stipendien"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.stipendien" checked="{kurs.stipendien}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.maxupload"/>
+            </td>
+            <td>
+                {kurs.maxupload}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.duo"/>
+            </td>
+            <td>
+                <f:form.checkbox value="kurs.duo" checked="{kurs.duo}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.duosel"/>
+            </td>
+            <td>
+                {kurs.duosel}
+            </td>
+        </tr>
+    </table>
+</div>

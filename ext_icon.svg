@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Kursanmeldung">
+  <rect width="128" height="128" fill="#1565C0"/>
+  <g fill="#fff">
+    <circle cx="32" cy="40" r="10"/>
+    <rect x="20" y="58" width="24" height="8" rx="2"/>
+    <rect x="20" y="72" width="24" height="8" rx="2"/>
+    <rect x="20" y="86" width="24" height="8" rx="2"/>
+    <path d="M64 28h44a4 4 0 014 4v64a4 4 0 01-4 4H64a4 4 0 01-4-4V32a4 4 0 014-4zm8 20h28a4 4 0 100-8H72a4 4 0 100 8zm0 16h28a4 4 0 100-8H72a4 4 0 100 8zm0 16h28a4 4 0 100-8H72a4 4 0 100 8z"/>
+  </g>
+</svg>

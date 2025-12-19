@@ -1,0 +1,21 @@
+{
+  "name": "hfm/kursanmeldung",
+  "description": "TYPO3 CMS extension for course registration (Kursanmeldung).",
+  "type": "typo3-cms-extension",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.2",
+    "typo3/cms-core": "^13.4"
+  },
+  "autoload": {
+    "classmap": ["Classes"],
+    "psr-4": {
+      "Hfm\\Kursanmeldung\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "kursanmeldung"
+    }
+  }
+}

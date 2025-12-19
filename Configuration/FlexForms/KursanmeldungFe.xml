@@ -1,0 +1,255 @@
+<T3DataStructure>
+    <sheets>
+        <sGeneral>
+            <ROOT>
+                <sheetTitle>
+                    LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general
+                </sheetTitle>
+                <type>array</type>
+                <el>
+                    <settings.payment.banktransfer>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.banktransfer
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.banktransfer>
+                    <settings.payment.prepayment>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.prepayment
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.prepayment>
+                    <settings.payment.paypal>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.paypal
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.paypal>
+                    <settings.payment.onlinetransfer>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.onlinetransfer
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.onlinetransfer>
+                    <settings.payment.giropay>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.giropay
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.giropay>
+                    <settings.payment.invoice>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.invoice
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.invoice>
+                    <settings.payment.nopayment>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.general.nopayment
+                        </label>
+                        <config type="array">
+                            <type>check</type>
+                        </config>
+
+                    </settings.payment.nopayment>
+                    <settings.records.prof>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.records.prof
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.records.prof>
+                    <settings.records.kurs>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.records.kurs
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.records.kurs>
+                    <settings.records.tn>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.records.tn
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.records.tn>
+                </el>
+            </ROOT>
+        </sGeneral>
+        <sConnection>
+            <ROOT>
+                <sheetTitle>
+                    LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email
+                </sheetTitle>
+                <type>array</type>
+                <el>
+                    <settings.email>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.email
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required,email</eval>
+                        </config>
+
+                    </settings.email>
+                    <settings.emailhost>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailhost
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required</eval>
+                        </config>
+
+                    </settings.emailhost>
+                    <settings.emailsubject>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailsubject
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required</eval>
+                        </config>
+
+                    </settings.emailsubject>
+                    <settings.emailsubjectadmin>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailsubjectadmin
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required</eval>
+                        </config>
+
+                    </settings.emailsubjectadmin>
+                    <settings.emailsubjectinfo>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailsubjectinfo
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required</eval>
+                        </config>
+
+                    </settings.emailsubjectinfo>
+                    <settings.emailtoadmin>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailtoadmin
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                            <eval>required,email</eval>
+                        </config>
+
+                    </settings.emailtoadmin>
+                    <settings.emailccuser>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailccuser
+                        </label>
+                        <config type="array">
+                            <type>input</type>
+                            <size>40</size>
+                        </config>
+
+                    </settings.emailccuser>
+                    <settings.emailadminpid>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailadminpid
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.emailadminpid>
+                    <settings.emailuserpid>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailuserpid
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.emailuserpid>
+                    <settings.emailinfopid>
+
+                        <label>
+                            LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:tx_kursanmeldung_flexform.email.emailinfopid
+                        </label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+
+                    </settings.emailinfopid>
+                </el>
+            </ROOT>
+        </sConnection>
+    </sheets>
+</T3DataStructure>

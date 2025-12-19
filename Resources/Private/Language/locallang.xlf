@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff">
+  <file source-language="de" datatype="plaintext" original="messages" t3:id="locallang">
+    <body>
+      <trans-unit id="extension.title">
+        <source>Kursanmeldung</source>
+      </trans-unit>
+      <trans-unit id="extension.description">
+        <source>Course registration extension (Kursanmeldung) by HFM.</source>
+      </trans-unit>
+      <trans-unit id="tx_kursanmeldung_domain_model_hotel">
+            <source>Hotel</source>
+            <target>Hotel</target>
+      </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.hotel">
+            <source>Hotel</source>
+            <target>Hotel</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.beschreibung">
+            <source>Beschreibung</source>
+            <target>Beschreibung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.ezpreis">
+            <source>Ezpreis</source>
+            <target>Ezpreis</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.ezpreiserm">
+            <source>Ezpreiserm</source>
+            <target>Ezpreiserm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.dzpreis">
+            <source>Dzpreis</source>
+            <target>Dzpreis</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.dzpreiserm">
+            <source>Dzpreiserm</source>
+            <target>Dzpreiserm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.dz2preis">
+            <source>Dz2preis</source>
+            <target>Dz2preis</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_hotel.dz2preiserm">
+            <source>Dz2preiserm</source>
+            <target>Dz2preiserm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs">
+            <source>Kursanmeldung Kurs</source>
+            <target>Kursanmeldung Kurs</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.aktiv">
+            <source>Aktiv</source>
+            <target>Aktiv</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kursnr">
+            <source>Kursnr</source>
+            <target>Kursnr</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.instrument">
+            <source>Instrument</source>
+            <target>Instrument</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kurszeitstart">
+            <source>Kurszeitstart (TT.MM.JJJJ hh:mm)</source>
+            <target>Kurszeitstart (TT.MM.JJJJ hh:mm)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kurszeitend">
+            <source>Kurszeitend (TT.MM.JJJJ hh:mm)</source>
+            <target>Kurszeitend (TT.MM.JJJJ hh:mm)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.anreisedate">
+            <source>Anreisedate (TT.MM.JJJJ hh:mm)</source>
+            <target>Anreisedate (TT.MM.JJJJ hh:mm)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kursort">
+            <source>Kursort</source>
+            <target>Kursort</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.professor">
+            <source>Professor</source>
+            <target>Professor</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.gebuehr">
+            <source>Gebuehr</source>
+            <target>Gebuehr</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.gebuehrcom">
+            <source>Kommentar zu Gebühr</source>
+            <target>Kommentar zu Gebühr</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.orchstudio">
+            <source>Orchstudio</source>
+            <target>Orchstudio</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.aktivtn">
+            <source>Anzahl aktiver Teilnehmer</source>
+            <target>Anzahl aktiver Teilnehmer</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.passivtn">
+            <source>Anzahl passiver Teilnehmer</source>
+            <target>Anzahl passiver Teilnehmer</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.hotel">
+            <source>Hotel</source>
+            <source>Hotel</source>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.maxupload">
+            <source>Anzahl Uploadfelder</source>
+            <target>Anzahl Uploadfelder</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.weblink">
+            <source>Weblink anhängen anzeigen:</source>
+            <target>Weblink anhängen anzeigen:</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.youtube">
+            <source>Youtubelink anhängen anzeigen:</source>
+            <target>Youtubelink anhängen anzeigen:</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.vita">
+            <source>Vita Uploadfeld</source>
+            <target>Vita Uploadfeld</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.stipendien">
+            <source>Stipendien</source>
+            <target>Stipendien</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.duo">
+            <source>Eingaben für Duo anzeigen</source>
+            <target>Eingaben für Duo anzeigen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.duosel">
+            <source>Auswahlmöglichkeiten für Duo Kommasepariert (Bsp1,Bsp2,Bsp3...)</source>
+            <target>Auswahlmöglichkeiten für Duo Kommasepariert (Bsp1,Bsp2,Bsp3...)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble">
+            <source>Ensemble</source>
+            <target>Ensemble</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.0">
+            <source>Ensemble show</source>
+            <target>Ensemble anzeigen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.1">
+            <source>please enter ensemblename</source>
+            <target>Bitte Ensemblename angeben</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.2">
+            <source>please enter founding date</source>
+            <target>Bitte Gründungsdatum angeben</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.3">
+            <source>birthplace of the ensemble</source>
+            <target>Gründungsort des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.4">
+            <source>ensemble genre</source>
+            <target>Gattung des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.5">
+            <source>ensemble members</source>
+            <target>Ensemblemitglieder</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.6">
+            <source>member first name</source>
+            <target>Mitglied Vorname</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.7">
+            <source>member surname</source>
+            <target>Mitglied Nachname</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.8">
+            <source>member date of birth</source>
+            <target>Mitglied Geburtsdatum</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.9">
+            <source>member instrument</source>
+            <target>Mitglied Instrument</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.ensemble.10">
+            <source>member nationality</source>
+            <target>Mitglied Nationalität</target>
+        </trans-unit>
+        
+        
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren">
+            <source>Kursanmeldung Gebuehren</source>
+            <target>Kursanmeldung Gebuehren</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.anmeldung">
+            <source>Anmeldung</source>
+            <target>Anmeldung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.anmeldungerm">
+            <source>Anmeldungerm</source>
+            <target>Anmeldungerm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.aktivengeb">
+            <source>Aktivengeb</source>
+            <target>Aktivengeb</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.aktivengeberm">
+            <source>Aktivengeberm</source>
+            <target>Aktivengeberm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.passivgeb">
+            <source>Passivgeb</source>
+            <target>Passivgeb</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_gebuehren.passivgeberm">
+            <source>Passivgeberm</source>
+            <target>Passivgeberm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte">
+            <source>Kursanmeldung Orte</source>
+            <target>Kursanmeldung Orte</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.name">
+            <source>Name</source>
+            <target>Name</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.ort">
+            <source>Ort</source>
+            <target>Ort</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.plz">
+            <source>Plz</source>
+            <target>Plz</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.adresse">
+            <source>Adresse</source>
+            <target>Adresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.tx_kursanmeldung_long">
+            <source>Long</source>
+            <target>Long</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.lat">
+            <source>Lat</source>
+            <target>Lat</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungorte.beschreibung">
+            <source>Beschreibung</source>
+            <target>Beschreibung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer">
+            <source>Kursanmeldung Teilnehmer</source>
+            <target>Kursanmeldung Teilnehmer</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.vorname">
+            <source>Vorname</source>
+            <target>Vorname</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.nachname">
+            <source>Nachname</source>
+            <target>Nachname</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.anrede">
+            <source>Anrede</source>
+            <target>Anrede</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.titel">
+            <source>Titel</source>
+            <target>Titel</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.matrikel">
+            <source>Matrikel</source>
+            <target>Matrikel</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.gebdate">
+            <source>Gebdate</source>
+            <target>Gebdate</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.sprache">
+            <source>Sprache</source>
+            <target>Sprache</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.nation">
+            <source>Nation</source>
+            <target>Nation</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.adresse1">
+            <source>Adresse1</source>
+            <target>Adresse1</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.adresse2">
+            <source>Adresse2</source>
+            <target>Adresse2</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.plz">
+            <source>Plz</source>
+            <target>Plz</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.ort">
+            <source>Ort</source>
+            <target>Ort</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.land">
+            <source>Land</source>
+            <target>Land</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.telefon">
+            <source>Telefon</source>
+            <target>Telefon</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.mobil">
+            <source>Mobil</source>
+            <target>Mobil</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.telefax">
+            <source>Telefax</source>
+            <target>Telefax</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.email">
+            <source>Email</source>
+            <target>Email</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.datein">
+            <source>Datein</source>
+            <target>Datein</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldunguploads">
+            <source>Kursanmeldung Uploads</source>
+            <target>Kursanmeldung Uploads</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldunguploads.kurz">
+            <source>Kurz</source>
+            <target>Kurz</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldunguploads.name">
+            <source>Name</source>
+            <target>Name</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldunguploads.pfad">
+            <source>Pfad</source>
+            <target>Pfad</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldunguploads.datein">
+            <source>Datein</source>
+            <target>Datein</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung">
+            <source>Kursanmeldung</source>
+            <target>Kursanmeldung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.tn">
+            <source>Tn</source>
+            <target>Tn</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurs">
+            <source>Kurs</source>
+            <target>Kurs</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.uploads">
+            <source>Uploads</source>
+            <target>Uploads</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.bezahlt">
+            <source>Bezahlt</source>
+            <target>Bezahlt</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.zahlart">
+            <source>Zahlart</source>
+            <target>Zahlart</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.zahltbis">
+            <source>Zahltbis</source>
+            <target>Zahltbis</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gezahlt">
+            <source>Einschreibegebühr gezahlter Betrag</source>
+            <target>Einschreibegebühr gezahlter Betrag</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gezahltag">
+            <source>Aktivengebühr gezahlter Betrag</source>
+            <target>Aktivengebühr gezahlter Betrag</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gezahltos">
+            <source>Orchesterstudio gezahlter Betrag</source>
+            <target>Orchesterstudio gezahlter Betrag</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.hotel">
+            <source>Hotel</source>
+            <target>Hotel</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.room">
+            <source>Room</source>
+            <target>Zimmer</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.roomwith">
+            <source>Room shared with</source>
+            <target>Zimmer geteilt mit</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.roomfrom">
+            <source>Room from</source>
+            <target>Zimmer von</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.roomto">
+            <source>Room to</source>
+            <target>Zimmer bis</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gebuehr">
+            <source>Gebuehr</source>
+            <target>Gebuehr</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.datein">
+            <source>Datein</source>
+            <target>Datein</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.teilnahmeart">
+            <source>Teilnahmeart</source>
+            <target>Teilnahmeart</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.programm">
+            <source>Programm</source>
+            <target>Programm</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.orchesterstudio">
+            <source>Orchesterstudio</source>
+            <target>Orchesterstudio</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.agb">
+            <source>Agb</source>
+            <target>Agb</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz">
+            <source>Datenschutz</source>
+            <target>Datenschutz</target>
+        </trans-unit>	
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.stipendiat">
+            <source>Stipendium zugelassen</source>
+            <target>Stipendium zugelassen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.studentship">
+            <source>Bewerbung Stipendium</source>
+            <target>Bewerbung Stipendium</target>
+        </trans-unit>		
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.studystat">
+            <source>Student der HfM</source>
+            <target>Student der HfM</target>
+        </trans-unit>		
+        <trans-unit id="tx_kursanmeldung_domain_model_prof">
+            <source>Kursanmeldung Professoren</source>
+            <target>Kursanmeldung Professoren</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.name">
+            <source>Name des Professors</source>
+            <target>Name des Professors</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.link">
+            <source>ID / Link zur Professorentabelle</source>
+            <target>ID / Link zur Professorentabelle</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.image">
+            <source>Bild</source>
+            <target>Bild</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.duo">
+            <source>Duo Ja/Nein</source>
+            <target>Duo Ja/Nein</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.duosel">
+            <source>Kommaliste mit Kategorien</source>
+            <target>Kommaliste mit Kategorien</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.novalnettid">
+            <source>Transaktions ID (TID) aus Novalnet </source>
+            <target>Transaktions ID (TID) aus Novalnet</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_prof.novalnetcno">
+            <source>Kundennummer aus Novalnet</source>
+            <target>Kundennummer aus Novalnet</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_anmeldestatus">
+            <source>Anmeldestatus</source>
+            <target>Anmeldestatus</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_anmeldestatus.anmeldestatus">
+            <source>Name</source>
+            <target>Name</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_anmeldestatus.kurz">
+            <source>Short</source>
+            <target>Kürzel</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_anmeldestatus.beschreibung">
+            <source>Beschreibung</source>
+            <target>Beschreibung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_anmeldestatus.reducetnart">
+            <source>Soll er aktive/passive Teilnahmeanzahl reduzieren?</source>
+            <target>Soll er aktive/passive Teilnahmeanzahl reduzieren?</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist">
+            <source>Mailhistorie</source>
+            <target>Mailhistorie</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.subject">
+            <source>E-Mailbetreff</source>
+            <target>E-Mailbetreff</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.sendername">
+            <source>Absendername</source>
+            <target>Absendername</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.sendermail">
+            <source>Absenderadresse</source>
+            <target>Absenderadresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.pageid">
+            <source>Seiten ID Textvorlage</source>
+            <target>Seiten ID Textvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.mailtype">
+            <source>Nachrichtenkategorie</source>
+            <target>Nachrichtenkategorie</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.nachricht">
+            <source>Textnachricht</source>
+            <target>Textnachricht</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhist.reciepients">
+            <source>ID Empfänger</source>
+            <target>ID Empfänger</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhistrecipients">
+            <source>Mailhistorie Empfänger</source>
+            <target>Mailhistorie Empfänger</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhistrecipients.mailuid">
+            <source>UID des Mailings</source>
+            <target>UID des Mailings</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhistrecipients.recipient">
+            <source>Empfängeradresse</source>
+            <target>Empfängeradresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhistrecipients.datesend">
+            <source>gesendet am</source>
+            <target>gesendet am</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_mailhistrecipients.regid">
+            <source>UID der Kursanmeldung</source>
+            <target>UID der Kursanmeldung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_exportlist">
+            <source>Exportliste</source>
+            <target>Exportliste</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_exportlist.name">
+            <source>Speichername</source>
+            <target>Speichername</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_exportlist.tables">
+            <source>Tabellenfelder</source>
+            <target>Tabellenfelder</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_exportlist.notice">
+            <source>Notice</source>
+            <target>Notiz</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble">
+            <source>Ensemble</source>
+            <target>Ensemble</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.enconf">
+            <source>Ensemble Konfiguration</source>
+            <target>Ensemble Konfiguration</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.enname">
+            <source>Name des Ensembles</source>
+            <target>Name des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.engrdate">
+            <source>Gründungsdatum des Ensembles</source>
+            <target>Gründungsdatum des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.engrplace">
+            <source>Gründungsort des Ensembles</source>
+            <target>Gründungsort des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.entype">
+            <source>Gattung des Ensembles</source>
+            <target>Gattung des Ensembles</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.entn">
+            <source>Ensemblemitglieder</source>
+            <target>Ensemblemitglieder</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.enfirstn">
+            <source>Vorname des Ensemblemitgliedes</source>
+            <target>Vorname des Ensemblemitgliedes</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.enlastn">
+            <source>Nachname des Ensemblemitgliedes</source>
+            <target>Nachname des Ensemblemitgliedes</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.eninstru">
+            <source>Instrument des Ensemblemitgliedes</source>
+            <target>Instrument des Ensemblemitgliedes</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.engebdate">
+            <source>Geburtsdatum des Ensemblemitgliedes</source>
+            <target>Geburtsdatum des Ensemblemitgliedes</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.ennatio">
+            <source>Nationalität des Ensemblemitgliedes</source>
+            <target>Nationalität des Ensemblemitgliedes</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_ensemble.ensemble">
+            <source>Ensemble</source>
+            <target>Ensemble</target>
+        </trans-unit>
+        <!-- tx_jokursanmeldung_jokursanmeldungfe Frontend kurswahl-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.head">
+            <source>Please select a course:</source>
+            <target>Bitte einen Kurs Auswählen:</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.onlypassive">
+            <source>Only passive places available!</source>
+            <target>Nur noch passive Plätze frei!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgbtn.close">
+            <source>close</source>
+            <target>schließen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgbtn.goon">
+            <source>continue</source>
+            <target>fortfahren</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlghead">
+            <source>Only passive participants possible!</source>
+            <target>Nur noch passiver Teilnehmer möglich!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgtext">
+            <source>You can continue, but only register as a passive participant.</source>
+            <target>Sie können fortfahren, sich aber nur noch als passiver Teilnehmer registrieren.</target>
+        </trans-unit>
+        <!-- tx_jokursanmeldung_jokursanmeldungfe Frontend doiconfirm-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.doiconfirm.head">
+            <source>Thanks.</source>
+            <target>Vielen Dank.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.doiconfirm.text">
+            <source>Your registration ist now completed.</source>
+            <target>Ihre Anmeldung ist nun erfolgreich abgeschlossen.</target>
+        </trans-unit>
+        <!-- tx_jokursanmeldung_jokursanmeldungfe Frontend errors-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err001_body">
+            <source>Es konnte kein Kurs mit diesen Parametern gefunden werden. Bitte wählen Sie erneut aus.</source>
+            <target>Es konnte kein Kurs mit diesen Parametern gefunden werden. Bitte wählen Sie erneut aus.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err001_title">
+            <source>ACHTUNG! Anmeldung nicht mehr möglich.</source>
+            <target>ACHTUNG! Anmeldung nicht mehr möglich.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err002_body">
+            <source>Dieser Kurs ist zur Zeit leider belegt. Bitte wählen Sie erneut aus.</source>
+            <target>Dieser Kurs ist zur Zeit leider belegt. Bitte wählen Sie erneut aus.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err002_title">
+            <source>ACHTUNG! Anmeldung nicht mehr möglich.</source>
+            <target>ACHTUNG! Anmeldung nicht mehr möglich.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err003_body">
+            <source>Kursanmeldung Object ist leer.</source>
+            <target>Kursanmeldung Object ist leer.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err003_title">
+            <source>Kursanmeldung konte NICHT geändert werden!</source>
+            <target>Kursanmeldung konte NICHT geändert werden!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err004_body">
+            <source>Kein Kurs mit diesen Daten gefunden.</source>
+            <target>Kein Kurs mit diesen Daten gefunden.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err004_title">
+            <source>Kursanmeldung konte NICHT geändert werden!</source>
+            <target>Kursanmeldung konte NICHT geändert werden!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err005_body">
+            <source>Möglicherweise haben Sie bereits ihre Anmeldung bestätigt. Andernfalls wenden Sie sich bitte direkt an das Team der Hochschule für Musik FRANZ LISZT Weimar.</source>
+            <target>Möglicherweise haben Sie bereits ihre Anmeldung bestätigt. Andernfalls wenden Sie sich bitte direkt an das Team der Hochschule für Musik FRANZ LISZT Weimar.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.err005_title">
+            <source>Ihre Anmeldung konte NICHT bestätigt werden!</source>
+            <target>Ihre Anmeldung konte NICHT bestätigt werden!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.error.step3data.tnb">
+            <source>Please check the terms and condition!</source>
+            <target>Bitte bestätigen Sie die Teilnahmebedingungen!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.error.step3data.privacy">
+            <source>Please check data protection!</source>
+            <target>Bitte bestätigen Sie die Datenschutzbestimmungen!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.error.step2data.validator.matrikel">
+            <source>Please fill out!</source>
+            <target>Bitte angeben!</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.error.step2data.validator.room">
+            <source>Please fill out!</source>
+            <target>Bitte angeben!</target>
+        </trans-unit>
+        <!-- tx_jokursanmeldung_jokursanmeldungfe Frontend ok-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok001_body">
+            <source>Kursanmeldung wurde aktualisiert.</source>
+            <target>Kursanmeldung wurde aktualisiert.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok001_title">
+            <source></source>
+            <target></target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok002_body">
+            <source>Kursanmeldung wurde gelöscht.</source>
+            <target>Kursanmeldung wurde gelöscht.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok002_title">
+            <source></source>
+            <target></target>
+        </trans-unit>
+    </body>
+  </file>
+</xliff>

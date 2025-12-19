@@ -1,0 +1,14 @@
+<f:form.validationResults for="{object}">
+	<f:if condition="{validationResults.flattenedErrors}">
+        <div class="joMainError">
+            <f:if condition="{text}">
+                <f:then>
+                    <p>{text}</p>
+                </f:then>
+                <f:else>
+                    <p>Es ist ein Fehler aufgetreten.</p>
+                </f:else>
+            </f:if>
+        </div>
+</f:if>
+</f:form.validationResults>

@@ -1,0 +1,32 @@
+	<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')}">
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"> {kursanmeldung.uid}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"> {kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}">{kursanmeldung.prof}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}">{kursanmeldung.vorname}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><b>{kursanmeldung.nachname}</b></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"> {kursanmeldung.gebdate -> f:format.date(format:'d.m.Y')}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:switch expression="{kursanmeldung.teilnahmeart}">
+			<f:case value="0"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.tnart.0" /></f:case>
+			<f:case value="1"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.tnart.1" /></f:case>
+		</f:switch></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:if condition="{kursanmeldung.doitime}=0"><f:then></f:then><f:else>{kursanmeldung.doitime -> f:format.date(format:'d.m.Y H:i')}</f:else></f:if></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"> {kursanmeldung.bezahlt}</f:link.action></td>
+        <td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:if condition="{kursanmeldung.gebuehr}>0"> {kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></f:link.action></td>
+		<td><f:link.action action="edit" style="display:block;" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}" title="<f:switch expression='{kursanmeldung.zahlart}'>
+			<f:case value=''><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.0' /></f:case>
+			<f:case value='0'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.0' /></f:case>
+			<f:case value='1'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.1' /></f:case>
+			<f:case value='2'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.2' /></f:case>
+			<f:case value='3'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.3' /></f:case>
+			<f:case value='4'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.4' /></f:case>
+			<f:case value='5'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.5' /></f:case>
+			<f:case value='6'><f:translate key='tx_jokursanmeldung_domain_model_kursanmeldungteilnehmer.zahlart.6' /></f:case>
+		</f:switch>"><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:if condition="{kursanmeldung.gebuehrag}>0"> {kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:if condition="{kursanmeldung.gezahltag}>0"> {kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}" title="{kursanmeldung.obj.anmeldestatus.0.anmeldestatus}" class="anmeldestatus" data="{uid:kursanmeldung.uid}">{kursanmeldung.obj.anmeldestatus.0.kurz}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}" title="{kursanmeldung.obj.profstatus.0.anmeldestatus}" class="profstatus" data="{uid:kursanmeldung.uid}">{kursanmeldung.obj.profstatus.0.kurz}</f:link.action></td>
+		<td><f:link.action action="edit" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}"><f:image src="EXT:jo_kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/></f:link.action></td>
+		<td><f:link.action action="delete" arguments="{kursanmeldung : kursanmeldung.obj, pagination:pagination}" onclick="return confirm('Ist das wirklich eine gute Idee?');"><f:image src="EXT:jo_kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/></f:link.action></td>
+	</tr>

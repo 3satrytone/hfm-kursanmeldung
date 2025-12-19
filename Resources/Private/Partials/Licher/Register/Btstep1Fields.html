@@ -1,0 +1,16 @@
+<div class="options">
+    <div class="option-step-1"><f:translate key="tx_jobrewerytour_domain_model_register.licher_substep1" /></div>
+    <div class="option-step-1-content">
+        <p><f:translate key="tx_jobrewerytour_domain_model_register.licher_personenanzahl" /></p>
+        <!-- <f:form.textfield property="participants" class="formhandler-text participants-box" /><br /> -->
+        <f:form.select property="participants" options="{mp}" class="formhandler-select" />
+    </div>
+    <div class="visi-form-trenner"></div>
+    <div class="option-step-2"><f:translate key="tx_jobrewerytour_domain_model_register.licher_substep2" /></div>
+    <div class="option-step-2-content">
+        <p><f:translate key="tx_jobrewerytour_domain_model_register.licher_fuehrung" /></p>
+        <f:form.select property="month" options="{monthoptions}" class="formhandler-select" />
+        <f:form.select property="year" options="{yearoptions}" class="formhandler-select" />
+    </div>
+</div>
+<f:render partial="FormErrors" arguments="{field: 'btstep1data'}"/>

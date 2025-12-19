@@ -1,0 +1,35 @@
+		<tr class="joToggle {f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')}" data-trtype="slide" data-trsrc="{kursanmeldung.uid}" data-trsel="johide">
+			<td>{kursanmeldung.uid}</td>
+			<td>{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
+			<td><f:switch expression="{kursanmeldung.tn.0.anrede}">
+                <f:case value="0"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.email.gender.0" /></f:case>
+                <f:case value="1"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.email.gender.1" /></f:case>
+			</f:switch></td>
+			<td>{kursanmeldung.tn.0.vorname}</td>
+			<td><b>{kursanmeldung.tn.0.nachname}</b></td>
+			<td>{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
+			<td colspan="2"><f:if condition="{kursanmeldung.anmeldestatus}">{kursanmeldung.anmeldestatus.0.anmeldestatus}</f:if></td>
+			<td colspan="2"><f:form.select class="prof-sel" name="anmeldestatus[{kursanmeldung.uid}]" value="{kursanmeldung.profstatus}" options="{profSelStatus}" optionValueField="uid" optionLabelField="kurzTranslated" prependOptionLabel="<f:translate key='tx_jokursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel' />" prependOptionValue="NULL" /></td>	
+		</tr><f:if condition="{profSelStatus}">
+		<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')} joHide" data-trtrg="{kursanmeldung.uid}">
+			<td colspan="3">{kursanmeldung.tn.0.email}</td>
+			<td colspan="3">{kursanmeldung.tn.0.ort}</td>
+			<td colspan="3">{kursanmeldung.tn.0.land}</td>
+		</tr></f:if>
+		<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')} joHide" data-trtrg="{kursanmeldung.uid}">
+			<f:if condition="{kursanmeldung.orchesterstudio}"><f:then>
+			<td colspan="6"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.programm" /></b><br />{kursanmeldung.programm}</td>
+			<td colspan="3"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.orchesterstudio" /></b><br />{kursanmeldung.orchesterstudio}</td>
+			</f:then><f:else>
+				<td colspan="9"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.programm" /></b><br />{kursanmeldung.programm}</td>
+			</f:else></f:if>
+		</tr>
+		<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')} joHide" data-trtrg="{kursanmeldung.uid}">
+			<td colspan="9"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.comment" /></b><br />{kursanmeldung.comment}</td>
+		</tr>
+		<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')} joHide" data-trtrg="{kursanmeldung.uid}">
+			<td colspan="6"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.uploads" default="Uploads:"/></b><br />
+    		  <f:if condition="{kursanmeldung.uploads}"><f:for each="{kursanmeldung.uploads}" as="dl"><f:if condition="{dl.pfad}!=''"><div>{dl.kat}: <f:link.external uri="{dl.pfad}/{dl.name}" class="joKursListeDl" target="_blank">{dl.name}</f:link.external></div></f:if></f:for></f:if>
+			</td>
+			<td colspan="3"><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.duosel" /></b><br />{kursanmeldung.duosel}<br /><b><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.duoname" /></b><br />{kursanmeldung.duoname}</td>
+		</tr>

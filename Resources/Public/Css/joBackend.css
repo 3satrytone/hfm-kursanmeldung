@@ -1,0 +1,603 @@
+a{
+	outline: 0!important;
+}
+input, 
+select,
+textarea{
+	width: 30rem;
+}
+input[type="submit"] {
+    margin-top: 2rem;
+}
+input[type="checkbox"] {
+    width: 1.5rem;
+}
+.joHide{
+	display: none;
+}
+.joCursor{
+	cursor:pointer;
+}
+.joKursGrouped table{
+	width: 100%;
+}
+.joKursGrouped table a.anmeldestatus{
+	display: block;
+	min-height: 25px;
+	transition: background-color 1s;
+}
+.joKursGrouped table a.anmeldestatus:hover{
+	background-color: #efefef;
+	background-color: rgba(255,255,255,0.7);
+}
+.joKua{
+	position: relative;
+	color: white;
+	font-weight: bold;
+	display: inline-block;
+	width: 20rem;
+	height: 20rem;
+	margin: 2rem 2rem 0 0;
+	border-radius: 3px;
+	font-size: 1.5rem;
+	padding: 1rem 2rem;
+	transition: background-color 0.5s ease;
+	overflow: hidden;
+}
+.joKua a{
+	position: relative;
+	color: white;
+	font-weight: bold;
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	z-index: 9999;
+}
+.joKua.joKurs{
+	background-color: orange;
+}
+.joKua.joKursanmeldung{
+	background-color: #ff7200;
+}
+.joKua.joHotel{
+	background-color: #0054ff;
+}
+.joKua.joProf{
+	background-color: #0044cd;
+}
+.joKua.joGebuehren{
+	background-color: #00c821;
+}
+.joKua.joOrte{
+	background-color: #008215;
+}
+.joKua.joTeilnehmer{
+	background-color: #0035a0;
+}
+.joKua.joMailings {
+    background-color: #888888;
+}
+.joKua span{
+	position: absolute;
+	top: 6rem;
+	left: -100%;
+	width: 18rem;
+	text-align: left;
+	color: black;
+	font-weight: normal;
+	transition: left 0.5s ease;
+	font-size: 1.2rem;
+}
+.joKua:hover span{
+	left: 2rem;
+}
+.joKua:hover{
+	background-color: lightgrey;
+}
+
+.joKursGrouped button.clear {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    outline: none;
+}
+.joKursGrouped button.clear:hover {
+    text-decoration: none;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+/* Kurse Backend */
+
+#joPage-title h1{
+	color: red;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+}
+tbody th{
+	padding: 0.8rem;
+	background-color: rgba(128, 128, 128, 0.78);
+}
+tbody td{
+	padding: 0.8rem;
+	text-align: center;
+}
+select{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+.joKursanmeldungKurs{
+	background-color: lightgrey;
+}
+/* Orte Backend */
+.tx_jokursanmeldung{
+	margin-bottom: 1rem;
+}
+h1{
+	color: red;
+}
+link{
+	text-decoration: none;
+	color: black;
+}
+.joFirstTr{
+	background-color: rgba(128, 128, 128, 0.78);
+	padding: 1rem;
+	text-align: center;
+}
+.joLastTr{
+	background-color: lightgrey;	
+	padding: 1rem;
+	text-align: center;
+}
+/* New KursanmeldungOrte Backend */
+form {
+    margin: 1rem;
+}
+input.joNam{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+input.joOrt{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+input.joPlz{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+textarea.joAdr{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+input.joLon{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+input.joLat{
+	resize: none;
+	height: 2.5rem;
+	width: 30rem;
+	margin-bottom: 1rem;
+}
+textarea.joBeschr{
+	resize: none;
+	height: 10rem;
+	width: 30rem;
+}
+tr.even{
+	background-color: #efefef;
+}
+tr.odd{
+	background-color: lightgrey;
+}
+
+/* New KursanmeldungHotel Backend */
+.joKursanmeldungHotel{
+	background-color: lightgrey;
+}
+textarea {
+    overflow: auto;
+    resize: none;
+}
+
+/* Edit KursanmeldungKurs Backend */
+
+.tx_jokursanmeldung_anmeldungen th{
+    color: #f7f7f7;
+}
+.tx_jokursanmeldung_anmeldungen tr{
+    background-color: #f7f7f7;
+}
+.tx_jokursanmeldung_anmeldungen tr.joDoi{
+    background-color: #feffae;
+}
+.tx_jokursanmeldung_anmeldungen tr.even{
+    background-color: #ffffff;
+}
+.tx_jokursanmeldung_anmeldungen tr.even.joDoi{
+    background-color: #ffffd8;
+}
+.tx_jokursanmeldung_anmeldungen tr:hover{
+    background-color: #e5e5e5;
+    cursor: pointer;
+}
+.tx_jokursanmeldung_anmeldungen tr.joDoi:hover{
+    background-color: #feff95;
+}
+.tx_jokursanmeldung_anmeldungen td{
+    vertical-align: top;
+    text-align: left;
+    color: #000000;
+    border: 1px solid #cccccc;
+}
+
+ul.f3-widget-paginator{
+	margin: 2rem;
+}
+ul.f3-widget-paginator li{
+	display: inline-block;
+}
+ul.f3-widget-paginator li.current{
+	font-weight: bold;
+	color: #ff0000;
+}
+.joSearch{
+	float: right;
+}
+.joMoreFilter,
+.joFilterUpdate{
+	float: right;
+	display: inline-block;
+	border: 1px solid #aaa;
+	background-color: #ccc;
+	padding: 1px 3px 3px 3px;
+	margin: 0 10px;
+	cursor: pointer;
+}
+.joFilterUpdate{
+	display: none;
+}
+.joMoreFilter:hover, .joFilterUpdate:hover {
+	background-color: #ccc;
+	box-shadow: 0px 0px 3px -1px #212424;
+}
+.joMoreFilter:active{
+	background-color: #ddd;
+}
+.joFilterUpdate.active{
+	display: inline-block;
+}
+.joFilterOptions{
+	display: none;
+	float: right;
+	position: absolute;
+    right: 325px;
+    top: 10px;
+    z-index: 9999;
+}
+.joFilterOptions select{
+	padding: 7px 5px;
+	box-shadow: 0px 0px 5px -1px #111;
+	overflow-y: none;
+}
+
+/** aufräuem bzw. zusammenführen */
+body,
+html,
+textarea,
+input,
+select{
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size:14px;
+}
+.joClearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+.joClearfix {
+	display: inline-block;
+}
+.joClearfix {
+	display: block;
+}
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.tx-jo-kursanmeldung{
+	padding:20px;
+	border: 1px solid #c3c3c3;
+	margin:30px;
+}
+.tx-jo-kursanmeldung .joPage-title h1.joHeadline,
+.tx-jo-kursanmeldung h1{
+	font-size:28px;
+	color:#9D0633;
+	font-weight:normal;
+	padding:0;
+	margin: 20px 0 30px 0;
+}
+.joFormWrapper{
+	padding: 7px;
+	width:800px;
+	
+}
+.joDownloads,
+.joFormWrapper label,
+.joFormWrapper input,
+.joFormWrapper textarea,
+.joFormWrapper select{
+	float:left;
+}
+.joFormWrapper label{
+	width:30%;
+	font-weight:bold;
+}
+.joRightColum,
+.joDownloads,
+.joFormWrapper textarea,
+.joFormWrapper input,
+.joFormWrapper select{
+	width:70%;
+	padding: 3px;
+}
+.joFormWrapper textarea{
+	height:200px;
+}
+.joFormWrapper .joCheckbox{
+	width:auto;
+}
+div.joFormWrapper:nth-child(even){
+	background-color:#e0e0e0;
+}
+.joRightColum{
+	margin-left:30%;
+	padding:20px 0;
+}
+.joFormWrapper .joBack,
+.joFormWrapper .joSubmit,
+.joMailing .joBack,
+.joMailing .joSubmit{
+	display:inline-block;
+	background-color: #9D0633;
+	color: white;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	padding: 10px;
+	text-align:center;
+	text-decoration:none;
+	float:right;
+	width:200px;
+	height:auto;
+	margin:0;
+}
+.joFormWrapper .joBack,
+.joMailing .joBack{
+	background-color:#484848;
+	float:left;
+}
+.joFormWrapper .joBack:hover,
+.joMailing .joBack:hover{
+	background-color: #9D0633;
+}
+.joFormWrapper .f3-form-error{
+	border: 1px solid red;
+	box-shadow: 0 0 5px -1px red;
+}
+.joMailing{
+	width: 800px;
+}
+.joMailing .joSubmitField{
+	width: 600px;
+	height: 5rem;
+}
+.joMailing .joUserScroll{
+	width:100%;
+	height:300px;
+	overflow:hide;
+	overflow-y:scroll;
+}
+.joUserScroll table{
+	width: 100%;
+}
+.joUserScroll table td{
+	text-align: left;
+	vertical-align: top;
+	padding: 0px 5px; 
+}
+.joUserScroll tr:nth-child(even){
+	background-color:#efefef;
+}
+.joMailing .joRow{
+	margin: 1rem 0;
+}
+.joMailing .joBox,
+.joMailing .joScrollBox{
+	padding: 0.5rem;
+	background-color:#e0e0e0;
+}
+.joMailing .joBox input,
+.joMailing .joBox select{
+	width: 100%;
+	height: 2rem;
+}
+.joMailing .joBox textarea{
+	width: 100%;
+	height: 15rem;
+}
+.joMailing label{
+	font-size:14px;
+	float: none;
+	display: block;
+}
+.joMailing input[type="radio"]{
+	width:2rem;
+}
+.joMailing .filter{
+	background-color:#efefef;
+	border-color: #e0e0e0 1px solid;
+	margin-bottom: 1rem;
+	padding: 1rem;
+}
+
+/* joDialog */
+#joDialog{
+	background-color: rgba(0,0,0,0.7);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 9999;
+	display: none;
+}
+.joDialog-content{
+	position: relative;
+	margin: 3% 5%;
+	width: 90%;
+    height: 90%;
+	background-color: white;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 50px black;
+	-moz-box-shadow: 10px 10px 50px black;
+	box-shadow: 10px 10px 50px black;
+}
+.joDialog-close{
+	right: 1rem;
+	top: 1rem;
+	width: 2rem;
+    height: 2rem;
+	background-image: url('/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-document-close.svg');
+	position: absolute;
+	cursor: pointer;
+	z-index: 100;
+}
+#joDialog-iframe{
+	padding: 4rem 1rem 1rem 1rem;
+}
+/* Exportlist start */
+#tabs-1 .explortlistscontainer,
+#tabs-1 .sorting{
+	float:left;
+	width: 50%;
+}
+#exportlisttable_wrapper .dataTables_info{
+	display: block;
+	font-size: inherit;
+}
+.ui-tabs .ui-tabs-panel{
+	overflow: auto;
+}
+.ms-selectable .ms-optgroup li.ms-elem-selectable{
+	display: none;
+}
+.ms-selection .ms-optgroup li.ms-elem-selection{
+	padding-left: 20px;
+}
+table.dataTable tbody td {
+    padding: 6px 10px;
+}
+.joTableHide{
+	display: none;
+}
+.sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+}
+.sortable li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.5rem;
+    height: 2.5rem;
+    line-height: 1.5rem;
+    cursor: pointer;
+}
+.sortable li:hover {
+	background-color: #dddddd;
+	background-image: none;
+}
+.sortable li:active {
+	background-color: #cccccc;
+	background-image: none;
+}
+/* Exportlist end */
+
+/* Teilenehmer */
+.selbox,
+.selbox select{
+	width: auto;
+}
+
+.hdr-srt .sorting{
+	position: relative;
+	display: block;
+}
+.hdr-srt .sorting img{
+	width: 25px;
+	height: auto;
+}
+.sorting{
+	width: 35px;
+}
+.sorting-evt{
+	display: inline-block;
+	font-size: 15px;
+    margin-left: 2px;
+}
+.hdr-srt .ASC .sorting-evt[data-sort='ASC'],
+.hdr-srt .DESC .sorting-evt[data-sort='DESC']{
+	color: #212424;
+    text-shadow: 1px 1px 3px #212424;
+}
+div.clearAllSearchFields{
+	float: right;
+	border: 1px solid #aaa;
+    background-color: #ccc;
+    padding: 2px 7px;
+    cursor: pointer;
+}
+div.clearAllSearchFields:hover{
+	background-color: #ccc;
+	box-shadow: 0px 0px 3px -1px #212424;
+}
+div.clearAllSearchFields:active{
+	background-color: #ddd;
+}

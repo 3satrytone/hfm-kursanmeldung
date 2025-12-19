@@ -1,0 +1,37 @@
+<f:layout name="DefaultFe" />
+
+<f:section name="Main">
+    <h1><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.head" /></h1>
+
+<table class="tx_jo-kursanmeldung">
+	<f:for each="{kurse}" as="kursanmeldungKurs">
+		<f:for each="{tnStatus}" as="tnact">
+			<f:if condition="{tnact.kursId} == {kursanmeldungKurs.uid}">
+				<f:if condition="{tnact.onlyPassive} == 1"><f:then>
+					<tr class="jo-kursanmeldung-kurs jo-only-passive">
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.instrument}</f:link.action></td>
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.0.name}</f:link.action></td>
+						<td class="jo-extra"><span class="ui-icon ui-icon-alert"></span><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.onlypassive" default="Nur noch passiv möglich!" /></td>
+					</tr>
+				</f:then><f:else>
+					<tr class="jo-kursanmeldung-kurs">
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.instrument}</f:link.action></td>
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.0.name}</f:link.action></td>
+						<td class="jo-extra">&nbsp;</td>
+					</tr>
+				</f:else></f:if>
+			</f:if>
+		</f:for>
+	</f:for>
+</table>
+<div class="joHide">
+	<div id="dialog-confirm" title="<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlghead" />">
+	  <p><span class="ui-icon ui-icon-alert"></span><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgtext" /></p>
+	</div>
+</div>
+<script>
+	var dlgButtons = {};
+	dlgButtons['close'] = '<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgbtn.close" default="schließen" />';
+	dlgButtons['goon'] = '<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.dlgbtn.goon" default="fortfahren" />';
+</script>
+</f:section>

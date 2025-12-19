@@ -1,0 +1,29 @@
+
+<label for="dateid">
+	<f:translate key="tx_jobrewerytour_domain_model_register.dateid" /> <span class="required">*</span>
+</label><br />
+	<f:form.textfield property="dateid" /><br />
+<label for="partipicants">
+	<f:translate key="tx_jobrewerytour_domain_model_register.partipicants" /> <span class="required">*</span>
+</label><br />
+	<f:form.textfield property="partipicants" /><br />
+<label for="customerid">
+	<f:translate key="tx_jobrewerytour_domain_model_register.customerid" />
+</label><br />
+	<f:form.textfield property="customerid" /><br />
+<label for="feefreegroup">
+	<f:translate key="tx_jobrewerytour_domain_model_register.feefreegroup" />
+</label><br />
+	<f:form.textfield property="feefreegroup" /><br />
+<label for="ttaddressid">
+	<f:translate key="tx_jobrewerytour_domain_model_register.ttaddressid" /> <span class="required">*</span>
+</label><br />
+	<f:form.textfield property="ttaddressid" /><br />
+<label for="subscribedtime">
+	<f:translate key="tx_jobrewerytour_domain_model_register.subscribedtime" />
+</label><br />
+	<f:form.textfield property="subscribedtime"  value="{register.subscribedtime->f:format.date()}" /><br />
+<label for="registrationkey">
+	<f:translate key="tx_jobrewerytour_domain_model_register.registrationkey" />
+</label><br />
+	<f:form.textarea property="registrationkey" cols="40" rows="15" /><br />

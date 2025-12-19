@@ -1,0 +1,13 @@
+<div class="joProfBox">
+    <div class="joKurs"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.kurs" />:</div>
+    <div class="joProfName">{kursActive.instrument}</div>
+<f:if condition="{profViewArr}">
+    <div class="joProfName">
+        <f:if condition="{profViewArr.first_name}!=''">{profViewArr.first_name} </f:if>
+        <f:if condition="{profViewArr.last_name}!=''">{profViewArr.last_name}</f:if>
+    </div>
+    <f:if condition="{profViewArr.image}!=''"><div class="joProfImage"><img src="{profViewArr.path}{profViewArr.image}"></div></f:if>
+    <f:if condition="{profViewArr.cvitaeno}!=''"><div class="joProfText"><f:format.html>{profViewArr.cvitae}</f:format.html></div></f:if>
+</f:if>
+	<div class="joHide" data-slang="{settings.syslang}"></div>
+</div>

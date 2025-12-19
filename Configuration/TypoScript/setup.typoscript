@@ -1,0 +1,21 @@
+page = PAGE
+page.typeNum = 0
+page {
+    includeCSS {
+        file10 = EXT:kursanmeldung/Resources/Public/Css/fontawesome-free-5.0.3/css/fontawesome-all.min.css
+        style = EXT:kursanmeldung/Resources/Public/Css/joMain.css
+        jursanmeldung = EXT:kursanmeldung/Resources/Public/Css/hfmMain.css
+    }
+    includeJSlibs {
+  		joKua = EXT:kursanmeldung/Resources/Public/JavaScript/joKursanmeldung.js
+  		joToaster = EXT:kursanmeldung/Resources/Public/JavaScript/jquery.toaster.js
+  	}
+}
+
+plugin.tx_kursanmeldung_kursanmeldungfe {
+    view {
+        templateRootPaths.0 = EXT:kursanmeldung/Resources/Private/Templates/
+        partialRootPaths.0 = EXT:kursanmeldung/Resources/Private/Partials/
+        layoutRootPaths.0 = EXT:kursanmeldung/Resources/Private/Layouts/
+    }
+}

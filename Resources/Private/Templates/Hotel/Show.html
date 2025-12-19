@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Datensatz für Hotel mit der ID {hotel.uid}</h1>
+
+    <f:flashMessages/>
+
+    <f:render partial="Hotel/Properties" arguments="{hotel: hotel}"/>
+
+    <p>
+        <f:link.action action="list" class="btn btn-secondary"><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:btn.back" default="Zurück zur Liste"/></f:link.action>
+        <f:link.action action="edit" arguments="{hotel: hotel}" class="btn btn-secondary"><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:btn.edit" default="Bearbeiten"/></f:link.action>
+        <f:link.action action="new" class="btn btn-secondary"><f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:btn.hotel.new" default="Neues Hotel anlegen"/></f:link.action>
+    </p>
+</f:section>
+</html>

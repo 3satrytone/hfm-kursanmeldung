@@ -1,0 +1,617 @@
+/*tx-jo-kursanmeldung */
+
+.tx-jo-kursanmeldung{
+	width:35rem;
+	padding:1rem;
+	border: 1px dotted grey;
+    background-color: #eeebe5;
+}
+* {
+    box-sizing: border-box;
+}
+.joContent-0 .joClearfix.joContentPadding{
+   /*  width: 35rem; */
+}
+/* step 1 */
+h1 {
+    font-size: 18px;
+    margin: 0;
+    padding: 0 0 1.5rem 0.5rem;
+    font-weight: normal;
+    line-height: 130%;
+    color: #000;
+    text-transform: uppercase;
+	
+	color: #de0e4f;
+	padding: 0 0 1.5rem 0;
+}
+.joHide {
+    display: none;
+}
+
+.donloadtmpl.joFormWrapper.joClearfix.jo2Col.joHide {
+    display: none;
+}
+
+.joBold{
+	font-weight: bold;
+}
+.tx-jo-kursanmeldung{
+
+}
+.joContentPadding{
+
+	/* border: 1px dotted grey; */
+	/* background-color: #eeebe5; */
+}
+.joContentFooterFunctions {
+    padding: 1rem;
+}
+.joWettbewerbe .joContentPadding{
+	padding: 0;
+	width: 100%;
+}
+.joContentmiddle {
+    width: 100%;
+}
+.joContentAndRightbox {
+    /* width: 37rem; */
+}
+input.formhandler-button {
+    margin-left: 0.5rem;
+    width: 5rem;
+}
+.joRow{
+   /* width: 32rem; */
+}
+.joRow select,
+.joRow input[type="text"]{
+    width: 100%;
+}
+.joCol {
+   /* width: 32rem; */
+   width:100%;
+	margin: 0.5rem 0;
+}
+.gender.joCol.joCol-2,
+.firstName.joCol.joCol-2,
+.birthday.joCol.joCol-2,
+.phone.joCol.joCol-2,
+.email.joCol.joCol-2,
+.duo.joCol.joCol-2{
+    width: 15rem;
+}
+.title.joCol.joCol-2,
+.lastName.joCol.joCol-2,
+.nationality.joCol.joCol-2,
+.mobile.joCol.joCol-2,
+.emailrp.joCol.joCol-2,
+.duosel.joCol.joCol-2{
+	width: 15rem;
+    float: right;
+}
+.zip.joCol.joCol-2{
+	width: 5rem;
+}
+.city.joCol.joCol-2{
+	width: 25rem;
+    float:right;
+}
+.address.joCol.joCol-2{
+  width: 25rem;
+}
+.houseno.joCol.joCol-2{
+  width: 5rem;
+    float:right;
+}
+.roomwith.joCol{
+    margin: 0.5rem 0;
+}
+.textright {
+    text-align: right;
+    padding: 10px 1rem 0 0;
+}
+.joJumpToTop {
+    padding: 1rem 0 0 0.5rem;
+}
+.joContentmiddle {
+    width: 33.5rem;
+}
+.joWettbewerbe .joContentPadding {
+    padding: 1rem;
+    width: 33.5rem;
+}
+input.formhandler-button {
+    margin: 1.5rem 0.5rem;
+    width: 5rem;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+.joMainInnenabstand {
+    padding: 2.5rem;
+}
+
+/* step 2 */
+.joInpText{
+    width:100%;
+}
+textarea.joInpArea {
+    width: 100%;
+    resize: none;
+    height: 5rem;
+}
+.studentship.joCol.joCol-1.joHide input.joInpText {
+    margin-left: 4.7rem;
+}
+.zahlungsart.joCol.joCol-2,
+.roomfrom.joCol.joCol-2 {
+	width: 15rem;
+}
+.zahlungstermin.joCol.joCol-2,
+.roomto.joCol.joCol-2{
+	width: 15rem;
+    float: right;
+}
+.matrikel.joCol.joCol-1 {
+    margin-right: 2rem;
+}
+.studystat.joCol.joCol-1 {
+    width: auto;
+}
+.link input,
+.vita,
+.download{
+    margin-top: 1rem;
+}
+.link.joCol.joCol-2 input.joInpText {
+    margin-bottom: 1rem;
+    margin-left: 4.7rem;
+}
+a.formhandler-button.formhandler-backward {
+    margin-left: 0.5rem;
+}
+button.formhandler-button {
+    margin: 1.5rem 0.5rem;
+    width: 5rem;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+a.formhandler-button.formhandler-backward {
+    margin: 1.5rem 0.5rem;
+    width: 5rem;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;    
+    padding: 0rem 1rem 0.05rem 1rem;
+}
+a.formhandler-button.formhandler-forward {
+    margin: 1.5rem 0.5rem;
+    width: 5rem;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+/* todo @Justin suchen wo die richtige stelle ist (joMain.css) */
+select.f3-form-error option, select.f3-form-error {
+    background-color: #FF9F9F;
+    border: 1px #FF0000 solid;
+}
+
+.bemerkung{
+    margin: 5px 0;
+}
+.bemerkung textarea{
+    width: 100%;
+    resize: none;
+    height: 7rem;
+}
+.filesupload,
+.bemerkung,
+.step3table{
+    margin-top: 2rem;
+}
+#uploaderrors,
+#vitaerrors{
+    margin: 5px 0;
+    background-color: #FF9F9F;
+    border: 1px #FF0000 solid;
+    padding: 5px;
+}
+
+#uploadedfiles,
+#vitafile{
+    margin: 5px 0;
+    background-color: #f8f8f8;
+    border: 1px #a9a9a9 solid;
+    padding: 5px;
+}
+#uploadedfiles div{
+    border-bottom: 1px dotted grey;
+    padding-bottom: 5px;
+    margin: 5px 0;
+}
+#progress,
+#progress2{
+    margin: 5px 0;
+    border: 1px #9D0633 solid;
+    border-radius:5px;
+}
+.bar {
+    height: 10px;
+    background: #9D0633;
+}
+img.delete{
+    cursor:pointer;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+.joStep5 .joHead{
+    margin: 1rem 0;
+    font-weight: bold;
+}
+.joHeadKurs{
+    color: #999999;
+    font-size: 16px;
+}
+.joMessage{
+    margin: 2rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px dotted grey;
+    font-size: 16px;
+}
+.no-registration{
+	display:none;
+}
+.additional-text,
+.additional-text2{
+	color: #c5003d;
+}
+@media print and (min-width: 480px) {
+    .joLogo {
+        display: none;
+    }
+}
+
+.tnb .joMainError ul,
+.privacy .joMainError ul{
+    background-color: #FF9F9F;
+    border: 1px #FF0000 solid;
+}
+/* novalnet */
+#novalnet_form input[type="submit"],
+#paylatersel input[type="submit"],
+#step4paymentsel input[type="submit"]{
+    margin: 1.5rem 0.5rem 1.5rem 0;
+    width: 5rem;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+#paylatersel input[type="submit"],
+#step4paymentsel input[type="submit"]{
+    width: auto;
+}
+#paylater .formhandler-button.formhandler-backward{
+	display:none;
+}
+input[type="submit"]{
+    font-size: 13px;
+}
+/* joProfBox */
+
+.joProfBox{
+    position: absolute;
+    left: 2rem;
+    width: 12rem;
+    padding:1rem;
+    border: 1px dotted grey;
+    background-color: #eeebe5;
+}
+.joProfBox .joKurs{
+    margin-bottom:1rem;
+    color: #de0e4f;    
+    font-size: 1rem;
+}
+.joProfBox .joProfName{
+    margin-bottom:0.5rem;
+}
+.joProfBox .joProfImage img{
+    width: 100%;    
+    height: auto;
+    border: 1px solid #999999;
+}
+
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+[role="button"] {
+  cursor: pointer;
+}
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=50);
+  opacity: .5;
+}
+button.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.alert .alert-link {
+  font-weight: bold;
+}
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
+.alert > p + p {
+  margin-top: 5px;
+}
+.alert-dismissable,
+.alert-dismissible {
+  padding-right: 35px;
+}
+.alert-dismissable .close,
+.alert-dismissible .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+.alert-success hr {
+  border-top-color: #c9e2b3;
+}
+.alert-success .alert-link {
+  color: #2b542c;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-info hr {
+  border-top-color: #a6e1ec;
+}
+.alert-info .alert-link {
+  color: #245269;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-warning hr {
+  border-top-color: #f7e1b5;
+}
+.alert-warning .alert-link {
+  color: #66512c;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  box-shadow: 3px 3px 7px #262626;
+}
+.alert-danger hr {
+  border-top-color: #e4b9c0;
+}
+.alert-danger .alert-link {
+  color: #843534;
+}
+.red{
+    color: #a94442;
+    font-weight: bold;
+    margin: 10px 0;
+}
+/* kursliste */
+.joContent-1{
+  padding: 0 2.5rem;
+}
+.joContent-1 .joContentAndRightbox{
+  width: 100%;
+}
+.tx-jo-kursliste table{
+  width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+.tx-jo-kursliste table tr{
+  cursor: pointer;
+}
+.tx-jo-kursliste table td,
+.tx-jo-kursliste table th{
+  border: 1px solid #cccccc;
+  margin:0;
+  padding: 0.5rem;
+  vertical-align: top;
+}
+.tx-jo-kursliste table tr th{
+  background-color: #dddddd;
+}
+.tx-jo-kursliste table tr.odd{
+  background-color: #efefef;
+}
+.joKursanmeldungKurs.jo-only-passive .ui-icon.ui-icon-alert{
+	float:left;
+	margin:1px 5px 0 5px;
+}
+.ui-dialog .ui-icon.ui-icon-alert{
+	float:left;
+	margin:12px 12px 20px 0;
+}
+/* joPlayer */
+section.joPlayer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.7);
+    padding: 5% 10%;
+    z-index: 999999;
+}
+.joPlayer .joHead{
+  position: relative;
+}
+.closeJoPlayer{
+    right: 0px;
+    position: absolute;
+    top: 0px;
+    font-size: 18px;
+    margin: 0;
+    padding: 0 0 1.5rem 0.5rem;
+    line-height: 130%;
+    text-transform: uppercase;
+    color: #de0e4f;
+    font-weight: bold;
+    cursor: pointer;
+}
+.closeJoPlayer,
+.joPlayer .joHead h1
+{
+	text-shadow: black 1px 1px 10px;
+}
+.joPlayerEmbed{
+    height: 700px;
+}
+div.joProgressiveFallback{
+    height:700px;
+    text-align: center;
+    background-color: #000;
+}
+div.joProgressiveFallback a{
+    color: #fff;
+    text-decoration: none;
+}
+div.joDownload{
+    display: inline-block;
+    color: #fff;
+    height: 38px;
+    background-color: #5F5B5B;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-top: 222px;
+    box-shadow: 0px 0px 7px 0px #fff;
+}
+
+ul.f3-widget-paginator{
+  margin: 2rem;
+}
+ul.f3-widget-paginator li{
+  display: inline-block;
+}
+ul.f3-widget-paginator li.current{
+  font-weight: bold;
+  color: #ff0000;
+}
+.joSearch{
+  float: right;
+}
+
+.joHead.panel-heading{
+  background-color: #efefef;
+  padding: 10px;
+}
+
+.joLbOvLy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000000;
+    display: none;
+}
+.joLbOvLy .joLbOvWrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px;
+}
+.joLbOvLy .joLbOvCnt {
+    color: white;
+    font-size: 18px;
+    width: 240px;
+    margin: 30px -85px;
+}
+.fa-plus-square-o, .fa-minus-square-o {
+	font-size: 30px;
+	cursor: pointer;
+}
+.fa-plus-square-o:before{
+	content: "\f055";
+}
+.fa-minus-square-o:before {
+	content: "\f056";
+}
+.fa-minus-square-o.delete {
+	color: red;
+}
+.upload-hint{
+	margin: 10px;
+	font-weight: bold;
+}

@@ -1,0 +1,80 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Gebühren</h1>
+
+    <f:flashMessages/>
+
+    <div class="table-fit">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tr>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.anmeldung"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.anmeldungerm"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.aktivengeb"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.aktivengeberm"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.passivgeb"/>
+                </th>
+                <th>
+                    <f:translate key="tx_kursanmeldung_domain_model_gebuehren.passivgeberm"/>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            <f:for each="{gebuehren}" as="gebuehr">
+                <f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+                    <tr class="{zebraClass}">
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.anmeldung}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.anmeldungerm}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.aktivengeb}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.aktivengeberm}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.passivgeb}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{gebuehren : gebuehr}"> {gebuehr.passivgeberm}
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="edit" arguments="{gebuehren : gebuehr}">
+                                <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/>
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="delete" arguments="{gebuehren : gebuehr}"
+                                           onclick="return confirm('Ist das wirklich eine gute Idee?');">
+                                <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/>
+                            </f:link.action>
+                        </td>
+                    </tr>
+                </f:cycle>
+            </f:for>
+        </table>
+    </div>
+    <p>
+        <f:render partial="ButtonBars/List" arguments="{name: 'gebuehren'}"/>
+    </p>
+</f:section>
+</html>

@@ -1,0 +1,198 @@
+<div class="table-fit">
+    <table class="tx_kursanmeldung table table-striped table-hover">
+        <tbody>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.aktiv" default="aktiv"/>
+            </td>
+            <td>
+                <f:form.checkbox property="aktiv" value="1" checked="{kurs.aktiv}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kursnr" default="kursnr"/>
+            </td>
+            <td>
+                <f:form.textfield property="kursnr" value="{kurs.kursnr}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.instrument" default="instrument"/>
+            </td>
+            <td>
+                <f:form.textfield property="instrument" value="{kurs.instrument}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitstart" default="kurszeitstart"/>
+            </td>
+            <td>
+                <f:form.textfield property="kurszeitstart" value="{kurs.kurszeitstart->f:format.date(format:'d.m.Y H:i')}"
+                                  additionalAttributes="{data-widget:'datepicker', data-date-format:'d.m.Y H:i'}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kurszeitend" default="kurszeitend"/>
+            </td>
+            <td>
+                <f:form.textfield property="kurszeitend" value="{kurs.kurszeitend->f:format.date(format:'d.m.Y H:i')}"
+                                  additionalAttributes="{data-widget:'datepicker', data-date-format:'d.m.Y H:i'}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.anreisedate" default="anreisedate"/>
+            </td>
+            <td>
+                <f:form.textfield property="anreisedate" value="{kurs.anreisedate->f:format.date(format:'d.m.Y H:i')}"
+                                  additionalAttributes="{data-widget:'datepicker', data-date-format:'d.m.Y H:i'}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.kursort" default="kursort"/>
+            </td>
+            <td>
+                <f:form.select property="kursort" multiple="true" options="{orte}" value="{kurs.kursort}"
+                               optionLabelField="name" optionValueField="uid" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.professor" default="professor"/>
+            </td>
+            <td>
+                <f:form.select property="professor" options="{profs}" value="{kurs.professor}" optionLabelField="name"
+                               optionValueField="uid" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.gebuehr" default="gebuehr"/>
+            </td>
+            <td>
+                <f:form.select property="gebuehr" options="{gebuehrenOptions}" value="{kurs.gebuehr}" optionLabelField="anmeldung"
+                               optionValueField="uid"
+                               prependOptionLabel="Anmldg, Anmldgerm, Aktvgeb, Aktvgeberm, Passivgeb, Passivgeberm"
+                               prependOptionValue="0" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.gebuehrcom" default="gebuehrcom"/>
+            </td>
+            <td>
+                <f:form.textarea property="gebuehrcom" value="{kurs.gebuehrcom}" class="form-control" rows="3"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.orchstudio" default="orchstudio"/>
+            </td>
+            <td>
+                <f:form.checkbox property="orchstudio" value="1" checked="{kurs.orchstudio}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.aktivtn" default="aktivtn"/>
+            </td>
+            <td>
+                <f:form.textfield property="aktivtn" value="{kurs.aktivtn}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.passivtn" default="passivtn"/>
+            </td>
+            <td>
+                <f:form.textfield property="passivtn" value="{kurs.passivtn}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.hotel" default="hotel"/>
+            </td>
+            <td>
+                <f:form.select property="hotel" multiple="true" options="{hotels}" value="{kurs.hotel}"
+                               optionLabelField="hotel" optionValueField="uid" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.weblink" default="weblink"/>
+            </td>
+            <td>
+                <f:form.checkbox property="weblink" value="1" checked="{kurs.weblink}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.youtube" default="youtube"/>
+            </td>
+            <td>
+                <f:form.checkbox property="youtube" value="1" checked="{kurs.youtube}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.vita" default="vita"/>
+            </td>
+            <td>
+                <f:form.checkbox property="vita" value="1" checked="{kurs.vita}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.stipendien" default="stipendien"/>
+            </td>
+            <td>
+                <f:form.checkbox property="stipendien" value="1" checked="{kurs.stipendien}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.maxupload" default="maxupload"/>
+            </td>
+            <td>
+                <f:form.textfield property="maxupload" value="{kurs.maxupload}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.duo" default="duo"/>
+            </td>
+            <td>
+                <f:form.checkbox property="duo" value="1" checked="{kurs.duo}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.duosel" default="duosel"/>
+            </td>
+            <td>
+                <f:form.textarea property="duosel" value="{kurs.duosel}" class="form-control" rows="3"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kurs.ensemble" default="ensemble"/>
+            </td>
+            <td>
+                <ul class="list-unstyled">
+                    <f:for each="{ensembleCheckbox}" as="cb" key="itemk" iteration="itemi">
+                        <li>
+                            <f:form.checkbox name="ensemble[{cb.item}]" value="1" checked="{cb.checked}"/>
+                            <f:translate key="tx_kursanmeldung_domain_model_kurs.ensemble.{cb.item}"/>
+                        </li>
+                    </f:for>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,160 @@
+<f:if condition="{ensembleCheckbox.0.checked} == 1">
+<div class="ensemble joFormWrapper joClearfix jo2Col">
+	<div class="label30">
+		<label for="duoname">
+			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enconf"></f:translate>
+		</label>
+	</div>
+	<div class="input70">
+		<div class="joRow clearfix">
+			<div class="col-md-5 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enshow" default="anzeigen"></f:translate></label></div>
+			<div class="enname joCol col-md-7 col-sm-12">
+				<f:form.checkbox name="ensemble[enconf]" value="1" checked="{ensemble.0.enconf}" />
+			</div>
+		</div>
+		<f:if condition="{ensembleCheckbox.1.checked} == 1">
+		<div class="joRow clearfix">
+			<div class="col-md-5 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enname"></f:translate></label></div>
+			<div class="enname joCol col-md-7 col-sm-12">
+				<f:form.textfield name="ensemble[enname]" class="joInpText" value="{ensemble.0.enname}" />
+			</div>
+		</div>
+		</f:if>
+		<f:if condition="{ensembleCheckbox.4.checked} == 1">
+		<div class="joRow clearfix">
+			<div class="col-md-5 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entype"></f:translate></label></div>
+			<div class="entype joCol col-md-7 col-sm-12">
+				<f:form.textfield name="ensemble[entype]" class="joInpText" value="{ensemble.0.entype}" />
+			</div>
+		</div>
+		</f:if>
+		<f:if condition="{ensembleCheckbox.3.checked} == 1">
+		<div class="joRow clearfix">
+			<div class="col-md-5 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrplace"></f:translate></label></div>
+			<div class="engrplace joCol col-md-7 col-sm-12">
+				<f:form.textfield name="ensemble[engrplace]" value="{ensemble.0.engrplace}" />
+			</div>
+		</div>
+		</f:if>
+		<f:if condition="{ensembleCheckbox.2.checked} == 1">
+		<div class="joRow clearfix">
+			<div class="col-md-5 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrdate"></f:translate></label></div>
+			<div class="engrdate joCol col-md-7 col-sm-12">
+				<f:form.textfield name="ensemble[engrdate]" class="joInpText joInpDatepickerYM" value="{ensemble.0.engrdate -> f:format.date(format: 'd.m.Y')}" />
+			</div>
+		</div>
+		</f:if>
+	</div>
+</div>
+<f:if condition="{ensembleCheckbox.5.checked} == 1">
+<div class="ensemble joFormWrapper joClearfix jo2Col">
+	<div class="label30">
+		<label for="duoname">
+			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entn" />
+		</label>
+	</div>
+	<div class="input70">
+		<div class="joRow clearfix">
+			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enshow" default="anzeigen"></f:translate></label></div>
+			<div class="enfirstn joCol col-md-8 col-sm-12">	
+				<f:form.checkbox class="step-checkbox-entn" name="ensemble[entn]" value="1" checked="{ensemble.0.entn}" />
+			</div>
+		</div>
+		<div class="ensemble-menber<f:if condition='{ensemble.0.entn} != 1'> joHide</f:if>">
+			<f:if condition="{ensemble -> f:count()} > 0"><f:then><f:for each="{ensemble}" as="item" key="itemk" iteration="itemi">
+			<div id="addmoreid<f:if condition='{itemi.isLast}'><f:then></f:then><f:else>{item.uid}</f:else></f:if>" class="member">
+				<f:if condition="{ensembleCheckbox.6.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate></label></div>
+					<div class="enfirstn joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[enfirstn][]" value="{item.enfirstn}" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.7.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate></label></div>
+					<div class="enlastn joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[enlastn][]" value="{item.enlastn}" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.9.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate></label></div>
+					<div class="eninstru joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[eninstru][]" value="{item.eninstru}" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.8.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate></label></div>
+					<div class="engebdate joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[engebdate][]" value="{item.engebdate -> f:format.date(format: 'd.m.Y')}" class="joInpText joInpDatepicker" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.10.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate></label></div>
+					<div class="ennatio joCol col-md-8 col-sm-12">
+						<f:form.select name="ensemble[ennatio][]" value="{item.ennatio}" options="{countries}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.please_choose', default:'bitte wählen...')}" prependOptionValue="" />
+					</div>
+				</div>
+				<div class="joRow clearfix">
+					<div class="deleteEnsemble"><i class="fas fa-minus-square-o" aria-hidden="true"></i><f:form.hidden name="ensemble[enuid][]" value="{item.uid}" /><f:form.hidden name="ensemble[delitem][]" class="del-hidden" value="0" /></div>				
+				</div>
+				</f:if>
+			</div>
+			</f:for></f:then></f:if>
+			<div id="addmoreid" class="joHide aufklappen-entn member">
+				<f:if condition="{ensembleCheckbox.6.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate></label></div>
+					<div class="enfirstn joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[enfirstn][]" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.7.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate></label></div>
+					<div class="enlastn joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[enlastn][]" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.9.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate></label></div>
+					<div class="eninstru joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[eninstru][]" class="joInpText" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.8.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate></label></div>
+					<div class="engebdate joCol col-md-8 col-sm-12">
+						<f:form.textfield name="ensemble[engebdate][]" class="joInpText joInpDatepicker" />
+					</div>
+				</div>
+				</f:if>
+				<f:if condition="{ensembleCheckbox.10.checked} == 1">
+				<div class="joRow clearfix">
+					<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate></label></div>
+					<div class="ennatio joCol col-md-8 col-sm-12">
+						<f:form.select name="ensemble[ennatio][]" options="{countries}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.please_choose')}" prependOptionValue="" />
+					</div>
+				</div>
+				</f:if>
+			</div>		
+			<div class="col-md-6 col-sm-12">
+				<div class="addmore"><i class="fas fa-plus-square-o" aria-hidden="true" data-target=".ensemble #addmoreid"></i><f:form.hidden name="ensemble[enuid][]" value="-1" /></div>				
+			</div>
+		</div>
+	</div>
+</div>
+	</f:if>
+</f:if>

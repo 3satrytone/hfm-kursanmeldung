@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Bearbeiten des Datensatzes Professor mit der ID {prof.uid}</h1>
+
+    <f:flashMessages/>
+
+    <f:render partial="FormErrors"/>
+
+    <f:form action="update" name="hotel" object="{hotel}">
+        <f:render partial="Hotel/FormFields" arguments="{hotel: hotel}"/>
+        <f:form.submit value="Speichern"/>
+    </f:form>
+    <p>
+        <f:link.action action="list">Zurück zur Liste</f:link.action>&nbsp;|&nbsp;
+        <f:link.action action="new">Neues Hotel anlegen</f:link.action>
+    </p>
+</f:section>
+</html>

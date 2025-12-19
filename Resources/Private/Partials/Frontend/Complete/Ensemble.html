@@ -1,0 +1,56 @@
+{namespace jo=Justorange\JoWettbewerbe\ViewHelpers}
+<div class="joRow clearfix ensemble-h">
+	<h2><f:translate key="tx_jowettbewerbe_wettbewerb.complete.ensemble" default="ensemble" /></h2>
+</div>
+<div class="joRow clearfix enname zebra">
+	<div class="list-lb col-sx-12 col-sm-6">
+		<label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enname" default="enname" /></label>
+	</div>
+	<div class="list-txt col-sx-12 col-sm-6">
+		{ensemble.0.enname}
+	</div>
+</div>
+<div class="joRow clearfix entype zebra">
+	<div class="list-lb col-sx-12 col-sm-6">
+		<label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entype" default="entype" /></label>
+	</div>
+	<div class="list-txt col-sx-12 col-sm-6">
+		{ensemble.0.entype}
+	</div>
+</div>
+<div class="joRow clearfix engrplace zebra">
+	<div class="list-lb col-sx-12 col-sm-6">
+		<label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrplace" default="engrplace" /></label>
+	</div>
+	<div class="list-txt col-sx-12 col-sm-6">
+		{ensemble.0.engrplace}
+	</div>
+</div>
+<div class="joRow clearfix engrdate zebra">
+	<div class="list-lb col-sx-12 col-sm-6">
+		<label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrdate" default="engrdate" /></label>
+	</div>
+	<div class="list-txt col-sx-12 col-sm-6">
+		<f:if condition="{settings.syslang} == 1">
+		<f:then><f:format.date format="d.m.Y">{ensemble.0.engrdate}</f:format.date></f:then>
+		<f:else><f:format.date format="d.m.Y">{ensemble.0.engrdate}</f:format.date></f:else>
+		</f:if>
+	</div>
+</div>
+
+<f:for each="{ensemble}" as="item" key="itemk" iteration="itemi">
+<div class="joRow clearfix entn zebra">
+	<div class="list-lb col-sx-12 col-sm-6">
+		<label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entn" default="entn" /></label>
+	</div>
+	<div class="list-txt col-sx-12 col-sm-6">
+		<div>{item.enfirstn} {item.enlastn}</div>
+		<div><f:if condition="{settings.syslang} == 1">
+		<f:then><f:format.date format="d.m.Y">{item.engebdate}</f:format.date></f:then>
+		<f:else><f:format.date format="d.m.Y">{item.engebdate}</f:format.date></f:else>
+		</f:if></div>
+		<div><jo:country countries="{countries}" uid="{item.ennatio}" /></div>
+		<div>{item.eninstru}</div>
+	</div>
+</div>
+</f:for>

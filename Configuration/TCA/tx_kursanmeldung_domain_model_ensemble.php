@@ -1,0 +1,160 @@
+<?php
+return [
+    'ctrl' => [
+        'title' => 'Ensemble',
+        'label' => 'enname',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'delete' => 'deleted',
+        'enablecolumns' => [
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+        ],
+        'searchFields' => 'enname,enfirstn,enlastn,ennatio,eninstru,engrplace,entype',
+        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+    ],
+    'types' => [
+        '1' => [
+            'showitem' => '--div--;Record, hidden, enconf, enname, engrdate, entype, engrplace, entn, enfirstn, enlastn, eninstru, engebdate, ennatio, --div--;Access, starttime, endtime'
+        ],
+    ],
+    'palettes' => [
+        '1' => ['showitem' => ''],
+    ],
+    'columns' => [
+        'hidden' => [
+            'exclude' => true,
+            'label' => 'Hidden',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    ['label' => '', 'invertStateDisplay' => true],
+                ],
+            ],
+        ],
+        'starttime' => [
+            'exclude' => true,
+            'label' => 'Start time',
+            'config' => [
+                'type' => 'datetime',
+                'eval' => 'datetime',
+                'default' => 0,
+            ],
+        ],
+        'endtime' => [
+            'exclude' => true,
+            'label' => 'End time',
+            'config' => [
+                'type' => 'datetime',
+                'eval' => 'datetime',
+                'default' => 0,
+                'range' => [
+                    'upper' => mktime(0, 0, 0, 1, 1, 2038)
+                ],
+            ],
+        ],
+
+        'enconf' => [
+            'exclude' => false,
+            'label' => 'Konf.-ID',
+            'config' => [
+                'type' => 'number',
+                'size' => 10,
+                'default' => 0,
+            ],
+        ],
+        'enname' => [
+            'exclude' => false,
+            'label' => 'Name',
+            'config' => [
+                'type' => 'input',
+                'size' => 40,
+                'eval' => 'trim,required',
+            ],
+        ],
+        'engrdate' => [
+            'exclude' => false,
+            'label' => 'Registrierdatum',
+            'config' => [
+                'type' => 'date',
+                'eval' => 'date',
+                'default' => 0,
+            ],
+        ],
+        'entype' => [
+            'exclude' => false,
+            'label' => 'Typ',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'engrplace' => [
+            'exclude' => false,
+            'label' => 'Registrierort',
+            'config' => [
+                'type' => 'input',
+                'size' => 40,
+                'eval' => 'trim',
+            ],
+        ],
+        'entn' => [
+            'exclude' => false,
+            'label' => 'TN-ID',
+            'config' => [
+                'type' => 'number',
+                'size' => 10,
+                'default' => 0,
+            ],
+        ],
+        'enfirstn' => [
+            'exclude' => false,
+            'label' => 'Vorname',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'enlastn' => [
+            'exclude' => false,
+            'label' => 'Nachname',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'eninstru' => [
+            'exclude' => false,
+            'label' => 'Instrument',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'engebdate' => [
+            'exclude' => false,
+            'label' => 'Geburtsdatum',
+            'config' => [
+                'type' => 'date',
+                'eval' => 'date',
+                'default' => 0,
+            ],
+        ],
+        'ennatio' => [
+            'exclude' => false,
+            'label' => 'Nationalität',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+    ],
+];

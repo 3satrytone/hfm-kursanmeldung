@@ -1,0 +1,47 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="Main">
+    <h1>Professoren</h1>
+
+    <f:flashMessages/>
+
+    <div class="table-fit">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Bild</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <f:for each="{profs}" as="profItem">
+                <f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+                    <tr class="{zebraClass}">
+                        <td>
+                            <f:link.action action="show" arguments="{prof: profItem}">{profItem.name}</f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="show" arguments="{prof: profItem}">{profItem.link}</f:link.action>
+                        </td>
+                        <td>{profItem.image}</td>
+                        <td>
+                            <f:link.action action="edit" arguments="{prof: profItem}">
+                                <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/>
+                            </f:link.action>
+                        </td>
+                        <td>
+                            <f:link.action action="delete" arguments="{prof: profItem}"
+                                           onclick="return confirm('Ist das wirklich eine gute Idee?');">
+                                <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/>
+                            </f:link.action>
+                        </td>
+                    </tr>
+                </f:cycle>
+            </f:for>
+        </table>
+    </div>
+    <p>
+        <f:render partial="ButtonBars/List" arguments="{name: 'prof'}"/>
+    </p>
+</f:section>
+</html>

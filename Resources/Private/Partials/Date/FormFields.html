@@ -1,0 +1,13 @@
+
+<label for="starton">
+	<f:translate key="tx_jobrewerytour_domain_model_date.starton" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="starton"  value="{date.starton->f:format.date(format:'d.m.Y H:i')}" /><br />
+<label for="typeid">
+	<f:translate key="tx_jobrewerytour_domain_model_date.typeid" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textfield property="typeid" /><br />
+<label for="description">
+	<f:translate key="tx_jobrewerytour_domain_model_date.description" />
+</label><br />
+	<f:form.textarea property="description" cols="40" rows="15" /><br />

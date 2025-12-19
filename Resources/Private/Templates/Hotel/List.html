@@ -1,0 +1,44 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+    <h1>Hotels</h1>
+
+    <f:flashMessages/>
+
+    <div class="table-fit">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tr>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.hotel" default="Hotel"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.beschreibung"  default="Beschreibung"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.ezpreis"  default="Ezpreis"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.ezpreiserm"  default="Ezpreiserm"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.dzpreis"  default="Dzpreis"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.dzpreiserm"  default="Dzpreiserm"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.dz2preis"  default="Dz2preis"/></th>
+                <th><f:translate key="tx_jokursanmeldung_domain_model_hotel.dz2preiserm"  default="Dz2preiserm"/></th>
+                <th> </th>
+                <th> </th>
+            </tr>
+
+            <f:for each="{hotels}" as="hotel">
+                <tr>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.hotel}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.beschreibung}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.ezpreis -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.ezpreiserm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.dzpreis -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.dzpreiserm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.dz2preis -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="show" arguments="{hotel : hotel}"> {hotel.dz2preiserm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:link.action></td>
+                    <td><f:link.action action="edit" arguments="{hotel : hotel}"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt=""/></f:link.action></td>
+                    <td><f:link.action action="delete" arguments="{hotel : hotel}" onclick="return confirm('Ist das wirklich eine gute Idee?');"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/></f:link.action></td>
+                </tr>
+            </f:for>
+        </table>
+    </div>
+    <p>
+        <f:render partial="ButtonBars/List" arguments="{name: 'hotel'}"/>
+    </p>
+
+  </f:section>
+</html>

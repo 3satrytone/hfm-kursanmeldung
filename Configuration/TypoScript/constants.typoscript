@@ -1,0 +1,16 @@
+page {
+    logo {
+        # cat=bootstrap package: logo/110/100; type=string; label=Logo: Leave blank to use website title from template instead
+        file = EXT:kursanmeldung/Resources/Public/Images/KursanmeldungPackage.jpg
+        # cat=bootstrap package: logo/110/110; type=string; label=Logo Inverted: Leave blank to use website title from template instead
+        fileInverted = EXT:kursanmeldung/Resources/Public/Images/KursanmeldungPackage.jpg
+        # cat=bootstrap package: logo/110/120; type=int+; label=Height: The image will not be resized!
+        height = 980
+        # cat=bootstrap package: logo/110/130; type=int+; label=Width: The image will not be resized!
+        width = 425
+        # cat=bootstrap package: logo/110/140; type=string; label=Alternative text: Text of the alt attribute of the logo image (default: "<website title> logo")
+        alt =
+        # cat=bootstrap package: logo/110/150; type=string; label=Link title: Title of the link attribute of the logo image
+        linktitle =
+    }
+}

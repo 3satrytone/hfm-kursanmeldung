@@ -1,0 +1,38 @@
+<div class="table-fit">
+    <table class="tx_kursanmeldung table table-striped table-hover">
+        <tbody>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_prof.name" default="Name"/>
+            </td>
+            <td>
+                <f:form.textfield property="name" value="{prof.name}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_prof.link" default="Link"/>
+            </td>
+            <td>
+                <f:form.textfield property="link" value="{prof.link}" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_prof.image" default="Bild"/>
+            </td>
+            <td>
+                <f:if condition="{prof.image}">
+                    <div>
+                        <f:form.uploadDeleteCheckbox id="image"
+                                                     property="image"
+                                                     fileReference="{prof.image}" />
+                        <label for="image">Delete file</label>
+                    </div>
+                </f:if>
+                <f:form.upload property="image" accept=".gif,.jpg,image/jpg,image/jpeg,image/gif" class="form-control"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
