@@ -1,3 +1,7 @@
+img {
+    height: auto;
+}
+
 .body-bg {
     -moz-box-shadow: 0 2px 15px 0px black;
     -webkit-box-shadow: 0 2px 15px 0px black;
@@ -54,19 +58,25 @@
 
 .footer-language #language-menu a span,
 .frame a[class=""],
-.frame a:not([class]) {
+.frame a:not([class]),
+.kursanmeldung-red {
     color: #9d0633 !important;
 }
 
-#hfm-kursanmeldung{
+#hfm-kursanmeldung {
     position: relative;
     margin: 0 auto;
     width: 70%;
 
 }
 
-.tx_jo-kursanmeldung{
+.tx_jo-kursanmeldung {
     width: 100%;
+}
+
+.f3-form-error {
+    border-color: #de0e4f;
+    box-shadow: 0 0 0 5px rgba(225, 0, 0, 0.2);
 }
 
 

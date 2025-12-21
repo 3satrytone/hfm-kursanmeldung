@@ -7,7 +7,7 @@
 
 <f:render partial="FormErrors" />
 
-<f:form action="create" name="prof" object="{prof}">
+<f:form action="create" name="prof" object="{prof}" enctype="multipart/form-data">
     <f:render partial="Prof/FormFields" />
     <div class="clearfix margin-bt-20">
         <f:form.submit value="Anlegen" class="btn btn-primary"/>

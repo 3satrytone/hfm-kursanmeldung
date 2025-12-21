@@ -3,852 +3,612 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class Step1Data extends AbstractEntity {
 
-	/**
-	 * gender
-	 *
-	 * @var integer
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $gender;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected int $gender;
 
-	/**
-	 * title
-	 *
-	 * @var string
-	 */
-	protected $title;
+	protected string $title;
 
-	/**
-	 * firstName
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $firstName;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $firstName;
 
-	/**
-	 * lastName
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $lastName;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $lastName;
 
-	/**
-	 * birthday
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $birthday;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $birthday;
 
-	/**
-	 * nationality
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $nationality;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $nationality;
 
-	/**
-	 * address
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $address;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $address;
 
-	/**
-	 * houseno
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $houseno;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $houseno;
 
-	/**
-	 * addressadd
-	 *
-	 * @var string
-	 */
-	protected $addressadd;
+	protected string $addressadd;
 
-	/**
-	 * city
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $city;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $city;
 
-	/**
-	 * zip
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $zip;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $zip;
 
-	/**
-	 * country
-	 *
-	 * @var integer
-	 * @Extbase\Validate("NotEmpty")
-	 */
-	protected $country;
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $country;
 
-	/**
-	 * phone
-	 *
-	 * @var string
-	 */
-	protected $phone;
+	protected string $phone;
 
-	/**
-	 * mobile
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty")
-	 */
+    #[Validate(['validator' => 'NotEmpty'])]
+	protected string $mobile;
 
-	protected $mobile;
-	/**
-	 * email
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty"),EmailAddress
-	 */
-	protected $email;
+    #[Validate(['validator' => 'NotEmpty'])]
+    #[Validate(['validator' => 'EmailAddress'])]
+	protected string $email;
 
-	/**
-	 * emailrp
-	 *
-	 * @var string
-	 * @Extbase\Validate("NotEmpty"),EmailAddress
-	 */
-	protected $emailrp;
+    #[Validate(['validator' => 'NotEmpty'])]
+    #[Validate(['validator' => 'EmailAddress'])]
+	protected string $emailrp;
 
-	/**
-	 * duo
-	 *
-	 * @var string
-	 */
-	protected $duo;
+	protected string $duo;
 
-	/**
-	 * duosel
-	 *
-	 * @var string
-	 */
-	protected $duosel;
+	protected string $duosel;
 
-	/**
-	 * duoname
-	 *
-	 * @var string
-	 */
-	protected $duoname;
+	protected string $duoname;
+
+    protected ?int $enconf;
 	
-	/**
-     * enconf
-     *
-     * @var integer
-     */
-    protected $enconf;
+    protected array $enuid;
+
+    protected string $enname;
 	
-	/**
-     * enuid
-     *
-     * @var array
-     */
-    protected $enuid;
+    protected string $entn;
 
-	/**
-     * enname
-     *
-     * @var string
-     */
-    protected $enname;
-	
-	/**
-     * entn
-     *
-     * @var string
-     */
-    protected $entn;
+    protected array $enfirstn;
 
-    /**
-     * enfirstn
-     *
-     * @var array
-     */
-    protected $enfirstn;
+    protected array $enlastn;
 
-    /**
-     * enlastn
-     *
-     * @var array
-     */
-    protected $enlastn;
+    protected array $eninstru;
 
-    /**
-     * eninstru
-     *
-     * @var array
-     */
-    protected $eninstru;
+    protected array $engebdate;
 
-    /**
-     * engebdate
-     *
-     * @var array
-     */
-    protected $engebdate;
+    protected array $ennatio;
 
-    /**
-     * ennatio
-     *
-     * @var array
-     */
-    protected $ennatio;
-
-    /**
-     * engrdate
-     *
-     * @var string
-     */
-    protected $engrdate;
+    protected string $engrdate;
     
-	/**
-     * entype
-     *
-     * @var string
+    protected string $entype;
+
+    protected string $engrplace;
+
+    /**
+     * @return int
      */
-    protected $entype;
-    
-	/**
-     * engrplace
-     *
-     * @var string
-     */
-    protected $engrplace;
-	
-	/**
-	 * Returns the gender
-	 *
-	 * @return integer $gender
-	 */
-	public function getGender() {
+	public function getGender(): int
+    {
 		return $this->gender;
 	}
 
-	/**
-	 * Sets the gender
-	 *
-	 * @param integer $gender
-	 * @return void
-	 */
-	public function setGender($gender) {
+    /**
+     * @param int $gender
+     * @return void
+     */
+	public function setGender(int $gender): void
+    {
 		$this->gender = $gender;
 	}
 
-	/**
-	 * Returns the title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle() {
+    /**
+     * @return string
+     */
+	public function getTitle(): string
+    {
 		return $this->title;
 	}
 
-	/**
-	 * Sets the title
-	 *
-	 * @param string $title
-	 * @return void
-	 */
-	public function setTitle($title) {
+    /**
+     * @param string $title
+     * @return void
+     */
+	public function setTitle(string $title): void
+    {
 		$this->title = $title;
 	}
 
-	/**
-	 * Returns the firstName
-	 *
-	 * @return string $firstName
-	 */
-	public function getFirstName() {
+    /**
+     * @return string
+     */
+	public function getFirstName(): string
+    {
 		return $this->firstName;
 	}
 
-	/**
-	 * Sets the firstName
-	 *
-	 * @param string $firstName
-	 * @return void
-	 */
-	public function setFirstName($firstName) {
+    /**
+     * @param string $firstName
+     * @return void
+     */
+	public function setFirstName(string $firstName): void
+    {
 		$this->firstName = ucfirst ($firstName);
 	}
 
-	/**
-	 * Returns the lastName
-	 *
-	 * @return string $lastName
-	 */
-	public function getLastName() {
+    /**
+     * @return string
+     */
+	public function getLastName(): string
+    {
 		return $this->lastName;
 	}
 
-	/**
-	 * Sets the lastName
-	 *
-	 * @param string $lastName
-	 * @return void
-	 */
-	public function setLastName($lastName) {
+    /**
+     * @param string $lastName
+     * @return void
+     */
+	public function setLastName(string $lastName): void
+    {
 		$this->lastName = ucfirst ($lastName);
 	}
 
-	/**
-	 * Returns the birthday
-	 *
-	 * @return string $birthday
-	 */
-	public function getBirthday() {
+    /**
+     * @return string
+     */
+	public function getBirthday(): string
+    {
 		return $this->birthday;
 	}
 
-	/**
-	 * Sets the birthday
-	 *
-	 * @param string $birthday
-	 * @return void
-	 */
-	public function setBirthday($birthday) {
+    /**
+     * @param string $birthday
+     * @return void
+     */
+	public function setBirthday(string $birthday): void
+    {
 		$this->birthday = $birthday;
 	}
 
-	/**
-	 * Returns the nationality
-	 *
-	 * @return string $nationality
-	 */
-	public function getNationality() {
+    /**
+     * @return string
+     */
+	public function getNationality(): string
+    {
 		return $this->nationality;
 	}
 
-	/**
-	 * Sets the nationality
-	 *
-	 * @param string $nationality
-	 * @return void
-	 */
-	public function setNationality($nationality) {
+    /**
+     * @param string $nationality
+     * @return void
+     */
+	public function setNationality(string $nationality): void
+    {
 		$this->nationality = $nationality;
 	}
 
-	/**
-	 * Returns the address
-	 *
-	 * @return string $address
-	 */
-	public function getAddress() {
+    /**
+     * @return string
+     */
+	public function getAddress(): string
+    {
 		return $this->address;
 	}
 
-	/**
-	 * Sets the address
-	 *
-	 * @param string $address
-	 * @return void
-	 */
-	public function setAddress($address) {
+    /**
+     * @param string $address
+     * @return void
+     */
+	public function setAddress(string $address): void
+    {
 		$this->address = $address;
 	}
 
-	/**
-	 * Returns the houseno
-	 *
-	 * @return string $houseno
-	 */
-	public function getHouseno() {
+    /**
+     * @return string
+     */
+	public function getHouseno(): string
+    {
 		return $this->houseno;
 	}
 
-	/**
-	 * Sets the houseno
-	 *
-	 * @param string $houseno
-	 * @return void
-	 */
-	public function setHouseno($houseno) {
+    /**
+     * @param string $houseno
+     * @return void
+     */
+	public function setHouseno(string $houseno): void
+    {
 		$this->houseno = $houseno;
 	}
 
-		/**
-	 * Returns the addressadd
-	 *
-	 * @return string $addressadd
-	 */
-	public function getAddressadd() {
+    /**
+     * @return string
+     */
+	public function getAddressadd(): string
+    {
 		return $this->addressadd;
 	}
 
-	/**
-	 * Sets the addressadd
-	 *
-	 * @param string $addressadd
-	 * @return void
-	 */
-	public function setAddressadd($addressadd) {
+    /**
+     * @param string $addressadd
+     * @return void
+     */
+	public function setAddressadd(string $addressadd): void
+    {
 		$this->addressadd = $addressadd;
 	}
 
-	/**
-	 * Returns the city
-	 *
-	 * @return string $city
-	 */
-	public function getCity() {
+    /**
+     * @return string
+     */
+	public function getCity(): string
+    {
 		return $this->city;
 	}
 
-	/**
-	 * Sets the city
-	 *
-	 * @param string $city
-	 * @return void
-	 */
-	public function setCity($city) {
+    /**
+     * @param string $city
+     * @return void
+     */
+	public function setCity(string $city): void
+    {
 		$this->city = $city;
 	}
 
-	/**
-	 * Returns the zip
-	 *
-	 * @return string $zip
-	 */
-	public function getZip() {
+    /**
+     * @return string
+     */
+	public function getZip(): string
+    {
 		return $this->zip;
 	}
 
-	/**
-	 * Sets the zip
-	 *
-	 * @param string $zip
-	 * @return void
-	 */
-	public function setZip($zip) {
+    /**
+     * @param string $zip
+     * @return void
+     */
+	public function setZip(string $zip): void
+    {
 		$this->zip = $zip;
 	}
 
-	/**
-	 * Returns the country
-	 *
-	 * @return string $country
-	 */
-	public function getCountry() {
+    /**
+     * @return string
+     */
+	public function getCountry(): string
+    {
 		return $this->country;
 	}
 
-	/**
-	 * Sets the country
-	 *
-	 * @param string $country
-	 * @return void
-	 */
-	public function setCountry($country) {
+    /**
+     * @param string $country
+     * @return void
+     */
+	public function setCountry(string $country): void
+    {
 		$this->country = $country;
 	}
 
-	/**
-	 * Returns the phone
-	 *
-	 * @return string $phone
-	 */
-	public function getPhone() {
+    /**
+     * @return string
+     */
+	public function getPhone(): string
+    {
 		return $this->phone;
 	}
 
-	/**
-	 * Sets the phone
-	 *
-	 * @param string $phone
-	 * @return void
-	 */
-	public function setPhone($phone) {
+    /**
+     * @param string $phone
+     * @return void
+     */
+	public function setPhone(string $phone): void
+    {
 		$this->phone = $phone;
 	}
 
-	/**
-	 * Returns the mobile
-	 *
-	 * @return string $mobile
-	 */
-	public function getMobile() {
+    /**
+     * @return string
+     */
+	public function getMobile(): string
+    {
 		return $this->mobile;
 	}
 
-	/**
-	 * Sets the mobile
-	 *
-	 * @param string $mobile
-	 * @return void
-	 */
-	public function setMobile($mobile) {
+    /**
+     * @param string $mobile
+     * @return void
+     */
+	public function setMobile(string $mobile): void
+    {
 		$this->mobile = $mobile;
 	}
 
-	/**
-	 * Returns the email
-	 *
-	 * @return string $email
-	 */
-	public function getEmail() {
+    /**
+     * @return string
+     */
+	public function getEmail(): string
+    {
 		return $this->email;
 	}
 
-	/**
-	 * Sets the email
-	 *
-	 * @param string $email
-	 * @return void
-	 */
-	public function setEmail($email) {
+    /**
+     * @param string $email
+     * @return void
+     */
+	public function setEmail(string $email): void
+    {
 		$this->email = $email;
 	}
 
-	/**
-	 * Returns the emailrp
-	 *
-	 * @return string $emailrp
-	 */
-	public function getEmailrp() {
+    /**
+     * @return string
+     */
+	public function getEmailrp(): string
+    {
 		return $this->emailrp;
 	}
 
-	/**
-	 * Sets the emailrp
-	 *
-	 * @param string $emailrp
-	 * @return void
-	 */
-	public function setEmailrp($emailrp) {
+    /**
+     * @param string $emailrp
+     * @return void
+     */
+	public function setEmailrp(string $emailrp): void
+    {
 		$this->emailrp = $emailrp;
 	}
 
-	/**
-	 * Returns the duo
-	 *
-	 * @return string $duo
-	 */
-	public function getDuo() {
+    /**
+     * @return string
+     */
+	public function getDuo(): string
+    {
 		return $this->duo;
 	}
 
-	/**
-	 * Sets the duo
-	 *
-	 * @param string $duo
-	 * @return void
-	 */
-	public function setDuo($duo) {
+    /**
+     * @param string $duo
+     * @return void
+     */
+	public function setDuo(string $duo): void
+    {
 		$this->duo = $duo;
 	}
 
-	/**
-	 * Returns the duosel
-	 *
-	 * @return string $duosel
-	 */
-	public function getDuosel() {
+    /**
+     * @return string
+     */
+	public function getDuosel(): string
+    {
 		return $this->duosel;
 	}
 
-	/**
-	 * Sets the duosel
-	 *
-	 * @param string $duosel
-	 * @return void
-	 */
-	public function setDuosel($duosel) {
+    /**
+     * @param string $duosel
+     * @return void
+     */
+	public function setDuosel(string $duosel): void
+    {
 		$this->duosel = $duosel;
 	}
 
-	/**
-	 * Returns the duoname
-	 *
-	 * @return string $duoname
-	 */
-	public function getDuoname() {
+    /**
+     * @return string
+     */
+	public function getDuoname(): string
+    {
 		return $this->duoname;
 	}
 
-	/**
-	 * Sets the duoname
-	 *
-	 * @param string $duoname
-	 * @return void
-	 */
-	public function setDuoname($duoname) {
+    /**
+     * @param string $duoname
+     * @return void
+     */
+	public function setDuoname(string $duoname): void
+    {
 		$this->duoname = $duoname;
 	}
-	
-	/**
-     * Returns the enconf
-     *
-     * @return integer $enconf
+
+    /**
+     * @return int|null
      */
-    public function getEnconf()
+    public function getEnconf(): ?int
     {
         return $this->enconf;
     }
 
     /**
-     * Sets the enconf
-     *
-     * @param integer $enconf
+     * @param int|null $enconf
      * @return void
      */
-    public function setEnconf($enconf)
+    public function setEnconf(?int $enconf): void
     {
         $this->enconf = $enconf;
     }
-	
+
     /**
-     * Returns the entn
-     *
-     * @return string $entn
+     * @return string
      */
-    public function getEntn()
+    public function getEntn(): string
     {
         return $this->entn;
     }
 
     /**
-     * Sets the entn
-     *
      * @param string $entn
      * @return void
      */
-    public function setEntn($entn)
+    public function setEntn(string $entn): void
     {
         $this->entn = $entn;
     }
 
-	/**
-     * Returns the enuid
-     *
-     * @return array $enuid
+    /**
+     * @return array
      */
-    public function getEnuid()
+    public function getEnuid(): array
     {
         return $this->enuid;
     }
 
     /**
-     * Sets the enuid
-     *
      * @param array $enuid
      * @return void
      */
-    public function setEnuid(array $enuid)
+    public function setEnuid(array $enuid): void
     {
         $this->enuid = $enuid;
     }
-	
+
     /**
-     * Returns the enfirstn
-     *
-     * @return array $enfirstn
+     * @return array
      */
-    public function getEnfirstn()
+    public function getEnfirstn(): array
     {
         return $this->enfirstn;
     }
 
     /**
-     * Sets the enfirstn
-     *
      * @param array $enfirstn
      * @return void
      */
-    public function setEnfirstn(array $enfirstn)
+    public function setEnfirstn(array $enfirstn): void
     {
         $this->enfirstn = $enfirstn;
     }
 
     /**
-     * Returns the enlastn
-     *
-     * @return array $enlastn
+     * @return array
      */
-    public function getEnlastn()
+    public function getEnlastn(): array
     {
         return $this->enlastn;
     }
 
     /**
-     * Sets the enlastn
-     *
      * @param array $enlastn
      * @return void
      */
-    public function setEnlastn(array $enlastn)
+    public function setEnlastn(array $enlastn): void
     {
         $this->enlastn = $enlastn;
     }
 
     /**
-     * Returns the eninstru
-     *
-     * @return array $eninstru
+     * @return array
      */
-    public function getEninstru()
+    public function getEninstru(): array
     {
         return $this->eninstru;
     }
 
     /**
-     * Sets the eninstru
-     *
      * @param array $eninstru
      * @return void
      */
-    public function setEninstru(array $eninstru)
+    public function setEninstru(array $eninstru): void
     {
         $this->eninstru = $eninstru;
     }
 
     /**
-     * Returns the engebdate
-     *
-     * @return array $engebdate
+     * @return array
      */
-    public function getEngebdate()
+    public function getEngebdate(): array
     {
         return $this->engebdate;
     }
 
     /**
-     * Sets the engebdate
-     *
      * @param array $engebdate
      * @return void
      */
-    public function setEngebdate(array $engebdate)
+    public function setEngebdate(array $engebdate): void
     {
         $this->engebdate = $engebdate;
     }
 
     /**
-     * Returns the ennatio
-     *
-     * @return array $ennatio
+     * @return array
      */
-    public function getEnnatio()
+    public function getEnnatio(): array
     {
         return $this->ennatio;
     }
 
     /**
-     * Sets the ennatio
-     *
      * @param array $ennatio
      * @return void
      */
-    public function setEnnatio(array $ennatio)
+    public function setEnnatio(array $ennatio): void
     {
         $this->ennatio = $ennatio;
     }
 
     /**
-     * Returns the engrdate
-     *
-     * @return string $engrdate
+     * @return string
      */
-    public function getEngrdate()
+    public function getEngrdate(): string
     {
         return $this->engrdate;
     }
 
     /**
-     * Sets the engrdate
-     *
      * @param string $engrdate
      * @return void
      */
-    public function setEngrdate($engrdate)
+    public function setEngrdate(string $engrdate): void
     {
         $this->engrdate = $engrdate;
     }
 
     /**
-     * Returns the entype
-     *
-     * @return string $entype
+     * @return string
      */
-    public function getEntype()
+    public function getEntype(): string
     {
         return $this->entype;
     }
 
     /**
-     * Sets the entype
-     *
      * @param string $entype
      * @return void
      */
-    public function setEntype($entype)
+    public function setEntype(string $entype): void
     {
         $this->entype = $entype;
     }
 
     /**
-     * Returns the engrplace
-     *
-     * @return string $engrplace
+     * @return string
      */
-    public function getEngrplace()
+    public function getEngrplace(): string
     {
         return $this->engrplace;
     }
 
     /**
-     * Sets the engrplace
-     *
      * @param string $engrplace
      * @return void
      */
-    public function setEngrplace($engrplace)
+    public function setEngrplace(string $engrplace): void
     {
         $this->engrplace = $engrplace;
     }
-	
+
     /**
-     * Returns the enname
-     *
-     * @return string $enname
+     * @return string
      */
-    public function getEnname()
+    public function getEnname(): string
     {
         return $this->enname;
     }
 
     /**
-     * Sets the enname
-     *
      * @param string $enname
      * @return void
      */
-    public function setEnname($enname)
+    public function setEnname(string $enname): void
     {
         $this->enname = $enname;
     }
 }
-?>

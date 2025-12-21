@@ -1,172 +1,318 @@
-<f:layout name="Default" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="DefaultFe"/>
 
-<f:section name="joProfBox">
-    <f:render partial="JoProfBox/JoProfBox" arguments="{_all}"/>
+<f:section name="Headline">
+    <div id="popup-orderfinal"
+         title="<f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.h2' />">
+        <p>
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.p"/>
+        </p>
+    </div>
+    <h1>
+        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3"/>
+        <f:format.html>{kursname}</f:format.html>
+    </h1>
 </f:section>
 
-<f:section name="main">
-	<div id="popup-orderfinal" title="<f:translate key='tx_jokursanmeldung_domain_model_kursanmeldung.step3.dialog.h2' />">
-		<p><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.dialog.p" /></p>
-	</div>
-    <h1><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3" /><f:format.html>{kursname}</f:format.html></h1>
-	<div><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.head" /></div>
+<f:section name="Prof">
+    <f:render partial="ProfBox/ProfBox" arguments="{_all}"/>
+</f:section>
+
+<f:section name="Main">
+    <div>
+        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.head"/>
+    </div>
     <table class="step3table">
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.gender" /></td>
-    		<td><f:switch expression="{step1data.gender}">
-                <f:case value="0"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.f" /></f:case>
-                <f:case value="1"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.m" /></f:case>
-            </f:switch></td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.firstName" /></td>
-    		<td>{step1data.firstName}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.lastName" /></td>
-    		<td>{step1data.lastName}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.birthday" /></td>
-    		<td>{step1data.birthday}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.nationality" /></td>
-    		<td>{nationality}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.address" /></td>
-    		<td>{step1data.address} {step1data.houseno}</td>
-    	</tr>
-    	 <f:if condition="{step1data.addressadd}!=''"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.addressadd" /></td>
-    		<td>{step1data.addressadd}</td>
-    	</tr></f:if>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.zip" /></td>
-    		<td>{step1data.zip}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.city" /></td>
-    		<td>{step1data.city}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.country" /></td>
-    		<td>{country}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.phone" /></td>
-    		<td>{step1data.phone}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.mobile" /></td>
-    		<td>{step1data.mobile}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.email" /></td>
-    		<td>{step1data.email}</td>
-    	</tr>
-        <f:if condition="{step1data.duo}==1"><tr>
-            <td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.duosel" /></td>
-            <td>{step1data.duosel}</td>
-        </tr>
-        <f:if condition="{step1data.duoname}!=''"><tr>
-            <td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.duoname" /></td>
-            <td>{step1data.duoname}</td>
-        </tr></f:if></f:if>
-		<f:if condition="{step1data.ensemble -> f:count()} > 0">
-		<f:render partial="Frontend/Complete/Ensemble" arguments="{ensemble:step1data.ensemble,countries:countries}"/>
-		</f:if>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.tnaction" /></td>
-    		<td><f:switch expression="{step2data.tnaction}">
-                <f:case value="0"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.aktiveTn" /></f:case>
-                <f:case value="1"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.passivTn" /></f:case>
-            </f:switch></td>
-    	</tr><f:if condition="{step2data.studystat} == 1">
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.studystat" /></td>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.studystat" /></td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.matrikel" /></td>
-    		<td>{step2data.matrikel}</td>
-    	</tr></f:if>
-    	<f:if condition="{step2data.studentship}==1"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.studentship" /></td>
-    		<td><f:switch expression="{step2data.studentship}">
-                <f:case value=""><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.studentship.0" /></f:case>
-                <f:case value="0"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.studentship.0" /></f:case>
-                <f:case value="1"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.studentship.1" /></f:case>
-            </f:switch></td>
-    	</tr></f:if>
-    	<f:if condition="{step2data.programm}!=''"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.programm" /></td>
-    		<td>{step2data.programm}</td>
-    	</tr></f:if>
-    	<f:if condition="{step2data.orchesterstudio}!=''"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.orchesterstudio" /></td>
-    		<td>{step2data.orchesterstudio}</td>
-    	</tr></f:if>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.enrollmentfee" /></td>
-    		<td><b>{enrollmentfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</b></td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.zahlungsart" /></td>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.{zahlungsart}" /></td>
-    	</tr><f:if condition="{settings.hidePaymentDate} != 1">
-		<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.zahlungstermin" /></td>
-    		<td>{step2data.zahlungstermin}</td>
-    	</tr></f:if><f:if condition="{additionalfee} > 0">
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.additionalfee" /></td>
-    		<td>{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR<br /><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.additionalfee1" />
-            <f:if condition="{kursActive.gebuehrcom}"><div class="gebuehrcom joCol joCol-1">
-            {kursActive.gebuehrcom}</div></f:if></td>
-    	</tr></f:if>
-        <f:if condition="{hotelArr.name}!=''"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.hotel" /></td>
-    		<td>{hotelArr.name}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.room" /></td>
-    		<td>{hotelArr.room}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.roomwith" /></td>
-    		<td>{step2data.roomwith}</td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.hotelfee" /></td>
-    		<td>{hotelArr.fee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.hotelfee2" /><br />
-            <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.hotelfee1" />
-            </td>
-    	</tr>
-    	<tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.roomfrom" /></td>
-    		<td>{step2data.roomfrom} - {step2data.roomto}</td>
-    	</tr></f:if>
-    	<f:if condition="{hidedl}!=1"><tr>
-    		<td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.filesupload" /></td>
-    		<td>
-              <div>{step2data.link}</div>
-    		  <div>{step2data.youtube}</div>
-    		  <f:if condition="{downloads}"><f:for each="{downloads}" as="dl"><div>{dl.name}</div></f:for></f:if>
-              <f:if condition="{vita}"><div>{vita}</div></f:if>
-            </td>
-    	</tr></f:if>
-        <f:if condition="{step2data.comment}!=''"><tr>
-            <td><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.comment" /></td>
+        <tr>
             <td>
-              {step2data.comment}
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.gender"/>
             </td>
-        </tr></f:if>
+            <td>
+                <f:switch expression="{step1data.gender}">
+                    <f:case value="0">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.f"/>
+                    </f:case>
+                    <f:case value="1">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.m"/>
+                    </f:case>
+                </f:switch>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.firstName"/>
+            </td>
+            <td>{step1data.firstName}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.lastName"/>
+            </td>
+            <td>{step1data.lastName}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.birthday"/>
+            </td>
+            <td>{step1data.birthday}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.nationality"/>
+            </td>
+            <td>{nationality}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.address"/>
+            </td>
+            <td>{step1data.address} {step1data.houseno}</td>
+        </tr>
+        <f:if condition="{step1data.addressadd}!=''">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.addressadd"/>
+                </td>
+                <td>{step1data.addressadd}</td>
+            </tr>
+        </f:if>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.zip"/>
+            </td>
+            <td>{step1data.zip}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.city"/>
+            </td>
+            <td>{step1data.city}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.country"/>
+            </td>
+            <td>{country}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.phone"/>
+            </td>
+            <td>{step1data.phone}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.mobile"/>
+            </td>
+            <td>{step1data.mobile}</td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.email"/>
+            </td>
+            <td>{step1data.email}</td>
+        </tr>
+        <f:if condition="{step1data.duo}==1">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.duosel"/>
+                </td>
+                <td>{step1data.duosel}</td>
+            </tr>
+            <f:if condition="{step1data.duoname}!=''">
+                <tr>
+                    <td>
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.duoname"/>
+                    </td>
+                    <td>{step1data.duoname}</td>
+                </tr>
+            </f:if>
+        </f:if>
+        <f:if condition="{step1data.ensemble -> f:count()} > 0">
+            <f:render partial="Frontend/Complete/Ensemble"
+                      arguments="{ensemble:step1data.ensemble,countries:countries}"/>
+        </f:if>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.tnaction"/>
+            </td>
+            <td>
+                <f:switch expression="{step2data.tnaction}">
+                    <f:case value="0">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.aktiveTn"/>
+                    </f:case>
+                    <f:case value="1">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.passivTn"/>
+                    </f:case>
+                </f:switch>
+            </td>
+        </tr>
+        <f:if condition="{step2data.studystat} == 1">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.studystat"/>
+                </td>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.studystat"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.matrikel"/>
+                </td>
+                <td>{step2data.matrikel}</td>
+            </tr>
+        </f:if>
+        <f:if condition="{step2data.studentship}==1">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.studentship"/>
+                </td>
+                <td>
+                    <f:switch expression="{step2data.studentship}">
+                        <f:case value="">
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.studentship.0"/>
+                        </f:case>
+                        <f:case value="0">
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.studentship.0"/>
+                        </f:case>
+                        <f:case value="1">
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.studentship.1"/>
+                        </f:case>
+                    </f:switch>
+                </td>
+            </tr>
+        </f:if>
+        <f:if condition="{step2data.programm}!=''">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.programm"/>
+                </td>
+                <td>{step2data.programm}</td>
+            </tr>
+        </f:if>
+        <f:if condition="{step2data.orchesterstudio}!=''">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.orchesterstudio"/>
+                </td>
+                <td>{step2data.orchesterstudio}</td>
+            </tr>
+        </f:if>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.enrollmentfee"/>
+            </td>
+            <td><b>{enrollmentfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.zahlungsart"/>
+            </td>
+            <td>
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{zahlungsart}"/>
+            </td>
+        </tr>
+        <f:if condition="{settings.hidePaymentDate} != 1">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.zahlungstermin"/>
+                </td>
+                <td>{step2data.zahlungstermin}</td>
+            </tr>
+        </f:if>
+        <f:if condition="{additionalfee} > 0">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.additionalfee"/>
+                </td>
+                <td>{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR<br/>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.additionalfee1"/>
+                    <f:if condition="{kursActive.gebuehrcom}">
+                        <div class="gebuehrcom joCol joCol-1">
+                            {kursActive.gebuehrcom}
+                        </div>
+                    </f:if>
+                </td>
+            </tr>
+        </f:if>
+        <f:if condition="{hotelArr.name}!=''">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotel"/>
+                </td>
+                <td>{hotelArr.name}</td>
+            </tr>
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.room"/>
+                </td>
+                <td>{hotelArr.room}</td>
+            </tr>
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.roomwith"/>
+                </td>
+                <td>{step2data.roomwith}</td>
+            </tr>
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee"/>
+                </td>
+                <td>{hotelArr.fee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee2"/>
+                    <br/>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.roomfrom"/>
+                </td>
+                <td>{step2data.roomfrom} - {step2data.roomto}</td>
+            </tr>
+        </f:if>
+        <f:if condition="{hidedl}!=1">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.filesupload"/>
+                </td>
+                <td>
+                    <div>{step2data.link}</div>
+                    <div>{step2data.youtube}</div>
+                    <f:if condition="{downloads}">
+                        <f:for each="{downloads}" as="dl">
+                            <div>{dl.name}</div>
+                        </f:for>
+                    </f:if>
+                    <f:if condition="{vita}">
+                        <div>{vita}</div>
+                    </f:if>
+                </td>
+            </tr>
+        </f:if>
+        <f:if condition="{step2data.comment}!=''">
+            <tr>
+                <td>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.comment"/>
+                </td>
+                <td>
+                    {step2data.comment}
+                </td>
+            </tr>
+        </f:if>
     </table>
-    <f:form action="step3redirect" name="step3data" object="{step3data}" noCache="true" noCacheHash="true" id="step3form">
+    <f:form action="step3redirect" name="step3data" object="{step3data}" noCache="true" noCacheHash="true"
+            id="step3form">
         <f:render partial="Frontend/step3Fields" arguments="{_all}"/>
-        <f:link.action action="step2" class="formhandler-button formhandler-backward"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.back" /></f:link.action>
-        <f:form.submit value="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step3.next')}" class="formhandler-button orderfinal" data="{layer:zahlungsart}" /><a href="javascript:window.print();" class="formhandler-button formhandler-backward"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.print" /></a>
+        <f:link.action action="step2" class="formhandler-button formhandler-backward">
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.back"/>
+        </f:link.action>
+        <f:form.submit value="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step3.next')}"
+                       class="formhandler-button orderfinal" data="{layer:zahlungsart}"/>
+        <a href="javascript:window.print();" class="formhandler-button formhandler-backward">
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.print"/>
+        </a>
     </f:form>
 </f:section>

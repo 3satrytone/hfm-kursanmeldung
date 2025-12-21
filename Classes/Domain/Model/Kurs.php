@@ -144,6 +144,70 @@ class Kurs extends AbstractEntity
         $this->instrument = $instrument;
     }
 
+
+    /**
+     * Returns the kurszeitstart
+     *
+     * @return \DateTime $kurszeitstart
+     */
+    public function getKurszeitstart()
+    {
+        return $this->kurszeitstart;
+    }
+
+    /**
+     * Sets the kurszeitstart
+     *
+     * @param \DateTime $kurszeitstart
+     * @return void
+     */
+    public function setKurszeitstart(\DateTime $kurszeitstart)
+    {
+        $this->kurszeitstart = $kurszeitstart;
+    }
+
+    /**
+     * Returns the kurszeitend
+     *
+     * @return \DateTime $kurszeitend
+     */
+    public function getKurszeitend()
+    {
+        return $this->kurszeitend;
+    }
+
+    /**
+     * Sets the kurszeitend
+     *
+     * @param \DateTime $kurszeitend
+     * @return void
+     */
+    public function setKurszeitend(\DateTime $kurszeitend)
+    {
+        $this->kurszeitend = $kurszeitend;
+    }
+
+    /**
+     * Returns the anreisedate
+     *
+     * @return \DateTime $anreisedate
+     */
+    public function getAnreisedate()
+    {
+        return $this->anreisedate;
+    }
+
+    /**
+     * Sets the anreisedate
+     *
+     * @param \DateTime $anreisedate
+     * @return void
+     */
+    public function setAnreisedate(\DateTime $anreisedate)
+    {
+        $this->anreisedate = $anreisedate;
+    }
+
     /**
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Orte>
      */

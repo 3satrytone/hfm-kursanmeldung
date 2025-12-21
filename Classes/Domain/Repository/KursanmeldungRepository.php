@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Repository;
 
 use Hfm\Kursanmeldung\Constants\Constants;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -24,14 +26,31 @@ class KursanmeldungRepository extends Repository
     /**
      * @param int $kurs
      */
-    public function getParticipantsByKurs($kursId): QueryResultInterface {
+    public function getParticipantsByKurs($kursId): QueryResultInterface
+    {
         $kurs = intval($kursId);
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->equals(Constants::DB_FIELD_KURS, $kurs)
         );
 
         return $query->execute();
+    }
+
+    public function getParticipantsByMail(?int $kursUid, string $email)
+    {
+        $kurs = intval($kursUid);
+
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+
+        return $query->matching(
+            $query->logicalAnd(
+                $query->equals('kurs', $kurs),
+                $query->like('tn.email', $email)
+            )
+        )
+        ->execute();
     }
 }

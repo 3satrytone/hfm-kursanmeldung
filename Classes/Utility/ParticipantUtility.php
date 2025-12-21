@@ -3,9 +3,21 @@
 namespace Hfm\Kursanmeldung\Utility;
 
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
+use Hfm\Kursanmeldung\Domain\Model\Step1Data;
+use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class ParticipantUtility
 {
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository $kursanmeldungRepository
+     */
+    public function __construct(
+        protected readonly KursanmeldungRepository $kursanmeldungRepository
+    ) {
+    }
+
     /**
      * @param Kurs|null $kurs
      * @param array $kursTn
@@ -37,5 +49,106 @@ class ParticipantUtility
         }
 
         return $tnactionArr;
+    }
+
+    /**
+     * @return string
+     */
+    protected function translateFromXlf(): string
+    {
+        $args = func_get_args();
+        $key = array_shift($args);
+
+        return LocalizationUtility::translate($key, 'kursanmeldung', $args) ?? '';
+    }
+
+    /**
+     * @param array $entries
+     * @param string $transTable
+     * @return array
+     */
+    public function getOptions(
+        array $entries = [],
+        string $transTable = 'tx_kursanmeldung_domain_model_kursanmeldung'
+    ): array {
+        $categories = [];
+        foreach ($entries as $key => $entry) {
+            $categories[$key] = $this->translateFromXlf($transTable . $entry);
+        }
+
+        return $categories;
+    }
+
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kurs $kurs
+     * @param bool $onlyName
+     * @return string
+     */
+    public function getKursname(Kurs $kurs, bool $onlyName = false): string
+    {
+        $kursName = '';
+        if (!empty($kurs) && $kurs !== null) {
+            $prof = $kurs->getProfessor()->current();
+            // Name für Head
+            if (!empty($prof)) {
+                if ($onlyName) {
+                    return $prof->getName();
+                }
+                $kursName = $prof->getName() . ' ' . $kurs->getKurszeitstart()->format(
+                        'd.m.Y'
+                    ) . ' - ' . $kurs->getKurszeitend()->format('d.m.Y');
+            }
+        }
+
+        return $kursName;
+    }
+
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage|null $hotel
+     * @return array[]
+     */
+    public function splitHotel(?ObjectStorage $hotel): array
+    {
+        $hotelArr = [
+            'hotel' => [],
+            'price' => [],
+            'room' => [],
+        ];
+
+        if (!empty($hotel)) {
+            foreach ($hotel as $value) {
+                $hotelArr['hotel'][$value->getUid()] = $value->getHotel();
+                // Ermäßigung auf Kundenwunsch rausgenommen bspw. ezpreiserm
+                $hotelArr['price'][$value->getUid()] = [
+                    'ezpreis' => $value->getEzpreis(),
+                    'dzpreis' => $value->getDzpreis(),
+                    'dz2preis' => $value->getDz2preis(),
+                ];
+                $entries = [
+                    'ezpreis' => '.step2.valezpreis',
+                    'dzpreis' => '.step2.valdzpreis',
+                    'dz2preis' => '.step2.valdz2preis'
+                ];
+                $hotelArr['room'] = $this->getOptions($entries);
+            }
+        }
+
+        return $hotelArr;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Step1Data $step1data
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kurs $kurs
+     * @return bool
+     */
+    public function checkForParticipant(
+        Step1Data $step1data,
+        Kurs $kurs,
+    ): bool {
+        $part = $this->kursanmeldungRepository->getParticipantsByMail($kurs->getUid(), $step1data->getEmail());
+
+        return ($part->count() > 0);
     }
 }

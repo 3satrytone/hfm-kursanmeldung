@@ -64,4 +64,29 @@ class SessionUtility
         // This will create an anonymous frontend user if none is logged in
         $this->frontendUser = $frontendUserAuthentication;
     }
+
+    /**
+     * @param \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUserAuthentication
+     * @return void
+     */
+    public function cleanSession(FrontendUserAuthentication $frontendUserAuthentication): void
+    {
+        $this->setFrontendUser($frontendUserAuthentication);
+        $this->setData(self::FORM_SESSION_STEP1_DATA, '');
+        $this->setData(self::FORM_SESSION_STEP2_DATA, '');
+        $this->setData(self::FORM_SESSION_STEP3_DATA, '');
+        $this->setData(self::FORM_SESSION_STEP4_DATA, '');
+        $this->setData(self::FORM_SESSION_PL, '');
+        $this->setData(self::FORM_SESSION_KURS, '');
+        $this->setData(self::FORM_SESSION_KURS_UID, '');
+        $this->setData(self::FORM_SESSION_SEND_MAIL, '');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompletedRegistration(): bool
+    {
+        return !empty($this->getData(self::FORM_SESSION_STEP3_DATA));
+    }
 }

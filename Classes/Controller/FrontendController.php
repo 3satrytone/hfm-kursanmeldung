@@ -3,15 +3,25 @@
 namespace Hfm\Kursanmeldung\Controller;
 
 
+use Hfm\Kursanmeldung\Constants\Constants;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
+use Hfm\Kursanmeldung\Domain\Model\Step2Data;
+use Hfm\Kursanmeldung\Domain\Model\Step3Data;
+use Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfRepository;
+use Hfm\Kursanmeldung\Domain\Validator\Step1DataValidator;
+use Hfm\Kursanmeldung\Domain\Validator\Step2DataValidator;
+use Hfm\Kursanmeldung\Utility\FormatUtility;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Hfm\Kursanmeldung\Utility\SessionUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class FrontendController extends ActionController
 {
@@ -40,8 +50,10 @@ class FrontendController extends ActionController
         protected readonly KursRepository $kursRepository,
         protected readonly ProfRepository $profRepository,
         protected readonly KursanmeldungRepository $kursanmeldungRepository,
+        protected readonly GebuehrenRepository $gebuehrenRepository,
         protected readonly SessionUtility $sessionUtility,
         protected readonly ParticipantUtility $participantUtility,
+        protected readonly FormatUtility $formatUtility,
     ) {
     }
 
@@ -155,7 +167,7 @@ class FrontendController extends ActionController
      */
     public function kurswahlAction(): ResponseInterface
     {
-        $this->cleanSession();
+        //$this->sessionUtility->cleanSession($this->getUser());
         $this->kursRepository->setStoragePageIds([$this->settings['records']['kurs']]);
         $kurse = $this->kursRepository->findAll();
         $kurseActive = array();
@@ -172,7 +184,7 @@ class FrontendController extends ActionController
                         $kursTn->toArray()
                     );
                     $onlyPassive = 0;
-                    if(isset($activePassiveTn['aktiveTn']) && $activePassiveTn['aktiveTn'] < 1) {
+                    if (isset($activePassiveTn['aktiveTn']) && $activePassiveTn['aktiveTn'] < 1) {
                         $onlyPassive = 1;
                     };
                     $tnStatus[] = [
@@ -196,26 +208,274 @@ class FrontendController extends ActionController
      * @param Step1Data|null $step1data
      * @return ResponseInterface
      */
-    public function step1Action(?Step1Data $step1data): ResponseInterface
+    #[IgnoreValidation(['argumentName' => 'step1data'])]
+    public function step1Action(?Step1Data $step1data = null): ResponseInterface
+    {
+        // check if step3 completed no backwards functions
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        if ($this->sessionUtility->isCompletedRegistration()) {
+            return $this->redirect(Constants::ACTION_KURS_WAHL);
+        }
+        // check Browser for reload
+        $this->forceHeader();
+
+        // get Kurs from Session
+        $kurs = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS);
+        if (!$this->request->hasArgument(Constants::KURS)) {
+            if (empty($kurs)) {
+                $this->redirect(Constants::ACTION_KURS_WAHL);
+            }
+        }
+
+        $kursUid = (int)$this->request->getArgument(Constants::KURS);
+        $kurs = $this->kursRepository->findByUid($kursUid);
+
+        if(!empty($kurs)){
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS, $kurs);
+        }
+
+        $step1data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP1_DATA);
+        if(empty($step1data)){
+            $step1data = null;
+        }
+
+        $kursTn = $this->kursanmeldungRepository->getParticipantsByKurs($kurs->getUid());
+        $tnactionArr = $this->participantUtility->checkKursParticipant(
+            $kurs,
+            $kursTn->toArray()
+        );
+        $entries = array(0 => 'f', 1 => 'm');
+        $gender = $this->participantUtility->getOptions($entries, 'tx_kursanmeldung_domain_model_kursanmeldung.step1.');
+
+        $kursname = $this->participantUtility->getKursname($kurs);
+        $duo = 0;
+        $duoselArr = array();
+
+        if (!empty($kurs) && $kurs != null) {
+            // duo Setup auslesen
+            if ($kurs->getDuo()) {
+                $duo = $kurs->getDuo();
+                $duoselExpl = explode(',', $kurs->getDuosel());
+                $duoselArr = array();
+                if (!empty($duoselExpl)) {
+                    foreach ($duoselExpl as $duoOpt) {
+                        $duoOpt = trim($duoOpt);
+                        $duoselArr[$duoOpt] = $duoOpt;
+                    }
+                }
+            }
+        }
+
+        // checkItems aus TCA auslesen
+        $ensembleCheckbox = $this->formatUtility->buildCBFromTCA($kurs);
+
+        $this->view->assign('ensembleCheckbox', $ensembleCheckbox);
+        $this->view->assign('kursname', $kursname);
+        $this->view->assign('genders', $gender);
+        $this->view->assign(Constants::ACTION_STEP_1_DATA, $step1data);
+        $this->view->assign(Constants::KURS, $kurs);
+        $this->view->assign('duo', $duo);
+        $this->view->assign('duoselArr', $duoselArr);
+
+        return $this->htmlResponse();
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Step1Data $step1data
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    #[Validate([
+        'param' => 'step1data',
+        'validator' => Step1DataValidator::class,
+    ])]
+    public function step1redirectAction(Step1Data $step1data): ResponseInterface {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        $this->sessionUtility->setData(SessionUtility::FORM_SESSION_STEP1_DATA, $step1data);
+
+        return $this->redirect(Constants::ACTION_STEP_2);
+    }
+
+    /**
+     * initialize step2 action
+     *
+     * @return void
+     */
+    public function initializeStep2Action(): void
+    {
+        if ($this->arguments->hasArgument(Constants::ACTION_STEP_2_DATA)) {
+            $this->arguments->getArgument(Constants::ACTION_STEP_2_DATA)->getPropertyMappingConfiguration()->allowProperties('vita');
+        }
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Step2Data|null $step2data
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    #[IgnoreValidation(['argumentName' => 'step2data'])]
+    public function step2Action(?Step2Data $step2data = null): ResponseInterface
+    {
+        // check if step3 completed no backwards functions
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        if (!$this->sessionUtility->isCompletedRegistration()) {
+            $this->redirect(Constants::ACTION_KURS_WAHL);
+        }
+        // check Browser for reload
+        $this->forceHeader();
+
+        // get Kurs from Session
+        $kurs = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS);
+        if (!$this->request->hasArgument(Constants::KURS)) {
+            if (empty($kurs)) {
+                return $this->redirect(Constants::ACTION_KURS_WAHL);
+            }
+        }
+
+        $step2data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+        if(empty($step2data)){
+            $step2data = null;
+        }
+
+        $kursTn = $this->kursanmeldungRepository->getParticipantsByKurs($kurs->getUid());
+        $tnactions = $this->participantUtility->checkKursParticipant(
+            $kurs,
+            $kursTn->toArray()
+        );
+        $tnactionOptions = [];
+        if(is_array($tnactions)){
+            $tnaction = $this->participantUtility->getOptions(array_keys($tnactions), 'tx_kursanmeldung_domain_model_kursanmeldung.step2.');
+        }
+
+        $enrollmentFee = 0;
+        $additionalFee = 0;
+
+        $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
+        if(!empty($gebuehr)){
+            $enrollmentFee = $gebuehr->getAnmeldung();
+            $additionalFee = $gebuehr->getAktivengeb();
+        }
+        // hotel aufsplitten für selectbox Hotel->Zimmer->Beischläfer
+        $hotel = $this->participantUtility->splitHotel($kurs->getHotel());
+
+        //zahlungsart todo:variable gestalten
+        $zahlungsart = $this->participantUtility->getOptions($this->zahlungsartArr,'tx_kursanmeldung_domain_model_kursanmeldung.step2.');
+        $zahlungstermin = new \DateTime('NOW');
+        $zahlungstermin->add(new \DateInterval('P10D'));
+
+        // downloads src und name teilen
+        if($step2data != NULL){
+            $downloads = array();
+            $downloadData = $step2data->getDownload();
+            if(!empty($downloadData)){
+                foreach ($downloadData as $key => $value) {
+                    $downloads[$key]['src'] = $value;
+                    $downloads[$key]['name'] = basename($value);
+                }
+            }
+
+            // downloads src und name teilen
+            $vita = array('name'=>'');
+            $vita['src'] = $step2data->getVita();
+            if(!empty($vita['src'])){
+                $vita['name'] = basename($vita['src']);
+            }
+        }else{
+            $step2data = new Step2Data();
+        }
+
+        if($step2data->getRoomfrom() == '' && !empty($kurs)){
+            $roomFrom = $kurs->getAnreisedate();
+            $step2data->setRoomfrom($roomFrom->format('d.m.Y'));
+        }
+        if($step2data->getRoomto() == '' && !empty($kurs)){
+            $roomto = $kurs->getKurszeitend();
+            $roomto->add(new \DateInterval('P1D'));
+            $step2data->setRoomto($roomto->format('d.m.Y'));
+        }
+
+        // look for already registered user by email and kurs id
+        $alreadyParticipant = $this->participantUtility->checkForParticipant(
+            $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP1_DATA),
+            $kurs
+        );
+
+        // if enrollmentfee 0 or 0,00 or empty no Paymentselectfield
+        if(empty($enrollmentfee)){
+            $this->zahlungsartArr[9] = 'standard';
+            $zahlungsart = 9;
+        }
+
+        $kursname = $this->participantUtility->getKursname($kurs);
+        $showUploadHint = ($kurs->getYoutube()>0 || $kurs->getWeblink()>0 || $kurs->getMaxupload()>0) ? 1 : 0;
+
+        $this->view->assign('alreadyParticipant', $alreadyParticipant);
+        $this->view->assign('tnaction', $tnaction);
+        $this->view->assign('kursname', $kursname);
+        $this->view->assign('zahlungsart', $zahlungsart);
+        $this->view->assign('zahlungstermin', $zahlungstermin->format('d.m.Y'));
+        $this->view->assign('enrollmentfee', $enrollmentFee);
+        $this->view->assign('additionalfee', $additionalFee);
+        $this->view->assign('showUploadHint', $showUploadHint);
+        $this->view->assign('kurs', $kurs);
+        $this->view->assign('gebuehr', $gebuehr);
+        $this->view->assign('hotel', $hotel);
+        $this->view->assign('step2data', $step2data);
+
+        return $this->htmlResponse();
+    }
+
+    /**
+     * initialize step2 action
+     *
+     * @return void
+     */
+    public function initializeStep2redirectAction() {
+        if ($this->arguments->hasArgument(Constants::ACTION_STEP_2_DATA)) {
+            $this->arguments->getArgument(Constants::ACTION_STEP_2_DATA)->getPropertyMappingConfiguration()->allowProperties('vita');
+        }
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Step2Data $step2data
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    #[Validate([
+        'param' => 'step2data',
+        'validator' => Step2DataValidator::class,
+    ])]
+    public function step2redirectAction(Step2Data $step2data): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        $this->sessionUtility->setData(SessionUtility::FORM_SESSION_STEP2_DATA, $step2data);
+
+        return $this->redirect(Constants::ACTION_STEP_3);
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Step3Data|null $step3data
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    #[IgnoreValidation(['argumentName' => 'step3data'])]
+    public function step3Action(?Step3Data $step3data = null): ResponseInterface
     {
         return $this->htmlResponse();
     }
 
     /**
-     * clean session from user input
-     *
+     * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+     */
+    protected function getUser(): FrontendUserAuthentication
+    {
+        return $this->request->getAttribute('frontend.user');
+    }
+
+    /**
      * @return void
      */
-    protected function cleanSession(): void
+    protected function forceHeader(): void
     {
-        $this->sessionUtility->setFrontendUser($this->request->getAttribute('frontend.user'));
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_STEP1_DATA, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_STEP2_DATA, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_STEP3_DATA, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_STEP4_DATA, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_PL, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_KURS, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_KURS_UID, '');
-        $this->sessionUtility->setData($this->sessionUtility::FORM_SESSION_SEND_MAIL, '');
+        // force javascript back / browser back to relaod page
+        // attention by flush cache events
+        header('Pragma: no-cache');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     }
 }

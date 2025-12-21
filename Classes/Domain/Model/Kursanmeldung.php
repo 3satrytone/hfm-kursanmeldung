@@ -1,16 +1,31 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class Kursanmeldung extends AbstractEntity
 {
     protected ?int $deflang = null;
-    protected int $tn = 0;
-    protected int $kurs = 0;
-    protected int $uploads = 0;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Teilnehmer>
+     */
+    protected ObjectStorage $tn;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs>
+     */
+    protected ObjectStorage $kurs;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Uploads>
+     */
+    protected ObjectStorage $uploads;
+
     protected int $bezahlt = 0;
     protected int $bezahltag = 0;
     protected string $zahlart = '';
@@ -28,8 +43,17 @@ class Kursanmeldung extends AbstractEntity
     protected int $gebuehrdat = 0;
     protected int $datein = 0;
     protected string $teilnahmeart = '';
-    protected ?int $anmeldestatus = null;
-    protected ?int $profstatus = null;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     */
+    protected ObjectStorage $anmeldestatus;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     */
+    protected ObjectStorage $profstatus;
+
     protected string $programm = '';
     protected string $orchesterstudio = '';
     protected int $duo = 0;
@@ -46,137 +70,477 @@ class Kursanmeldung extends AbstractEntity
     protected string $novalnettidag = '';
     protected string $novalnetcno = '';
     protected string $notice = '';
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Ensem>
+     */
     protected int $ensemble = 0;
     protected int $stipendiat = 0;
     protected int $studentship = 0;
     protected int $studystat = 0;
 
-    public function getDeflang(): ?int { return $this->deflang; }
-    public function setDeflang(?int $deflang): void { $this->deflang = $deflang; }
+    public function getDeflang(): ?int
+    {
+        return $this->deflang;
+    }
 
-    public function getTn(): int { return $this->tn; }
-    public function setTn(int $tn): void { $this->tn = $tn; }
+    public function setDeflang(?int $deflang): void
+    {
+        $this->deflang = $deflang;
+    }
 
-    public function getKurs(): int { return $this->kurs; }
-    public function setKurs(int $kurs): void { $this->kurs = $kurs; }
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Teilnehmer>
+     */
+    public function getTn(): ObjectStorage
+    {
+        return $this->tn;
+    }
 
-    public function getUploads(): int { return $this->uploads; }
-    public function setUploads(int $uploads): void { $this->uploads = $uploads; }
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Teilnehmer> $tn
+     * @return void
+     */
+    public function setTn(ObjectStorage $tn): void
+    {
+        $this->tn = $tn;
+    }
 
-    public function getBezahlt(): int { return $this->bezahlt; }
-    public function setBezahlt(int $bezahlt): void { $this->bezahlt = $bezahlt; }
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs>
+     */
+    public function getKurs(): ObjectStorage
+    {
+        return $this->kurs;
+    }
 
-    public function getBezahltag(): int { return $this->bezahltag; }
-    public function setBezahltag(int $bezahltag): void { $this->bezahltag = $bezahltag; }
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs> $kurs
+     * @return void
+     */
+    public function setKurs(ObjectStorage $kurs): void
+    {
+        $this->kurs = $kurs;
+    }
 
-    public function getZahlart(): string { return $this->zahlart; }
-    public function setZahlart(string $zahlart): void { $this->zahlart = $zahlart; }
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Uploads>
+     */
+    public function getUploads(): ObjectStorage
+    {
+        return $this->uploads;
+    }
 
-    public function getZahltbis(): int { return $this->zahltbis; }
-    public function setZahltbis(int $zahltbis): void { $this->zahltbis = $zahltbis; }
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Uploads> $uploads
+     * @return void
+     */
+    public function setUploads(ObjectStorage $uploads): void
+    {
+        $this->uploads = $uploads;
+    }
 
-    public function getGezahlt(): string { return $this->gezahlt; }
-    public function setGezahlt(string $gezahlt): void { $this->gezahlt = $gezahlt; }
+    public function getBezahlt(): int
+    {
+        return $this->bezahlt;
+    }
 
-    public function getGezahltag(): string { return $this->gezahltag; }
-    public function setGezahltag(string $gezahltag): void { $this->gezahltag = $gezahltag; }
+    public function setBezahlt(int $bezahlt): void
+    {
+        $this->bezahlt = $bezahlt;
+    }
 
-    public function getGezahltos(): string { return $this->gezahltos; }
-    public function setGezahltos(string $gezahltos): void { $this->gezahltos = $gezahltos; }
+    public function getBezahltag(): int
+    {
+        return $this->bezahltag;
+    }
 
-    public function getHotel(): int { return $this->hotel; }
-    public function setHotel(int $hotel): void { $this->hotel = $hotel; }
+    public function setBezahltag(int $bezahltag): void
+    {
+        $this->bezahltag = $bezahltag;
+    }
 
-    public function getRoom(): string { return $this->room; }
-    public function setRoom(string $room): void { $this->room = $room; }
+    public function getZahlart(): string
+    {
+        return $this->zahlart;
+    }
 
-    public function getRoomwith(): string { return $this->roomwith; }
-    public function setRoomwith(string $roomwith): void { $this->roomwith = $roomwith; }
+    public function setZahlart(string $zahlart): void
+    {
+        $this->zahlart = $zahlart;
+    }
 
-    public function getRoomfrom(): string { return $this->roomfrom; }
-    public function setRoomfrom(string $roomfrom): void { $this->roomfrom = $roomfrom; }
+    public function getZahltbis(): int
+    {
+        return $this->zahltbis;
+    }
 
-    public function getRoomto(): string { return $this->roomto; }
-    public function setRoomto(string $roomto): void { $this->roomto = $roomto; }
+    public function setZahltbis(int $zahltbis): void
+    {
+        $this->zahltbis = $zahltbis;
+    }
 
-    public function getGebuehr(): string { return $this->gebuehr; }
-    public function setGebuehr(string $gebuehr): void { $this->gebuehr = $gebuehr; }
+    public function getGezahlt(): string
+    {
+        return $this->gezahlt;
+    }
 
-    public function getGebuehrag(): string { return $this->gebuehrag; }
-    public function setGebuehrag(string $gebuehrag): void { $this->gebuehrag = $gebuehrag; }
+    public function setGezahlt(string $gezahlt): void
+    {
+        $this->gezahlt = $gezahlt;
+    }
 
-    public function getGebuehrdat(): int { return $this->gebuehrdat; }
-    public function setGebuehrdat(int $gebuehrdat): void { $this->gebuehrdat = $gebuehrdat; }
+    public function getGezahltag(): string
+    {
+        return $this->gezahltag;
+    }
 
-    public function getDatein(): int { return $this->datein; }
-    public function setDatein(int $datein): void { $this->datein = $datein; }
+    public function setGezahltag(string $gezahltag): void
+    {
+        $this->gezahltag = $gezahltag;
+    }
 
-    public function getTeilnahmeart(): string { return $this->teilnahmeart; }
-    public function setTeilnahmeart(string $teilnahmeart): void { $this->teilnahmeart = $teilnahmeart; }
+    public function getGezahltos(): string
+    {
+        return $this->gezahltos;
+    }
 
-    public function getAnmeldestatus(): ?int { return $this->anmeldestatus; }
-    public function setAnmeldestatus(?int $anmeldestatus): void { $this->anmeldestatus = $anmeldestatus; }
+    public function setGezahltos(string $gezahltos): void
+    {
+        $this->gezahltos = $gezahltos;
+    }
 
-    public function getProfstatus(): ?int { return $this->profstatus; }
-    public function setProfstatus(?int $profstatus): void { $this->profstatus = $profstatus; }
+    public function getHotel(): int
+    {
+        return $this->hotel;
+    }
 
-    public function getProgramm(): string { return $this->programm; }
-    public function setProgramm(string $programm): void { $this->programm = $programm; }
+    public function setHotel(int $hotel): void
+    {
+        $this->hotel = $hotel;
+    }
 
-    public function getOrchesterstudio(): string { return $this->orchesterstudio; }
-    public function setOrchesterstudio(string $orchesterstudio): void { $this->orchesterstudio = $orchesterstudio; }
+    public function getRoom(): string
+    {
+        return $this->room;
+    }
 
-    public function getDuo(): int { return $this->duo; }
-    public function setDuo(int $duo): void { $this->duo = $duo; }
+    public function setRoom(string $room): void
+    {
+        $this->room = $room;
+    }
 
-    public function getDuosel(): string { return $this->duosel; }
-    public function setDuosel(string $duosel): void { $this->duosel = $duosel; }
+    public function getRoomwith(): string
+    {
+        return $this->roomwith;
+    }
 
-    public function getDuoname(): string { return $this->duoname; }
-    public function setDuoname(string $duoname): void { $this->duoname = $duoname; }
+    public function setRoomwith(string $roomwith): void
+    {
+        $this->roomwith = $roomwith;
+    }
 
-    public function getComment(): string { return $this->comment; }
-    public function setComment(string $comment): void { $this->comment = $comment; }
+    public function getRoomfrom(): string
+    {
+        return $this->roomfrom;
+    }
 
-    public function getAgb(): int { return $this->agb; }
-    public function setAgb(int $agb): void { $this->agb = $agb; }
+    public function setRoomfrom(string $roomfrom): void
+    {
+        $this->roomfrom = $roomfrom;
+    }
 
-    public function getDatenschutz(): int { return $this->datenschutz; }
-    public function setDatenschutz(int $datenschutz): void { $this->datenschutz = $datenschutz; }
+    public function getRoomto(): string
+    {
+        return $this->roomto;
+    }
 
-    public function getSavedata(): int { return $this->savedata; }
-    public function setSavedata(int $savedata): void { $this->savedata = $savedata; }
+    public function setRoomto(string $roomto): void
+    {
+        $this->roomto = $roomto;
+    }
 
-    public function getSalt(): string { return $this->salt; }
-    public function setSalt(string $salt): void { $this->salt = $salt; }
+    public function getGebuehr(): string
+    {
+        return $this->gebuehr;
+    }
 
-    public function getRegistrationkey(): string { return $this->registrationkey; }
-    public function setRegistrationkey(string $registrationkey): void { $this->registrationkey = $registrationkey; }
+    public function setGebuehr(string $gebuehr): void
+    {
+        $this->gebuehr = $gebuehr;
+    }
 
-    public function getDoitime(): int { return $this->doitime; }
-    public function setDoitime(int $doitime): void { $this->doitime = $doitime; }
+    public function getGebuehrag(): string
+    {
+        return $this->gebuehrag;
+    }
 
-    public function getNovalnettid(): string { return $this->novalnettid; }
-    public function setNovalnettid(string $novalnettid): void { $this->novalnettid = $novalnettid; }
+    public function setGebuehrag(string $gebuehrag): void
+    {
+        $this->gebuehrag = $gebuehrag;
+    }
 
-    public function getNovalnettidag(): string { return $this->novalnettidag; }
-    public function setNovalnettidag(string $novalnettidag): void { $this->novalnettidag = $novalnettidag; }
+    public function getGebuehrdat(): int
+    {
+        return $this->gebuehrdat;
+    }
 
-    public function getNovalnetcno(): string { return $this->novalnetcno; }
-    public function setNovalnetcno(string $novalnetcno): void { $this->novalnetcno = $novalnetcno; }
+    public function setGebuehrdat(int $gebuehrdat): void
+    {
+        $this->gebuehrdat = $gebuehrdat;
+    }
 
-    public function getNotice(): string { return $this->notice; }
-    public function setNotice(string $notice): void { $this->notice = $notice; }
+    public function getDatein(): int
+    {
+        return $this->datein;
+    }
 
-    public function getEnsemble(): int { return $this->ensemble; }
-    public function setEnsemble(int $ensemble): void { $this->ensemble = $ensemble; }
+    public function setDatein(int $datein): void
+    {
+        $this->datein = $datein;
+    }
 
-    public function getStipendiat(): int { return $this->stipendiat; }
-    public function setStipendiat(int $stipendiat): void { $this->stipendiat = $stipendiat; }
+    public function getTeilnahmeart(): string
+    {
+        return $this->teilnahmeart;
+    }
 
-    public function getStudentship(): int { return $this->studentship; }
-    public function setStudentship(int $studentship): void { $this->studentship = $studentship; }
+    public function setTeilnahmeart(string $teilnahmeart): void
+    {
+        $this->teilnahmeart = $teilnahmeart;
+    }
 
-    public function getStudystat(): int { return $this->studystat; }
-    public function setStudystat(int $studystat): void { $this->studystat = $studystat; }
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     */
+    public function getAnmeldestatus(): ObjectStorage
+    {
+        return $this->anmeldestatus;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus> $anmeldestatus
+     * @return void
+     */
+    public function setAnmeldestatus(ObjectStorage $anmeldestatus): void
+    {
+        $this->anmeldestatus = $anmeldestatus;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     */
+    public function getProfstatus(): ObjectStorage
+    {
+        return $this->profstatus;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus> $profstatus
+     * @return void
+     */
+    public function setProfstatus(ObjectStorage $profstatus): void
+    {
+        $this->profstatus = $profstatus;
+    }
+
+    public function getProgramm(): string
+    {
+        return $this->programm;
+    }
+
+    public function setProgramm(string $programm): void
+    {
+        $this->programm = $programm;
+    }
+
+    public function getOrchesterstudio(): string
+    {
+        return $this->orchesterstudio;
+    }
+
+    public function setOrchesterstudio(string $orchesterstudio): void
+    {
+        $this->orchesterstudio = $orchesterstudio;
+    }
+
+    public function getDuo(): int
+    {
+        return $this->duo;
+    }
+
+    public function setDuo(int $duo): void
+    {
+        $this->duo = $duo;
+    }
+
+    public function getDuosel(): string
+    {
+        return $this->duosel;
+    }
+
+    public function setDuosel(string $duosel): void
+    {
+        $this->duosel = $duosel;
+    }
+
+    public function getDuoname(): string
+    {
+        return $this->duoname;
+    }
+
+    public function setDuoname(string $duoname): void
+    {
+        $this->duoname = $duoname;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+    public function getAgb(): int
+    {
+        return $this->agb;
+    }
+
+    public function setAgb(int $agb): void
+    {
+        $this->agb = $agb;
+    }
+
+    public function getDatenschutz(): int
+    {
+        return $this->datenschutz;
+    }
+
+    public function setDatenschutz(int $datenschutz): void
+    {
+        $this->datenschutz = $datenschutz;
+    }
+
+    public function getSavedata(): int
+    {
+        return $this->savedata;
+    }
+
+    public function setSavedata(int $savedata): void
+    {
+        $this->savedata = $savedata;
+    }
+
+    public function getSalt(): string
+    {
+        return $this->salt;
+    }
+
+    public function setSalt(string $salt): void
+    {
+        $this->salt = $salt;
+    }
+
+    public function getRegistrationkey(): string
+    {
+        return $this->registrationkey;
+    }
+
+    public function setRegistrationkey(string $registrationkey): void
+    {
+        $this->registrationkey = $registrationkey;
+    }
+
+    public function getDoitime(): int
+    {
+        return $this->doitime;
+    }
+
+    public function setDoitime(int $doitime): void
+    {
+        $this->doitime = $doitime;
+    }
+
+    public function getNovalnettid(): string
+    {
+        return $this->novalnettid;
+    }
+
+    public function setNovalnettid(string $novalnettid): void
+    {
+        $this->novalnettid = $novalnettid;
+    }
+
+    public function getNovalnettidag(): string
+    {
+        return $this->novalnettidag;
+    }
+
+    public function setNovalnettidag(string $novalnettidag): void
+    {
+        $this->novalnettidag = $novalnettidag;
+    }
+
+    public function getNovalnetcno(): string
+    {
+        return $this->novalnetcno;
+    }
+
+    public function setNovalnetcno(string $novalnetcno): void
+    {
+        $this->novalnetcno = $novalnetcno;
+    }
+
+    public function getNotice(): string
+    {
+        return $this->notice;
+    }
+
+    public function setNotice(string $notice): void
+    {
+        $this->notice = $notice;
+    }
+
+    public function getEnsemble(): int
+    {
+        return $this->ensemble;
+    }
+
+    public function setEnsemble(int $ensemble): void
+    {
+        $this->ensemble = $ensemble;
+    }
+
+    public function getStipendiat(): int
+    {
+        return $this->stipendiat;
+    }
+
+    public function setStipendiat(int $stipendiat): void
+    {
+        $this->stipendiat = $stipendiat;
+    }
+
+    public function getStudentship(): int
+    {
+        return $this->studentship;
+    }
+
+    public function setStudentship(int $studentship): void
+    {
+        $this->studentship = $studentship;
+    }
+
+    public function getStudystat(): int
+    {
+        return $this->studystat;
+    }
+
+    public function setStudystat(int $studystat): void
+    {
+        $this->studystat = $studystat;
+    }
 }

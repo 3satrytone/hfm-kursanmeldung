@@ -14,7 +14,7 @@ defined('TYPO3') or die();
         // plugin title, as visible in the drop-down in the backend, use "LLL:" for localization
         'Kursanmeldung Frontend Plugin',
         // plugin icon, use an icon identifier from the icon registry
-        'content-target',
+        'content-plugin',
         // plugin group, to define where the new plugin will be located in
         'plugins',
         // plugin description, as visible in the new content element wizard

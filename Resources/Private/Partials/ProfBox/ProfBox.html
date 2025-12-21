@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="row kursanmeldung-red">
+    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurs"/>:
+</div>
+<div class="row">
+    {kurs.instrument}
+</div>
+<div class="row">
+    <f:if condition="{kurs.professor.0}">
+        <div class="row">{kurs.professor.0.name}</div>
+        <f:if condition="{kurs.professor.0.image}">
+            <div class="row p-0">
+                <f:image image="{kurs.professor.0.image}"/>
+            </div>
+        </f:if>
+    </f:if>
+</div>

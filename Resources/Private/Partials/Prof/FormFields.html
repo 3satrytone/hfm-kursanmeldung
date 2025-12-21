@@ -24,6 +24,7 @@
             <td>
                 <f:if condition="{prof.image}">
                     <div>
+                        <f:image image="{prof.image}" width="110"/>
                         <f:form.uploadDeleteCheckbox id="image"
                                                      property="image"
                                                      fileReference="{prof.image}" />

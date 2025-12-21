@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Model;
@@ -26,48 +27,66 @@ class Prof extends AbstractEntity
         'validation' => [
             'required' => false,
             'maxFiles' => 1,
-            'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+            'fileSize' => ['minimum' => '0K', 'maximum' => '5M'],
             'mimeType' => [
-                'allowedMimeTypes' => ['image/jpg','image/jpeg','image/gif'],
+                'allowedMimeTypes' => ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'],
                 'ignoreFileExtensionCheck' => false,
                 'notAllowedMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.notallowed',
                 'invalidExtensionMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.invalidextension',
             ],
+            'fileExtension' => ['allowedFileExtensions' => ['jpg', 'jpeg', 'gif', 'png']],
             'imageDimensions' => ['maxWidth' => 4096, 'maxHeight' => 4096],
         ],
         'uploadFolder' => '1:/user_upload/hfm_kursanmeldung/',
         'addRandomSuffix' => true,
-        'duplicationBehavior' => DuplicationBehavior::RENAME,
     ])]
     protected ?FileReference $image = null;
 
     /**
      * @return string
      */
-    public function getName(): string { return $this->name; }
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
     /**
      * @param string $name
      */
-    public function setName(string $name): void { $this->name = $name; }
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
 
     /**
      * @return string
      */
-    public function getLink(): string { return $this->link; }
+    public function getLink(): string
+    {
+        return $this->link;
+    }
 
     /**
      * @param string $link
      */
-    public function setLink(string $link): void { $this->link = $link; }
+    public function setLink(string $link): void
+    {
+        $this->link = $link;
+    }
 
     /**
      * @return ?FileReference
      */
-    public function getImage(): ?FileReference { return $this->image; }
+    public function getImage(): ?FileReference
+    {
+        return $this->image;
+    }
 
     /**
      * @param ?FileReference $image
      */
-    public function setImage(?FileReference $image): void { $this->image = $image; }
+    public function setImage(?FileReference $image): void
+    {
+        $this->image = $image;
+    }
 }

@@ -1,508 +1,546 @@
 <?php
-namespace Justorange\JoKursanmeldung\Domain\Model;
 
-/***************************************************************
- *
- *  Copyright notice
- *
- *  (c) 2015 Steffen Schneider <info@justorange.de>, JUSTORANGE
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+namespace Hfm\Kursanmeldung\Domain\Model;
 
-/**
- * Step2 Data
- *
- * @package jo_kursanmeldung
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- */
-class Step2Data extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\FileUpload;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-	/**
-	 * tnaction
-	 *
-	 * @var integer
-	 */
-	protected $tnaction;
+class Step2Data extends AbstractEntity
+{
+    /**
+     * tnaction
+     *
+     * @var integer
+     */
+    protected $tnaction;
 
-	/**
-	 * studentship
-	 *
-	 * @var integer
-	 */
-	protected $studentship;
+    /**
+     * studentship
+     *
+     * @var integer
+     */
+    protected $studentship;
 
-	/**
-	 * studystat
-	 *
-	 * @var integer
-	 */
-	protected $studystat;
-	
-	/**
-	 * matrikel
-	 *
-	 * @var string
-	 */
-	protected $matrikel;
+    /**
+     * studystat
+     *
+     * @var integer
+     */
+    protected $studystat;
 
-	/**
-	 * programm
-	 *
-	 * @var string
-	 */
-	protected $programm;
+    /**
+     * matrikel
+     *
+     * @var string
+     */
+    protected $matrikel;
 
-	/**
-	 * orchesterstudio
-	 *
-	 * @var string
-	 */
-	protected $orchesterstudio;
+    /**
+     * programm
+     *
+     * @var string
+     */
+    protected $programm;
 
-	/**
-	 * zahlungsart
-	 *
-	 * @var string
-	 * @validate NotEmpty
-	 */
-	protected $zahlungsart;
+    /**
+     * orchesterstudio
+     *
+     * @var string
+     */
+    protected $orchesterstudio;
 
-	/**
-	 * zahlungstermin
-	 *
-	 * @var string
-	 */
-	protected $zahlungstermin;
+    /**
+     * zahlungsart
+     *
+     * @var string
+     * @Extbase\Validate("NotEmpty")
+     */
+    protected $zahlungsart;
 
-	/**
-	 * hotel
-	 *
-	 * @var integer
-	 */
-	protected $hotel;
+    /**
+     * zahlungstermin
+     *
+     * @var string
+     */
+    protected $zahlungstermin;
 
-	/**
-	 * room
-	 *
-	 * @var string
-	 */
-	protected $room;
+    /**
+     * hotel
+     *
+     * @var integer
+     */
+    protected $hotel;
 
-	/**
-	 * roomwith
-	 *
-	 * @var string
-	 */
-	protected $roomwith;
+    /**
+     * room
+     *
+     * @var string
+     */
+    protected $room;
 
-	/**
-	 * roomfrom
-	 *
-	 * @var string
-	 */
-	protected $roomfrom;
+    /**
+     * roomwith
+     *
+     * @var string
+     */
+    protected $roomwith;
 
-	/**
-	 * roomto
-	 *
-	 * @var string
-	 */
-	protected $roomto;
+    /**
+     * roomfrom
+     *
+     * @var string
+     */
+    protected $roomfrom;
 
-	/**
-	 * link
-	 *
-	 * @var string
-	 */
-	protected $link;
+    /**
+     * roomto
+     *
+     * @var string
+     */
+    protected $roomto;
 
-	/**
-	 * youtube
-	 *
-	 * @var string
-	 */
-	protected $youtube;
+    /**
+     * link
+     *
+     * @var string
+     */
+    protected $link;
 
-	/**
-	 * download
-	 *
-	 * @var string
-	 */
-	protected $download;
+    /**
+     * youtube
+     *
+     * @var string
+     */
+    protected $youtube;
 
-	/**
-	 * vita
-	 *
-	 * @var string
-	 */
-	protected $vita;
+    /**
+     * A collection of files.
+     * @var ObjectStorage<FileReference>
+     */
+    #[FileUpload([
+        'validation' => [
+            'required' => false,
+            'fileSize' => ['minimum' => '0K', 'maximum' => '5M'],
+            'mimeType' => [
+                'allowedMimeTypes' => ['image/jpg','image/jpeg','image/gif'],
+                'ignoreFileExtensionCheck' => false,
+                'notAllowedMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.notallowed',
+                'invalidExtensionMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.invalidextension',
+            ],
+            'fileExtension' => ['allowedFileExtensions' => ['jpg', 'jpeg', 'gif']],
+        ],
+        'uploadFolder' => '1:/user_upload/hfm_kursanmeldung/',
+        'addRandomSuffix' => true,
+        'duplicationBehavior' => DuplicationBehavior::RENAME,
+    ])]
+    protected ObjectStorage $download;
 
-	/**
-	 * comment
-	 *
-	 * @var string
-	 */
-	protected $comment;
+    /**
+     * vita
+     *
+     * @var string
+     */
+    protected $vita;
 
-	/**
-	 * Returns the tnaction
-	 *
-	 * @return integer $tnaction
-	 */
-	public function getTnaction() {
-		return $this->tnaction;
-	}
+    /**
+     * comment
+     *
+     * @var string
+     */
+    protected $comment;
 
-	/**
-	 * Sets the integer
-	 *
-	 * @param integer $tnaction
-	 * @return void
-	 */
-	public function setTnaction($tnaction) {
-		$this->tnaction = $tnaction;
-	}
+    // When using ObjectStorages, it is vital to initialize these.
+    public function __construct()
+    {
+        $this->download = new ObjectStorage();
+    }
 
-	/**
-	 * Returns the studentship
-	 *
-	 * @return integer $studentship
-	 */
-	public function getStudentship() {
-		return $this->studentship;
-	}
+    /**
+     * Called again with initialize object, as fetching an entity from the DB does not use the constructor
+     */
+    public function initializeObject(): void
+    {
+        $this->download = $this->download ?? new ObjectStorage();
+    }
 
-	/**
-	 * Sets the integer
-	 *
-	 * @param integer $studentship
-	 * @return void
-	 */
-	public function setStudentship($studentship) {
-		$this->studentship = $studentship;
-	}
-	
-	/**
-	 * Returns the studystat
-	 *
-	 * @return integer $studystat
-	 */
-	public function getStudystat() {
-		return $this->studystat;
-	}
+    /**
+     * Returns the tnaction
+     *
+     * @return integer $tnaction
+     */
+    public function getTnaction()
+    {
+        return $this->tnaction;
+    }
 
-	/**
-	 * Sets the integer
-	 *
-	 * @param integer $studystat
-	 * @return void
-	 */
-	public function setStudystat($studystat) {
-		$this->studystat = $studystat;
-	}
+    /**
+     * Sets the integer
+     *
+     * @param integer $tnaction
+     * @return void
+     */
+    public function setTnaction($tnaction)
+    {
+        $this->tnaction = $tnaction;
+    }
 
-	/**
-	 * Returns the matrikel
-	 *
-	 * @return string $matrikel
-	 */
-	public function getMatrikel() {
-		return $this->matrikel;
-	}
+    /**
+     * Returns the studentship
+     *
+     * @return integer $studentship
+     */
+    public function getStudentship()
+    {
+        return $this->studentship;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $matrikel
-	 * @return void
-	 */
-	public function setMatrikel($matrikel) {
-		$this->matrikel = $matrikel;
-	}
+    /**
+     * Sets the integer
+     *
+     * @param integer $studentship
+     * @return void
+     */
+    public function setStudentship($studentship)
+    {
+        $this->studentship = $studentship;
+    }
 
-	/**
-	 * Returns the programm
-	 *
-	 * @return string $programm
-	 */
-	public function getProgramm() {
-		return $this->programm;
-	}
+    /**
+     * Returns the studystat
+     *
+     * @return integer $studystat
+     */
+    public function getStudystat()
+    {
+        return $this->studystat;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $programm
-	 * @return void
-	 */
-	public function setProgramm($programm) {
-		$this->programm = $programm;
-	}
+    /**
+     * Sets the integer
+     *
+     * @param integer $studystat
+     * @return void
+     */
+    public function setStudystat($studystat)
+    {
+        $this->studystat = $studystat;
+    }
 
-	/**
-	 * Returns the orchesterstudio
-	 *
-	 * @return string $orchesterstudio
-	 */
-	public function getOrchesterstudio() {
-		return $this->orchesterstudio;
-	}
+    /**
+     * Returns the matrikel
+     *
+     * @return string $matrikel
+     */
+    public function getMatrikel()
+    {
+        return $this->matrikel;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $orchesterstudio
-	 * @return void
-	 */
-	public function setOrchesterstudio($orchesterstudio) {
-		$this->orchesterstudio = $orchesterstudio;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $matrikel
+     * @return void
+     */
+    public function setMatrikel($matrikel)
+    {
+        $this->matrikel = $matrikel;
+    }
 
-	/**
-	 * Returns the zahlungsart
-	 *
-	 * @return string $zahlungsart
-	 */
-	public function getZahlungsart() {
-		return $this->zahlungsart;
-	}
+    /**
+     * Returns the programm
+     *
+     * @return string $programm
+     */
+    public function getProgramm()
+    {
+        return $this->programm;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $zahlungsart
-	 * @return void
-	 */
-	public function setZahlungsart($zahlungsart) {
-		$this->zahlungsart = $zahlungsart;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $programm
+     * @return void
+     */
+    public function setProgramm($programm)
+    {
+        $this->programm = $programm;
+    }
 
-	/**
-	 * Returns the zahlungstermin
-	 *
-	 * @return string $zahlungstermin
-	 */
-	public function getZahlungstermin() {
-		return $this->zahlungstermin;
-	}
+    /**
+     * Returns the orchesterstudio
+     *
+     * @return string $orchesterstudio
+     */
+    public function getOrchesterstudio()
+    {
+        return $this->orchesterstudio;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $zahlungstermin
-	 * @return void
-	 */
-	public function setZahlungstermin($zahlungstermin) {
-		$this->zahlungstermin = $zahlungstermin;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $orchesterstudio
+     * @return void
+     */
+    public function setOrchesterstudio($orchesterstudio)
+    {
+        $this->orchesterstudio = $orchesterstudio;
+    }
 
-	/**
-	 * Returns the hotel
-	 *
-	 * @return integer $hotel
-	 */
-	public function getHotel() {
-		return $this->hotel;
-	}
+    /**
+     * Returns the zahlungsart
+     *
+     * @return string $zahlungsart
+     */
+    public function getZahlungsart()
+    {
+        return $this->zahlungsart;
+    }
 
-	/**
-	 * Sets the integer
-	 *
-	 * @param integer $hotel
-	 * @return void
-	 */
-	public function setHotel($hotel) {
-		$this->hotel = $hotel;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $zahlungsart
+     * @return void
+     */
+    public function setZahlungsart($zahlungsart)
+    {
+        $this->zahlungsart = $zahlungsart;
+    }
 
-	/**
-	 * Returns the room
-	 *
-	 * @return string $room
-	 */
-	public function getRoom() {
-		return $this->room;
-	}
+    /**
+     * Returns the zahlungstermin
+     *
+     * @return string $zahlungstermin
+     */
+    public function getZahlungstermin()
+    {
+        return $this->zahlungstermin;
+    }
 
-	/**
-	 * Sets the room
-	 *
-	 * @param string $room
-	 * @return void
-	 */
-	public function setRoom($room) {
-		$this->room = $room;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $zahlungstermin
+     * @return void
+     */
+    public function setZahlungstermin($zahlungstermin)
+    {
+        $this->zahlungstermin = $zahlungstermin;
+    }
 
-	/**
-	 * Returns the roomwith
-	 *
-	 * @return string $roomwith
-	 */
-	public function getRoomwith() {
-		return $this->roomwith;
-	}
+    /**
+     * Returns the hotel
+     *
+     * @return integer $hotel
+     */
+    public function getHotel()
+    {
+        return $this->hotel;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $roomwith
-	 * @return void
-	 */
-	public function setRoomwith($roomwith) {
-		$this->roomwith = $roomwith;
-	}
+    /**
+     * Sets the integer
+     *
+     * @param integer $hotel
+     * @return void
+     */
+    public function setHotel($hotel)
+    {
+        $this->hotel = $hotel;
+    }
 
-	/**
-	 * Returns the roomfrom
-	 *
-	 * @return string $roomfrom
-	 */
-	public function getRoomfrom() {
-		return $this->roomfrom;
-	}
+    /**
+     * Returns the room
+     *
+     * @return string $room
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $roomfrom
-	 * @return void
-	 */
-	public function setRoomfrom($roomfrom) {
-		$this->roomfrom = $roomfrom;
-	}
+    /**
+     * Sets the room
+     *
+     * @param string $room
+     * @return void
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
+    }
 
-	/**
-	 * Returns the roomto
-	 *
-	 * @return string $roomto
-	 */
-	public function getRoomto() {
-		return $this->roomto;
-	}
+    /**
+     * Returns the roomwith
+     *
+     * @return string $roomwith
+     */
+    public function getRoomwith()
+    {
+        return $this->roomwith;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $roomto
-	 * @return void
-	 */
-	public function setRoomto($roomto) {
-		$this->roomto = $roomto;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $roomwith
+     * @return void
+     */
+    public function setRoomwith($roomwith)
+    {
+        $this->roomwith = $roomwith;
+    }
 
-	/**
-	 * Returns the link
-	 *
-	 * @return string $link
-	 */
-	public function getLink() {
-		return $this->link;
-	}
+    /**
+     * Returns the roomfrom
+     *
+     * @return string $roomfrom
+     */
+    public function getRoomfrom()
+    {
+        return $this->roomfrom;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $link
-	 * @return void
-	 */
-	public function setLink($link) {
-		$this->link = $link;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $roomfrom
+     * @return void
+     */
+    public function setRoomfrom($roomfrom)
+    {
+        $this->roomfrom = $roomfrom;
+    }
 
-	/**
-	 * Returns the youtube
-	 *
-	 * @return string $youtube
-	 */
-	public function getYoutube() {
-		return $this->youtube;
-	}
+    /**
+     * Returns the roomto
+     *
+     * @return string $roomto
+     */
+    public function getRoomto()
+    {
+        return $this->roomto;
+    }
 
-	/**
-	 * Sets the string
-	 *
-	 * @param string $youtube
-	 * @return void
-	 */
-	public function setYoutube($youtube) {
-		$this->youtube = $youtube;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $roomto
+     * @return void
+     */
+    public function setRoomto($roomto)
+    {
+        $this->roomto = $roomto;
+    }
 
-	/**
-	 * Returns the download
-	 *
-	 * @return array $download
-	 */
-	public function getDownload() {
-		return explode(',', $this->download);
-	}
+    /**
+     * Returns the link
+     *
+     * @return string $link
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
 
-	/**
-	 * Sets the download
-	 *
-	 * @param array $download
-	 * @return void
-	 */
-	public function setDownload(array $download) {
-		$this->download = implode(',', $download);
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $link
+     * @return void
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
 
-	/**
-	 * Returns the vita
-	 *
-	 * @return string $vita
-	 */
-	public function getVita() {
-		return $this->vita;
-	}
+    /**
+     * Returns the youtube
+     *
+     * @return string $youtube
+     */
+    public function getYoutube()
+    {
+        return $this->youtube;
+    }
 
-	/**
-	 * Sets the vita
-	 *
-	 * @param string $vita
-	 * @return void
-	 */
-	public function setVita($vita) {
-		$this->vita = $vita;
-	}
+    /**
+     * Sets the string
+     *
+     * @param string $youtube
+     * @return void
+     */
+    public function setYoutube($youtube)
+    {
+        $this->youtube = $youtube;
+    }
 
-	/**
-	 * Returns the comment
-	 *
-	 * @return string $comment
-	 */
-	public function getComment() {
-		return $this->comment;
-	}
+    /**
+     * @return ObjectStorage<FileReference>
+     */
+    public function getDownload(): ObjectStorage
+    {
+        return $this->download;
+    }
 
-	/**
-	 * Sets the comment
-	 *
-	 * @param string $comment
-	 * @return void
-	 */
-	public function setComment($comment) {
-		$this->comment = strip_tags($comment);
-	}
-	
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<FileReference> $files
+     * @return void
+     */
+    public function setDownload(ObjectStorage $files): void
+    {
+        $this->download = $files;
+    }
+
+    /**
+     * Returns the vita
+     *
+     * @return string $vita
+     */
+    public function getVita()
+    {
+        return $this->vita;
+    }
+
+    /**
+     * Sets the vita
+     *
+     * @param string $vita
+     * @return void
+     */
+    public function setVita($vita)
+    {
+        $this->vita = $vita;
+    }
+
+    /**
+     * Returns the comment
+     *
+     * @return string $comment
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Sets the comment
+     *
+     * @param string $comment
+     * @return void
+     */
+    public function setComment($comment)
+    {
+        $this->comment = strip_tags($comment);
+    }
+
 }
+
 ?>

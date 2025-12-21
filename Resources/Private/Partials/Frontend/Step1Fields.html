@@ -1,272 +1,498 @@
-<div class="joRow joKursanmeldung joClearfix">
-    <div class="gender joCol joCol-2">
-	   <f:form.select property="gender" options="{genders}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.gender')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.gender'})}" />
-        <f:render partial="FormTitleError"/>
-    </div>
-    <input type="hidden" name="no_cache" value="1">
-    <div class="title joCol joCol-2 joHide">
-        <f:form.textfield property="title" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.title')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.title'})}" />
-        <f:render partial="FormTitleError" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="firstName joCol joCol-2">
-        <f:form.textfield property="firstName" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.firstName')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.firstName'})}" />
-    </div>
-    <div class="lastName joCol joCol-2">
-        <f:form.textfield property="lastName" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.lastName')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.lastName'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="birthday joCol joCol-2">
-        <f:form.textfield property="birthday" class="joInpText joInpDatepickerYM" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.birthday')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.birthday'})}" />
-        <div class="joHide joAgeWarning"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.agewarning.message" /></div>
-        <div class="joHide joAgeWarningTitle"><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.agewarning.title" /></div>
-    </div>
-    <div class="nationality joCol joCol-2">
-        <f:form.select property="nationality" options="{nationality}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.nationality')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.nationality'})}" />
-    </div>
-</div>
-<div class="toster">
-    
-</div>
-<div class="joRow joClearfix">
-    <div class="address joCol joCol-2">
-        <f:form.textfield property="address" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.address')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.nationality'})}" />
-    </div>
-    <div class="houseno joCol joCol-2">
-        <f:form.textfield property="houseno" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.houseno')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.houseno'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="addressadd joCol joCol-1">
-        <f:form.textfield property="addressadd" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.addressadd')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.addressadd'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="zip joCol joCol-2">
-        <f:form.textfield property="zip" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.zip')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.zip'})}" />
-    </div>
-    <div class="city joCol joCol-2">
-        <f:form.textfield property="city" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.city')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.city'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="country joCol joCol-1">
-	   <f:form.select property="country" options="{countries}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.country')}" prependOptionValue="" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.country'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="phone joCol joCol-2">
-        <f:form.textfield property="phone" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.phone')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.phone'})}" />
-    </div>
-    <div class="mobile joCol joCol-2">
-        <f:form.textfield property="mobile" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.mobile')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.mobile'})}" />
-    </div>
-</div>
-<div class="joRow joClearfix">
-    <div class="email joCol joCol-2">
-        <f:form.textfield property="email" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.email')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.email'})}" /><br />
-    </div>
-    <div class="emailrp joCol joCol-2">
-        <f:form.textfield property="emailrp" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.emailrp')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.emailrp'})}" /><br />
-    </div>
-</div>
-<f:if condition="{duo} == 1"><div class="joRow joClearfix">
-    <div class="duo joCol joCol-2">
-        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.duo" /><br />
-        <f:form.checkbox property="duo" value="1" data="{trtype: 'slide',trsrc:'duosel',trsel:'checked'}" />
-    </div>
-    <div class="duosel joCol joCol-2{f:if(condition:'{step1data.duo}==1', then: '', else: ' joHide')}" data-trtrg="duosel">
-        <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.duosel" /><br />
-        <f:form.select property="duosel" options="{duoselArr}" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel')}" prependOptionValue="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.duosel'})}" /><br />
-    </div>
-</div>
-<div class="joRow joClearfix{f:if(condition:'{step1data.duo} == 1', then: '', else: ' joHide')}" data-trtrg="duosel">
-    <div class="duoname joCol joCol-1">
-       <f:form.textfield property="duoname" class="joInpText" placeholder="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.duoname')}" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.duoname'})}" />
-    </div>
-</div></f:if>
-<f:if condition="{ensembleCheckbox.0.checked} == 1">
-<!-- Ensemble beginn -->
-<div class="joRow clearfix">
-    <div class="col-md-6 col-sm-12">
-        <div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enconf"></f:translate></label></div>
-        <div class="entn joCol col-md-8 col-sm-12">
-            <f:form.checkbox class="step-checkbox-enconf" property="enconf" value="1" data="{trtype: 'slide',trsrc:'.aufklappen-enconf',trsel:'checked'}" />
-            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.enconf'}"/>
+<div class="">
+    <div class="row">
+        <div class="gender col-12 col-sm-6 pt-3">
+            <f:form.select property="gender" options="{genders}" optionLabelField="nameLocalized" sortByOptionLabel="1"
+                           prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.gender')}"
+                           prependOptionValue=""
+                           required="required"
+                           title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.gender')}"
+                           class="form-control"
+                           data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.gender'})}"
+            />
+        </div>
+        <div class="title col-12 col-sm-6 pt-3 collapse">
+            <f:form.textfield property="title"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.title')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.title')}"
+                              class="form-control"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.gender'})}"
+            />
         </div>
     </div>
+    <div class="row">
+        <div class="firstName col-12 col-sm-6 pt-3">
+            <f:form.textfield property="firstName" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.firstName')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.firstName')}"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.firstName'})}"
+            />
+        </div>
+        <div class="lastName col-12 col-sm-6 pt-3">
+            <f:form.textfield property="lastName" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.lastName')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.lastName')}"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.lastName'})}"
+            />
+        </div>
+    </div>
+    <div class="row">
+        <div class="birthday col-12 col-sm-6 pt-3">
+            <f:form.textfield property="birthday" class="form-control" type="date"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.birthday')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.birthday')}"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.birthday'})}"
+            />
+            <div class="joHide joAgeWarning">
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.agewarning.message"/>
+            </div>
+            <div class="joHide joAgeWarningTitle">
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.agewarning.title"/>
+            </div>
+        </div>
+        <div class="nationality col-12 col-sm-6 pt-3">
+            <f:form.countrySelect class="form-control" property="nationality"
+                                  required="required"
+                                  prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.nationality')}"
+                                  prependOptionValue=""
+                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.nationality'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="address col-12 col-sm-9 pt-3">
+            <f:form.textfield property="address" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.address')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.nationality'})}"/>
+        </div>
+        <div class="houseno col-12 col-sm-3 pt-3">
+            <f:form.textfield property="houseno" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.houseno')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.houseno'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="addressadd col-12 pt-3">
+            <f:form.textfield property="addressadd" class="form-control"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.addressadd')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.addressadd'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="zip col-12 col-sm-3 pt-3">
+            <f:form.textfield property="zip" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.zip')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.zip'})}"/>
+        </div>
+        <div class="city col-12 col-sm-9 pt-3">
+            <f:form.textfield property="city" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.city')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.city'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="country col-12 pt-3">
+            <f:form.countrySelect property="country" class="form-control"
+                                  required="required"
+                                  prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.country')}"
+                                  prependOptionValue=""
+                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.country'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="phone col-12 col-sm-6 pt-3">
+            <f:form.textfield property="phone" class="form-control"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.phone')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.phone'})}"/>
+        </div>
+        <div class="mobile col-12 col-sm-6 pt-3">
+            <f:form.textfield property="mobile" class="form-control"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.mobile')}"
+                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.mobile'})}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="email col-12 col-sm-6 pt-3">
+            <f:form.textfield property="email" class="form-control" type="email"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.email')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.email')}"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.email'})}"
+            />
+        </div>
+        {f:form.validationResults(for:'email')}
+        <div class="emailrp col-12 col-sm-6 pt-3">
+            <f:form.textfield property="emailrp" class="form-control" type="email"
+                              required="required"
+                              placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.emailrp')}"
+                              title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.emailrp')}"
+                              data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.emailrp'})}"
+            />
+            <br/>
+        </div>
+    </div>
+    <f:if condition="{duo}">
+        <div class="row">
+            <div class="duo col-12 col-sm-6 pt-3">
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.duo"/>
+                <br/>
+                <f:form.checkbox property="duo" value="1" data="{trtype: 'slide',trsrc:'duosel',trsel:'checked'}"/>
+            </div>
+            <div class="duosel col-12 col-sm-6 pt-3{f:if(condition:'{step1data.duo}==1', then: '', else: ' joHide')}"
+                 data-trtrg="duosel">
+                <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel"/>
+                <br/>
+                <f:form.select property="duosel" options="{duoselArr}" class="form-control"
+                               prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel')}"
+                               prependOptionValue="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel')}"
+                               title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.duosel'})}"/>
+                <br/>
+            </div>
+        </div>
+        <div class="row {f:if(condition:'{step1data.duo} == 1', then: '', else: ' joHide')}"
+             data-trtrg="duosel">
+            <div class="duoname col-12 col-sm-6 pt-3">
+                <f:form.textfield property="duoname"
+                                  placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.duoname')}"
+                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.duoname'})}"/>
+            </div>
+        </div>
+    </f:if>
+    <f:if condition="{ensembleCheckbox.0.checked} == 1">
+        <!-- Ensemble beginn -->
+        <div class="joRow clearfix">
+            <div class="col-12 col-sm-6 pt-3">
+                <div class="col-12 col-sm-4 pt-3"><label>
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enconf"></f:translate>
+                </label></div>
+                <div class="entn jcol-12 col-sm-8 pt-3">
+                    <f:form.checkbox class="step-checkbox-enconf" property="enconf" value="1"
+                                     data="{trtype: 'slide',trsrc:'.aufklappen-enconf',trsel:'checked'}"/>
+                    <f:render partial="FormSingleErrors" arguments="{field: 'step1data.enconf'}"/>
+                </div>
+            </div>
+        </div>
+        <div class="aufklappen-enconf joHide">
+            <div class="joRow clearfix">
+                <f:if condition="{ensembleCheckbox.1.checked} == 1">
+                    <div class="col-md-6 col-
+sx-12">
+                        <div class="col-md-4 col-
+sx-12"><label>
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enname"></f:translate>
+                        </label></div>
+                        <div class="enname joCol col-md-8 col-
+sx-12">
+                            <f:form.textfield property="enname" class="joInpText"
+                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enname'})}"/>
+                            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.enname'}"/>
+                        </div>
+                    </div>
+                </f:if>
+                <f:if condition="{ensembleCheckbox.4.checked} == 1">
+                    <div class="col-md-6 col-
+sx-12">
+                        <div class="col-md-4 col-
+sx-12"><label>
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.entype"></f:translate>
+                        </label></div>
+                        <div class="entype joCol col-md-8 col-
+sx-12">
+                            <f:form.textfield property="entype" class="joInpText"
+                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.entype'})}"/>
+                            <br/>
+                            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.entype'}"/>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+            <div class="joRow clearfix">
+                <f:if condition="{ensembleCheckbox.3.checked} == 1">
+                    <div class="col-md-6 col-
+sx-12">
+                        <div class="col-md-4 col-
+sx-12"><label>
+                            <f:translate
+                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.engrplace"></f:translate>
+                        </label></div>
+                        <div class="engrplace joCol col-md-8 col-
+sx-12">
+                            <f:form.textfield property="engrplace" class="joInpText"
+                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engrplace'})}"/>
+                            <br/>
+                            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.engrplace'}"/>
+                        </div>
+                    </div>
+                </f:if>
+                <f:if condition="{ensembleCheckbox.2.checked} == 1">
+                    <div class="col-md-6 col-
+sx-12">
+                        <div class="col-md-4 col-
+sx-12"><label>
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.engrdate"></f:translate>
+                        </label></div>
+                        <div class="engrdate joCol col-md-8 col-
+sx-12">
+                            <f:form.textfield property="engrdate" class="joInpText joInpDatepicker"
+                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engrdate'})}"/>
+                            <br/>
+                            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.engrdate'}"/>
+                        </div>
+                    </div>
+                </f:if>
+            </div>
+            <f:if condition="{ensembleCheckbox.5.checked} == 1">
+                <div class="joRow clearfix">
+                    <div class="col-md-6 col-
+sx-12">
+                        <div class="col-md-4 col-
+sx-12"><label>
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.entn"></f:translate>
+                        </label></div>
+                        <div class="entn joCol col-md-8 col-
+sx-12">
+                            <f:form.checkbox class="step-checkbox-entn" property="entn" value="1"
+                                             data="{trtype: 'slide',trsrc:'.aufklappen-entn',trsel:'checked'}"/>
+                            <f:render partial="FormSingleErrors" arguments="{field: 'step1data.entn'}"/>
+                        </div>
+                    </div>
+                </div>
+                <f:if condition="{ensemble -> f:count()} > 0">
+                    <f:then>
+                        <f:for each="{ensemble}" as="item" key="itemk" iteration="itemi">
+                            <div id="addmoreid<f:if condition='{itemi.isLast}'><f:then></f:then><f:else>{item.uid}</f:else></f:if>"
+                                 class="joHide aufklappen-entn">
+                                <div class="joRow clearfix">
+                                    <f:if condition="{ensembleCheckbox.6.checked} == 1">
+                                        <div class="col-md-6 col-
+sx-12">
+                                            <div class="col-md-4 col-
+sx-12"><label>
+                                                <f:translate
+                                                        key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate>
+                                            </label></div>
+                                            <div class="enfirstn joCol col-md-8 col-
+sx-12">
+                                                <f:form.textfield name="step1data[enfirstn][]" value="{item.enfirstn}"
+                                                                  class="joInpText"
+                                                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enfirstn'})}"/>
+                                                <br/>
+                                                <f:render partial="FormSingleErrors"
+                                                          arguments="{field: 'step1data.enfirstn'}"/>
+                                            </div>
+                                        </div>
+                                    </f:if>
+                                    <f:if condition="{ensembleCheckbox.7.checked} == 1">
+                                        <div class="col-md-6 col-
+sx-12">
+                                            <div class="col-md-4 col-
+sx-12"><label>
+                                                <f:translate
+                                                        key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate>
+                                            </label></div>
+                                            <div class="enlastn joCol col-md-8 col-
+sx-12">
+                                                <f:form.textfield name="step1data[enlastn][]" value="{item.enlastn}"
+                                                                  class="joInpText"
+                                                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enlastn'})}"/>
+                                                <br/>
+                                                <f:render partial="FormSingleErrors"
+                                                          arguments="{field: 'step1data.enlastn'}"/>
+                                            </div>
+                                        </div>
+                                    </f:if>
+                                </div>
+                                <div class="joRow clearfix">
+                                    <f:if condition="{ensembleCheckbox.9.checked} == 1">
+                                        <div class="col-md-6 col-
+sx-12">
+                                            <div class="col-md-4 col-
+sx-12"><label>
+                                                <f:translate
+                                                        key="tx_kursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate>
+                                            </label></div>
+                                            <div class="eninstru joCol col-md-8 col-
+sx-12">
+                                                <f:form.textfield name="step1data[eninstru][]" value="{item.eninstru}"
+                                                                  class="joInpText"
+                                                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.eninstru'})}"/>
+                                                <br/>
+                                                <f:render partial="FormSingleErrors"
+                                                          arguments="{field: 'step1data.eninstru'}"/>
+                                            </div>
+                                        </div>
+                                    </f:if>
+                                    <f:if condition="{ensembleCheckbox.8.checked} == 1">
+                                        <div class="col-md-6 col-
+sx-12">
+                                            <div class="col-md-4 col-
+sx-12"><label>
+                                                <f:translate
+                                                        key="tx_kursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate>
+                                            </label></div>
+                                            <div class="engebdate joCol col-md-8 col-
+sx-12">
+                                                <f:form.textfield name="step1data[engebdate][]"
+                                                                  value="{item.engebdate -> f:format.date(format: 'd.m.Y')}"
+                                                                  class="joInpText joInpDatepicker"
+                                                                  title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engebdate'})}"/>
+                                                <br/>
+                                                <f:render partial="FormSingleErrors"
+                                                          arguments="{field: 'step1data.engebdate'}"/>
+                                            </div>
+                                        </div>
+                                    </f:if>
+                                </div>
+                                <div class="joRow clearfix">
+                                    <f:if condition="{ensembleCheckbox.10.checked} == 1">
+                                        <div class="col-md-6 col-
+sx-12">
+                                            <div class="col-md-4 col-
+sx-12"><label>
+                                                <f:translate
+                                                        key="tx_kursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate>
+                                            </label></div>
+                                            <div class="ennatio joCol col-md-8 col-
+sx-12">
+                                                <f:form.select name="step1data[ennatio][]" value="{item.ennatio}"
+                                                               options="{countries}" optionLabelField="nameLocalized"
+                                                               sortByOptionLabel="1"
+                                                               prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.please_choose')}"
+                                                               prependOptionValue=""/>
+                                                <f:render partial="FormSingleErrors"
+                                                          arguments="{field: 'step1data.ennatio'}"/>
+                                            </div>
+                                        </div>
+                                    </f:if>
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="addmore"><i
+                                                class="fas fa-<f:if condition='{itemi.isLast}'><f:then>plus</f:then><f:else>minus</f:else></f:if>-square-o"
+                                                aria-hidden="true"></i>
+                                            <f:form.hidden name="step1data[enuid][]" value="{item.uid}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:for>
+                    </f:then>
+                    <f:else>
+                        <div id="addmoreid" class="joHide aufklappen-entn">
+                            <div class="joRow clearfix">
+                                <f:if condition="{ensembleCheckbox.6.checked} == 1">
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="col-md-4 col-
+sx-12"><label>
+                                            <f:translate
+                                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate>
+                                        </label></div>
+                                        <div class="enfirstn joCol col-md-8 col-
+sx-12">
+                                            <f:form.textfield name="step1data[enfirstn][]" class="joInpText"
+                                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enfirstn'})}"/>
+                                            <br/>
+                                            <f:render partial="FormSingleErrors"
+                                                      arguments="{field: 'step1data.enfirstn'}"/>
+                                        </div>
+                                    </div>
+                                </f:if>
+                                <f:if condition="{ensembleCheckbox.7.checked} == 1">
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="col-md-4 col-
+sx-12"><label>
+                                            <f:translate
+                                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate>
+                                        </label></div>
+                                        <div class="enlastn joCol col-md-8 col-
+sx-12">
+                                            <f:form.textfield name="step1data[enlastn][]" class="joInpText"
+                                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enlastn'})}"/>
+                                            <br/>
+                                            <f:render partial="FormSingleErrors"
+                                                      arguments="{field: 'step1data.enlastn'}"/>
+                                        </div>
+                                    </div>
+                                </f:if>
+                            </div>
+                            <div class="joRow clearfix">
+                                <f:if condition="{ensembleCheckbox.9.checked} == 1">
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="col-md-4 col-
+sx-12"><label>
+                                            <f:translate
+                                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate>
+                                        </label></div>
+                                        <div class="eninstru joCol col-md-8 col-
+sx-12">
+                                            <f:form.textfield name="step1data[eninstru][]" class="joInpText"
+                                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.eninstru'})}"/>
+                                            <br/>
+                                            <f:render partial="FormSingleErrors"
+                                                      arguments="{field: 'step1data.eninstru'}"/>
+                                        </div>
+                                    </div>
+                                </f:if>
+                                <f:if condition="{ensembleCheckbox.8.checked} == 1">
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="col-md-4 col-
+sx-12"><label>
+                                            <f:translate
+                                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate>
+                                        </label></div>
+                                        <div class="engebdate joCol col-md-8 col-
+sx-12">
+                                            <f:form.textfield name="step1data[engebdate][]"
+                                                              class="joInpText joInpDatepicker"
+                                                              title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engebdate'})}"/>
+                                            <br/>
+                                            <f:render partial="FormSingleErrors"
+                                                      arguments="{field: 'step1data.engebdate'}"/>
+                                        </div>
+                                    </div>
+                                </f:if>
+                            </div>
+                            <div class="joRow clearfix">
+                                <f:if condition="{ensembleCheckbox.10.checked} == 1">
+                                    <div class="col-md-6 col-
+sx-12">
+                                        <div class="col-md-4 col-
+sx-12"><label>
+                                            <f:translate
+                                                    key="tx_kursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate>
+                                        </label></div>
+                                        <div class="ennatio joCol col-md-8 col-
+sx-12">
+                                            <f:form.select name="step1data[ennatio][]" options="{countries}"
+                                                           optionLabelField="nameLocalized" sortByOptionLabel="1"
+                                                           prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.please_choose')}"
+                                                           prependOptionValue=""/>
+                                            <f:render partial="FormSingleErrors"
+                                                      arguments="{field: 'step1data.ennatio'}"/>
+                                        </div>
+                                    </div>
+                                </f:if>
+                                <div class="col-md-6 col-
+sx-12">
+                                    <div class="addmore"><i class="fas fa-plus-square-o" aria-hidden="true"></i>
+                                        <f:form.hidden name="step1data[enuid][]"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </f:else>
+                </f:if>
+            </f:if>
+        </div>
+        <!-- Ensemble end -->
+    </f:if>
 </div>
-<div class="aufklappen-enconf joHide">
-	<div class="joRow clearfix">
-	<f:if condition="{ensembleCheckbox.1.checked} == 1">
-		<div class="col-md-6 col-sm-12">	
-			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enname"></f:translate></label></div>
-			<div class="enname joCol col-md-8 col-sm-12">
-				<f:form.textfield property="enname" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enname'})}" />
-				<f:render partial="FormSingleErrors" arguments="{field: 'step1data.enname'}"/>
-			</div>
-		</div>
-	</f:if>
-	<f:if condition="{ensembleCheckbox.4.checked} == 1">
-		<div class="col-md-6 col-sm-12">
-			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entype"></f:translate></label></div>
-			<div class="entype joCol col-md-8 col-sm-12">
-				<f:form.textfield property="entype" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.entype'})}" /><br />
-				<f:render partial="FormSingleErrors" arguments="{field: 'step1data.entype'}"/>
-			</div>
-		</div>
-	</f:if>
-	</div>
-	<div class="joRow clearfix">
-		<f:if condition="{ensembleCheckbox.3.checked} == 1">
-		<div class="col-md-6 col-sm-12">
-			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrplace"></f:translate></label></div>
-			<div class="engrplace joCol col-md-8 col-sm-12">
-				<f:form.textfield property="engrplace" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engrplace'})}" /><br />
-				<f:render partial="FormSingleErrors" arguments="{field: 'step1data.engrplace'}"/>
-			</div>
-		</div>
-		</f:if>
-		<f:if condition="{ensembleCheckbox.2.checked} == 1">
-		<div class="col-md-6 col-sm-12">
-			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engrdate"></f:translate></label></div>
-			<div class="engrdate joCol col-md-8 col-sm-12">
-				<f:form.textfield property="engrdate" class="joInpText joInpDatepicker" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engrdate'})}" /><br />
-				<f:render partial="FormSingleErrors" arguments="{field: 'step1data.engrdate'}"/>
-			</div>
-		</div>
-		</f:if>
-	</div>
-<f:if condition="{ensembleCheckbox.5.checked} == 1">	
-	<div class="joRow clearfix">
-		<div class="col-md-6 col-sm-12">
-			<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.entn"></f:translate></label></div>
-			<div class="entn joCol col-md-8 col-sm-12">
-				<f:form.checkbox class="step-checkbox-entn" property="entn" value="1" data="{trtype: 'slide',trsrc:'.aufklappen-entn',trsel:'checked'}" />
-				<f:render partial="FormSingleErrors" arguments="{field: 'step1data.entn'}"/>
-			</div>
-		</div>
-	</div>
-<f:if condition="{ensemble -> f:count()} > 0"><f:then><f:for each="{ensemble}" as="item" key="itemk" iteration="itemi">
-	<div id="addmoreid<f:if condition='{itemi.isLast}'><f:then></f:then><f:else>{item.uid}</f:else></f:if>" class="joHide aufklappen-entn">
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.6.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate></label></div>
-				<div class="enfirstn joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[enfirstn][]" value="{item.enfirstn}" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enfirstn'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.enfirstn'}"/>
-				</div>
-			</div>
-			</f:if>
-			<f:if condition="{ensembleCheckbox.7.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate></label></div>
-				<div class="enlastn joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[enlastn][]" value="{item.enlastn}" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enlastn'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.enlastn'}"/>
-				</div>
-			</div>
-			</f:if>
-		</div>
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.9.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate></label></div>
-				<div class="eninstru joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[eninstru][]" value="{item.eninstru}" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.eninstru'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.eninstru'}"/>
-				</div>
-			</div>
-			</f:if>
-			<f:if condition="{ensembleCheckbox.8.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate></label></div>
-				<div class="engebdate joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[engebdate][]" value="{item.engebdate -> f:format.date(format: 'd.m.Y')}" class="joInpText joInpDatepicker" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engebdate'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.engebdate'}"/>
-				</div>
-			</div>
-			</f:if>
-		</div>
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.10.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate></label></div>
-				<div class="ennatio joCol col-md-8 col-sm-12">
-					<f:form.select name="step1data[ennatio][]" value="{item.ennatio}" options="{countries}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.please_choose')}" prependOptionValue="" />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.ennatio'}"/>
-				</div>
-			</div>
-			</f:if>
-			<div class="col-md-6 col-sm-12">
-				<div class="addmore"><i class="fas fa-<f:if condition='{itemi.isLast}'><f:then>plus</f:then><f:else>minus</f:else></f:if>-square-o" aria-hidden="true"></i><f:form.hidden name="step1data[enuid][]" value="{item.uid}" /></div>
-			</div>
-		</div>
-	</div>
-</f:for></f:then>
-	<f:else>
-	<div id="addmoreid" class="joHide aufklappen-entn">
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.6.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enfirstn"></f:translate></label></div>
-				<div class="enfirstn joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[enfirstn][]" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enfirstn'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.enfirstn'}"/>
-				</div>
-			</div>
-			</f:if>
-			<f:if condition="{ensembleCheckbox.7.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.enlastn"></f:translate></label></div>
-				<div class="enlastn joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[enlastn][]" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.enlastn'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.enlastn'}"/>
-				</div>
-			</div>
-			</f:if>
-		</div>
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.9.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.eninstru"></f:translate></label></div>
-				<div class="eninstru joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[eninstru][]" class="joInpText" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.eninstru'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.eninstru'}"/>
-				</div>
-			</div>
-			</f:if>
-			<f:if condition="{ensembleCheckbox.8.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.engebdate"></f:translate></label></div>
-				<div class="engebdate joCol col-md-8 col-sm-12">
-					<f:form.textfield name="step1data[engebdate][]" class="joInpText joInpDatepicker" title="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.engebdate'})}" /><br />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.engebdate'}"/>
-				</div>
-			</div>
-			</f:if>
-		</div>
-		<div class="joRow clearfix">
-			<f:if condition="{ensembleCheckbox.10.checked} == 1">
-			<div class="col-md-6 col-sm-12">
-				<div class="col-md-4 col-sm-12"><label><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step1.ennatio"></f:translate></label></div>
-				<div class="ennatio joCol col-md-8 col-sm-12">
-					<f:form.select name="step1data[ennatio][]" options="{countries}" optionLabelField="nameLocalized" sortByOptionLabel="1" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.step1.please_choose')}" prependOptionValue="" />
-					<f:render partial="FormSingleErrors" arguments="{field: 'step1data.ennatio'}"/>
-				</div>
-			</div>
-			</f:if>
-			<div class="col-md-6 col-sm-12">
-				<div class="addmore"><i class="fas fa-plus-square-o" aria-hidden="true"></i><f:form.hidden name="step1data[enuid][]" /></div>				
-			</div>
-		</div>
-	</div>
-	</f:else>
-</f:if>
-</f:if>
-</div>
-<!-- Ensemble end -->
-</f:if>

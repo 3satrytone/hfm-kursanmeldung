@@ -53,6 +53,7 @@ class ProfController extends ActionController
     /**
      * @return \Psr\Http\Message\ResponseInterface
      */
+    #[IgnoreValidation(['argumentName' => 'prof'])]
     public function newAction(): ResponseInterface
     {
         return $this->htmlResponse();
@@ -76,9 +77,9 @@ class ProfController extends ActionController
      * @IgnoreValidation $prof
      * @return \Psr\Http\Message\ResponseInterface
      */
+    #[IgnoreValidation(['argumentName' => 'prof'])]
     public function editAction(Prof $prof): ResponseInterface
     {
-        DebuggerUtility::var_dump($this->getErrorFlashMessage());
         $this->view->assign('prof', $prof);
 
         return $this->htmlResponse();
@@ -86,48 +87,15 @@ class ProfController extends ActionController
 
     /**
      * @param \Hfm\Kursanmeldung\Domain\Model\Prof $prof
-     * @IgnoreValidation $prof
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
-     * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
-     * @throws \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException
      */
     public function updateAction(Prof $prof): ResponseInterface
     {
-        DebuggerUtility::var_dump($prof);
-        $falIdentifier = '1:/user_upload/hfm_kursanmeldung/';
-        $yourFile = '/user_upload/hfm_kursanmeldung/tree.jpg';
-
-        // Attach the file to the wanted storage
-        $falFolder = $this->resourceFactory->retrieveFileOrFolderObject($falIdentifier);
-        $fileObject = $falFolder->addFile(
-            $yourFile,
-            basename($yourFile),
-            DuplicationBehavior::REPLACE,
-        );
-
-        // Initialize a new storage object
-        $newObject = [
-            'uid_local' => $fileObject->getUid(),
-            'uid_foreign' => StringUtility::getUniqueId('NEW'),
-            'uid' => StringUtility::getUniqueId('NEW'),
-            'crop' => null,
-        ];
-
-        // Create the FileReference Object
-        $fileReference = $this->resourceFactory->createFileReferenceObject($newObject);
-
-        // Port the FileReference Object to an Extbase FileReference
-        $fileReferenceObject = GeneralUtility::makeInstance(FileReference::class);
-        $fileReferenceObject->setOriginalResource($fileReference);
-
-        // Persist the created file reference object to our Blog model
-        $prof->setImage($fileReferenceObject);
-
         $this->addFlashMessage('Datensatz wurde gespeichert.', 'Saved', ContextualFeedbackSeverity::OK);
         $this->profRepository->update($prof);
-die();
+
         return $this->redirect('list');
     }
 

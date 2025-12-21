@@ -4,11 +4,12 @@ page {
     includeCSS {
         file10 = EXT:kursanmeldung/Resources/Public/Css/fontawesome-free-5.0.3/css/fontawesome-all.min.css
         style = EXT:kursanmeldung/Resources/Public/Css/joMain.css
-        jursanmeldung = EXT:kursanmeldung/Resources/Public/Css/hfmMain.css
+        kursanmeldung = EXT:kursanmeldung/Resources/Public/Css/hfmMain.css
     }
-    includeJSlibs {
-  		joKua = EXT:kursanmeldung/Resources/Public/JavaScript/joKursanmeldung.js
-  		joToaster = EXT:kursanmeldung/Resources/Public/JavaScript/jquery.toaster.js
+    includeJSFooter {
+        kursanmeldung = EXT:kursanmeldung/Resources/Public/JavaScript/main.js
+  		#joKua = EXT:kursanmeldung/Resources/Public/JavaScript/joKursanmeldung.js
+  		#joToaster = EXT:kursanmeldung/Resources/Public/JavaScript/jquery.toaster.js
   	}
 }
 
