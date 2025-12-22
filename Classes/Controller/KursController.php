@@ -168,7 +168,7 @@ class KursController extends ActionController
             }
         }
 
-        $this->view->assign('ensembleCheckbox', $this->formatUtility->buildCBFromTCA());
+        $this->view->assign('ensembleCheckbox', $this->formatUtility->buildCBFromTCA(null));
         $this->view->assign('gebuehrenOptions', $gebOpt);
         $this->view->assign('orte', $this->orteRepository->findAll()->toArray());
         $this->view->assign('gebuehren', $gebuehren);
