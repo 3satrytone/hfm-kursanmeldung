@@ -1,51 +1,59 @@
-<f:layout name="Default" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="DefaultFe"/>
 
-<f:section name="joProfBox"></f:section>
+<f:section name="Headline">
+	<h1><f:if condition="{payment}=='invoice'"><f:then><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step5" /></f:then><f:else><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4" /></f:else></f:if></h1>
 
-<f:section name="main">
-    <h1><f:if condition="{payment}=='invoice'"><f:then><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step5" /></f:then><f:else><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4" /></f:else></f:if></h1>
+</f:section>
+
+<f:section name="Prof">
+	<f:render partial="ProfBox/ProfBox" arguments="{_all}"/>
+</f:section>
+
+<f:section name="Main">
+    <h1><f:if condition="{payment}=='invoice'"><f:then><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step5" /></f:then><f:else><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4" /></f:else></f:if></h1>
 	<f:if condition="{p}=='err'">
 		<div class="joBold joErr1">
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.error.err1" default="Es ist ein Fehler aufgetreten!" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.error.err1" default="Es ist ein Fehler aufgetreten!" />
 		</div>
 		<div class="joBold joErr2">
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.error.err2" default="Bitte versuchen Sie es erneut oder wenden sich an unseren Support." />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.error.err2" default="Bitte versuchen Sie es erneut oder wenden sich an unseren Support." />
 		</div>
 	</f:if>
 	<f:if condition="{payment}=='onlinetransfer'">
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
 		</div>
 		<f:render partial="Frontend\Zahlungsart" arguments="{select:select}" />
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 		</div>
 		<f:render partial="Novalnet\SofortueberweisungForm" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
 	</f:if>
 
 	<f:if condition="{payment}=='giropay'">
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
 		</div>
 		<f:render partial="Frontend\Zahlungsart" arguments="{select:select}" />
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 		</div>
 		<f:render partial="Novalnet\GiropayForm" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
 	</f:if>
 	<f:if condition="{payment}=='paypal'">
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" />
 		</div>
 		<f:render partial="Frontend\Zahlungsart" arguments="{select:select}" />
 		<div>
-		<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+		<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 		</div>
 		<f:render partial="Novalnet\PaypalForm" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
 	</f:if>
 	<f:if condition="{payment}=='invoice'">
 		<div>
-			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.invoice.text" default="Sie erhalten in Kürze eine E-Mail mit den Rechnungsdaten. Nur Anmeldungen mit eingegangen Zahlungen können berücksichtigt werden." />
+			<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.invoice.text" default="Sie erhalten in Kürze eine E-Mail mit den Rechnungsdaten. Nur Anmeldungen mit eingegangen Zahlungen können berücksichtigt werden." />
 		</div>
 	</f:if>
 </f:section>

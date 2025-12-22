@@ -1,19 +1,22 @@
 <f:render partial="FormErrors" arguments="{field: 'step3data.customerid'}"/>
-<div class="joRow joClearfix">
-    <div class="tnb joCol joCol-1">
-        <f:form.checkbox property="tnb" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.tnb" /></span>
+<div class="row">
+    <div class="tnb col-12 hfm-float-all">
+        <f:form.checkbox property="tnb" value="1"/>
+        <f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.tnb"/></f:format.html>
         <f:render partial="FormSingleErrors" arguments="{field: 'step3data.tnb'}"/>
     </div>
 </div>
-<div class="joRow joClearfix">
-    <div class="privacy joCol joCol-1">
-        <f:form.checkbox property="privacy" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.privacy" /></span>
+<div class="row">
+    <div class="privacy col-12 hfm-float-all">
+        <f:form.checkbox property="privacy" value="1"/>
+        <f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.privacy"/></f:format.html>
         <f:render partial="FormSingleErrors" arguments="{field: 'step3data.privacy'}"/>
     </div>
 </div>
-<div class="joRow joClearfix">
-    <div class="savedata joCol joCol-1">
-        <f:form.checkbox property="savedata" value="1" /><span><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step3.savedata" /></span>
+<div class="row">
+    <div class="savedata col-12 hfm-float-all">
+        <f:form.checkbox property="savedata" value="1"/>
+        <f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.savedata"/></f:format.html>
         <f:render partial="FormSingleErrors" arguments="{field: 'step3data.savedata'}"/>
     </div>
 </div>

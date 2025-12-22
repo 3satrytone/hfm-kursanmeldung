@@ -78,5 +78,21 @@ img {
     border-color: #de0e4f;
     box-shadow: 0 0 0 5px rgba(225, 0, 0, 0.2);
 }
+.hfm-float-all{
+    position: relative;
+}
+
+.hfm-float-all p,
+.hfm-float-all input{
+    float: left;
+    margin-left: 5px;
+}
+
+.hfm-float-all input{
+    margin-top: 4px
+}
+.hfm-float-all p{
+    width: 90%;
+}
 
 

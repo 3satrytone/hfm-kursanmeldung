@@ -705,6 +705,10 @@
             <source>Please fill out!</source>
             <target>Bitte angeben!</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.error.step2data.validator.programm">
+            <source>Please fill out!</source>
+            <target>Bitte angeben!</target>
+        </trans-unit>
         <!-- tx_kursanmeldung_jokursanmeldungfe Frontend ok-->
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok001_body">
             <source>Kursanmeldung wurde aktualisiert.</source>

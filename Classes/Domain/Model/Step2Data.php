@@ -16,42 +16,40 @@ class Step2Data extends AbstractEntity
      *
      * @var integer
      */
-    protected $tnaction;
+    protected int $tnaction;
 
     /**
      * studentship
      *
      * @var integer
      */
-    protected $studentship;
+    protected ?int $studentship;
 
     /**
      * studystat
      *
      * @var integer
      */
-    protected $studystat;
+    protected ?int $studystat;
 
     /**
      * matrikel
      *
      * @var string
      */
-    protected $matrikel;
+    protected string $matrikel;
 
     /**
      * programm
      *
      * @var string
      */
-    protected $programm;
+    protected string $programm;
 
     /**
-     * orchesterstudio
-     *
-     * @var string
+     * @var string|null
      */
-    protected $orchesterstudio;
+    protected ?string $orchesterstudio = null;
 
     /**
      * zahlungsart
@@ -59,63 +57,61 @@ class Step2Data extends AbstractEntity
      * @var string
      * @Extbase\Validate("NotEmpty")
      */
-    protected $zahlungsart;
+    protected string $zahlungsart;
 
     /**
      * zahlungstermin
      *
      * @var string
      */
-    protected $zahlungstermin;
+    protected string $zahlungstermin;
 
     /**
-     * hotel
-     *
-     * @var integer
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null
      */
-    protected $hotel;
+    protected ?ObjectStorage $hotel;
 
     /**
      * room
      *
      * @var string
      */
-    protected $room;
+    protected string $room;
 
     /**
      * roomwith
      *
      * @var string
      */
-    protected $roomwith;
+    protected string $roomwith;
 
     /**
      * roomfrom
      *
      * @var string
      */
-    protected $roomfrom;
+    protected string $roomfrom;
 
     /**
      * roomto
      *
      * @var string
      */
-    protected $roomto;
+    protected string $roomto;
 
     /**
      * link
      *
      * @var string
      */
-    protected $link;
+    protected string $link;
 
     /**
      * youtube
      *
      * @var string
      */
-    protected $youtube;
+    protected string $youtube;
 
     /**
      * A collection of files.
@@ -126,12 +122,38 @@ class Step2Data extends AbstractEntity
             'required' => false,
             'fileSize' => ['minimum' => '0K', 'maximum' => '5M'],
             'mimeType' => [
-                'allowedMimeTypes' => ['image/jpg','image/jpeg','image/gif'],
+                'allowedMimeTypes' => [
+                    'image/jpg',
+                    'image/jpeg',
+                    'image/gif',
+                    'application/pdf',
+                    'audio/x-aiff',
+                    'audio/wav',
+                    'audio/mp4',
+                    'video/mp4',
+                    'video/mpeg',
+
+                ],
                 'ignoreFileExtensionCheck' => false,
                 'notAllowedMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.notallowed',
                 'invalidExtensionMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.invalidextension',
             ],
-            'fileExtension' => ['allowedFileExtensions' => ['jpg', 'jpeg', 'gif']],
+            'fileExtension' => [
+                'allowedFileExtensions' => [
+                    'jpg',
+                    'jpeg',
+                    'gif',
+                    'pdf',
+                    'wmv',
+                    'aiff',
+                    'aif',
+                    'mpeg',
+                    'mpg',
+                    'mp4',
+                    'mp3',
+                    'wav'
+                ]
+            ],
         ],
         'uploadFolder' => '1:/user_upload/hfm_kursanmeldung/',
         'addRandomSuffix' => true,
@@ -142,9 +164,35 @@ class Step2Data extends AbstractEntity
     /**
      * vita
      *
-     * @var string
+     * A collection of files.
+     * @var ObjectStorage<FileReference>
      */
-    protected $vita;
+    #[FileUpload([
+        'validation' => [
+            'required' => false,
+            'fileSize' => ['minimum' => '0K', 'maximum' => '5M'],
+            'mimeType' => [
+                'allowedMimeTypes' => [
+                    'text/plain',
+                    'application/pdf',
+
+                ],
+                'ignoreFileExtensionCheck' => false,
+                'notAllowedMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.notallowed',
+                'invalidExtensionMessage' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:upload.invalidextension',
+            ],
+            'fileExtension' => [
+                'allowedFileExtensions' => [
+                    'pdf',
+                    'txt'
+                ]
+            ],
+        ],
+        'uploadFolder' => '1:/user_upload/hfm_kursanmeldung/',
+        'addRandomSuffix' => true,
+        'duplicationBehavior' => DuplicationBehavior::RENAME,
+    ])]
+    protected ?FileReference $vita = null;
 
     /**
      * comment
@@ -172,7 +220,7 @@ class Step2Data extends AbstractEntity
      *
      * @return integer $tnaction
      */
-    public function getTnaction()
+    public function getTnaction(): int
     {
         return $this->tnaction;
     }
@@ -183,49 +231,41 @@ class Step2Data extends AbstractEntity
      * @param integer $tnaction
      * @return void
      */
-    public function setTnaction($tnaction)
+    public function setTnaction(int $tnaction): void
     {
         $this->tnaction = $tnaction;
     }
 
     /**
-     * Returns the studentship
-     *
-     * @return integer $studentship
+     * @return int|null
      */
-    public function getStudentship()
+    public function getStudentship(): ?int
     {
         return $this->studentship;
     }
 
     /**
-     * Sets the integer
-     *
-     * @param integer $studentship
+     * @param int|null $studentship
      * @return void
      */
-    public function setStudentship($studentship)
+    public function setStudentship(?int $studentship): void
     {
         $this->studentship = $studentship;
     }
 
     /**
-     * Returns the studystat
-     *
-     * @return integer $studystat
+     * @return int|null
      */
-    public function getStudystat()
+    public function getStudystat(): ?int
     {
         return $this->studystat;
     }
 
     /**
-     * Sets the integer
-     *
-     * @param integer $studystat
+     * @param int|null $studystat
      * @return void
      */
-    public function setStudystat($studystat)
+    public function setStudystat(?int $studystat): void
     {
         $this->studystat = $studystat;
     }
@@ -235,7 +275,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $matrikel
      */
-    public function getMatrikel()
+    public function getMatrikel(): string
     {
         return $this->matrikel;
     }
@@ -246,7 +286,7 @@ class Step2Data extends AbstractEntity
      * @param string $matrikel
      * @return void
      */
-    public function setMatrikel($matrikel)
+    public function setMatrikel(string $matrikel): void
     {
         $this->matrikel = $matrikel;
     }
@@ -256,7 +296,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $programm
      */
-    public function getProgramm()
+    public function getProgramm(): string
     {
         return $this->programm;
     }
@@ -267,28 +307,24 @@ class Step2Data extends AbstractEntity
      * @param string $programm
      * @return void
      */
-    public function setProgramm($programm)
+    public function setProgramm(string $programm): void
     {
         $this->programm = $programm;
     }
 
     /**
-     * Returns the orchesterstudio
-     *
-     * @return string $orchesterstudio
+     * @return string|null
      */
-    public function getOrchesterstudio()
+    public function getOrchesterstudio(): ?string
     {
         return $this->orchesterstudio;
     }
 
     /**
-     * Sets the string
-     *
-     * @param string $orchesterstudio
+     * @param string|null $orchesterstudio
      * @return void
      */
-    public function setOrchesterstudio($orchesterstudio)
+    public function setOrchesterstudio(?string $orchesterstudio): void
     {
         $this->orchesterstudio = $orchesterstudio;
     }
@@ -298,7 +334,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $zahlungsart
      */
-    public function getZahlungsart()
+    public function getZahlungsart(): string
     {
         return $this->zahlungsart;
     }
@@ -309,7 +345,7 @@ class Step2Data extends AbstractEntity
      * @param string $zahlungsart
      * @return void
      */
-    public function setZahlungsart($zahlungsart)
+    public function setZahlungsart(string $zahlungsart): void
     {
         $this->zahlungsart = $zahlungsart;
     }
@@ -319,7 +355,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $zahlungstermin
      */
-    public function getZahlungstermin()
+    public function getZahlungstermin(): string
     {
         return $this->zahlungstermin;
     }
@@ -330,28 +366,24 @@ class Step2Data extends AbstractEntity
      * @param string $zahlungstermin
      * @return void
      */
-    public function setZahlungstermin($zahlungstermin)
+    public function setZahlungstermin(string $zahlungstermin): void
     {
         $this->zahlungstermin = $zahlungstermin;
     }
 
     /**
-     * Returns the hotel
-     *
-     * @return integer $hotel
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null
      */
-    public function getHotel()
+    public function getHotel(): ?ObjectStorage
     {
         return $this->hotel;
     }
 
     /**
-     * Sets the integer
-     *
-     * @param integer $hotel
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null $hotel
      * @return void
      */
-    public function setHotel($hotel)
+    public function setHotel(?ObjectStorage $hotel): void
     {
         $this->hotel = $hotel;
     }
@@ -361,7 +393,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $room
      */
-    public function getRoom()
+    public function getRoom(): string
     {
         return $this->room;
     }
@@ -372,7 +404,7 @@ class Step2Data extends AbstractEntity
      * @param string $room
      * @return void
      */
-    public function setRoom($room)
+    public function setRoom(string $room): void
     {
         $this->room = $room;
     }
@@ -382,7 +414,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $roomwith
      */
-    public function getRoomwith()
+    public function getRoomwith(): string
     {
         return $this->roomwith;
     }
@@ -393,7 +425,7 @@ class Step2Data extends AbstractEntity
      * @param string $roomwith
      * @return void
      */
-    public function setRoomwith($roomwith)
+    public function setRoomwith(string $roomwith): void
     {
         $this->roomwith = $roomwith;
     }
@@ -403,7 +435,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $roomfrom
      */
-    public function getRoomfrom()
+    public function getRoomfrom(): string
     {
         return $this->roomfrom;
     }
@@ -414,7 +446,7 @@ class Step2Data extends AbstractEntity
      * @param string $roomfrom
      * @return void
      */
-    public function setRoomfrom($roomfrom)
+    public function setRoomfrom(string $roomfrom): void
     {
         $this->roomfrom = $roomfrom;
     }
@@ -424,7 +456,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $roomto
      */
-    public function getRoomto()
+    public function getRoomto(): string
     {
         return $this->roomto;
     }
@@ -435,7 +467,7 @@ class Step2Data extends AbstractEntity
      * @param string $roomto
      * @return void
      */
-    public function setRoomto($roomto)
+    public function setRoomto(string $roomto): void
     {
         $this->roomto = $roomto;
     }
@@ -445,28 +477,24 @@ class Step2Data extends AbstractEntity
      *
      * @return string $link
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }
 
     /**
-     * Sets the string
-     *
-     * @param string $link
+     * @param $link
      * @return void
      */
-    public function setLink($link)
+    public function setLink(string $link): void
     {
         $this->link = $link;
     }
 
     /**
-     * Returns the youtube
-     *
-     * @return string $youtube
+     * @return string
      */
-    public function getYoutube()
+    public function getYoutube(): string
     {
         return $this->youtube;
     }
@@ -477,7 +505,7 @@ class Step2Data extends AbstractEntity
      * @param string $youtube
      * @return void
      */
-    public function setYoutube($youtube)
+    public function setYoutube(string $youtube): void
     {
         $this->youtube = $youtube;
     }
@@ -500,22 +528,18 @@ class Step2Data extends AbstractEntity
     }
 
     /**
-     * Returns the vita
-     *
-     * @return string $vita
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference|null
      */
-    public function getVita()
+    public function getVita(): ?FileReference
     {
         return $this->vita;
     }
 
     /**
-     * Sets the vita
-     *
-     * @param string $vita
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference|null $vita
      * @return void
      */
-    public function setVita($vita)
+    public function setVita(?FileReference $vita): void
     {
         $this->vita = $vita;
     }
@@ -525,7 +549,7 @@ class Step2Data extends AbstractEntity
      *
      * @return string $comment
      */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->comment;
     }
@@ -536,7 +560,7 @@ class Step2Data extends AbstractEntity
      * @param string $comment
      * @return void
      */
-    public function setComment($comment)
+    public function setComment(string $comment): void
     {
         $this->comment = strip_tags($comment);
     }

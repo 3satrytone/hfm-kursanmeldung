@@ -53,31 +53,31 @@ ul.hfm-general li {
 }
 
 .str_box:nth-child(1) {
-    background-color: hsla(40, 100%, 50%, 1);
+    background-color: hsla(0, 90%, 40%, 1);
 }
 
 .str_box:nth-child(2) {
-    background-color: hsla(70, 100%, 50%, 1);
+    background-color: hsla(0, 70%, 45%, 1);
 }
 
 .str_box:nth-child(3) {
-    background-color: hsla(100, 100%, 50%, 1);
+    background-color: hsla(0, 50%, 45%, 1);
 }
 
 .str_box:nth-child(4) {
-    background-color: hsla(210, 100%, 50%, 1);
+    background-color: hsla(0, 30%, 45%, 1);
 }
 
 .str_box:nth-child(5) {
-    background-color: hsla(240, 100%, 50%, 1);
+    background-color: hsla(0, 10%, 50%, 1);
 }
 
 .str_box:nth-child(6) {
-    background-color: hsla(255, 100%, 50%, 1);
+    background-color: hsla(0, 0%, 50%, 1);
 }
 
 .str_box:nth-child(7) {
-    background-color: hsla(270, 100%, 50%, 1);
+    background-color: hsla(0, 0%, 70%, 1);
 }
 
 .str_box a {

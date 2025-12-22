@@ -1,3 +1,4 @@
+<f:debug>{_all}</f:debug>
 <div class="row">
     <div class="tnaction col-12 pt-3">
         <f:form.select property="tnaction" options="{tnaction}" class="form-control"/>
@@ -22,18 +23,21 @@
 
 <div class="row collapse" id="collapseMatrikel">
     <div class="matrikel col-12 pt-3">
-        <f:form.textfield property="matrikel" class="joInpText"
+        <f:form.textfield property="matrikel" class="form-control"
                           placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
-                          title="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"/>
+                          title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
+                          data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"
+        />
         <f:render partial="FormTitleError"/>
     </div>
 </div>
 <div class="row">
     <div class="programm col-12 pt-3">
-        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head"/>
-        <br/>
-        <f:form.textarea property="programm" class="form-control"
-                         placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.programm')}"/>
+        <p><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head"/></p>
+        <f:form.textarea property="programm" class="form-control" value="{step2data.programm}"
+                         placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.programm')}"
+                         data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.programm'})}"
+        />
         <f:render partial="FormSingleErrors"/>
     </div>
 </div>
@@ -62,13 +66,14 @@
               data-feeanmeldung="{gebuehr.anmeldung -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
               data-feeanmeldungerm="{gebuehr.anmeldungerm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
               data-feepassivgeb="{gebuehr.passivgeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
-              data-feepassivgeberm="{gebuehr.passivgeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{enrollmentfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span><span
-            class="stipendiumhint joHide"><f:translate
-            key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></span>
+              data-feepassivgeberm="{gebuehr.passivgeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{enrollmentfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span>
+        <span class="stipendiumhint">
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/>
+        </span>
     </div>
 </div>
 <div class="row">
-    <div class="zahlungsart col-12 col-sm-6">
+    <div class="zahlungsart col-12 col-sm-6 pt-3">
         <f:if condition="{zahlungsart}==9">
             <f:then>
                 <f:form.hidden property="zahlungsart" value="{zahlungsart}"/>
@@ -85,7 +90,7 @@
         </f:if>
         <f:render partial="FormSingleErrors"/>
     </div>
-    <div class="zahlungstermin col-12 col-sm-6" data-trtrg="zahlart">
+    <div class="zahlungstermin col-12 col-sm-6 pt-3" data-trtrg="zahlart">
         <f:if condition="{settings.hidePaymentDate} != 1">
             <f:form.hidden property="zahlungstermin" value="{zahlungstermin}"/>
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungstermin"/>
@@ -94,18 +99,18 @@
         </f:if>
     </div>
 </div>
-<div class="additional-text" style="<f:if condition='{step2data.zahlungsart} != 4'>display:none;</f:if>"
+<div class="additional-text pt-3" style="<f:if condition='{step2data.zahlungsart} != 4'>display:none;</f:if>"
      data-selval="4">
     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort"
                  default="Nur deutsche Kreditinstitute"></f:translate>
 </div>
 <div class="row">
-    <div class="additionalfee col-12">
+    <div class="additionalfee col-12 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.additionalfee"/>
         <span id="additionalfee"
               data-feeaktivengeb="{gebuehr.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
               data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span><span
-            class="stipendiumhint joHide"><f:translate
+            class="stipendiumhint"><f:translate
             key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></span>
     </div>
     <f:if condition="{kurs.gebuehrcom}">
@@ -125,13 +130,13 @@
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.hotel'}"/>
     </div>
     <div class="room col-12 pt-3 collapse" id="collapseRoom">
-        <f:form.select property="room" options="{hotel.room}"
+        <f:form.select property="room" options="{hotel.room}" class="form-control"
                        prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.room')}"
                        prependOptionValue=""
                        data="{trtype: 'slide',trsrc:'room',trsel:'selected',trval:'dz2preis,dz2preiserm'}"
                        title="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"/>
         <f:render partial="FormTitleError"/>
-        <div class="roomwith" data-trtrg="room">
+        <div class="roomwith pt-3" data-trtrg="room">
             <f:form.textfield property="roomwith" class="form-control"
                               placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.roomwith')}"
                               data="{trtype: 'slide',trsrc:'matrikel'}"
@@ -142,7 +147,7 @@
 </div>
 
 <div class="row">
-    <div class="hotelfee col-12">
+    <div class="hotelfee col-12 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.hotelfee"/>
         <f:for each="{hotel.price}" key="hoprkey" as="hopr" iteration="hoit"><span id="hotelfee-{hoprkey}"
                                                                                    class="hotelfee-row hotelfee-{hoprkey} joHide">
@@ -153,7 +158,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="roomfrom col-12 col-sm-6">
+    <div class="roomfrom col-12 col-sm-6 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.roomfrom.head"/>
         <br/>
         <f:form.textfield property="roomfrom" class="form-control"
@@ -162,7 +167,7 @@
         />
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomfrom'}"/>
     </div>
-    <div class="roomto joCol joCol-2">
+    <div class="roomto col-12 col-sm-6 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.roomto.head"/>
         <br/>
         <f:form.textfield property="roomto" class="form-control"
@@ -172,32 +177,38 @@
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomto'}"/>
     </div>
 </div>
-<f:debug>{_all}</f:debug>
-
 <f:if condition="{kurs.maxupload} > 0">
-    <f:for each="{step2data.download}" as="file" iteration="i">
-        <div>
-            <f:form.uploadDeleteCheckbox id="download.{i.index}"
-                                         property="download"
-                                         fileReference="{file}" />
-            <label for="download.{i.index}">Delete file</label>
-        </div>
-    </f:for>
-    <f:render partial="FormSingleErrors" arguments="{field: 'step2data.download'}"/>
-<f:form.upload property="download" multiple="1" />
+    <div class="row pt-3">
+        <f:for each="{step2data.download}" as="file" iteration="i">
+            <div class="row">
+                <div class="col-7">{file.originalResource.originalFile.name}</div>
+                <div class="col-5">
+                    <f:form.uploadDeleteCheckbox id="download.{i.index}"
+                                                 property="download"
+                                                 fileReference="{file}"/>
+                    <label for="download.{i.index}">Delete file</label>
+                </div>
+            </div>
+        </f:for>
+    </div>
+    <div class="row pt-3">
+        <input type="hidden" name="max_upload_item" value="{kurs.maxupload}"/>
+        <f:form.upload property="download" multiple="1"/>
+        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.download'}"/>
+    </div>
 </f:if>
 <div class="row">
     <div class="link">
         <f:if condition="{kurs.weblink} == 1">
             <div>
-                <f:form.textfield property="link" class="form-control"
+                <f:form.textfield property="link" class="form-control" type="url"
                                   placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.link')}"/>
                 <f:render partial="FormSingleErrors" arguments="{field: 'step2data.link'}"/>
             </div>
         </f:if>
         <f:if condition="{kurs.youtube} == 1">
             <div>
-                <f:form.textfield property="youtube" class="form-control"
+                <f:form.textfield property="youtube" class="form-control" type="url"
                                   placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.youtube')}"/>
                 <f:render partial="FormSingleErrors" arguments="{field: 'step2data.youtube'}"/>
             </div>

@@ -22,7 +22,7 @@
     <div>
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.head"/>
     </div>
-    <table class="step3table">
+    <table class="table table-striped table-hover mt-3">
         <tr>
             <td>
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.gender"/>
@@ -60,7 +60,7 @@
             <td>
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.nationality"/>
             </td>
-            <td>{nationality}</td>
+            <td>{step1data.nationality}</td>
         </tr>
         <tr>
             <td>
@@ -92,7 +92,7 @@
             <td>
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.country"/>
             </td>
-            <td>{country}</td>
+            <td>{step1data.country}</td>
         </tr>
         <tr>
             <td>
@@ -305,7 +305,7 @@
     </table>
     <f:form action="step3redirect" name="step3data" object="{step3data}" noCache="true" noCacheHash="true"
             id="step3form">
-        <f:render partial="Frontend/step3Fields" arguments="{_all}"/>
+        <f:render partial="Frontend/Step3Fields" arguments="{_all}"/>
         <f:link.action action="step2" class="formhandler-button formhandler-backward">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.back"/>
         </f:link.action>

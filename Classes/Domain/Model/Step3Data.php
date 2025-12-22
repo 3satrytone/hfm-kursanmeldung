@@ -2,90 +2,80 @@
 declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Model;
-/**
- * Btstep3 Data
- *
- */
+
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 class Step3Data extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * tnb
 	 *
-	 * @var integer
-	 * @validate NotEmpty
+	 * @var int
+	 * @Extbase\Validate("NotEmpty")
 	 */
-	protected $tnb;
+	protected int $tnb = 0;
 
 	/**
 	 * privacy
 	 *
-	 * @var integer
-	 * @validate NotEmpty
+	 * @var int
+	 * @Extbase\Validate("NotEmpty")
 	 */
-	protected $privacy;
+	protected int $privacy = 0;
 
-	/**
-	 * savedata
-	 *
-	 * @var integer
-	 */
-	protected $savedata;
+    /**
+     * @var int
+     */
+	protected int $savedata = 0;
 
-	/**
-	 * Returns the tnb
-	 *
-	 * @return integer $tnb
-	 */
-	public function getTnb() {
+    /**
+     * @return int
+     */
+	public function getTnb(): int
+    {
 		return $this->tnb;
 	}
 
-	/**
-	 * Sets the tnb
-	 *
-	 * @param integer $tnb
-	 * @return void
-	 */
-	public function setTnb($tnb) {
+    /**
+     * @param int $tnb
+     * @return void
+     */
+	public function setTnb(int $tnb): void
+    {
 		$this->tnb = $tnb;
 	}
 
-	/**
-	 * Returns the privacy
-	 *
-	 * @return integer $privacy
-	 */
-	public function getPrivacy() {
+    /**
+     * @return int
+     */
+	public function getPrivacy(): int
+    {
 		return $this->privacy;
 	}
 
-	/**
-	 * Sets the privacy
-	 *
-	 * @param integer $privacy
-	 * @return void
-	 */
-	public function setPrivacy($privacy) {
+    /**
+     * @param int $privacy
+     * @return void
+     */
+	public function setPrivacy(int $privacy): void
+    {
 		$this->privacy = $privacy;
 	}
 
-	/**
-	 * Returns the savedata
-	 *
-	 * @return integer $savedata
-	 */
-	public function getSavedata() {
+    /**
+     * @return int
+     */
+	public function getSavedata(): int
+    {
 		return $this->savedata;
 	}
 
-	/**
-	 * Sets the savedata
-	 *
-	 * @param integer $savedata
-	 * @return void
-	 */
-	public function setSavedata($savedata) {
+    /**
+     * @param int $savedata
+     * @return void
+     */
+	public function setSavedata(int $savedata): void
+    {
 		$this->savedata = $savedata;
 	}
 }
-?>

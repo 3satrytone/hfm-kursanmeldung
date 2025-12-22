@@ -24,7 +24,7 @@ class Step2DataValidator extends AbstractValidator {
 
 		if ($value->getTnaction() === 0 && trim($value->getProgramm()) === '') {
             $errorString = LocalizationUtility::translate(
-                'step2data.validator.programm',
+                'tx_kursanmeldung_domain_model_kursanmeldung.error.step2data.validator.programm',
                 'kursanmeldung'
             );
             $this->addErrorForProperty('programm', $errorString, time());
@@ -40,7 +40,7 @@ class Step2DataValidator extends AbstractValidator {
 
 		if (!empty($value->getHotel()) && empty($value->getRoom())) {
             $errorString = LocalizationUtility::translate(
-					'tx_jokursanmeldung_domain_model_kursanmeldung.error.step2data.validator.room',
+					'tx_kursanmeldung_domain_model_kursanmeldung.error.step2data.validator.room',
 					'kursanmeldung'
 			);
             $this->addErrorForProperty('room', $errorString, time());

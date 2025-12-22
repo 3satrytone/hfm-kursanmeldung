@@ -13,8 +13,8 @@ return [
         'path' => '/module/web/kursanmeldung',
         'labels' => 'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:module.kursanmeldung',
         'extensionName' => 'kursanmeldung',
-        'iconIdentifier' => 'hfm-kursanmeldung',
-        'icon' => 'EXT:kursanmeldung/Resources/Public/Icons/icon.svg',
+        'iconIdentifier' => 'kursanmeldung-logo',
+        'icon' => 'EXT:kursanmeldung/Resources/Public/Icons/Extension.svg',
         'controllerActions' => [
             Controller\GeneralController::class => ['index'],
             Controller\GebuehrenController::class => ['list','show','new','create','edit','update','delete'],
