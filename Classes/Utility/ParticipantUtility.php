@@ -5,6 +5,7 @@ namespace Hfm\Kursanmeldung\Utility;
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -81,11 +82,11 @@ class ParticipantUtility
 
 
     /**
-     * @param \Hfm\Kursanmeldung\Domain\Model\Kurs $kurs
+     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $kurs
      * @param bool $onlyName
      * @return string
      */
-    public function getKursname(Kurs $kurs, bool $onlyName = false): string
+    public function getKursname(DomainObjectInterface $kurs, bool $onlyName = false): string
     {
         $kursName = '';
         if (!empty($kurs) && $kurs !== null) {

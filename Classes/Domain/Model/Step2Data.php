@@ -14,21 +14,21 @@ class Step2Data extends AbstractEntity
     /**
      * tnaction
      *
-     * @var integer
+     * @var int
      */
-    protected int $tnaction;
+    protected int $tnaction = 0;
 
     /**
      * studentship
      *
-     * @var integer
+     * @var int
      */
-    protected ?int $studentship;
+    protected ?int $studentship = 0;
 
     /**
      * studystat
      *
-     * @var integer
+     * @var int
      */
     protected ?int $studystat;
 
@@ -37,14 +37,14 @@ class Step2Data extends AbstractEntity
      *
      * @var string
      */
-    protected string $matrikel;
+    protected string $matrikel = '';
 
     /**
      * programm
      *
      * @var string
      */
-    protected string $programm;
+    protected string $programm = '';
 
     /**
      * @var string|null
@@ -57,14 +57,14 @@ class Step2Data extends AbstractEntity
      * @var string
      * @Extbase\Validate("NotEmpty")
      */
-    protected string $zahlungsart;
+    protected string $zahlungsart = '';
 
     /**
      * zahlungstermin
      *
      * @var string
      */
-    protected string $zahlungstermin;
+    protected string $zahlungstermin = '';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null
@@ -76,42 +76,42 @@ class Step2Data extends AbstractEntity
      *
      * @var string
      */
-    protected string $room;
+    protected string $room = '';
 
     /**
      * roomwith
      *
      * @var string
      */
-    protected string $roomwith;
+    protected string $roomwith = '';
 
     /**
      * roomfrom
      *
      * @var string
      */
-    protected string $roomfrom;
+    protected string $roomfrom = '';
 
     /**
      * roomto
      *
      * @var string
      */
-    protected string $roomto;
+    protected string $roomto = '';
 
     /**
      * link
      *
      * @var string
      */
-    protected string $link;
+    protected string $link = '';
 
     /**
      * youtube
      *
      * @var string
      */
-    protected string $youtube;
+    protected string $youtube = '';
 
     /**
      * A collection of files.
@@ -199,7 +199,7 @@ class Step2Data extends AbstractEntity
      *
      * @var string
      */
-    protected $comment;
+    protected string $comment = '';
 
     // When using ObjectStorages, it is vital to initialize these.
     public function __construct()
@@ -218,7 +218,7 @@ class Step2Data extends AbstractEntity
     /**
      * Returns the tnaction
      *
-     * @return integer $tnaction
+     * @return int $tnaction
      */
     public function getTnaction(): int
     {
@@ -226,9 +226,9 @@ class Step2Data extends AbstractEntity
     }
 
     /**
-     * Sets the integer
+     * Sets the int
      *
-     * @param integer $tnaction
+     * @param int $tnaction
      * @return void
      */
     public function setTnaction(int $tnaction): void

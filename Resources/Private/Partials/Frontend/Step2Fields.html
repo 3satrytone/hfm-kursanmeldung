@@ -1,10 +1,10 @@
 <f:debug>{_all}</f:debug>
 <div class="row">
     <div class="tnaction col-12 pt-3">
-        <f:form.select property="tnaction" options="{tnaction}" class="form-control"/>
+        <f:form.select property="tnaction" options="{tnaction}" class="form-control" id="passivMeldungEvent"/>
     </div>
 </div>
-<div class="">
+<div class="collapse hfmPassiveTnStudent hfm-alert">
     <f:format.html>
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.noreg"
                      default="Keine Anmeldung nötig"></f:translate>
@@ -12,7 +12,7 @@
 </div>
 <div class="row">
     <div class="studystat col-12 pt-3">
-        <f:form.checkbox property="studystat" value="1"
+        <f:form.checkbox property="studystat" value="1" id="hfmStudent"
                          data-bs-toggle="collapse" data-bs-target="#collapseMatrikel"
                          aria-expanded="false" aria-controls="collapseMatrikel"
         />
@@ -26,23 +26,27 @@
         <f:form.textfield property="matrikel" class="form-control"
                           placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
                           title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
-                          data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"
+                          data-bs-toggle="popover" data-bs-placement="right"
+                          data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"
         />
         <f:render partial="FormTitleError"/>
     </div>
 </div>
-<div class="row">
+<div class="row collapse hfmPassiveTn">
     <div class="programm col-12 pt-3">
-        <p><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head"/></p>
+        <p>
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head"/>
+        </p>
         <f:form.textarea property="programm" class="form-control" value="{step2data.programm}"
                          placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.programm')}"
-                         data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.programm'})}"
+                         data-bs-toggle="popover" data-bs-placement="right"
+                         data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.programm'})}"
         />
         <f:render partial="FormSingleErrors"/>
     </div>
 </div>
 <f:if condition="{kurs.orchstudio}==1">
-    <div class="row">
+    <div class="row collapse hfmPassiveTn">
         <div class="orchesterstudio col-12 pt-3">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio.head"/>
             <br/>
@@ -83,14 +87,14 @@
                                sortByOptionLabel="1"
                                prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}"
                                prependOptionValue=""
-                               data="{trtype: 'slide',trsrc:'zahlart',trsel:'selected',trval:'1,2,6'}"
                                class="form-control"
+                               id="hfmZahlungsArt"
                 />
             </f:else>
         </f:if>
         <f:render partial="FormSingleErrors"/>
     </div>
-    <div class="zahlungstermin col-12 col-sm-6 pt-3" data-trtrg="zahlart">
+    <div class="zahlungs-termin col-12 col-sm-6 pt-3 collapse">
         <f:if condition="{settings.hidePaymentDate} != 1">
             <f:form.hidden property="zahlungstermin" value="{zahlungstermin}"/>
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungstermin"/>
@@ -99,8 +103,7 @@
         </f:if>
     </div>
 </div>
-<div class="additional-text pt-3" style="<f:if condition='{step2data.zahlungsart} != 4'>display:none;</f:if>"
-     data-selval="4">
+<div class="additional-text pt-3 <f:if condition='{step2data.zahlungsart} != 4'>collapse</f:if>" id="zahlartOnline">
     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort"
                  default="Nur deutsche Kreditinstitute"></f:translate>
 </div>
@@ -109,13 +112,14 @@
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.additionalfee"/>
         <span id="additionalfee"
               data-feeaktivengeb="{gebuehr.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
-              data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span><span
-            class="stipendiumhint"><f:translate
-            key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></span>
+              data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span>
+        <span class="stipendiumhint ps-5"><f:format.html><f:translate
+            key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></f:format.html>
+        </span>
     </div>
     <f:if condition="{kurs.gebuehrcom}">
         <div class="gebuehrcom col-12">
-            {kurs.gebuehrcom}
+            <f:format.html>{kurs.gebuehrcom}</f:format.html>
         </div>
     </f:if>
 </div>

@@ -5,6 +5,9 @@ declare(strict_types=1);
 defined('TYPO3') or die('Access denied.');
 
 use Hfm\Kursanmeldung\Controller\FrontendController;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -73,4 +76,14 @@ ExtensionUtility::configurePlugin(
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Hfm']['Kursanmeldung']['Controller']['FrontendController']['writerConfiguration'] = [
+    LogLevel::ERROR => [
+        // Add a FileWriter
+        FileWriter::class => [
+            // Configuration for the writer
+            'logFile' => Environment::getVarPath() . '/log/kursanmeldung.log',
+        ],
+    ],
+];
 

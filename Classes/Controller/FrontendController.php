@@ -18,15 +18,16 @@ use Hfm\Kursanmeldung\Utility\FormatUtility;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Hfm\Kursanmeldung\Utility\SessionUtility;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-class FrontendController extends ActionController
+class FrontendController extends ActionController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     protected $zahlungsartArr = [
         9 => 'standard',
@@ -38,7 +39,12 @@ class FrontendController extends ActionController
         6 => 'invoice',
         7 => 'nopayment'
     ];
-    protected $zahlungsartNovalnetArr = array(3 => 'paypal', 4 => 'onlinetransfer', 5 => 'giropay', 6 => 'invoice');
+    protected $zahlungsartNovalnetArr = [
+        3 => 'paypal',
+        4 => 'onlinetransfer',
+        5 => 'giropay',
+        6 => 'invoice'
+    ];
     protected $novalnetSecret = '81c2f886f91e18fe16d6f4e865877cb6';
     protected $emailHostAddress = 'wiebke.eckardt@hfm-weimar.de';
     protected $emailHostAddressAdmin = 'wiebke.eckardt@hfm-weimar.de';
@@ -222,7 +228,7 @@ class FrontendController extends ActionController
     {
         // check if step3 completed no backwards functions
         $this->sessionUtility->setFrontendUser($this->getUser());
-        if (!$this->sessionUtility->isCompletedRegistration()) {
+        if ($this->sessionUtility->isCompletedRegistration()) {
             return $this->redirect(Constants::ACTION_KURS_WAHL);
         }
         // check Browser for reload
@@ -327,7 +333,7 @@ class FrontendController extends ActionController
     {
         // check if step3 completed no backwards functions
         $this->sessionUtility->setFrontendUser($this->getUser());
-        if (!$this->sessionUtility->isCompletedRegistration()) {
+        if ($this->sessionUtility->isCompletedRegistration()) {
             $this->redirect(Constants::ACTION_KURS_WAHL);
         }
         // check Browser for reload
@@ -399,14 +405,14 @@ class FrontendController extends ActionController
             $step2data = new Step2Data();
         }
 
-        if ($step2data->getRoomfrom() == '' && !empty($kurs)) {
+        if ($step2data->getRoomfrom() === '' && !empty($kurs)) {
             $roomFrom = $kurs->getAnreisedate();
-            $step2data->setRoomfrom($roomFrom->format('d.m.Y'));
+            $step2data->setRoomfrom($roomFrom->format('Y-m-d'));
         }
-        if ($step2data->getRoomto() == '' && !empty($kurs)) {
+        if ($step2data->getRoomto() === '' && !empty($kurs)) {
             $roomto = $kurs->getKurszeitend();
             $roomto->add(new \DateInterval('P1D'));
-            $step2data->setRoomto($roomto->format('d.m.Y'));
+            $step2data->setRoomto($roomto->format('Y-m-d'));
         }
 
         // look for already registered user by email and kurs id
@@ -416,7 +422,7 @@ class FrontendController extends ActionController
         );
 
         // if enrollmentfee 0 or 0,00 or empty no Paymentselectfield
-        if (empty($enrollmentfee)) {
+        if (empty($enrollmentFee)) {
             $this->zahlungsartArr[9] = 'standard';
             $zahlungsart = 9;
         }

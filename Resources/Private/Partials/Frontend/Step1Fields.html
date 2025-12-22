@@ -39,16 +39,16 @@
     </div>
     <div class="row">
         <div class="birthday col-12 col-sm-6 pt-3">
-            <f:form.textfield property="birthday" class="form-control" type="date"
+            <f:form.textfield property="birthday" class="form-control hfmCheckAge" type="date"
                               required="required"
                               placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.birthday')}"
                               title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.birthday')}"
                               data-bs-toggle="popover" data-bs-placement="right" data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step1data.birthday'})}"
             />
-            <div class="joHide joAgeWarning">
+            <div class="collapse joAgeWarning">
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.agewarning.message"/>
             </div>
-            <div class="joHide joAgeWarningTitle">
+            <div class="collapse joAgeWarningTitle">
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.agewarning.title"/>
             </div>
         </div>
