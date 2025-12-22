@@ -251,7 +251,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_teilnehmer (
   anrede int(11) DEFAULT '0' NOT NULL,
   titel varchar(255) DEFAULT '' NOT NULL,
   matrikel varchar(255) DEFAULT '' NOT NULL,
-  gebdate date DEFAULT '0000-00-00',
+  gebdate int(11) unsigned DEFAULT '0' NOT NULL,
   sprache varchar(255) DEFAULT '' NOT NULL,
   nation varchar(255) DEFAULT '' NOT NULL,
   adresse1 varchar(255) DEFAULT '' NOT NULL,
@@ -264,7 +264,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_teilnehmer (
   mobil varchar(255) DEFAULT '' NOT NULL,
   telefax varchar(255) DEFAULT '' NOT NULL,
   email varchar(255) DEFAULT '' NOT NULL,
-  datein datetime DEFAULT '0000-00-00 00:00:00',
+  datein int(11) unsigned DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
