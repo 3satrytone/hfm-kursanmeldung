@@ -87,6 +87,6 @@ class SessionUtility
      */
     public function isCompletedRegistration(): bool
     {
-        return !empty($this->getData(self::FORM_SESSION_STEP3_DATA));
+        return empty($this->getData(self::FORM_SESSION_STEP3_DATA));
     }
 }

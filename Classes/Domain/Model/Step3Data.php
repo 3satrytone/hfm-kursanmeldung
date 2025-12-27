@@ -10,71 +10,71 @@ class Step3Data extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * tnb
 	 *
-	 * @var int
-	 * @Extbase\Validate("NotEmpty")
+	 * @var int|null
+     * @Extbase\Validate("NotEmpty")
 	 */
-	protected int $tnb = 0;
+	protected ?int $tnb;
 
 	/**
 	 * privacy
 	 *
-	 * @var int
-	 * @Extbase\Validate("NotEmpty")
+	 * @var int|null
+     * @Extbase\Validate("NotEmpty")
 	 */
-	protected int $privacy = 0;
+	protected ?int $privacy;
 
     /**
-     * @var int
+     * @var int|null
      */
-	protected int $savedata = 0;
+	protected ?int $savedata;
 
     /**
-     * @return int
+     * @return int|null
      */
-	public function getTnb(): int
+	public function getTnb(): ?int
     {
 		return $this->tnb;
 	}
 
     /**
-     * @param int $tnb
+     * @param int|null $tnb
      * @return void
      */
-	public function setTnb(int $tnb): void
+	public function setTnb(?int $tnb): void
     {
 		$this->tnb = $tnb;
 	}
 
     /**
-     * @return int
+     * @return int|null
      */
-	public function getPrivacy(): int
+	public function getPrivacy(): ?int
     {
 		return $this->privacy;
 	}
 
     /**
-     * @param int $privacy
+     * @param int|null $privacy
      * @return void
      */
-	public function setPrivacy(int $privacy): void
+	public function setPrivacy(?int $privacy): void
     {
 		$this->privacy = $privacy;
 	}
 
     /**
-     * @return int
+     * @return int|null
      */
-	public function getSavedata(): int
+	public function getSavedata(): ?int
     {
 		return $this->savedata;
 	}
 
     /**
-     * @param int $savedata
+     * @param int|null $savedata
      * @return void
      */
-	public function setSavedata(int $savedata): void
+	public function setSavedata(?int $savedata): void
     {
 		$this->savedata = $savedata;
 	}

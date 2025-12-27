@@ -306,9 +306,6 @@ img.delete{
 #paylater .formhandler-button.formhandler-backward{
 	display:none;
 }
-input[type="submit"]{
-    font-size: 13px;
-}
 /* joProfBox */
 
 .joProfBox{

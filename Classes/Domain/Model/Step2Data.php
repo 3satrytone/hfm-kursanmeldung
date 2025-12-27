@@ -67,9 +67,9 @@ class Step2Data extends AbstractEntity
     protected string $zahlungstermin = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null
+     * @var int
      */
-    protected ?ObjectStorage $hotel;
+    protected int $hotel = 0;
 
     /**
      * room
@@ -372,18 +372,18 @@ class Step2Data extends AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null
+     * @return int
      */
-    public function getHotel(): ?ObjectStorage
+    public function getHotel(): int
     {
         return $this->hotel;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Hotel>|null $hotel
+     * @param int
      * @return void
      */
-    public function setHotel(?ObjectStorage $hotel): void
+    public function setHotel(int $hotel): void
     {
         $this->hotel = $hotel;
     }

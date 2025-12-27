@@ -5,6 +5,8 @@ namespace Hfm\Kursanmeldung\Utility;
 use Hfm\Kursanmeldung\Constants\Constants;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 
 class PropertyConverterUtility
 {
@@ -204,6 +206,26 @@ class PropertyConverterUtility
                     FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR,
                     '' // Use '.' as thousands separator
                 );
+        }
+    }
+
+    /**
+     * Configure mapping for Step2Data, specifically the `hotel` property to use ObjectStorageConverter
+     * and allow identity-based mapping for contained Hotel objects.
+     *
+     * Expects incoming data to represent an ObjectStorage of Hotel, e.g. a numeric-keyed array of
+     * hotel identifiers or identity arrays. Example acceptable shapes:
+     * - step2data[hotel][0][__identity] = 123
+     * - step2data[hotel][0] = 123 (will still be processed by child converter)
+     *
+     * @param Arguments $arguments
+     * @return void
+     */
+    public function convertArgumentsStep2Data(Arguments $arguments): void
+    {
+        if (isset($arguments[Constants::ACTION_STEP_2_DATA])) {
+            $config = $arguments[Constants::ACTION_STEP_2_DATA]->getPropertyMappingConfiguration();
+            $config->allowProperties('vita');
         }
     }
 }

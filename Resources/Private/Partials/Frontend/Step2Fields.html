@@ -1,4 +1,3 @@
-<f:debug>{_all}</f:debug>
 <div class="row">
     <div class="tnaction col-12 pt-3">
         <f:form.select property="tnaction" options="{tnaction}" class="form-control" id="passivMeldungEvent"/>
@@ -114,7 +113,7 @@
               data-feeaktivengeb="{gebuehr.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
               data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span>
         <span class="stipendiumhint ps-5"><f:format.html><f:translate
-            key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></f:format.html>
+                key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></f:format.html>
         </span>
     </div>
     <f:if condition="{kurs.gebuehrcom}">
@@ -127,41 +126,41 @@
     <div class="hotel col-12 pt-3">
         <f:form.select property="hotel" options="{hotel.hotel}"
                        prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.hotel')}"
-                       prependOptionValue="" data-bs-toggle="collapse" data-bs-target="#collapseRoom"
-                       aria-expanded="false" aria-controls="collapseRoom"
-                       class="form-control"
+                       prependOptionValue="" class="form-control" id="hotelSelector"
         />
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.hotel'}"/>
     </div>
-    <div class="room col-12 pt-3 collapse" id="collapseRoom">
-        <f:form.select property="room" options="{hotel.room}" class="form-control"
+    <div class="room col-12 pt-3 collapse collapseRoom">
+        <f:form.select property="room" options="{hotel.room}" class="form-control" id="roomSelector"
                        prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.room')}"
                        prependOptionValue=""
-                       data="{trtype: 'slide',trsrc:'room',trsel:'selected',trval:'dz2preis,dz2preiserm'}"
                        title="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"/>
         <f:render partial="FormTitleError"/>
-        <div class="roomwith pt-3" data-trtrg="room">
+        <div class="roomwith collapse pt-3" id="roomWith">
             <f:form.textfield property="roomwith" class="form-control"
                               placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.roomwith')}"
-                              data="{trtype: 'slide',trsrc:'matrikel'}"
             />
             <f:render partial="FormSingleErrors" arguments="{field: 'step2data.roomwith'}"/>
         </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row collapseRoom">
     <div class="hotelfee col-12 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.hotelfee"/>
-        <f:for each="{hotel.price}" key="hoprkey" as="hopr" iteration="hoit"><span id="hotelfee-{hoprkey}"
-                                                                                   class="hotelfee-row hotelfee-{hoprkey} joHide">
-            <f:for each="{hopr}" key="pricekey" as="price" iteration="prit"><span id="hotelfee-{hoprkey}-{pricekey}"
-                                                                                  class="hotelfee-price hotelfee-{pricekey}{f:if(condition:prit.isFirst, then:'',else:' joHide')}">{price -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}<f:translate
-                    key="tx_kursanmeldung_domain_model_kursanmeldung.step2.hotelfee1"/></span></f:for>
-        </span></f:for>
+        <f:for each="{hotel.price}" key="hoprkey" as="hopr" iteration="hoit">
+            <span id="hotelfee-{hoprkey}" class="hotelfee-row hotelfee-{hoprkey}">
+            <f:for each="{hopr}" key="pricekey" as="price" iteration="prit">
+                <span id="hotelfee-{hoprkey}-{pricekey}" class="hotelfee-price hotelfee-{pricekey} collapse">
+                    {price -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}
+                    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.hotelfee1"/>
+                </span>
+            </f:for>
+            </span>
+        </f:for>
     </div>
 </div>
-<div class="row">
+<div class="row collapse collapseRoom">
     <div class="roomfrom col-12 col-sm-6 pt-3">
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.roomfrom.head"/>
         <br/>
@@ -196,8 +195,8 @@
         </f:for>
     </div>
     <div class="row pt-3">
-        <input type="hidden" name="max_upload_item" value="{kurs.maxupload}"/>
-        <f:form.upload property="download" multiple="1"/>
+        <input type="hidden" name="max_upload_item" value="{kurs.maxupload}" id="maxUploadItem"/>
+        <f:form.upload property="download" multiple="1" class="upload-field"/>
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.download'}"/>
     </div>
 </f:if>
@@ -221,6 +220,15 @@
 </div>
 <f:if condition="{kurs.vita}>0">
     <div class="row">
+        <div class="col-7">{step2data.vita.originalResource.originalFile.name}</div>
+        <div class="col-5">
+            <f:form.uploadDeleteCheckbox id="vita.0"
+                                         property="vita"
+                                         fileReference="{step2data.vita}"/>
+            <label for="vita.0">Delete file</label>
+        </div>
+    </div>
+    <div class="row">
         <div class="filesupload">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.vita"/>
         </div>
@@ -228,15 +236,9 @@
     <div class="row">
         <div class="vita">
             <div id="vitauploadinp">
-                <input id="vitaupload" type="file" name="files[]"
-                       data-url="/typo3conf/ext/jo_kursanmeldung/Resources/Public/Javascript/jQuery-File-Upload-9.12.1/server/php/">
-                <div id="progress2" class="joHide">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
+                <f:form.upload property="vita" class="upload-field" id="vitaupload" />
                 <div id="vitaerrors" class="joHide"></div>
             </div>
-            <div id="vitafile" class="joHide"></div>
-
         </div>
     </div>
 </f:if>

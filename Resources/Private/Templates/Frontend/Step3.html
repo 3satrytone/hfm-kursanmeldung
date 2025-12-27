@@ -237,18 +237,18 @@
                 </td>
             </tr>
         </f:if>
-        <f:if condition="{hotelArr.name}!=''">
+        <f:if condition="{hotel.name}!=''">
             <tr>
                 <td>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotel"/>
                 </td>
-                <td>{hotelArr.name}</td>
+                <td>{hotel.name}</td>
             </tr>
             <tr>
                 <td>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.room"/>
                 </td>
-                <td>{hotelArr.room}</td>
+                <td>{hotel.room}</td>
             </tr>
             <tr>
                 <td>
@@ -260,7 +260,7 @@
                 <td>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee"/>
                 </td>
-                <td>{hotelArr.fee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}
+                <td>{hotel.fee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee2"/>
                     <br/>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.hotelfee1"/>
@@ -270,7 +270,10 @@
                 <td>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.roomfrom"/>
                 </td>
-                <td>{step2data.roomfrom} - {step2data.roomto}</td>
+                <td>
+                    <f:format.date format="d.m.Y">{step2data.roomfrom}</f:format.date> -
+                    <f:format.date format="d.m.Y">{step2data.roomto}</f:format.date>
+                </td>
             </tr>
         </f:if>
         <f:if condition="{hidedl}!=1">
@@ -281,13 +284,13 @@
                 <td>
                     <div>{step2data.link}</div>
                     <div>{step2data.youtube}</div>
-                    <f:if condition="{downloads}">
-                        <f:for each="{downloads}" as="dl">
-                            <div>{dl.name}</div>
+                    <f:if condition="{step2data.download}">
+                        <f:for each="{step2data.download}" as="dl">
+                            <div>{dl.originalResource.originalFile.name}</div>
                         </f:for>
                     </f:if>
                     <f:if condition="{vita}">
-                        <div>{vita}</div>
+                        <div>{vita.originalResource.originalFile.name}</div>
                     </f:if>
                 </td>
             </tr>

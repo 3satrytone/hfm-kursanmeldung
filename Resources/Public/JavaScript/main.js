@@ -123,93 +123,307 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// passive teilnehmer events
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('passivMeldungEvent');
-    const collapseElements = [].slice.call(document.querySelectorAll('.hfmPassiveTn'));
-
-    var bsCollapse = collapseElements.map(function (collapseElement) {
-        return new bootstrap.Collapse(collapseElement, {toggle: false});
-    });
-
-    function checkTnAction() {
-        // Check for the specific value
-        if (selectElement.value === '0') {
-            bsCollapse.map(function (el) {
-                el.show();
-            });
-        } else {
-            bsCollapse.map(function (el) {
-                el.hide();
-            });
-        }
-    }
-
-    selectElement.addEventListener('change', function () {
-        checkTnAction();
-    });
-
-    //initial values check
-    checkTnAction();
-});
-
 // show students passiv mesage
 document.addEventListener('DOMContentLoaded', function () {
-    const tnactionElement = document.getElementById('passivMeldungEvent');
-    const studystatElement = document.getElementById('hfmStudent');
-    const collapseElements = [].slice.call(document.querySelectorAll('.hfmPassiveTnStudent'));
+    //toggle passiv students @see collapsePassivMeldung()
+    const passivMeldungEl = document.getElementById('passivMeldungEvent');
+    const studyStatEl = document.getElementById('hfmStudent');
+    const hfmPassiveTnStudentEl = [].slice.call(document.querySelectorAll('.hfmPassiveTnStudent'));
+    const submitButtonsEl = [].slice.call(document.querySelectorAll('.formhandler-button[type="submit"]'));
 
-    var bsCollapseStudent = collapseElements.map(function (collapseElement) {
-        return new bootstrap.Collapse(collapseElement, {toggle: false});
-    });
-
-    function checkStudentTnAction() {
-        // Check for the specific value
-        if (tnactionElement.value === '1' && studystatElement.checked) {
-            bsCollapseStudent.map(function (el) {
-                console.log('show', el)
-                el.show();
-            });
-        } else {
-            bsCollapseStudent.map(function (el) {
-                console.log('hide', el)
-                el.hide();
-            });
-        }
-    }
-
-    tnactionElement.addEventListener('change', function () {
-        checkStudentTnAction();
-    });
-    studystatElement.addEventListener('change', function () {
-        checkStudentTnAction();
-    });
-
-    //initial values check
-    checkStudentTnAction();
-});
-
-// show students passiv mesage
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('hfmZahlungsArt');
+    //show additional message for zahlungsart 4 @see toggleMessageZahlartOnline()
+    const selectElementZahlungsArt = document.getElementById('hfmZahlungsArt');
     const zahlartOnlineElement = document.getElementById('zahlartOnline');
 
-    var bsCollapseAdditionalText = new bootstrap.Collapse(zahlartOnlineElement, {toggle: false});
+    //toggle program if aktiv or passiv selected @see togglePassivAktivSelection()
+    const hfmPassiveTnEl = [].slice.call(document.querySelectorAll('.hfmPassiveTn'));
 
-    function checkZahlArtAction() {
-        if (selectElement.value === '4') {
-            bsCollapseAdditionalText.show();
-        } else {
-            bsCollapseAdditionalText.hide();
+    //toggle hotel prices see toggleHotelRoom()
+    const hotelSelectorEl = document.getElementById('hotelSelector');
+    const roomSelectorEl = document.getElementById('roomSelector');
+    const roomWithEl = document.getElementById('roomWith');
+    const hotelCollapseEl = [].slice.call(document.querySelectorAll('.collapseRoom'));
+    const hotelFeeCollapseEl = [].slice.call(document.querySelectorAll('.hotelfee-price'));
 
+    function isAccessible(variable) {
+        let propper;
+
+        propper = variable !== undefined;
+        if (variable === null) {
+            propper = false;
         }
+
+        return propper;
     }
 
-    selectElement.addEventListener('change', function () {
+    function initBSCollapse(el) {
+        return el.map(function (collapseElement) {
+            return new bootstrap.Collapse(collapseElement, {toggle: false});
+        });
+    }
+
+    function hideEl(src) {
+        src.map(function (el) {
+            el.hide();
+        });
+    }
+
+    function showEl(src) {
+        src.map(function (el) {
+            el.show();
+        });
+    }
+
+    function collapsePassivMeldung() {
+        if (!isAccessible(passivMeldungEl) || !isAccessible(studyStatEl)) {
+            return;
+        }
+        let bsCollapseSubmitButton = initBSCollapse(submitButtonsEl);
+        let bsCollapseStudent = initBSCollapse(hfmPassiveTnStudentEl);
+
+        function checkStudentTnAction() {
+            // Check for the specific value
+            if (passivMeldungEl.value === '1' && studyStatEl.checked) {
+                showEl(bsCollapseStudent);
+                hideEl(bsCollapseSubmitButton);
+            } else {
+                hideEl(bsCollapseStudent);
+                showEl(bsCollapseSubmitButton);
+            }
+        }
+
+        passivMeldungEl.addEventListener('change', function () {
+            checkStudentTnAction();
+        });
+        studyStatEl.addEventListener('change', function () {
+            checkStudentTnAction();
+        });
+
+        //initial values check
+        checkStudentTnAction();
+    }
+
+    function toggleMessageZahlartOnline() {
+        if (!isAccessible(selectElementZahlungsArt)) {
+            return;
+        }
+        let bsCollapseAdditionalText = new bootstrap.Collapse(zahlartOnlineElement, {toggle: false});
+
+        function checkZahlArtAction() {
+            if (selectElementZahlungsArt.value === '4') {
+                bsCollapseAdditionalText.show();
+            } else {
+                bsCollapseAdditionalText.hide();
+            }
+        }
+
+        selectElementZahlungsArt.addEventListener('change', function () {
+            checkZahlArtAction();
+        });
+
         checkZahlArtAction();
-    });
+    }
 
-    checkZahlArtAction();
+    function togglePassivAktivSelection() {
+        if (!isAccessible(passivMeldungEl)) {
+            return;
+        }
+        let bsCollapse = initBSCollapse(hfmPassiveTnEl);
 
+        function checkTnAction() {
+            // Check for the specific value
+            if (passivMeldungEl.value === '0') {
+                showEl(bsCollapse);
+            } else {
+                hideEl(bsCollapse);
+            }
+        }
 
+        passivMeldungEl.addEventListener('change', function () {
+            checkTnAction();
+        });
+
+        //initial values check
+        checkTnAction();
+    }
+
+    function toggleHotelRoom() {
+        if (!isAccessible(hotelSelectorEl) || !isAccessible(hotelCollapseEl)) {
+            return;
+        }
+        let bsCollapseHotelEl = initBSCollapse(hotelCollapseEl);
+        let bsCollapseRoomWithEl = new bootstrap.Collapse(roomWithEl, {toggle: false});
+
+        function checkHotelRoomAction() {
+            if (hotelSelectorEl.value === '') {
+                hideEl(bsCollapseHotelEl);
+            } else {
+                showEl(bsCollapseHotelEl);
+            }
+            checkRoomWith();
+        }
+
+        function checkRoomWith() {
+            if (isAccessible(roomSelectorEl) && isAccessible(roomWithEl)) {
+                if (roomSelectorEl.value === 'dz2preis') {
+                    bsCollapseRoomWithEl.show();
+                } else {
+                    bsCollapseRoomWithEl.hide();
+                }
+            }
+        }
+
+        function showCurrentPrice() {
+            console.log(isAccessible(hotelSelectorEl), !isAccessible(roomSelectorEl))
+            if (!isAccessible(hotelSelectorEl) || !isAccessible(roomSelectorEl)) {
+                return;
+            }
+            var fee = document.getElementById('hotelfee-' + hotelSelectorEl.value + '-' + roomSelectorEl.value)
+
+            if (isAccessible(fee)) {
+                fee.classList.add('show');
+            }
+        }
+
+        function checkRoomPrice() {
+            if (!isAccessible(hotelFeeCollapseEl)) {
+                return;
+            }
+
+            hotelFeeCollapseEl.map(function (el) {
+                el.classList.remove('show')
+            });
+
+            showCurrentPrice();
+        }
+
+        hotelSelectorEl.addEventListener('change', function () {
+            checkHotelRoomAction();
+            checkRoomPrice();
+        });
+
+        if (isAccessible(roomSelectorEl)) {
+            roomSelectorEl.addEventListener('change', function () {
+                checkRoomWith();
+                checkRoomPrice();
+            });
+        }
+
+        checkHotelRoomAction();
+        checkRoomPrice();
+    }
+
+    collapsePassivMeldung();
+    toggleMessageZahlartOnline();
+    togglePassivAktivSelection();
+    toggleHotelRoom();
+
+    // Dynamically add new upload fields up to the limit in hidden #maxUploadItem
+    function checkUploadMaxItem() {
+        var maxEl = document.getElementById('maxUploadItem');
+        if (!maxEl) {
+            return;
+        }
+        var max = parseInt(maxEl.value, 10);
+        if (isNaN(max) || max < 1) {
+            return;
+        }
+
+        var initialInputs = [].slice.call(document.querySelectorAll('input.upload-field[type="file"]'));
+        if (!initialInputs.length) {
+            return;
+        }
+
+        function getParent(el) {
+            // use nearest wrapper if available, else parentElement
+            var wrapper = el.closest && el.closest('.upload-field-group');
+            return wrapper || el.parentElement || document.body;
+        }
+
+        function ensureSlots(parent) {
+            var inputs = [].slice.call(parent.querySelectorAll('input.upload-field[type="file"]'));
+            if (!inputs.length) {
+                return;
+            }
+
+            // Find last selected index
+            var lastSelectedIndex = -1;
+            inputs.forEach(function (inp, idx) {
+                if (inp.files && inp.files.length > 0) {
+                    lastSelectedIndex = idx;
+                }
+            });
+
+            // Remove trailing empty inputs, keep at most one empty after last selected (if we are below max)
+            var total = inputs.length;
+            var allowedTrailing = total < max ? 1 : 0;
+            for (var i = inputs.length - 1; i > lastSelectedIndex + allowedTrailing; i--) {
+                var candidate = inputs[i];
+                if (!candidate.files || candidate.files.length === 0) {
+                    // If there is a label referencing this id, avoid duplicate for-ids later
+                    var lbl = candidate.id ? parent.querySelector('label[for="' + candidate.id + '"]') : null;
+                    if (lbl) {
+                        lbl.removeAttribute('for');
+                    }
+                    candidate.parentNode && candidate.parentNode.removeChild(candidate);
+                } else {
+                    // stop once we hit a non-empty
+                    break;
+                }
+            }
+
+            // Recompute after removals
+            inputs = [].slice.call(parent.querySelectorAll('input.upload-field[type="file"]'));
+            if (!inputs.length) {
+                return;
+            }
+
+            var last = inputs[inputs.length - 1];
+            var countNow = inputs.length;
+
+            // If last has a file and we are below max, append a fresh empty input
+            if (last && last.files && last.files.length > 0 && countNow < max) {
+                var clone = last.cloneNode(true);
+                try {
+                    clone.value = '';
+                } catch (e) { /* some browsers disallow programmatic clear; ignore */
+                }
+                // Ensure no duplicate id on clone
+                if (clone.id) {
+                    clone.removeAttribute('id');
+                }
+                // Insert after the last
+                last.insertAdjacentElement('afterend', clone);
+            }
+        }
+
+        // Initial normalization for each group (by parent wrapper)
+        var parents = [];
+        initialInputs.forEach(function (inp) {
+            var p = getParent(inp);
+            if (parents.indexOf(p) === -1) {
+                parents.push(p);
+            }
+        });
+        parents.forEach(ensureSlots);
+
+        // Event delegation: on any change in a file input with class upload-field
+        document.addEventListener('change', function (e) {
+            var t = e.target;
+            if (!t || !t.matches) {
+                return;
+            }
+            if (t.matches('input.upload-field[type="file"]')) {
+                ensureSlots(getParent(t));
+            }
+        });
+    }
+
+    checkUploadMaxItem();
+
+    var toastEl = document.getElementById('already-participant-toast');
+    if(isAccessible(toastEl)){
+        var toast = bootstrap.Toast.getOrCreateInstance(toastEl)
+        toast.show();
+    }
 });

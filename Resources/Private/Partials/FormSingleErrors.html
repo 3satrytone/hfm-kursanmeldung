@@ -2,7 +2,7 @@
         <f:if condition="{validationResults.flattenedErrors}">
             <f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
                 <f:if condition="{0:propertyPath} == {0:field}">
-                    <div class="joMainError">
+                    <div class="hfmMainError">
                         <ul>
                             <f:for each="{errors}" key="key" as="error">
                                 <li>

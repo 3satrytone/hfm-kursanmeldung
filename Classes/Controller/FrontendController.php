@@ -9,12 +9,14 @@ use Hfm\Kursanmeldung\Domain\Model\Step2Data;
 use Hfm\Kursanmeldung\Domain\Model\Step3Data;
 use Hfm\Kursanmeldung\Domain\Model\Step4Data;
 use Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository;
+use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfRepository;
 use Hfm\Kursanmeldung\Domain\Validator\Step1DataValidator;
 use Hfm\Kursanmeldung\Domain\Validator\Step2DataValidator;
 use Hfm\Kursanmeldung\Utility\FormatUtility;
+use Hfm\Kursanmeldung\Utility\PropertyConverterUtility;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Hfm\Kursanmeldung\Utility\SessionUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -23,6 +25,8 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class FrontendController extends ActionController implements LoggerAwareInterface
@@ -66,9 +70,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly ProfRepository $profRepository,
         protected readonly KursanmeldungRepository $kursanmeldungRepository,
         protected readonly GebuehrenRepository $gebuehrenRepository,
+        protected readonly HotelRepository $hotelRepository,
         protected readonly SessionUtility $sessionUtility,
         protected readonly ParticipantUtility $participantUtility,
         protected readonly FormatUtility $formatUtility,
+        protected readonly PropertyConverterUtility $propertyConverterUtility,
     ) {
     }
 
@@ -242,8 +248,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             }
         }
 
-        $kursUid = (int)$this->request->getArgument(Constants::KURS);
-        $kurs = $this->kursRepository->findByUid($kursUid);
+        // get kurs from redirect
+        if ($this->request->hasArgument(Constants::KURS)) {
+            $kursUid = (int)$this->request->getArgument(Constants::KURS);
+            $kurs = $this->kursRepository->findByUid($kursUid);
+        }
 
         if (!empty($kurs)) {
             $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS, $kurs);
@@ -319,8 +328,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     public function initializeStep2Action(): void
     {
         if ($this->arguments->hasArgument(Constants::ACTION_STEP_2_DATA)) {
-            $this->arguments->getArgument(Constants::ACTION_STEP_2_DATA)->getPropertyMappingConfiguration(
-            )->allowProperties('vita');
+            $this->propertyConverterUtility->convertArgumentsStep2Data($this->arguments);
         }
     }
 
@@ -514,9 +522,59 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
         $kursname = $this->participantUtility->getKursname($kurs);
 
+        // hotel
+        $hotel = $this->hotelRepository->findByUid($step2data->getHotel());
+        $fee = 0;
+        $room = $step2data->getRoom();
+        if (!empty($hotel)) {
+            $uroom = 'get' . ucfirst($room);
+            if (method_exists($hotel, $uroom)) {
+                $fee = $hotel->$uroom();
+            }
+
+            $hotel = array(
+                'name' => $hotel->getHotel(),
+                'room' => LocalizationUtility::translate(
+                    'tx_kursanmeldung_domain_model_kursanmeldung.step2.val' . $room,
+                    'kursanmeldung'
+                ),
+                'fee' => $fee
+            );
+        }
+
+        // gebühren
+        $gebuehr = null;
+        if (!empty($kurs) && $kurs != null) {
+            $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
+        }
+        $additionalfee = $enrollmentfee = 0;
+
+        // wenn studentship != NULL alles 0
+        if (!$step2data->getStudentship() || $gebuehr === null) {
+            $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeb() : $gebuehr->getAnmeldung();
+            $additionalfee = ($step2data->getTnaction() === 1) ? 0 : $gebuehr->getAktivengeb();
+            // wenn studystat != NULL halber preis
+            if ($step2data->getStudystat()) {
+                $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeberm(
+                ) : $gebuehr->getAnmeldungerm();
+                $additionalfee = ($step2data->getTnaction() === 1) ? 0 : $gebuehr->getAktivengeberm();
+            }
+        }
+
+        $vita = $step2data->getVita() ? count($step2data->getVita()) : 0;
+        $downloads = $step2data->getDownload() ? count($step2data->getDownload()) : 0;
+        $hidedl = 0;
+        if (empty($vita) && empty($downloads) && empty($step2data->getLink()) && empty($step2data->getYoutube())) {
+            $hidedl = 1;
+        }
+
         $this->view->assign('kurs', $kurs);
         $this->view->assign('kursname', $kursname);
         $this->view->assign('zahlungsart', $this->zahlungsartArr[$step2data->getZahlungsart()]);
+        $this->view->assign('hotel', $hotel);
+        $this->view->assign('additionalfee', $additionalfee);
+        $this->view->assign('enrollmentfee', $enrollmentfee);
+        $this->view->assign('hidedl', $hidedl);
         $this->view->assign('step1data', $step1data);
         $this->view->assign('step2data', $step2data);
         $this->view->assign('step3data', $step3data);

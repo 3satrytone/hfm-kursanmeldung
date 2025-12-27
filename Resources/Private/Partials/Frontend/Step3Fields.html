@@ -1,7 +1,8 @@
-<f:render partial="FormErrors" arguments="{field: 'step3data.customerid'}"/>
 <div class="row">
     <div class="tnb col-12 hfm-float-all">
-        <f:form.checkbox property="tnb" value="1"/>
+        <f:form.checkbox property="tnb" value="1"
+                         data-bs-toggle="popover" data-bs-placement="right"
+                         data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step3data.tnb'})}"/>
         <f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.tnb"/></f:format.html>
         <f:render partial="FormSingleErrors" arguments="{field: 'step3data.tnb'}"/>
     </div>

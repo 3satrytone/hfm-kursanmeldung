@@ -82,21 +82,48 @@ img {
     border-color: #de0e4f;
     box-shadow: 0 0 0 5px rgba(225, 0, 0, 0.2);
 }
-.hfm-float-all{
+
+.hfm-float-all {
     position: relative;
 }
 
 .hfm-float-all p,
-.hfm-float-all input{
+.hfm-float-all input {
     float: left;
     margin-left: 5px;
 }
 
-.hfm-float-all input{
+.hfm-float-all input {
     margin-top: 4px
 }
-.hfm-float-all p{
+
+.hfm-float-all p {
     width: 90%;
 }
 
+#hfm-kursanmeldung-default .formhandler-button {
+    border-radius: 4px;
+    padding: 4px;
+}
 
+#hfm-kursanmeldung-default .formhandler-button.formhandler-backward {
+    padding: 4px 14px;
+    text-decoration: none;
+    background-color: #1a1a1a;
+}
+
+#hfm-kursanmeldung-default .upload-field {
+    margin-top: 5px;
+}
+
+#already-participant-toast {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.tnb .hfmMainError ul,
+.privacy .hfmMainError ul {
+    background-color: #FF9F9F;
+    border: 1px #FF0000 solid;
+    display: inline-block;
+}
