@@ -131,8 +131,9 @@ return [
             'label' => 'Zahlt bis',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'datetime',
-                'default' => 0,
+                'dbType' => 'datetime',
+                'format' => 'datetime',
+                'nullable' => true,
             ],
         ],
         'gezahlt' => [
@@ -241,8 +242,9 @@ return [
             'label' => 'Eingangsdatum',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'datetime',
-                'default' => 0,
+                'dbType' => 'datetime',
+                'format' => 'datetime',
+                'nullable' => true,
             ],
         ],
         'teilnahmeart' => [
@@ -372,11 +374,12 @@ return [
         ],
         'doitime' => [
             'exclude' => false,
-            'label' => 'DOI Zeit',
+            'label' => 'Double Opt In Zeit',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'datetime',
-                'default' => 0,
+                'dbType' => 'datetime',
+                'format' => 'datetime',
+                'nullable' => true,
             ],
         ],
         'novalnettid' => [

@@ -17,9 +17,9 @@ class Kursanmeldung extends AbstractEntity
     protected ObjectStorage $tn;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs>
+     * @var \Hfm\Kursanmeldung\Domain\Model\Kurs|null
      */
-    protected ObjectStorage $kurs;
+    protected $kurs = null;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Uploads>
@@ -29,7 +29,7 @@ class Kursanmeldung extends AbstractEntity
     protected int $bezahlt = 0;
     protected int $bezahltag = 0;
     protected string $zahlart = '';
-    protected int $zahltbis = 0;
+    protected ?\DateTime $zahltbis;
     protected string $gezahlt = '';
     protected string $gezahltag = '';
     protected string $gezahltos = '';
@@ -41,7 +41,7 @@ class Kursanmeldung extends AbstractEntity
     protected string $gebuehr = '';
     protected string $gebuehrag = '';
     protected int $gebuehrdat = 0;
-    protected int $datein = 0;
+    protected ?\DateTime $datein;
     protected string $teilnahmeart = '';
 
     /**
@@ -65,7 +65,7 @@ class Kursanmeldung extends AbstractEntity
     protected int $savedata = 0;
     protected string $salt = '';
     protected string $registrationkey = '';
-    protected int $doitime = 0;
+    protected ?\DateTime $doitime;
     protected string $novalnettid = '';
     protected string $novalnettidag = '';
     protected string $novalnetcno = '';
@@ -134,23 +134,24 @@ class Kursanmeldung extends AbstractEntity
      * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $tn
      * @return void
      */
-    public function addTn(Teilnehmer $tn): void {
+    public function addTn(Teilnehmer $tn): void
+    {
         $this->tn->attach($tn);
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs>
+     * @return \Hfm\Kursanmeldung\Domain\Model\Kurs|null
      */
-    public function getKurs(): ObjectStorage
+    public function getKurs(): ?Kurs
     {
         return $this->kurs;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Kurs> $kurs
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kurs|null $kurs
      * @return void
      */
-    public function setKurs(ObjectStorage $kurs): void
+    public function setKurs(?Kurs $kurs): void
     {
         $this->kurs = $kurs;
     }
@@ -220,12 +221,12 @@ class Kursanmeldung extends AbstractEntity
         $this->zahlart = $zahlart;
     }
 
-    public function getZahltbis(): int
+    public function getZahltbis(): ?\DateTime
     {
         return $this->zahltbis;
     }
 
-    public function setZahltbis(int $zahltbis): void
+    public function setZahltbis(?\DateTime $zahltbis): void
     {
         $this->zahltbis = $zahltbis;
     }
@@ -340,12 +341,12 @@ class Kursanmeldung extends AbstractEntity
         $this->gebuehrdat = $gebuehrdat;
     }
 
-    public function getDatein(): int
+    public function getDatein(): ?\DateTime
     {
         return $this->datein;
     }
 
-    public function setDatein(int $datein): void
+    public function setDatein(?\DateTime $datein): void
     {
         $this->datein = $datein;
     }
@@ -504,12 +505,12 @@ class Kursanmeldung extends AbstractEntity
         $this->registrationkey = $registrationkey;
     }
 
-    public function getDoitime(): int
+    public function getDoitime(): ?\DateTime
     {
         return $this->doitime;
     }
 
-    public function setDoitime(int $doitime): void
+    public function setDoitime(?\DateTime $doitime): void
     {
         $this->doitime = $doitime;
     }

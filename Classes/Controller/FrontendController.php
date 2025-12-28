@@ -12,6 +12,7 @@ use Hfm\Kursanmeldung\Domain\Model\Step2Data;
 use Hfm\Kursanmeldung\Domain\Model\Step3Data;
 use Hfm\Kursanmeldung\Domain\Model\Step4Data;
 use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
+use Hfm\Kursanmeldung\Domain\Model\Uploads;
 use Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository;
 use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
@@ -712,8 +713,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             }
         }
 
-        $language = $this->request->getAttribute('language') ?? $this->request->getAttribute('site')->getDefaultLanguage();
-        $newTn->setSprache((string)$language->getLanguageId());
+        $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
+            'site'
+        )->getDefaultLanguage();
+        $newTn->setSprache($language->getTitle());
 
         $stepDataDto = new StepDataParticipantDto(
             $step1data,
@@ -722,8 +725,100 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         );
 
         $this->participantFacade->hydrateParticipantFromStepData($stepDataDto);
-        if($addTN) $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
-        
+        if ($addTN) {
+            $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
+        }
+
+        $newKursanmeldung->setKurs($kurs);
+        $newKursanmeldung->setStudentship($step2data->getStudentship() ?? 0);
+        $newKursanmeldung->setStudystat($step2data->getStudystat());
+        $newKursanmeldung->setZahlart($step2data->getZahlungsart());
+        $newKursanmeldung->setZahltbis($zahlungstermin);
+        $newKursanmeldung->setHotel($step2data->getHotel());
+        $newKursanmeldung->setRoom($step2data->getRoom());
+        if ($step2data->getHotel() != '') {
+            $newKursanmeldung->setRoomwith($step2data->getRoomwith());
+            $newKursanmeldung->setRoomfrom($step2data->getRoomfrom());
+            $newKursanmeldung->setRoomto($step2data->getRoomto());
+        }
+        $newKursanmeldung->setGebuehr($enrollmentfee);
+        $newKursanmeldung->setDatein(new \DateTime('NOW'));
+        $newKursanmeldung->setTeilnahmeart($step2data->getTnaction());
+        $newKursanmeldung->setProgramm($step2data->getProgramm());
+        $newKursanmeldung->setOrchesterstudio($step2data->getOrchesterstudio() ?? '');
+        $newKursanmeldung->setComment($step2data->getComment());
+        $newKursanmeldung->setAgb($step3data->getTnb());
+        $newKursanmeldung->setDatenschutz($step3data->getPrivacy());
+        $newKursanmeldung->setDeflang((int)$language->getLanguageId());
+
+        if (!empty($step2data->getDownload())) {
+            $downloads = $step2data->getDownload();
+            if (!empty($downloads)) {
+                foreach ($downloads as $fileReference) {
+                    if (!empty($fileReference)) {
+                        $newDl = new Uploads();
+                        $newDl->setKurs($kurs);
+                        $newDl->setKat('download');
+                        $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
+                        $newDl->setPfad($fileReference->getOriginalResource()?->getIdentifier() ?? '');
+                        $newDl->setDatein(new \DateTime('NOW'));
+                        $newDl->setFileref($fileReference);
+                        $newKursanmeldung->addUploads($newDl);
+                    }
+                }
+            }
+        }
+
+        if (!empty($step2data->getYoutube())) {
+            $src = $step2data->getYoutube();
+            if (!empty($src)) {
+                $srcBn = pathinfo($src);
+                $newDl = new Uploads();
+                $newDl->setKurs($kurs);
+                $newDl->setKat('youtube');
+                $newDl->setName($srcBn['basename']);
+                $newDl->setPfad($srcBn['dirname']);
+                $newDl->setDatein(new \DateTime('NOW'));
+                $newKursanmeldung->addUploads($newDl);
+            }
+        }
+
+        if (!empty($step2data->getVita())) {
+            $fileReference = $step2data->getVita();
+            if (!empty($fileReference->getOriginalResource())) {
+                $newDl = new Uploads();
+                $newDl->setKurs($kurs);
+                $newDl->setKat('vita');
+                $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
+                $newDl->setPfad($fileReference->getOriginalResource()?->getIdentifier() ?? '');
+                $newDl->setDatein(new \DateTime('NOW'));
+                $newDl->setFileref($fileReference);
+                $newKursanmeldung->addUploads($newDl);
+            }
+        }
+        $newKursanmeldung->setSavedata($step3data->getSavedata());
+        if ($kursanmeldungUid === 0) {
+            $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
+            $newKursanmeldung->setRegistrationkey($hash);
+
+            $this->kursanmeldungRepository->add($newKursanmeldung);
+        } else {
+            $this->kursanmeldungRepository->update($newKursanmeldung);
+        }
+
+        if ($newKursanmeldung->getUid() > 0) {
+        }
+
+        $site = $this->request->getAttribute('site');
+        $baseUrl = (string)$site->getBase();
+
+        $this->view->assign('baseURL', $baseUrl);
+        $this->view->assign('newKursanmeldung', $newKursanmeldung);
+        $this->view->assign('payment', $payment);
+        $this->view->assign('p', $p);
+        $this->view->assign('form', $form);
+        $this->view->assign('select', $select);
+
         return $this->htmlResponse();
     }
 

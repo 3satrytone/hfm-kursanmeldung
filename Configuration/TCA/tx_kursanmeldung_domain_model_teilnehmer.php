@@ -106,9 +106,10 @@ return [
             'exclude' => false,
             'label' => 'Geburtsdatum',
             'config' => [
-                'type' => 'date',
-                'eval' => 'date',
-                'default' => 0,
+                'type' => 'datetime',
+                'dbType' => 'datetime',
+                'format' => 'date',
+                'nullable' => true,
             ],
         ],
         'sprache' => [
@@ -224,8 +225,9 @@ return [
             'label' => 'Eingangsdatum',
             'config' => [
                 'type' => 'datetime',
-                'eval' => 'datetime',
-                'default' => 0,
+                'dbType' => 'datetime',
+                'format' => 'datetime',
+                'nullable' => true,
             ],
         ],
     ],

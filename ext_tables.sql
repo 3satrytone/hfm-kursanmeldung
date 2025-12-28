@@ -251,7 +251,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_teilnehmer (
   anrede int(11) DEFAULT '0' NOT NULL,
   titel varchar(255) DEFAULT '' NOT NULL,
   matrikel varchar(255) DEFAULT '' NOT NULL,
-  gebdate int(11) unsigned DEFAULT '0' NOT NULL,
+  gebdate datetime NULL,
   sprache varchar(255) DEFAULT '' NOT NULL,
   nation varchar(255) DEFAULT '' NOT NULL,
   adresse1 varchar(255) DEFAULT '' NOT NULL,
@@ -264,7 +264,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_teilnehmer (
   mobil varchar(255) DEFAULT '' NOT NULL,
   telefax varchar(255) DEFAULT '' NOT NULL,
   email varchar(255) DEFAULT '' NOT NULL,
-  datein int(11) unsigned DEFAULT '0' NOT NULL,
+  datein datetime NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -290,7 +290,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_uploads (
   kat varchar(255) DEFAULT '' NOT NULL,
   name varchar(255) DEFAULT '' NOT NULL,
   pfad varchar(255) DEFAULT '' NOT NULL,
-  datein varchar(255) DEFAULT '' NOT NULL,
+  datein datetime NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -318,7 +318,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_kursanmeldung (
   bezahlt int(11) DEFAULT '0' NOT NULL,
   bezahltag int(11) DEFAULT '0' NOT NULL,
   zahlart varchar(255) DEFAULT '' NOT NULL,
-  zahltbis int(11) DEFAULT '0' NOT NULL,
+  zahltbis datetime DEFAULT NULL,
   gezahlt varchar(255) DEFAULT '' NOT NULL,
   gezahltag varchar(255) DEFAULT '' NOT NULL,
   gezahltos varchar(255) DEFAULT '' NOT NULL,
@@ -345,7 +345,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_kursanmeldung (
   savedata tinyint(4) DEFAULT '0' NOT NULL,
   salt varchar(255) DEFAULT '' NOT NULL,
   registrationkey text NOT NULL,
-  doitime int(11) unsigned DEFAULT '0' NOT NULL,
+  doitime datetime DEFAULT NULL,
   novalnettid varchar(255) DEFAULT '' NOT NULL,
   novalnettidag varchar(255) DEFAULT '' NOT NULL,
   novalnetcno varchar(255) DEFAULT '' NOT NULL,

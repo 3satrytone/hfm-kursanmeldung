@@ -5,6 +5,9 @@ namespace Hfm\Kursanmeldung\Utility;
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -151,5 +154,17 @@ class ParticipantUtility
         $part = $this->kursanmeldungRepository->getParticipantsByMail($kurs->getUid(), $step1data->getEmail());
 
         return ($part->count() > 0);
+    }
+
+    /**
+     * @param string $password
+     * @return string
+     * @throws \TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException
+     */
+    public function getHashedPasswordFromPassword(string $password): string
+    {
+        $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+
+        return $hashInstance->getHashedPassword($password);
     }
 }

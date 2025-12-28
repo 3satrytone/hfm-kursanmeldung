@@ -101,10 +101,20 @@ return [
             'exclude' => false,
             'label' => 'Datein',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim',
+                'type' => 'datetime',
+                'dbType' => 'datetime',
+                'format' => 'datetime',
+                'nullable' => true,
             ],
         ],
+        'fileref' => [
+            'label' => 'Upload Filereference',
+            'config' => [
+                'type' => 'file',
+                'minitems' => 1,
+                'maxitems' => 1,
+                'allowed' => ['common-image-types','common-text-types','common-media-types']
+            ],
+        ]
     ],
 ];
