@@ -165,7 +165,7 @@ class Step2Data extends AbstractEntity
      * vita
      *
      * A collection of files.
-     * @var ObjectStorage<FileReference>
+     * @var FileReference
      */
     #[FileUpload([
         'validation' => [
@@ -213,6 +213,7 @@ class Step2Data extends AbstractEntity
     public function initializeObject(): void
     {
         $this->download = $this->download ?? new ObjectStorage();
+        $this->vita = $this->vita ?? null;
     }
 
     /**

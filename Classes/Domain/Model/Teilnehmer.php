@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Domain\Model;
 
+use DateTime;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class Teilnehmer extends AbstractEntity
@@ -12,7 +13,7 @@ class Teilnehmer extends AbstractEntity
     protected int $anrede = 0;
     protected string $titel = '';
     protected string $matrikel = '';
-    protected string $gebdate = '';
+    protected DateTime $gebdate;
     protected string $sprache = '';
     protected string $nation = '';
     protected string $adresse1 = '';
@@ -25,7 +26,7 @@ class Teilnehmer extends AbstractEntity
     protected string $mobil = '';
     protected string $telefax = '';
     protected string $email = '';
-    protected string $datein = '';
+    protected DateTime $datein;
 
     public function getVorname(): string { return $this->vorname; }
     public function setVorname(string $vorname): void { $this->vorname = $vorname; }
@@ -42,8 +43,8 @@ class Teilnehmer extends AbstractEntity
     public function getMatrikel(): string { return $this->matrikel; }
     public function setMatrikel(string $matrikel): void { $this->matrikel = $matrikel; }
 
-    public function getGebdate(): string { return $this->gebdate; }
-    public function setGebdate(string $gebdate): void { $this->gebdate = $gebdate; }
+    public function getGebdate(): DateTime { return $this->gebdate; }
+    public function setGebdate(DateTime $gebdate): void { $this->gebdate = $gebdate; }
 
     public function getSprache(): string { return $this->sprache; }
     public function setSprache(string $sprache): void { $this->sprache = $sprache; }
@@ -81,6 +82,6 @@ class Teilnehmer extends AbstractEntity
     public function getEmail(): string { return $this->email; }
     public function setEmail(string $email): void { $this->email = $email; }
 
-    public function getDatein(): string { return $this->datein; }
-    public function setDatein(string $datein): void { $this->datein = $datein; }
+    public function getDatein(): DateTime { return $this->datein; }
+    public function setDatein(DateTime $datein): void { $this->datein = $datein; }
 }

@@ -72,12 +72,36 @@ class Kursanmeldung extends AbstractEntity
     protected string $notice = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Ensem>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Ensemble>
      */
-    protected int $ensemble = 0;
+    protected ObjectStorage $ensemble;
     protected int $stipendiat = 0;
     protected int $studentship = 0;
     protected int $studystat = 0;
+
+    // When using ObjectStorages, it is vital to initialize these.
+    public function __construct()
+    {
+        $this->tn = new ObjectStorage();
+        $this->kurs = new ObjectStorage();
+        $this->anmeldestatus = new ObjectStorage();
+        $this->profstatus = new ObjectStorage();
+        $this->uploads = new ObjectStorage();
+        $this->ensemble = new ObjectStorage();
+    }
+
+    /**
+     * Called again with initialize object, as fetching an entity from the DB does not use the constructor
+     */
+    public function initializeObject(): void
+    {
+        $this->tn = $this->tn ?? new ObjectStorage();
+        $this->kurs = $this->kurs ?? null;
+        $this->anmeldestatus = $this->anmeldestatus ?? new ObjectStorage();
+        $this->profstatus = $this->profstatus ?? new ObjectStorage();
+        $this->uploads = $this->uploads ?? new ObjectStorage();
+        $this->ensemble = $this->ensemble ?? new ObjectStorage();
+    }
 
     public function getDeflang(): ?int
     {
@@ -104,6 +128,14 @@ class Kursanmeldung extends AbstractEntity
     public function setTn(ObjectStorage $tn): void
     {
         $this->tn = $tn;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $tn
+     * @return void
+     */
+    public function addTn(Teilnehmer $tn): void {
+        $this->tn->attach($tn);
     }
 
     /**
@@ -138,6 +170,24 @@ class Kursanmeldung extends AbstractEntity
     public function setUploads(ObjectStorage $uploads): void
     {
         $this->uploads = $uploads;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Uploads $uploads
+     * @return void
+     */
+    public function addUploads(Uploads $uploads): void
+    {
+        $this->uploads->attach($uploads);
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Uploads $uploads
+     * @return void
+     */
+    public function removeUploads(Uploads $uploads): void
+    {
+        $this->uploads->detach($uploads);
     }
 
     public function getBezahlt(): int
@@ -504,14 +554,39 @@ class Kursanmeldung extends AbstractEntity
         $this->notice = $notice;
     }
 
-    public function getEnsemble(): int
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Ensemble>
+     */
+    public function getEnsemble(): ObjectStorage
     {
         return $this->ensemble;
     }
 
-    public function setEnsemble(int $ensemble): void
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Ensemble> $ensemble
+     * @return void
+     */
+    public function setEnsemble(ObjectStorage $ensemble): void
     {
         $this->ensemble = $ensemble;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Ensemble $ensemble
+     * @return void
+     */
+    public function addEnsemble(Ensemble $ensemble): void
+    {
+        $this->ensemble->attach($ensemble);
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Ensemble $ensemble
+     * @return void
+     */
+    public function removeEnsemble(Ensemble $ensemble): void
+    {
+        $this->ensemble->detach($ensemble);
     }
 
     public function getStipendiat(): int

@@ -289,8 +289,9 @@
                             <div>{dl.originalResource.originalFile.name}</div>
                         </f:for>
                     </f:if>
-                    <f:if condition="{vita}">
-                        <div>{vita.originalResource.originalFile.name}</div>
+                    <f:debug>{step2data.vita}</f:debug>
+                    <f:if condition="{step2data.vita && step2data.vita.originalResource != NULL}">
+                        <div>{step2data.vita.originalResource.originalFile.name}</div>
                     </f:if>
                 </td>
             </tr>

@@ -46,5 +46,9 @@ services:
     public: true
   Hfm\Kursanmeldung\Utility\ParticipantUtility:
     public: true
+  Hfm\Kursanmeldung\App\Participant\Business\ParticipantFacade:
+    public: true
+  Hfm\Kursanmeldung\App\Participant\Business\ParticipantFactory:
+    public: true
 
 

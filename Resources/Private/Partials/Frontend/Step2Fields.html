@@ -1,3 +1,4 @@
+<f:debug>{_all}</f:debug>
 <div class="row">
     <div class="tnaction col-12 pt-3">
         <f:form.select property="tnaction" options="{tnaction}" class="form-control" id="passivMeldungEvent"/>
@@ -182,6 +183,11 @@
 </div>
 <f:if condition="{kurs.maxupload} > 0">
     <div class="row pt-3">
+        <div class="filesupload">
+            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.filesupload" />
+        </div>
+    </div>
+    <div class="row pt-3">
         <f:for each="{step2data.download}" as="file" iteration="i">
             <div class="row">
                 <div class="col-7">{file.originalResource.originalFile.name}</div>
@@ -195,9 +201,11 @@
         </f:for>
     </div>
     <div class="row pt-3">
-        <input type="hidden" name="max_upload_item" value="{kurs.maxupload}" id="maxUploadItem"/>
-        <f:form.upload property="download" multiple="1" class="upload-field"/>
-        <f:render partial="FormSingleErrors" arguments="{field: 'step2data.download'}"/>
+        <div class="col-12">
+            <input type="hidden" name="max_upload_item" value="{kurs.maxupload}" id="maxUploadItem"/>
+            <f:form.upload property="download" multiple="1" class="upload-field form-control"/>
+            <f:render partial="FormSingleErrors" arguments="{field: 'step2data.download'}"/>
+        </div>
     </div>
 </f:if>
 <div class="row">
@@ -218,25 +226,27 @@
         </f:if>
     </div>
 </div>
-<f:if condition="{kurs.vita}>0">
-    <div class="row">
-        <div class="col-7">{step2data.vita.originalResource.originalFile.name}</div>
-        <div class="col-5">
-            <f:form.uploadDeleteCheckbox id="vita.0"
-                                         property="vita"
-                                         fileReference="{step2data.vita}"/>
-            <label for="vita.0">Delete file</label>
-        </div>
-    </div>
-    <div class="row">
+<f:if condition="{kurs.vita}>">
+    <div class="row pt-3">
         <div class="filesupload">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.vita"/>
         </div>
     </div>
+    <f:if condition="{step2data.vitas}">
+        <div class="row pt-3">
+            <div class="col-7">{step2data.vita.originalResource.originalFile.name}</div>
+            <div class="col-5">
+                <f:form.uploadDeleteCheckbox id="vita.0"
+                                             property="vita"
+                                             fileReference="{step2data.vita}"/>
+                <label for="vita.0">Delete file</label>
+            </div>
+        </div>
+    </f:if>
     <div class="row">
         <div class="vita">
             <div id="vitauploadinp">
-                <f:form.upload property="vita" class="upload-field" id="vitaupload" />
+                <f:form.upload property="vita" class="vita-upload-field form-control" id="vitaupload"/>
                 <div id="vitaerrors" class="joHide"></div>
             </div>
         </div>

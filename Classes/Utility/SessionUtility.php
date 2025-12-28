@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Utility;
 
+use Hfm\Kursanmeldung\Domain\Model\Step2Data;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class SessionUtility

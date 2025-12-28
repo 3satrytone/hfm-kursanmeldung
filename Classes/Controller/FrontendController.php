@@ -3,11 +3,15 @@
 namespace Hfm\Kursanmeldung\Controller;
 
 
+use Hfm\Kursanmeldung\App\Dto\StepDataParticipantDto;
+use Hfm\Kursanmeldung\App\Participant\Business\ParticipantFacade;
 use Hfm\Kursanmeldung\Constants\Constants;
+use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Model\Step2Data;
 use Hfm\Kursanmeldung\Domain\Model\Step3Data;
 use Hfm\Kursanmeldung\Domain\Model\Step4Data;
+use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository;
 use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
@@ -25,7 +29,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -75,6 +78,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly ParticipantUtility $participantUtility,
         protected readonly FormatUtility $formatUtility,
         protected readonly PropertyConverterUtility $propertyConverterUtility,
+        protected readonly ParticipantFacade $participantFacade,
     ) {
     }
 
@@ -455,18 +459,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     }
 
     /**
-     * @return void
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     */
-    public function initializeStep2redirectAction()
-    {
-        if ($this->arguments->hasArgument(Constants::ACTION_STEP_2_DATA)) {
-            $this->arguments->getArgument(Constants::ACTION_STEP_2_DATA)->getPropertyMappingConfiguration(
-            )->allowProperties('vita');
-        }
-    }
-
-    /**
      * @param \Hfm\Kursanmeldung\Domain\Model\Step2Data $step2data
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -477,6 +469,33 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     public function step2redirectAction(Step2Data $step2data): ResponseInterface
     {
         $this->sessionUtility->setFrontendUser($this->getUser());
+        // hydrate downloads from session if needed to persist uploads across redirects
+        $sessionStep2 = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+        if ($sessionStep2 instanceof Step2Data) {
+            //hydrate downloads
+            $incomingDownloads = $step2data->getDownload();
+            $sessionDownloads = $sessionStep2->getDownload();
+
+            // If session has downloads and incoming has none, keep the session downloads
+            $incomingHasDownloads = !empty($incomingDownloads) && count($incomingDownloads) > 0;
+            $sessionHasDownloads = !empty($sessionDownloads) && count($sessionDownloads) > 0;
+            if ($sessionHasDownloads && !$incomingHasDownloads) {
+                $step2data->setDownload($sessionDownloads);
+            }
+
+            //hydrate vita
+            $incomingVitas = $step2data->getVita();
+            $sessionVitas = $sessionStep2->getVita();
+
+            // If session has downloads and incoming has none, keep the session downloads
+            $incomingHasVitas = !empty($incomingVitas);
+            $sessionHasVitas = !empty($sessionVitas);
+            if ($sessionHasVitas && !$incomingHasVitas) {
+                $step2data->setVita($sessionVitas);
+            }
+        }
+
+        // store the hydrated Step2Data into session
         $this->sessionUtility->setData(SessionUtility::FORM_SESSION_STEP2_DATA, $step2data);
 
         return $this->redirect(Constants::ACTION_STEP_3);
@@ -561,7 +580,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             }
         }
 
-        $vita = $step2data->getVita() ? count($step2data->getVita()) : 0;
+        $vita = $step2data->getVita() ? 1 : 0;
         $downloads = $step2data->getDownload() ? count($step2data->getDownload()) : 0;
         $hidedl = 0;
         if (empty($vita) && empty($downloads) && empty($step2data->getLink()) && empty($step2data->getYoutube())) {
@@ -601,6 +620,110 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     #[IgnoreValidation(['argumentName' => 'step4data'])]
     public function step4Action(?Step4Data $step4data = null): ResponseInterface
     {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        // get Kurs from Session
+        $kurs = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS);
+        if (!$this->request->hasArgument(Constants::KURS)) {
+            if (empty($kurs)) {
+                return $this->redirect(Constants::ACTION_KURS_WAHL);
+            }
+        }
+
+        $step1data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP1_DATA);
+        if (empty($step1data)) {
+            $step1data = null;
+        }
+
+        $step2data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+        if (empty($step2data)) {
+            $step2data = null;
+        }
+
+        $step3data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP3_DATA);
+        if (empty($step3data)) {
+            $step3data = null;
+        }
+
+        $step4data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP4_DATA);
+        if (empty($step4data)) {
+            $step4data = null;
+        }
+
+        $zahlart = 0;
+        if ($step2data != null) {
+            $zahlart = $step2data->getZahlungsart();
+            if ($zahlart === 9 || !in_array(
+                    $this->zahlungsartArr[$zahlart],
+                    $this->zahlungsartNovalnetArr
+                )) {
+                $this->redirect('step5');
+            }
+        }
+
+        $kursanmeldungUid = 0;
+        if (!empty($this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID))) {
+            $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID);
+        }
+
+        $select = [
+            'payment' => $this->participantUtility->getOptions(
+                $this->zahlungsartArr,
+                'tx_kursanmeldung_domain_model_kursanmeldung.step2.'
+            ),
+            'act' => $zahlart
+        ];
+
+        // if payment error or not send
+        $p = '';    // err / suc for payment answer
+        if ($this->request->hasArgument('p')) {
+            $p = $this->request->getArgument('p');
+        }
+
+        $zahlungstermin = new \DateTime('NOW');
+        $zahlungstermin->add(new \DateInterval('P10D'));
+        $form = '';
+        $payment = '';
+        $newKursanmeldung = null;
+        $addTN = false;
+
+        if ($kursanmeldungUid === 0) {
+            $newKursanmeldung = new Kursanmeldung();
+            $newTn = new Teilnehmer();
+            $addTN = true;
+        } else {
+            $newKursanmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
+            $newTn = $newKursanmeldung->getTn()->current();
+            if (empty($newTn)) {
+                $newTn = new Teilnehmer();
+                $addTN = true;
+            }
+        }
+        /* Gebühr berechnen */
+        $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
+        $enrollmentfee = 0;
+
+        // wenn studentship != NULL alles 0
+        if (!$step2data->getStudentship()) {
+            $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeb() : $gebuehr->getAnmeldung();
+            // wenn studystat != NULL halber preis
+            if ($step2data->getStudystat()) {
+                $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeberm(
+                ) : $gebuehr->getAnmeldungerm();
+            }
+        }
+
+        $language = $this->request->getAttribute('language') ?? $this->request->getAttribute('site')->getDefaultLanguage();
+        $newTn->setSprache((string)$language->getLanguageId());
+
+        $stepDataDto = new StepDataParticipantDto(
+            $step1data,
+            $step2data,
+            $newTn
+        );
+
+        $this->participantFacade->hydrateParticipantFromStepData($stepDataDto);
+        if($addTN) $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
+        
         return $this->htmlResponse();
     }
 
