@@ -3,9 +3,11 @@
 namespace Hfm\Kursanmeldung\Controller;
 
 
+use Exception;
 use Hfm\Kursanmeldung\App\Dto\StepDataParticipantDto;
 use Hfm\Kursanmeldung\App\Participant\Business\ParticipantFacade;
 use Hfm\Kursanmeldung\Constants\Constants;
+use Hfm\Kursanmeldung\Domain\Model\Ensemble;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Model\Step2Data;
@@ -27,9 +29,12 @@ use Hfm\Kursanmeldung\Utility\SessionUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -80,6 +85,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly FormatUtility $formatUtility,
         protected readonly PropertyConverterUtility $propertyConverterUtility,
         protected readonly ParticipantFacade $participantFacade,
+        private readonly PersistenceManager $persistenceManager,
+        private readonly CountryProvider $countryProvider,
     ) {
     }
 
@@ -193,7 +200,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
      */
     public function kurswahlAction(): ResponseInterface
     {
-        //$this->sessionUtility->cleanSession($this->getUser());
+        $this->sessionUtility->cleanSession($this->getUser());
         $this->kursRepository->setStoragePageIds([$this->settings['records']['kurs']]);
         $kurse = $this->kursRepository->findAll();
         $kurseActive = array();
@@ -569,11 +576,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
         $additionalfee = $enrollmentfee = 0;
 
-        // wenn studentship != NULL alles 0
+        // wenn studentship != null alles 0
         if (!$step2data->getStudentship() || $gebuehr === null) {
             $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeb() : $gebuehr->getAnmeldung();
             $additionalfee = ($step2data->getTnaction() === 1) ? 0 : $gebuehr->getAktivengeb();
-            // wenn studystat != NULL halber preis
+            // wenn studystat != null halber preis
             if ($step2data->getStudystat()) {
                 $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeberm(
                 ) : $gebuehr->getAnmeldungerm();
@@ -662,8 +669,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
 
         $kursanmeldungUid = 0;
-        if (!empty($this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID))) {
-            $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID);
+        if (!empty($this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID))) {
+            $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID);
         }
 
         $select = [
@@ -703,10 +710,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
         $enrollmentfee = 0;
 
-        // wenn studentship != NULL alles 0
+        // wenn studentship != null alles 0
         if (!$step2data->getStudentship()) {
             $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeb() : $gebuehr->getAnmeldung();
-            // wenn studystat != NULL halber preis
+            // wenn studystat != null halber preis
             if ($step2data->getStudystat()) {
                 $enrollmentfee = ($step2data->getTnaction() === 1) ? $gebuehr->getPassivgeberm(
                 ) : $gebuehr->getAnmeldungerm();
@@ -796,7 +803,21 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->addUploads($newDl);
             }
         }
+
+        if (!empty($step2data->getLink())) {
+            $src = trim($step2data->getLink());
+            $srcBn = pathinfo($src);
+            $newDl = new Uploads();
+            $newDl->setKurs($kurs);
+            $newDl->setKat('link');
+            $newDl->setName($srcBn['basename']);
+            $newDl->setPfad($srcBn['dirname']);
+            $newDl->setDatein(new \DateTime('NOW'));
+            $newKursanmeldung->addUploads($newDl);
+        }
+
         $newKursanmeldung->setSavedata($step3data->getSavedata());
+
         if ($kursanmeldungUid === 0) {
             $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
             $newKursanmeldung->setRegistrationkey($hash);
@@ -806,7 +827,101 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $this->kursanmeldungRepository->update($newKursanmeldung);
         }
 
+        $this->persistenceManager->persistAll();
+
         if ($newKursanmeldung->getUid() > 0) {
+            $this->sessionUtility->setData(
+                SessionUtility::FORM_SESSION_ANMELDUNG_UID,
+                $newKursanmeldung->getUid()
+            );
+
+            if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
+                // no email because is send
+                //$this->sendInfoMail($newKursanmeldung,$newTn);
+                $this->sessionUtility->setData(
+                    SessionUtility::FORM_SESSION_SEND_MAIL,
+                    $newKursanmeldung->getUid()
+                );
+            }
+
+            $formVars = $this->novalnetArray($newKursanmeldung);
+
+            // payment anstoßen 1=>'banktransfer', 2=>'prepayment', 3=>'paypal', 4=>'onlinetransfer', 5=>'giropay', 6=>'invoice'
+            switch ($newKursanmeldung->getZahlart()) {
+                case 1:
+                    $payment = 'banktransfer';
+                    $this->logger->error('banktransfer suc:');
+                    $banktransfer = $this->getBanktransferData($newKursanmeldung);
+                    $this->logger->error('banktransfer suc POST:' . print_r($banktransfer, true));
+                    $this->kursanmeldungRepository->update($newKursanmeldung);
+                    $this->persistenceManager->persistAll();
+
+                    // emails versenden
+                    //$this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
+                    //$this->sendRegisterMail($newKursanmeldung, $newTn);
+                    $this->sessionUtility->cleanSession($this->getUser());
+                    break;
+                case 2:
+                case 6:
+                    $payment = 'invoice';
+                    $novalnetXML[1]['url'] = 'https://payport.novalnet.de/payport.xml';
+                    $novalnetXML[1]['path'] = 'Novalnet/VorkassePayport.html';
+                    //$novalnetXML[1]['doc'] = $this->getMailBody($novalnetXML[1]['path'], $formVars);
+                    $request = $novalnetXML[1];
+
+                    $xml_response = $this->curl_xml_post(
+                        $request
+                    ); // Die Variable $request enthält den XML-Aufruf. Sehen Sie sich dazu das Aufrufbeispiel oben an
+                    $response = new \SimpleXMLElement($xml_response);
+
+                    $novalnet['status'] = (string)$response->{transaction_response}->status;
+                    $novalnet['tid'] = (string)$response->{transaction_response}->tid;
+                    $novalnet['amount'] = (string)$response->{transaction_response}->amount;
+                    $novalnet['invoice_account_name'] = 'NOVALNET AG';
+                    $novalnet['customer_no'] = (string)$response->{transaction_response}->{customer_no};
+                    $novalnet['invoice_account'] = (string)$response->{transaction_response}->{invoice_account};
+                    $novalnet['invoice_bankcode'] = (string)$response->{transaction_response}->{invoice_bankcode};
+                    $novalnet['invoice_iban'] = (string)$response->{transaction_response}->{invoice_iban};
+                    $novalnet['invoice_bic'] = (string)$response->{transaction_response}->{invoice_bic};
+                    $novalnet['invoice_bankname'] = (string)$response->{transaction_response}->{invoice_bankname};
+                    $novalnet['invoice_bankplace'] = (string)$response->{transaction_response}->{invoice_bankplace};
+
+                    $newKursanmeldung->setNovalnettid($novalnet['tid']);
+                    $newKursanmeldung->setNovalnetcno($novalnet['customer_no']);
+                    $this->kursanmeldungRepository->update($newKursanmeldung);
+                    $this->persistenceManager->persistAll();
+
+                    // emails versenden
+                    //$this->sendInvoiceMail($newKursanmeldung, $newTn, $novalnet);
+                    $this->sessionUtility->cleanSession($this->getUser());
+                    break;
+                case 3:
+                    $payment = 'paypal';
+                    $novalnetXML[3]['url'] = 'https://payport.novalnet.de/paypal_payport';
+                    $novalnetXML[3]['vars'] = $formVars;
+                    $form = $novalnetXML[3];
+                    break;
+                case 4:
+                    $payment = 'onlinetransfer';
+                    $novalnetXML[2]['url'] = 'https://payport.novalnet.de/online_transfer_payport';
+                    $novalnetXML[2]['vars'] = $formVars;
+                    $form = $novalnetXML[2];
+                    break;
+                case 5:
+                    $payment = 'giropay';
+                    $novalnetXML[2]['url'] = 'https://payport.novalnet.de/giropay';
+                    $novalnetXML[2]['vars'] = $formVars;
+                    $form = $novalnetXML[2];
+                    break;
+            }
+        } else {
+            // fehler redirect btstep1
+            $this->addFlashMessage(
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.err001_body'),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.err001_title'),
+                ContextualFeedbackSeverity::ERROR
+            );
+            //$this->redirect('step1');
         }
 
         $site = $this->request->getAttribute('site');
@@ -820,6 +935,618 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $this->view->assign('select', $select);
 
         return $this->htmlResponse();
+    }
+
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function step4redirectAction(): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        $error = [];
+
+        $paylaterType = '';
+        $kursanmeldungUid = 0;
+        if (!empty($this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID))) {
+            $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID);
+        }
+
+        // if payment error or not send
+        $kursAnmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
+
+        $p = 'err';        // err / suc for payment answer
+        if ($this->request->hasArgument('p')) {
+            $p = $this->request->getArgument('p');
+        }
+
+        // checken ob aufruf durch paylater initialisiert
+        $paylaterSrc = false;
+        if ((isset($_POST['input2']) && $_POST['input2'] == 'pl') || (isset($_POST['pl']) && $_POST['pl'] == 'ang') || (isset($_POST['pl']) && $_POST['pl'] == 'tng')) {
+            $paylaterSrc = true;
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_PL, '');
+        }
+
+        if ((isset($_POST['input2']) && $_POST['input2'] == 'pl') && isset($_POST['inputval2'])) {
+            $paylaterType = $_POST['inputval2'];
+        }
+
+        if (isset($_POST['pl'])) {
+            $paylaterType = $_POST['pl'];
+        }
+
+        if ($p == 'suc') {
+            // if payment successfully
+            // save paymentstatus
+            $this->logger->error('Step4 redirect POST:' . print_r($_POST, true));
+
+            $kurs = (empty($kursAnmeldung)) ? 0 : $kursAnmeldung->getKurs()->current()->getUid();
+            $this->logger->error('Step 4 redirect Kurs:' . $kurs);
+
+            $kursActive = $this->kursRepository->findByUid($kurs);
+            if ($kursActive === null) {
+                array_push($error, 'no Kurs found');
+            }
+            if (empty($error)) {
+                if ($paylaterSrc && $paylaterType != 'ang') {
+                    $kursAnmeldung->setNovalnettidag($_POST['tid']);
+                    // wenn direkt bezahlt wurde (rechnung == 27 nicht direkt)
+                    if ($_POST['payment_id'] != 27) {
+                        $kursAnmeldung->setBezahltag(1);
+                        $kursAnmeldung->setGezahltag(number_format($kursAnmeldung->getGebuehrag(), 2, ',', '.'));
+                    }
+                } else {
+                    $kursAnmeldung->setNovalnettid($_POST['tid']);
+                    // wenn direkt bezahlt wurde (rechnung == 27 nicht direkt)
+                    if ($_POST['payment_id'] != 27) {
+                        $kursAnmeldung->setBezahlt(1);
+                        $kursAnmeldung->setGezahlt(number_format($kursAnmeldung->getGebuehr(), 2, ',', '.'));
+                    }
+                    $kursAnmeldung->setDoitime(new \DateTime('NOW'));
+                }
+
+                $this->kursanmeldungRepository->update($kursAnmeldung);
+                $this->persistenceManager->persistAll();
+
+                $this->logger->error('Step 4 redirect SUCCESS:' . $kurs);
+            } else {
+                $this->logger->info('Step 4 redirect ERROR:' . $kurs . ' : ' . $_POST['tid']);
+            }
+            if ($paylaterSrc) {
+                return $this->redirect('paylater', null, null, array('p' => $p));
+            } else {
+                return $this->redirect('step5novalnet', null, null, array('p' => $p));
+            }
+        } else {
+            $this->logger->info('Step 4 redirect ERROR p:' . print_r($_POST, true));
+            if ($paylaterSrc) {
+                return $this->redirect('paylater', null, null, array('p' => $p));
+            } else {
+                return $this->redirect('step4', null, null, array('p' => $p));
+            }
+        }
+    }
+
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function step5Action(): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        $kurs = null;
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS)) {
+            $kurs = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS);
+        }
+
+        if ($kurs === null) {
+            $this->redirect(Constants::ACTION_KURS_WAHL);
+        }
+
+        // check free places again
+        $error = [];
+
+        /**
+         * @var Step1Data|null $step1data
+         */
+        $step1data = null;
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP1_DATA)) {
+            $step1data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP1_DATA);
+        } else {
+            array_push($error, 'step1data');
+        }
+
+        /**
+         * @var Step2Data|null $step2data
+         */
+        $step2data = null;
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA)) {
+            $step2data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+            if ($step2data->getZahlungsart() === 9) {
+                $this->zahlungsartArr[9] = 'standard';
+            }
+        } else {
+            array_push($error, 'step2data');
+        }
+
+        $step3data = null;
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP3_DATA)) {
+            $step3data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP3_DATA);
+        } else {
+            array_push($error, 'step3data');
+        }
+
+        $step4data = null;
+        if (empty($error) && $step2data != null) {
+            $zahlart = $step2data->getZahlungsart();
+            if (in_array($this->zahlungsartArr[$zahlart], $this->zahlungsartNovalnetArr)) {
+                if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP4_DATA)) {
+                    $step4data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP4_DATA);
+                } else {
+                    array_push($error, 'step4data');
+                }
+            }
+        }
+
+        $kursTn = $this->kursanmeldungRepository->getParticipantsByKurs($kurs->getUid());
+        $tnactionArr = $this->participantUtility->checkKursParticipant($kurs, $kursTn->toArray());
+
+        if ($kurs === null) {
+            array_push($error, 'no Kurs found');
+        }
+
+
+        $zahlungstermin = new \DateTime('NOW');
+        $zahlungstermin->add(new \DateInterval('P10D'));
+
+        if (empty($error)) {
+            /* Gebühr berechnen */
+            $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
+            $enrollmentfee = 0;
+
+            // wenn studentship != null alles 0
+            if (!$step2data->getStudentship()) {
+                $enrollmentfee = ($step2data->getTnaction() == 1) ? $gebuehr->getPassivgeb() : $gebuehr->getAnmeldung();
+                // wenn studystat != null halber preis
+                if ($step2data->getStudystat()) {
+                    $enrollmentfee = ($step2data->getTnaction() == 1) ? $gebuehr->getPassivgeberm(
+                    ) : $gebuehr->getAnmeldungerm();
+                }
+            }
+
+
+            /* Teilnehmer speichern */
+            $newTn = new Teilnehmer();
+            $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
+                'site'
+            )->getDefaultLanguage();
+            $newTn->setSprache($language->getTitle());
+
+            $stepDataDto = new StepDataParticipantDto(
+                $step1data,
+                $step2data,
+                $newTn
+            );
+            $this->participantFacade->hydrateParticipantFromStepData($stepDataDto);
+
+            $newKursanmeldung = new Kursanmeldung();
+            $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
+            $newKursanmeldung->setKurs($kurs);
+            $newKursanmeldung->setStudentship($step2data->getStudentship());
+            $newKursanmeldung->setStudystat($step2data->getStudystat());
+            $newKursanmeldung->setZahlart($step2data->getZahlungsart());
+            $newKursanmeldung->setZahltbis($zahlungstermin);
+            $newKursanmeldung->setHotel($step2data->getHotel());
+            $newKursanmeldung->setRoom($step2data->getRoom());
+            if ($step2data->getHotel() != '') {
+                $newKursanmeldung->setRoomwith($step2data->getRoomwith());
+                $newKursanmeldung->setRoomfrom($step2data->getRoomfrom());
+                $newKursanmeldung->setRoomto($step2data->getRoomto());
+            }
+            $newKursanmeldung->setGebuehr($enrollmentfee);
+            $newKursanmeldung->setDatein(new \DateTime('NOW'));
+            $newKursanmeldung->setTeilnahmeart($step2data->getTnaction());
+            $newKursanmeldung->setProgramm($step2data->getProgramm());
+            $newKursanmeldung->setOrchesterstudio($step2data->getOrchesterstudio());
+            $newKursanmeldung->setComment($step2data->getComment());
+            $newKursanmeldung->setAgb($step3data->getTnb());
+            $newKursanmeldung->setDatenschutz($step3data->getPrivacy());
+            $newKursanmeldung->setDeflang((int)$language->getLanguageId());
+
+            // duodaten speichern
+            if ($step1data->getDuo() == 1) {
+                $newKursanmeldung->setDuo($step1data->getDuo());
+                $newKursanmeldung->setDuosel($step1data->getDuosel());
+                $newKursanmeldung->setDuoname($step1data->getDuoname());
+            }
+            // Ensemble speichern			
+            if (!empty($step1data->getEnconf())) {
+                if (!empty($step1data->getEnuid())) {
+                    $uidArr = $step1data->getEnuid();
+                    $enfirstnArr = $step1data->getEnfirstn();
+                    $enlastnArr = $step1data->getEnlastn();
+                    $eninstruArr = $step1data->getEninstru();
+                    $engebdateArr = $step1data->getEngebdate();
+                    $ennatioArr = $step1data->getEnnatio();
+
+                    foreach ($uidArr as $key => $uid) {
+                        $newensemble = new Ensemble();
+                        $newensemble->setEnconf($step1data->getEnconf());
+                        $newensemble->setEntn($step1data->getEntn());
+                        $newensemble->setEnfirstn($enfirstnArr[$key]);
+                        $newensemble->setEnlastn($enlastnArr[$key]);
+                        $newensemble->setEninstru($eninstruArr[$key]);
+
+                        $date = \DateTime::createFromFormat('d.m.Y', $engebdateArr[$key]);
+                        if ($date) {
+                            $engebdateArr[$key] = $date->format('Y-m-d');
+                        }
+
+                        $newensemble->setEngebdate($engebdateArr[$key]);
+                        $newensemble->setEnnatio($ennatioArr[$key]);
+
+                        $date = \DateTime::createFromFormat('d.m.Y', $step1data->getEngrdate());
+                        if ($date) {
+                            $step1data->setEngrdate($date->format('Y-m-d'));
+                        }
+
+                        $newensemble->setEngrdate($step1data->getEngrdate());
+                        $newensemble->setEnname($step1data->getEnname());
+                        $newensemble->setEntype($step1data->getEntype());
+                        $newensemble->setEngrplace($step1data->getEngrplace());
+                        $newKursanmeldung->addEnsemble($newensemble);
+                    }
+                } else {
+                    $key = 0;
+                    $enfirstnArr = $step1data->getEnfirstn();
+                    $enlastnArr = $step1data->getEnlastn();
+                    $eninstruArr = $step1data->getEninstru();
+                    $engebdateArr = $step1data->getEngebdate();
+                    $ennatioArr = $step1data->getEnnatio();
+
+                    $newensemble = new Ensemble();
+                    $newensemble->setEnconf($step1data->getEnconf());
+                    $newensemble->setEntn($step1data->getEntn());
+                    $newensemble->setEnfirstn($enfirstnArr[$key]);
+                    $newensemble->setEnlastn($enlastnArr[$key]);
+                    $newensemble->setEninstru($eninstruArr[$key]);
+
+                    $date = \DateTime::createFromFormat('d.m.Y', $engebdateArr[$key]);
+                    if ($date) {
+                        $engebdateArr[$key] = $date->format('Y-m-d');
+                    }
+
+                    $newensemble->setEngebdate($engebdateArr[$key]);
+                    $newensemble->setEnnatio($ennatioArr[$key]);
+
+                    $date = \DateTime::createFromFormat('d.m.Y', $step1data->getEngrdate());
+                    if ($date) {
+                        $step1data->setEngrdate($date->format('Y-m-d'));
+                    }
+
+                    $newensemble->setEngrdate($step1data->getEngrdate());
+                    $newensemble->setEnname($step1data->getEnname());
+                    $newensemble->setEntype($step1data->getEntype());
+                    $newensemble->setEngrplace($step1data->getEngrplace());
+                    $newKursanmeldung->addEnsemble($newensemble);
+                }
+            }
+
+
+            if (!empty($step2data->getDownload())) {
+                $downloads = $step2data->getDownload();
+                if (!empty($downloads)) {
+                    foreach ($downloads as $fileReference) {
+                        if (!empty($fileReference)) {
+                            $newDl = new Uploads();
+                            $newDl->setKurs($kurs);
+                            $newDl->setKat('download');
+                            $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
+                            $newDl->setPfad($fileReference->getOriginalResource()?->getIdentifier() ?? '');
+                            $newDl->setDatein(new \DateTime('NOW'));
+                            $newDl->setFileref($fileReference);
+                            $newKursanmeldung->addUploads($newDl);
+                        }
+                    }
+                }
+            }
+
+            if (!empty($step2data->getYoutube())) {
+                $src = $step2data->getYoutube();
+                if (!empty($src)) {
+                    $srcBn = pathinfo($src);
+                    $newDl = new Uploads();
+                    $newDl->setKurs($kurs);
+                    $newDl->setKat('youtube');
+                    $newDl->setName($srcBn['basename']);
+                    $newDl->setPfad($srcBn['dirname']);
+                    $newDl->setDatein(new \DateTime('NOW'));
+                    $newKursanmeldung->addUploads($newDl);
+                }
+            }
+
+            if (!empty($step2data->getVita())) {
+                $fileReference = $step2data->getVita();
+                if (!empty($fileReference->getOriginalResource())) {
+                    $newDl = new Uploads();
+                    $newDl->setKurs($kurs);
+                    $newDl->setKat('vita');
+                    $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
+                    $newDl->setPfad($fileReference->getOriginalResource()?->getIdentifier() ?? '');
+                    $newDl->setDatein(new \DateTime('NOW'));
+                    $newDl->setFileref($fileReference);
+                    $newKursanmeldung->addUploads($newDl);
+                }
+            }
+
+            if (!empty($step2data->getLink())) {
+                $src = trim($step2data->getLink());
+                $srcBn = pathinfo($src);
+                $newDl = new Uploads();
+                $newDl->setKurs($kurs);
+                $newDl->setKat('link');
+                $newDl->setName($srcBn['basename']);
+                $newDl->setPfad($srcBn['dirname']);
+                $newDl->setDatein(new \DateTime('NOW'));
+                $newKursanmeldung->addUploads($newDl);
+            }
+
+            $newKursanmeldung->setSavedata($step3data->getSavedata());
+
+            $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
+            $newKursanmeldung->setRegistrationkey($hash);
+            $this->kursanmeldungRepository->add($newKursanmeldung);
+
+            $this->persistenceManager->persistAll();
+
+            if ($newKursanmeldung->getUid() > 0) {
+                if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
+                    //$this->sendInfoMail($newKursanmeldung, $newTn);
+                    $this->sessionUtility->setData(SessionUtility::FORM_SESSION_SEND_MAIL, $newKursanmeldung->getUid());
+                }
+                // emails versenden
+                switch ($newKursanmeldung->getZahlart()) {
+                    case 1:
+                        $payment = 'banktransfer';
+                        $this->logger->info('banktransfer suc:');
+
+                        $banktransfer = $this->getBanktransferData($newKursanmeldung);
+                        $this->logger->info('banktransfer suc POST:' . print_r($banktransfer, true));
+
+                        $this->kursanmeldungRepository->update($newKursanmeldung);
+                        $this->persistenceManager->persistAll();
+
+                        // emails versenden
+                        #$this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
+                        #$this->sendRegisterMail($newKursanmeldung, $newTn);
+                        #$this->cleanSession();
+                        break;
+                    default:
+                        #$this->sendRegisterMail($newKursanmeldung, $newTn);
+                        $this->sessionUtility->cleanSession();
+                }
+            } else {
+                // fehler redirect btstep1
+                $this->addFlashMessage(
+                    $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_body'),
+                    $this->participantUtility->translateFromXlf('tx_JoKursanmeldung_domain_model_type.err001_title'),
+                    ContextualFeedbackSeverity::ERROR
+                );
+
+                return $this->redirect(Constants::ACTION_STEP_1);
+            }
+        } else {
+            // fehler redirect btstep1
+            $this->addFlashMessage(
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err004_body'),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err004_title'),
+                ContextualFeedbackSeverity::ERROR
+            );
+
+            return $this->redirect(Constants::ACTION_STEP_1);
+        }
+
+        return $this->htmlResponse();
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function step5novalnetAction(): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+
+        $kursanmeldungUid = 0;
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID)) {
+            $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID);
+        }
+
+        // if payment error or not send
+        $kursAnmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
+
+        if ($kursAnmeldung && $kursAnmeldung->getUid() > 0) {
+            // emails versenden
+            $address = $kursAnmeldung->getTn()->current();
+            $this->sessionUtility->cleanSession($this->getUser());
+
+            return $this->htmlResponse();
+        } else {
+            // fehler redirect btstep1
+            $this->addFlashMessage(
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_body'),
+                $this->participantUtility->translateFromXlf('tx_JoKursanmeldung_domain_model_type.err001_title'),
+                ContextualFeedbackSeverity::ERROR
+            );
+
+            return $this->redirect(Constants::ACTION_STEP_1);
+        }
+    }
+
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function paylaterAction(): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        $pl = null; // typ der bei Auswahl Erstanmeldung oder Aktivengebühr abrechnet
+        $p = null;
+        $error = [];
+        $kursActive = null;
+        $registration = null;
+        $opt = [];
+
+        if ($this->request->hasArgument('p')) {
+            $p = $this->request->getArgument('p');
+        }
+
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_PL)) {
+            $pl = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_PL);
+        }
+
+        if ($this->request->hasArgument('pl')) {
+            $pl = $this->request->getArgument('pl');
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_PL, $pl);
+        }
+
+        // wenn hash übergeben
+        if ($this->request->hasArgument('hash')) {
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS_UID, '');
+            $args = $this->request->getArguments();
+            $registration = $this->getRegistrationByHashAndSt($args['hash'], $args['st']);
+        }
+
+        // wenn aus session
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID)) {
+            $kursuid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS_UID);
+            $registration = $this->kursanmeldungRepository->findByUid($kursuid);
+        }
+
+        // formular erstellen
+        if ($registration !== null) {
+            $zahlungsartArr = [];
+
+            if (isset($this->settings['payment']['paypal'])) {
+                $zahlungsartArr[3] = 'paypal';
+            }
+            if (isset($this->settings['payment']['onlinetransfer'])) {
+                $zahlungsartArr[4] = 'onlinetransfer';
+            }
+            $zahlart = (isset($args['zahlart']) && isset($zahlungsartArr[$args['zahlart']])) ? $args['zahlart'] : '';
+
+            $select = array(
+                'payment' => $this->participantUtility->getOptions(
+                    $zahlungsartArr,
+                    'tx_kursanmeldung_domain_model_kursanmeldung.step2.'
+                ),
+                'act' => $zahlart
+            );
+            $this->view->assign('st', $args['st']);
+            $this->view->assign('hash', $args['hash']);
+            $this->view->assign('select', $select);
+
+            if (!empty($zahlart)) {
+                $this->view->assign('payment', $zahlungsartArr[$zahlart]);
+            }
+
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS_UID, $registration->getUid());
+
+            if (count($registration->getKurs()) === 1) {
+                $kursActive = $this->kursRepository->findByUid(
+                    $registration->getKurs()->getUid()
+                );
+            }
+            if ($kursActive === null) {
+                array_push($error, 'no Kurs found');
+            }
+
+            $form = '';
+            $payment = '';
+            if (empty($error)) {
+                /* Gebühr berechnen */
+                $opt['geb'] = $registration->getGebuehrag();
+                if ($pl != null && $pl == 'ang') {
+                    $opt = array();
+                }
+                $formVars = $this->novalnetArray($registration, $opt);
+                // payment anstoßen 1=>'banktransfer', 2=>'prepayment', 3=>'paypal', 4=>'onlinetransfer', 5=>'giropay', 6=>'invoice'
+                switch ($zahlart) {
+                    case 3:
+                        $payment = 'paypal';
+                        $formVars['invoice']['payment'] = 34;
+                        $novalnetXML[3]['url'] = 'https://payport.novalnet.de/paypal_payport';
+                        $novalnetXML[3]['vars'] = $formVars;
+                        $form = $novalnetXML[3];
+                        break;
+                    case 4:
+                        $payment = 'onlinetransfer';
+                        $formVars['invoice']['payment'] = 33;
+                        $novalnetXML[2]['url'] = 'https://payport.novalnet.de/online_transfer_payport';
+                        $novalnetXML[2]['vars'] = $formVars;
+                        $form = $novalnetXML[2];
+                        break;
+                    case 5:
+                        $payment = 'giropay';
+                        $formVars['invoice']['payment'] = 69;
+                        $novalnetXML[2]['url'] = 'https://payport.novalnet.de/giropay';
+                        $novalnetXML[2]['vars'] = $formVars;
+                        $form = $novalnetXML[2];
+                        break;
+                }
+            } else {
+                // fehler redirect btstep1
+                $p = 'err';
+            }
+
+            $site = $this->request->getAttribute('site');
+            $baseUrl = (string)$site->getBase();
+
+            $this->view->assign('baseURL', $baseUrl);
+            $this->view->assign('payment', $payment);
+            $this->view->assign('form', $form);
+        }
+
+        $this->view->assign('pl', $pl);
+        $this->view->assign('p', $p);
+
+        return $this->htmlResponse();
+    }
+
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function closeAction(): ResponseInterface
+    {
+        $this->sessionUtility->cleanSession($this->getUser());
+
+        return $this->redirect(Constants::ACTION_KURS_WAHL);
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function zahlartAction(): ResponseInterface
+    {
+        $this->sessionUtility->setFrontendUser($this->getUser());
+        if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA)) {
+            $step2data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+        }
+        $zahlart = $step2data->getZahlungsart();
+        if ($this->request->hasArgument('zahlart')) {
+            $zahlart = intval($this->request->getArgument('zahlart'));
+        }
+        if (isset($step2data) && !empty($step2data)) {
+            $step2data->setZahlungsart($zahlart);
+            $this->sessionUtility->setData(SessionUtility::FORM_SESSION_STEP2_DATA, $step2data);
+        }
+
+        return $this->redirect(Constants::ACTION_STEP_4);
     }
 
     /**
@@ -839,5 +1566,457 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         // attention by flush cache events
         header('Pragma: no-cache');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $competition
+     * @param int $type
+     * @return string
+     */
+    protected function paymentReason(Kursanmeldung $competition, int $type = 0): string
+    {
+        $paymentReason = '';
+        switch ($type) {
+            case 1:
+                $uid = $competition->getUid();
+                $ensName = '';
+                $compEnsem = $competition->getEnsemble();
+                if ($compEnsem->count() > 0) {
+                    $compEnsem->rewind();
+                    $ensName = $compEnsem->current()->getEnname();
+                }
+                $paymentReason = trim($uid . ' ' . $ensName);
+                break;
+            default:
+                $uid = $competition->getUid();
+                $tnName = '';
+                $compTn = $competition->getTn();
+                if ($compTn->count() > 0) {
+                    $compTn->rewind();
+                    $tnName = $compTn->current()->getNachname();
+                }
+                $paymentReason = trim($uid . ' ' . $tnName);
+        }
+
+        return $paymentReason;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $competition
+     * @return array
+     */
+    protected function getBanktransferData(Kursanmeldung $competition): array
+    {
+        // get invoice data from setup
+        $banktransfer['tid'] = $this->paymentReason($competition);
+
+        $banktransfer['invoice_account_name'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_account_name'
+        );
+        if (isset($this->setup['invoicedata_accountname']) && !empty($this->setup['invoicedata_accountname'])) {
+            $banktransfer['invoice_account_name'] = $this->setup['invoicedata_accountname'];
+        }
+
+        $banktransfer['invoice_bankcode'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_bankcode'
+        );
+
+        $banktransfer['invoice_iban'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_iban'
+        );
+        if (isset($this->setup['invoicedata_iban']) && !empty($this->setup['invoicedata_iban'])) {
+            $banktransfer['invoice_iban'] = $this->setup['invoicedata_iban'];
+        }
+
+        $banktransfer['invoice_bic'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_bic'
+        );
+        if (isset($this->setup['invoicedata_bic']) && !empty($this->setup['invoicedata_bic'])) {
+            $banktransfer['invoice_bic'] = $this->setup['invoicedata_bic'];
+        }
+
+        $banktransfer['invoice_bankname'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_bankname'
+        );
+        if (isset($this->setup['invoicedata_bic']) && !empty($this->setup['invoicedata_bankname'])) {
+            $banktransfer['invoice_bankname'] = $this->setup['invoicedata_bankname'];
+        }
+
+        $banktransfer['invoice_bankplace'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_bankplace'
+        );
+        if (isset($this->setup['invoicedata_bankplace']) && !empty($this->setup['invoicedata_bankplace'])) {
+            $banktransfer['invoice_bankplace'] = $this->setup['invoicedata_bankplace'];
+        }
+
+        $banktransfer['invoicedata_event'] = $this->setup['invoicedata_event'];
+        $banktransfer['invoicedata_date'] = $this->setup['invoicedata_date'];
+
+        $banktransfer['invoicedata_text1'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_text1'
+        );
+        if (isset($this->setup['invoicedata_text1']) && !empty($this->setup['invoicedata_text1'])) {
+            $banktransfer['invoicedata_text1'] = $this->setup['invoicedata_text1'];
+        }
+
+        $banktransfer['invoicedata_text2'] = $this->participantUtility->translateFromXlf(
+            'tx_jokursanmeldung.complete.invoicemail.invoice_text2'
+        );
+        if (isset($this->setup['invoicedata_text2']) && !empty($this->setup['invoicedata_text2'])) {
+            $banktransfer['invoicedata_text2'] = $this->setup['invoicedata_text2'];
+        }
+
+        // depend on language
+        $banktransfer['invoicedata_subjectuser'] = $this->setup['invoicedata_subjectuser'];
+        $banktransfer['invoicedata_subjectadmin'] = $this->setup['invoicedata_subjectadmin'];
+        if ($this->settings['syslang'] == 1) {
+            if (isset($this->setup['invoicedata_subjectuser']) && !empty($this->setup['invoicedata_subjectuser'])) {
+                $banktransfer['invoicedata_subjectuser'] = $this->setup['invoicedata_subjectuser_en'];
+            }
+            if (isset($this->setup['invoicedata_subjectadmin']) && !empty($this->setup['invoicedata_subjectadmin'])) {
+                $banktransfer['invoicedata_subjectadmin'] = $this->setup['invoicedata_subjectadmin_en'];
+            }
+        }
+
+        return $banktransfer;
+    }
+
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null $kursanmeldung
+     * @param array $opt
+     * @return array
+     */
+    public function novalnetArray(?Kursanmeldung $kursanmeldung, array $opt = []): array
+    {
+        $lang = 'DE';
+        $formVars = [];
+        $test_mode = $this->testmode;
+        $password = $this->novalnetSecret;
+
+        switch ($GLOBALS['TSFE']->sys_language_isocode) {
+            case "de":
+                $lang = 'DE';
+                break;
+            case "en":
+                $lang = 'EN';
+                break;
+        }
+
+        if ($kursanmeldung !== null) {
+            $tn = null;
+            if (count($kursanmeldung->getTn()) > 0) {
+                $tnArr = $kursanmeldung->getTn();
+                $tnArr->rewind();
+                $tn = $tnArr->current();
+            }
+            $header['authCode'] = 'VgiolIhucYBzcHLszD0p9XmBHf57AU';    // Ja	Authentifizierungscode
+            $header['HaendlerID'] = 2704;                            // Ja	Ihre Händler-ID
+            $header['ProductID'] = 3861;                            // Ja	Ihre Projekt-ID
+            $header['TarifID'] = 6511;
+
+            $customer['customer_id'] = '';                                    // Nein	Novalnet-Kundennummer für die Rechnung
+            $customer['customer_no'] = '';                                    // Nein Kundennummer aus dem Shop
+            if ($tn != null) {
+                $customer['customer_no'] = $tn->getUid();
+            }
+            $customer['language'] = $lang;                            // Ja 	Sprachcode aus 2 Buchstaben DE,EN
+            $customer['company'] = '';                                // Nein	Name des Unternehmens
+            $customer['tax_id'] = '';                                // Nein	USt-IdNr.
+            $customer['tax_no'] = '';                                // Nein	Steuernummer
+            $customer['gender'] = 'u';                                // Ja	Geschlecht des Endkunden m=männlich, f=weiblich, u=unbekannt
+            if ($tn != null) {
+                switch ($tn->getAnrede()) {
+                    case 1:
+                        $customer['gender'] = 'm';
+                        break;
+                    case 0:
+                        $customer['gender'] = 'f';
+                        break;
+                }
+            }
+            $customer['title'] = '';                                // Nein	Titel des Endkunden Dr.,Prof.
+            if ($tn != null) {
+                $customer['title'] = $tn->getTitel();
+            }
+            $customer['first_name'] = '';                            // Ja	Vorname des Endkunden
+            if ($tn != null) {
+                $customer['first_name'] = $tn->getVorname();
+            }
+            $customer['last_name'] = '';                            // Ja	Nachname des Endkunden
+            if ($tn != null) {
+                $customer['last_name'] = $tn->getNachname();
+            }
+            $customer['tel'] = '';                                    // Nein	Telefonnummer des Endkunden
+            if ($tn != null) {
+                $customer['tel'] = $tn->getTelefon();
+            }
+            $customer['fax'] = '';                                    // Nein	Faxnummer des Endkunden
+            $customer['mobile'] = '';                                // Nein	Mobiltelefonnummer des Endkunden
+            if ($tn != null) {
+                $customer['mobile'] = $tn->getMobil();
+            }
+            $customer['email'] = '';                                // Ja	E-Mail-Adresse des Endkunden
+            if ($tn != null) {
+                $customer['email'] = $tn->getEmail();
+            }
+            $customer['street'] = '';                                // Ja	Straße des Endkunden
+            if ($tn != null) {
+                $customer['street'] = $tn->getAdresse1();
+            }
+            $customer['house_no'] = '';                                // Nein	Hausnummer des Endkunden
+            if ($tn != null) {
+                $customer['house_no'] = $tn->getHausnr();
+            }
+            $customer['postbox'] = '';                                // Nein	Postfach
+            $customer['zip'] = '';                                    // Ja	Postleitzahl des Endkunden
+            if ($tn != null) {
+                $customer['zip'] = $tn->getPlz();
+            }
+            $customer['city'] = '';                                    // Ja	Stadt bzw. Wohnort des Endkunden
+            if ($tn != null) {
+                $customer['city'] = $tn->getOrt();
+            }
+            $customer['country_code'] = 'DE';                        // Ja	Ländercode des Endkunden als ISO-3166-Code mit 2 Buchstaben (z.B. DE für Deutschland)
+            if ($tn != null) {
+                $country = $this->countryProvider->getByIsoCode($tn->getLand());
+                $customer['country_code'] = $country->getAlpha2IsoCode();
+            }
+            $customer['birthday'] = '';                                    // Ja	Stadt bzw. Wohnort des Endkunden
+            if ($tn != null) {
+                $customer['birthday'] = $tn->getGebdate()->format('Y-m-d');
+            }
+
+            $invoice['remote_ip'] = $_SERVER['REMOTE_ADDR'];
+            $invoice['nc_no'] = '';                                    // Ja	Von Novalnet bei der Rückmeldung zur Zahlungstransaktion zurückgegebene Novalcard-Nummer
+            $invoice['product_url'] = '';                            // Nein	Ihr Projekt-URL
+            $invoice['product_url'] = (isset($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['HTTP_HOST'] : 'http://' . $_SERVER['HTTP_HOST'];
+            $invoice['month'] = '';                                    // Ja	Aktueller Monat im Format “YYYY-MM”
+            $invoice['month'] = $kursanmeldung->getDatein()->format('Y-m');
+            $invoice['invoice_date'] = '';                            // Ja	Rechnungsdatum im Format “YYYY-MM-DD”
+            $invoice['invoice_date'] = $kursanmeldung->getDatein()->format('Y-m-d');
+            $invoice['tid'] = '';                                    // Ja	17-stellige Novalnet-Transaktionsnummer
+            $invoice['reference'] = '';                                // Nein	Rechnungsnummer
+            $invoice['type'] = 'DEBIT';                                // Ja	Rechnungstyp CREDIT,DEBIT
+            $invoice['order_no'] = '';                                // Nein	Bestellnummer aus dem Shop
+            $invoice['order_no'] = $kursanmeldung->getRegistrationkey() . '_' . $kursanmeldung->getUid();
+            $invoice['order_uid'] = '';                                // Nein	Bestellnummer aus dem Shop
+            $invoice['order_uid'] = $kursanmeldung->getUid();
+            $invoice['currency'] = 'EUR';                            // Ja	Währung
+            $invoice['net_sum'] = 0;                                // Ja	Nettobetrag insgesamt in der kleinsten Währungseinheit
+            $gebuehr = (isset($opt['geb']) && !empty($opt['geb'])) ? $opt['geb'] : $kursanmeldung->getGebuehr();
+            $invoice['net_sum'] = $gebuehr * 100;
+            $invoice['coupon_percent'] = 0;                            // Nein	Ermäßigung in Prozent
+            $invoice['coupon_amount'] = '';                            // Nein	Betrag der Ermäßigung in der kleinsten Währungseinheit
+            $invoice['tax_percentage'] = 0;                            // Nein	Mehrwertsteuer in Prozent
+            $invoice['tax_sum'] = 0;                                // Nein	Betrag der Mehrwertsteuer in der kleinsten Währungseinheit
+            $invoice['gross_sum'] = 0;                                // Ja	Bruttobetrag in der kleinsten Währungseinheit
+            $invoice['gross_sum'] = $gebuehr * 100;
+            $invoice['notice_line1'] = '';                            // Nein	Benutzerdefiniertes Rechnungsfeld 1
+            $invoice['notice_line1'] = 'Umsatzsteuerbefreit aufgrund § 4 Nr. 22b UStG';
+            $invoice['notice_line2'] = '';                            // Nein	Benutzerdefiniertes Rechnungsfeld 2
+            $invoice['notice_line3'] = '';                            // Nein	Benutzerdefiniertes Rechnungsfeld 3
+            $invoice['due_date'] = '';                                // Nein	Fälligkeitsdatum der Rechnung im Format “YYYY-MM-DD”. Nur für Zahlungen auf Rechnung
+            $invoice['payment'] = 0;                                // Ja	ID der Novalnet-Zahlungsart 6 = Kreditkarte 27 = Kauf auf Rechnung und Vorkasse 33 = Onlineüberweisung 34 = PayPal 37 = SEPA-Lastschrift 49 = iDEAL 55 = SEPA-Lastschrift mit unterschriebenem Mandat
+            //array(1=>'banktransfer', 2=>'prepayment', 3=>'paypal', 4=>'onlinetransfer', 5=>'giropay', 6=>'invoice');
+            switch ($kursanmeldung->getZahlart()) {
+                case 2:
+                    $invoice['payment'] = 27;
+                    break;
+                case 3:
+                    $invoice['payment'] = 34;
+                    break;
+                case 4:
+                    $invoice['payment'] = 33;
+                    break;
+                case 5:
+                    $invoice['payment'] = 69;
+                    break;
+                case 6:
+                    $invoice['payment'] = 27;
+                    $invoice['due_date'] = $kursanmeldung->getZahltbis()->format('Y-m-d');
+                    break;
+            }
+
+            $invoice['payment_ref'] = '';                            // Nein	Zahlungsreferenz für die Rechnung
+            $invoice['payment_ref_notice'] = '';                    // Nein	Anzeige zur Zahlungsreferenz
+            $invoice['paid_on'] = '';                                // Nein	Zahlungsdatum der Transaktion im Format “YYYY-MM-DD”
+            $invoice['accounting_no'] = '';                            // Nein	Nummer des Buchhaltungskontos (für die Buchhaltungs-Abteilung)
+            $invoice['show_py_details'] = 1;                        // Nein	1 = Zahlungsdetails (Kreditkarte/Bankkonto) in der PDF-Datei anzeigen 0 = Zahlungsdetails (Kreditkarte/Bankkonto) in der PDF-Datei verbergen
+            $invoice['status'] = 'OPEN';                            // Nein	Status der Rechnung. Wird kein Wert für den Status übergeben, wird der Default-Status ‘OPEN’ verwendet. OPEN, DUE, PAID, CANCELLED, DEBT-COLLECTION, LOSS
+            $invoice['sub'] = 0;                                    // Nein	Abrechnung mit oder ohne Abonnementsdetails
+            $invoice['accounting_start_date'] = '';                    // Nein	Anfangsdatum für die Buchhaltung
+            $invoice['accounting_stop_date'] = '';                    // Nein	Enddatum für die Buchhaltung
+            $invoice_details['total_entries'] = 1;                    // Ja	Gesamtanzahl der Rechnungsposten
+            $invoice_detail['product_code'] = '';                    // Nein	Code für das Produkt
+            $invoice_detail['product_group'] = '';                    // Nein	Produktgruppe
+            $invoice_detail['product_name'] = '';                    // Ja	Name des Produkts
+            $invoice_detail['product_name'] = 'Anmeldegebühr / registration fee';
+            $invoice_detail['description'] = '';                    // Nein	Beschreibung jedes Rechnungspostens
+            $invoice_detail['unit'] = 'ST';                            // Ja	Mengeneinheit
+            $invoice_detail['quantity'] = 1;                        // Ja	Anzahl
+            $invoice_detail['price'] = 0;                            // Ja	Preis eines einzelnen Rechnungspostens in der kleinsten Währungseinheit
+            $invoice_detail['price'] = $gebuehr;
+            $invoice_detail['total_price'] = 0;                        // Ja	Preis insgesamt (price*quantity) in der kleinsten Währungseinheit
+            $invoice_detail['price'] = $gebuehr;
+            $invoice_detail['tax_amount'] = 0;                        // Ja	Betrag der Mehrwertsteuer in der kleinsten Währungseinheit
+            $invoice_detail['tax_percentage'] = 0;                    // Ja	Mehrwertsteuersatz in Prozent
+            $invoice_detail['discount'] = 0;                        // Nein	Kennzeichnung von ermäßigten und normalen Rechnungsposten 1 = der angegebene Rechnungsposten wird als ermäßigter Eintrag angezeigt, 0 = der angegebene Rechnungsposten wird
+            $invoice_detail['add_note'] = '';                        // Nein	Zusätzliche Anmerkung zu jedem Rechnungsposten
+
+            $uniqid = $invoice['order_uid'];
+            $encodedVars = self::encodeParams(
+                $header['authCode'],
+                $header['ProductID'],
+                $header['TarifID'],
+                $invoice['gross_sum'],
+                $test_mode,
+                $uniqid,
+                $password
+            );
+
+            $formVars = [
+                'header' => $header,
+                'customer' => $customer,
+                'invoice' => $invoice,
+                'invoice_details' => $invoice_details,
+                'invoice_detail' => $invoice_detail,
+                'encodeVars' => $encodedVars
+            ];
+        }
+
+        return $formVars;
+    }
+
+    private function curl_xml_post($request)
+    {
+        $ch = curl_init($request['url']);
+        $f = fopen($_SERVER['DOCUMENT_ROOT'] . '/request.txt', 'w');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: close', 'Content-Type: text/xml'));
+        curl_setopt($ch, CURLOPT_FILE, $f);
+        curl_setopt(
+            $ch,
+            CURLOPT_POST,
+            1
+        ); // ein Parameterwert ungleich 0 läßt die Programmbibliothek einen normalen HTTP-Post-Aufruf durchführen
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $request['doc']); // Hinzufügen von HTTP-POST-Feldern
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); // läßt keine Umleitungen zu
+        curl_setopt(
+            $ch,
+            CURLOPT_SSL_VERIFYHOST,
+            false
+        ); // Kommentieren Sie diese Zeile aus, wenn Sie eine effektive SSL-Überprüfung haben wollen.
+        curl_setopt(
+            $ch,
+            CURLOPT_SSL_VERIFYPEER,
+            false
+        ); // Kommentieren Sie diese Zeile aus, wenn Sie eine effektive SSL-Überprüfung haben wollen.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // geben Sie die Rückmeldung in einer Variable zurück
+        curl_setopt(
+            $ch,
+            CURLOPT_TIMEOUT,
+            240
+        ); // maximale Zeit in Sekunden welche die cURL-Funktionen für die Ausführung benötigen dürfen.
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_STDERR, $f);
+        ## Herstellung einer Verbindung
+        $xml_response = curl_exec($ch);
+        ## Prüfung, ob es bei der Ausführung von cURL zu Problemen kam
+        $errno = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        # Schließen der Verbindung
+        fwrite($f, '-------------------------------' . "\n");
+        fwrite($f, $request['doc']);
+        fwrite($f, '-------------------------------' . "\n");
+        fwrite($f, $xml_response);
+        fclose($f);
+        curl_close($ch);
+        return $xml_response;
+    }
+
+    public function encode($data, $password)
+    {
+        $data = trim($data);
+        if ($data == '') {
+            return 'Error: no data';
+        }
+        if (!function_exists('base64_encode') or !function_exists('pack') or !function_exists('crc32')) {
+            return 'Error: func n/a';
+        }
+        try {
+            $crc = sprintf('%u', crc32($data));# %u is a must for ccrc32 returns a signed value
+            $data = $crc . "|" . $data;
+            $data = bin2hex($data . $password);
+            $data = strrev(base64_encode($data));
+        } catch (Exception $e) {
+            echo('Error: ' . $e);
+        }
+        return $data;
+    }
+
+    #$h contains encoded data
+    function hash1($h, $key)
+    {
+        if (!$h) {
+            return 'Error: no data';
+        }
+        if (!function_exists('md5')) {
+            return 'Error: func n/a';
+        }
+        return md5(
+            $h['auth_code'] . $h['product_id'] . $h['tariff'] . $h['amount'] . $h['test_mode'] . $h['uniqid'] . strrev(
+                $key
+            )
+        );
+    }
+
+    public function encodeParams($auth_code, $product_id, $tariff_id, $amount, $test_mode, $uniqid, $password)
+    {
+        $auth_code = self::encode($auth_code, $password);
+        $product_id = self::encode($product_id, $password);
+        $tariff_id = self::encode($tariff_id, $password);
+        $amount = self::encode($amount, $password);
+        $test_mode = self::encode($test_mode, $password);
+        $uniqid = self::encode($uniqid, $password);
+        $hash = self::hash1(
+            array(
+                'auth_code' => $auth_code,
+                'product_id' => $product_id,
+                'tariff' => $tariff_id,
+                'amount' => $amount,
+                'test_mode' => $test_mode,
+                'uniqid' => $uniqid
+            ),
+            $password
+        );
+        return array($auth_code, $product_id, $tariff_id, $amount, $test_mode, $uniqid, $hash);
+    }
+
+    /**
+     * @param string $hash
+     * @param string $st
+     * @return \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null
+     */
+    protected function getRegistrationByHashAndSt(string $hash = '', string $st = ''): ?Kursanmeldung
+    {
+        $ts = '';
+        $id = '';
+        $register = null;
+        $stArr = explode('_', $st);
+
+        if (count($stArr) === 2) {
+            $ts = intval($stArr[0]);
+            $id = intval($stArr[1]);
+        }
+        // go on if values filled
+        if (!empty($hash) && !empty($ts) && !empty($id)) {
+            $regTup = $this->kursanmeldungRepository->getRegistration($hash, $id, $ts);
+            if ($regTup->count() === 1) {
+                $register = $regTup->current();
+            }
+        }
+
+        return $register;
     }
 }

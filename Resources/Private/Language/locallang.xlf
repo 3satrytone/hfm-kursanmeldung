@@ -725,7 +725,11 @@
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.ok002_title">
             <source></source>
             <target></target>
-        </trans-unit>    
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.close">
+            <source>Close without payment</source>
+            <target>Ohne Zahlung schließen</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1">
             <source>Step 1/5</source>
             <target>Schritt 1/5</target>

@@ -127,3 +127,48 @@ img {
     border: 1px #FF0000 solid;
     display: inline-block;
 }
+
+/* novalnet */
+#novalnet_form input[type="submit"],
+#paylatersel input[type="submit"],
+#step4paymentsel input[type="submit"]{
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+#paylatersel input[type="submit"],
+#step4paymentsel input[type="submit"]{
+    width: auto;
+}
+#paylater .formhandler-button.formhandler-backward{
+    display:none;
+}
+
+
+a.formhandler-button.formhandler-backward {
+    margin-left: 0.5rem;
+}
+button.formhandler-button {
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+a.formhandler-button.formhandler-backward {
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 0 1rem 0.05rem 1rem;
+}
+a.formhandler-button.formhandler-forward {
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}

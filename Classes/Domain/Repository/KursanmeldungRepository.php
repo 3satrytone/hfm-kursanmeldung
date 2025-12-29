@@ -53,4 +53,24 @@ class KursanmeldungRepository extends Repository
         )
         ->execute();
     }
+
+    /**
+     * @param string $hash
+     * @param int $id
+     * @param int $ts
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function getRegistration(string $hash,int $id, int $ts): QueryResultInterface
+    {
+        $hash = $GLOBALS['TYPO3_DB']->quoteStr($hash, 'tx_kursanmeldung_domain_model_kursanmeldung');
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('uid', $id),
+                $query->equals('registrationkey', $hash),
+                $query->equals('datein', $ts)
+            )
+        );
+        return $query->execute();
+    }
 }

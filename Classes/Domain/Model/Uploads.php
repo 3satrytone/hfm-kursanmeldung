@@ -14,7 +14,7 @@ class Uploads extends AbstractEntity
     protected string $pfad = '';
     protected \DateTime $datein;
     /**
-     * @var \TYPO3\CMS\Core\Resource\FileReference|null
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference|null
      */
     protected ?FileReference $fileref;
 

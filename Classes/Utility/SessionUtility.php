@@ -20,6 +20,7 @@ class SessionUtility
     public const FORM_SESSION_KURS = 'kursanmeldung kurs';
     public const FORM_SESSION_KURS_UID = 'kursanmeldung kursuid';
     public const FORM_SESSION_SEND_MAIL = 'kursanmeldung sendnnmail';
+    public const FORM_SESSION_ANMELDUNG_UID = 'kursanmeldung anmeldunguid';
 
     /**
      * @param string $sessionKey

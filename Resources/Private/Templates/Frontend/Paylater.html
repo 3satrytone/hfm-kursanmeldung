@@ -1,30 +1,36 @@
-<f:layout name="Default" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="DefaultFe"/>
 
-<f:section name="joProfBox"></f:section>
+<f:section name="Headline">
+	<h1><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater" /></h1>
+</f:section>
 
-<f:section name="main">
-<div id="paylater">
-    <h1><f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater" /></h1>
+<f:section name="Prof">
+	<f:render partial="ProfBox/ProfBox" arguments="{_all}"/>
+</f:section>
+
+<f:section name="Main">
+<div id="paylater">    
 	<f:if condition="{p}=='suc'"><f:then>
 		<div class="joBold joErr2">
-			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater.suc" />
+			<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.suc" />
 		</div>
 		<div><p>
 			<f:link.action action="kurswahl" class="formhandler-button formhandler-start" arguments="{kurs:0}">
-			{f:translate(key:'LLL:EXT:jo_kursanmeldung/Resources/Private/Language/de.locallang.xlf:tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater.startbtn')}
+			{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/de.locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.startbtn')}
 			</f:link.action>
 		</p></div>
 	</f:then><f:else>
 		<f:if condition="{p}=='err'"><f:then>
 			<div class="joBold joErr1">
-			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.error.err1" default="Es ist ein Fehler aufgetreten!" />
+			<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.error.err1" default="Es ist ein Fehler aufgetreten!" />
 			</div>
 			<div class="joBold joErr2">
-			<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.error.err2" default="Bitte versuchen Sie es erneut oder wenden sich an unseren Support." />
+			<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.error.err2" default="Bitte versuchen Sie es erneut oder wenden sich an unseren Support." />
 			</div>
 			<div><p>
 				<f:link.action action="kurswahl" class="formhandler-button formhandler-start" arguments="{kurs:0}">
-				{f:translate(key:'LLL:EXT:jo_kursanmeldung/Resources/Private/Language/de.locallang.xlf:tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater.startbtn')}
+				{f:translate(key:'LLL:EXT:jkursanmeldung/Resources/Private/Language/de.locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.startbtn')}
 				</f:link.action>
 			</p></div></f:then><f:else>
 			<div class="joPay">
@@ -32,40 +38,40 @@
 			  <f:form.hidden name="st" value="{st}" />
 			  <f:form.hidden name="pl" value="{pl}" />
 			  <f:form.hidden name="hash" value="{hash}" />
-			  <f:form.select name="zahlart" options="{select.payment}" value="{select.act}" prependOptionLabel="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater.pleasechoose')}" prependOptionValue=""/>
-			  <f:form.submit value="{f:translate(key:'tx_jokursanmeldung_domain_model_kursanmeldung.steppaylater.change.payment')}" />
+			  <f:form.select name="zahlart" options="{select.payment}" value="{select.act}" prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.pleasechoose')}" prependOptionValue=""/>
+			  <f:form.submit value="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.change.payment')}" />
 			</f:form>
 			</div>
 			<f:if condition="{payment}=='onlinetransfer'">
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div class="red">
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort" />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort" />
 				</div>
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet\SofortueberweisungFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/SofortueberweisungFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if>
 
 			<f:if condition="{payment}=='giropay'">
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet\GiropayFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/GiropayFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if>
 			<f:if condition="{payment}=='paypal'">
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div>
-				<f:translate key="tx_jokursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
+				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet\PaypalFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/PaypalFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if></f:else>
 		</f:if>
 		</f:else>

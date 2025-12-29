@@ -58,7 +58,7 @@ class ParticipantUtility
     /**
      * @return string
      */
-    protected function translateFromXlf(): string
+    public function translateFromXlf(): string
     {
         $args = func_get_args();
         $key = array_shift($args);

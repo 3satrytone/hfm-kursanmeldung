@@ -57,10 +57,6 @@ h1 {
 .joContentAndRightbox {
     /* width: 37rem; */
 }
-input.formhandler-button {
-    margin-left: 0.5rem;
-    width: 5rem;
-}
 .joRow{
    /* width: 32rem; */
 }
@@ -170,37 +166,6 @@ textarea.joInpArea {
     margin-bottom: 1rem;
     margin-left: 4.7rem;
 }
-a.formhandler-button.formhandler-backward {
-    margin-left: 0.5rem;
-}
-button.formhandler-button {
-    margin: 1.5rem 0.5rem;
-    width: 5rem;
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
-a.formhandler-button.formhandler-backward {
-    margin: 1.5rem 0.5rem;
-    width: 5rem;
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;    
-    padding: 0rem 1rem 0.05rem 1rem;
-}
-a.formhandler-button.formhandler-forward {
-    margin: 1.5rem 0.5rem;
-    width: 5rem;
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
 /* todo @Justin suchen wo die richtige stelle ist (joMain.css) */
 select.f3-form-error option, select.f3-form-error {
     background-color: #FF9F9F;
@@ -287,25 +252,7 @@ img.delete{
     background-color: #FF9F9F;
     border: 1px #FF0000 solid;
 }
-/* novalnet */
-#novalnet_form input[type="submit"],
-#paylatersel input[type="submit"],
-#step4paymentsel input[type="submit"]{
-    margin: 1.5rem 0.5rem 1.5rem 0;
-    width: 5rem;
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
-#paylatersel input[type="submit"],
-#step4paymentsel input[type="submit"]{
-    width: auto;
-}
-#paylater .formhandler-button.formhandler-backward{
-	display:none;
-}
+
 /* joProfBox */
 
 .joProfBox{
