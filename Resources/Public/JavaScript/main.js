@@ -131,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const hfmPassiveTnStudentEl = [].slice.call(document.querySelectorAll('.hfmPassiveTnStudent'));
     const submitButtonsEl = [].slice.call(document.querySelectorAll('.formhandler-button[type="submit"]'));
 
+    //toggle matrikel field if studystat
+    const matrikelCollapseEl = document.getElementById('collapseMatrikel');
+
     //show additional message for zahlungsart 4 @see toggleMessageZahlartOnline()
     const selectElementZahlungsArt = document.getElementById('hfmZahlungsArt');
     const zahlartOnlineElement = document.getElementById('zahlartOnline');
@@ -144,6 +147,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const roomWithEl = document.getElementById('roomWith');
     const hotelCollapseEl = [].slice.call(document.querySelectorAll('.collapseRoom'));
     const hotelFeeCollapseEl = [].slice.call(document.querySelectorAll('.hotelfee-price'));
+
+    //toggle duo selection
+    const duoSelectorEl = document.getElementById('duoSelector');
+    const duoCollapseEl = [].slice.call(document.querySelectorAll('.duo-collapse'));
 
     function isAccessible(variable) {
         let propper;
@@ -201,6 +208,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //initial values check
         checkStudentTnAction();
+    }
+
+    function toggleMatrikel(){
+        if (!isAccessible(matrikelCollapseEl) || !isAccessible(studyStatEl)) {
+            return;
+        }
+        let bsCollapseMatrikelEl = new bootstrap.Collapse(matrikelCollapseEl, {toggle: false});
+
+        function checkMatrikelAction(){
+            if(studyStatEl.checked){
+                bsCollapseMatrikelEl.show();
+            }else{
+                bsCollapseMatrikelEl.hide();
+            }
+        }
+
+        studyStatEl.addEventListener('change', function () {
+            checkMatrikelAction();
+        });
+
+        checkMatrikelAction();
     }
 
     function toggleMessageZahlartOnline() {
@@ -313,10 +341,35 @@ document.addEventListener('DOMContentLoaded', function () {
         checkRoomPrice();
     }
 
+    function toggleDuoSelection() {
+        if (!isAccessible(duoSelectorEl)) {
+            return;
+        }
+        let bsCollapseDuo = initBSCollapse(duoCollapseEl);
+
+        function checkDuoAction() {
+            // Check for the specific value
+            if (duoSelectorEl.checked) {
+                showEl(bsCollapseDuo);
+            } else {
+                hideEl(bsCollapseDuo);
+            }
+        }
+
+        duoSelectorEl.addEventListener('change', function () {
+            checkDuoAction();
+        });
+
+        //initial values check
+        checkDuoAction();
+    }
+
+    toggleMatrikel();
     collapsePassivMeldung();
     toggleMessageZahlartOnline();
     togglePassivAktivSelection();
     toggleHotelRoom();
+    toggleDuoSelection();
 
     // Dynamically add new upload fields up to the limit in hidden #maxUploadItem
     function checkUploadMaxItem() {
@@ -422,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkUploadMaxItem();
 
     var toastEl = document.getElementById('already-participant-toast');
-    if(isAccessible(toastEl)){
+    if (isAccessible(toastEl)) {
         var toast = bootstrap.Toast.getOrCreateInstance(toastEl)
         toast.show();
     }

@@ -458,7 +458,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $this->view->assign('enrollmentfee', $enrollmentFee);
         $this->view->assign('additionalfee', $additionalFee);
         $this->view->assign('showUploadHint', $showUploadHint);
-        $this->view->assign('kurs', $kurs);
+        $this->view->assign(Constants::KURS, $kurs);
         $this->view->assign('gebuehr', $gebuehr);
         $this->view->assign('hotel', $hotel);
         $this->view->assign('step2data', $step2data);
@@ -550,7 +550,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $kursname = $this->participantUtility->getKursname($kurs);
 
         // hotel
-        $hotel = $this->hotelRepository->findByUid($step2data->getHotel());
+        $hotel = !empty($step2data->getHotel()) ? $this->hotelRepository->findByUid($step2data->getHotel()) : 0;
         $fee = 0;
         $room = $step2data->getRoom();
         if (!empty($hotel)) {
@@ -595,7 +595,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $hidedl = 1;
         }
 
-        $this->view->assign('kurs', $kurs);
+        $this->view->assign(Constants::KURS, $kurs);
         $this->view->assign('kursname', $kursname);
         $this->view->assign('zahlungsart', $this->zahlungsartArr[$step2data->getZahlungsart()]);
         $this->view->assign('hotel', $hotel);
@@ -691,7 +691,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $zahlungstermin->add(new \DateInterval('P10D'));
         $form = '';
         $payment = '';
-        $newKursanmeldung = null;
         $addTN = false;
 
         if ($kursanmeldungUid === 0) {
@@ -741,7 +740,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $newKursanmeldung->setStudystat($step2data->getStudystat());
         $newKursanmeldung->setZahlart($step2data->getZahlungsart());
         $newKursanmeldung->setZahltbis($zahlungstermin);
-        $newKursanmeldung->setHotel($step2data->getHotel());
+        $newKursanmeldung->setHotel((int)$step2data->getHotel());
         $newKursanmeldung->setRoom($step2data->getRoom());
         if ($step2data->getHotel() != '') {
             $newKursanmeldung->setRoomwith($step2data->getRoomwith());
@@ -926,13 +925,16 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
         $site = $this->request->getAttribute('site');
         $baseUrl = (string)$site->getBase();
+        $kursname = $this->participantUtility->getKursname($kurs);
 
+        $this->view->assign('kursname', $kursname);
         $this->view->assign('baseURL', $baseUrl);
         $this->view->assign('newKursanmeldung', $newKursanmeldung);
         $this->view->assign('payment', $payment);
         $this->view->assign('p', $p);
         $this->view->assign('form', $form);
         $this->view->assign('select', $select);
+        $this->view->assign(Constants::KURS, $kurs);
 
         return $this->htmlResponse();
     }
@@ -1141,7 +1143,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung->setStudystat($step2data->getStudystat());
             $newKursanmeldung->setZahlart($step2data->getZahlungsart());
             $newKursanmeldung->setZahltbis($zahlungstermin);
-            $newKursanmeldung->setHotel($step2data->getHotel());
+            $newKursanmeldung->setHotel((int)$step2data->getHotel());
             $newKursanmeldung->setRoom($step2data->getRoom());
             if ($step2data->getHotel() != '') {
                 $newKursanmeldung->setRoomwith($step2data->getRoomwith());
@@ -1328,7 +1330,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                         break;
                     default:
                         #$this->sendRegisterMail($newKursanmeldung, $newTn);
-                        $this->sessionUtility->cleanSession();
+                        $this->sessionUtility->cleanSession($this->getUser());
                 }
             } else {
                 // fehler redirect btstep1
@@ -1511,6 +1513,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $this->view->assign('form', $form);
         }
 
+        $this->view->assign(Constants::KURS, $kursActive);
         $this->view->assign('pl', $pl);
         $this->view->assign('p', $p);
 
@@ -1534,13 +1537,16 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     public function zahlartAction(): ResponseInterface
     {
         $this->sessionUtility->setFrontendUser($this->getUser());
+
         if ($this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA)) {
             $step2data = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_STEP2_DATA);
+            $zahlart = $step2data->getZahlungsart();
         }
-        $zahlart = $step2data->getZahlungsart();
+
         if ($this->request->hasArgument('zahlart')) {
             $zahlart = intval($this->request->getArgument('zahlart'));
         }
+
         if (isset($step2data) && !empty($step2data)) {
             $step2data->setZahlungsart($zahlart);
             $this->sessionUtility->setData(SessionUtility::FORM_SESSION_STEP2_DATA, $step2data);

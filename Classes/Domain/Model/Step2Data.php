@@ -28,7 +28,7 @@ class Step2Data extends AbstractEntity
     /**
      * studystat
      *
-     * @var int
+     * @var int|null
      */
     protected ?int $studystat;
 
@@ -69,7 +69,7 @@ class Step2Data extends AbstractEntity
     /**
      * @var int
      */
-    protected int $hotel = 0;
+    protected ?int $hotel;
 
     /**
      * room
@@ -205,6 +205,8 @@ class Step2Data extends AbstractEntity
     public function __construct()
     {
         $this->download = new ObjectStorage();
+        $this->hotel = 0;
+        $this->studystat = 0;
     }
 
     /**
@@ -373,18 +375,18 @@ class Step2Data extends AbstractEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getHotel(): int
+    public function getHotel(): ?int
     {
         return $this->hotel;
     }
 
     /**
-     * @param int
+     * @param int|null
      * @return void
      */
-    public function setHotel(int $hotel): void
+    public function setHotel(?int $hotel): void
     {
         $this->hotel = $hotel;
     }

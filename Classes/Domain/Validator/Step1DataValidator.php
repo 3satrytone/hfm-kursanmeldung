@@ -40,5 +40,22 @@ class Step1DataValidator extends AbstractValidator
             $this->addErrorForProperty('email', $errorString, time());
             $this->addErrorForProperty('emailrp', $errorString, time());
         }
+
+        if((int)$value->getDuo() === 1){
+            if(empty($value->getDuosel())){
+                $errorString = LocalizationUtility::translate(
+                    'tx_kursanmeldung_domain_model_kursanmeldung.step1data.validator.duosel.error',
+                    'kursanmeldung'
+                );
+                $this->addErrorForProperty('duosel', $errorString, time());
+            }
+            if(empty($value->getDuoname())){
+                $errorString = LocalizationUtility::translate(
+                    'tx_kursanmeldung_domain_model_kursanmeldung.step1data.validator.duoname.error',
+                    'kursanmeldung'
+                );
+                $this->addErrorForProperty('duoname', $errorString, time());
+            }
+        }
     }
 }

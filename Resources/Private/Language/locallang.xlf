@@ -831,12 +831,12 @@
             <target>E-Mail-Adresse und Wiederholung stimmen nicht überein.</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1.duo">
-            <source>Register as Duo/Ensemble</source>
-            <target>Duo/Ensemble anmelden</target>
+            <source>Register as Ensemble</source>
+            <target>Ensemble anmelden</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel">
-            <source>Instrument / subject of the Duo-Partner/Ensemble-Partner </source>
-            <target>Duopartner/Ensemblepartner Instrument / Fach</target>
+            <source>Kind of Ensemble</source>
+            <target>Ensembleart</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel">
             <source>Please select</source>
@@ -847,8 +847,16 @@
             <target></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1.duoname">
-            <source>Name of the Duo-Partner/Ensemble-Partner</source>
-            <target>Name des Duopartner/Ensemblepartner</target>
+            <source>Ensemble-Partner, Name and Instrument</source>
+            <target>Ensemblepartner, Name und Instrument</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1data.validator.duosel.error">
+            <source>Please Select</source>
+            <target>Bitte auswählen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1data.validator.duoname.error">
+            <source>Please Enter Name and Instrument</source>
+            <target>Bitte Name und Instrument angeben</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step1.agewarning.title">
             <source>Warning!</source>

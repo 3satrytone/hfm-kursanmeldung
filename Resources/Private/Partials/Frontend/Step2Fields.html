@@ -1,6 +1,6 @@
 <div class="row">
     <div class="tnaction col-12 pt-3">
-        <f:form.select property="tnaction" options="{tnaction}" class="form-control" id="passivMeldungEvent"/>
+        <f:form.select property="tnaction" options="{tnaction}" class="form-select" id="passivMeldungEvent"/>
     </div>
 </div>
 <div class="collapse hfmPassiveTnStudent hfm-alert">
@@ -11,21 +11,17 @@
 </div>
 <div class="row">
     <div class="studystat col-12 pt-3">
-        <f:form.checkbox property="studystat" value="1" id="hfmStudent"
-                         data-bs-toggle="collapse" data-bs-target="#collapseMatrikel"
-                         aria-expanded="false" aria-controls="collapseMatrikel"
-        />
+        <f:form.checkbox property="studystat" value="1" id="hfmStudent" class="form-check-input"/>
         <span><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.studystat"/></span>
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.studystat'}"/>
     </div>
 </div>
-
 <div class="row collapse" id="collapseMatrikel">
     <div class="matrikel col-12 pt-3">
         <f:form.textfield property="matrikel" class="form-control"
                           placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
                           title="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel')}"
-                          data-bs-toggle="popover" data-bs-placement="right"
+                          data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-container="body"
                           data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.matrikel'})}"
         />
         <f:render partial="FormTitleError"/>
@@ -38,7 +34,7 @@
         </p>
         <f:form.textarea property="programm" class="form-control" value="{step2data.programm}"
                          placeholder="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.programm')}"
-                         data-bs-toggle="popover" data-bs-placement="right"
+                         data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-container="body"
                          data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.programm'})}"
         />
         <f:render partial="FormSingleErrors"/>
@@ -57,7 +53,7 @@
 </f:if>
 <f:if condition="{kurs.stipendien}==1">
     <div class="studentship col-12 pt-3">
-        <f:form.checkbox property="studentship" class="" value="1"/>
+        <f:form.checkbox property="studentship" class="form-check-input" value="1"/>
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.studentship"/>
         <f:render partial="FormSingleErrors" arguments="{field: 'step2data.studentship'}"/>
     </div>
@@ -85,13 +81,12 @@
                 <f:form.select property="zahlungsart" options="{zahlungsart}" optionLabelField="nameLocalized"
                                sortByOptionLabel="1"
                                prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}"
-                               prependOptionValue=""
-                               class="form-control"
-                               id="hfmZahlungsArt"
+                               prependOptionValue="" class="form-select" id="hfmZahlungsArt"
+                               data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-container="body"
+                               data-bs-content="{f:render(partial: 'FormTitleError', arguments: {field: 'step2data.zahlungsart'})}"
                 />
             </f:else>
         </f:if>
-        <f:render partial="FormSingleErrors"/>
     </div>
     <div class="zahlungs-termin col-12 col-sm-6 pt-3 collapse">
         <f:if condition="{settings.hidePaymentDate} != 1">

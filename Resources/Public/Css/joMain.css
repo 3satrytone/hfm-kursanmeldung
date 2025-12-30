@@ -117,15 +117,6 @@ h1 {
     padding: 1rem;
     width: 33.5rem;
 }
-input.formhandler-button {
-    margin: 1.5rem 0.5rem;
-    width: 5rem;
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
 .joMainInnenabstand {
     padding: 2.5rem;
 }

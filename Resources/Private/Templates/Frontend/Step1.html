@@ -2,10 +2,10 @@
 <f:layout name="DefaultFe"/>
 
 <f:section name="Headline">
-<h1>
-    <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1"/>
-    <f:format.html>{kursname}</f:format.html>
-</h1>
+    <h1>
+        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1"/>
+        <f:format.html>{kursname}</f:format.html>
+    </h1>
 </f:section>
 
 <f:section name="Prof">
@@ -15,12 +15,15 @@
 <f:section name="Main">
     <f:form action="step1redirect" name="step1data" object="{step1data}" noCache="true" noCacheHash="true">
         <f:render partial="Frontend/Step1Fields" arguments="{_all}"/>
-        <f:link.action action="kurswahl" class="formhandler-button formhandler-backward" arguments="{kurs:0}">
-            {f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.back')}
-        </f:link.action>
-        <f:form.button type="submit" value="" class="formhandler-button">
-            {f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.step1.next')}
-        </f:form.button>
-
+        <div class="row pt-3">
+            <div class="col-12">
+                <f:link.action action="kurswahl" class="formhandler-button formhandler-backward" arguments="{kurs:0}">
+                    {f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.back')}
+                </f:link.action>
+                <f:form.button type="submit" value="" class="formhandler-button">
+                    {f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_domain_model_kursanmeldung.step1.next')}
+                </f:form.button>
+            </div>
+        </div>
     </f:form>
 </f:section>

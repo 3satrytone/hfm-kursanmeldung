@@ -11,6 +11,7 @@
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4"/>
             </f:else>
         </f:if>
+        <f:format.html>{kursname}</f:format.html>
     </h1>
 
 </f:section>
@@ -60,6 +61,7 @@
         </div>
     </f:if>
     <f:if condition="{payment}=='giropay'">
+        giropay
         <div class="row pt-3">
             <div class="col-12">
                 <f:format.html>
@@ -103,6 +105,7 @@
         </div>
     </f:if>
     <f:if condition="{payment}=='invoice'">
+        invoice
         <div class="row pt-3">
             <div class="col-12">
                 <f:format.html>

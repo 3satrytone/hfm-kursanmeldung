@@ -103,11 +103,9 @@ img {
 
 #hfm-kursanmeldung-default .formhandler-button {
     border-radius: 4px;
-    padding: 4px;
 }
 
 #hfm-kursanmeldung-default .formhandler-button.formhandler-backward {
-    padding: 4px 14px;
     text-decoration: none;
     background-color: #1a1a1a;
 }
@@ -121,6 +119,11 @@ img {
     width: 100% !important;
 }
 
+#hfm-kursanmeldung .form-check-input:checked,
+#hfm-kursanmeldung-default .form-check-input:checked{
+    background-color: #9D0633;
+}
+
 .tnb .hfmMainError ul,
 .privacy .hfmMainError ul {
     background-color: #FF9F9F;
@@ -131,44 +134,43 @@ img {
 /* novalnet */
 #novalnet_form input[type="submit"],
 #paylatersel input[type="submit"],
-#step4paymentsel input[type="submit"]{
+#step4paymentsel input[type="submit"] {
     background-color: #9D0633;
     color: white;
     cursor: pointer;
     border: none;
     outline: none;
 }
+
 #paylatersel input[type="submit"],
-#step4paymentsel input[type="submit"]{
+#step4paymentsel input[type="submit"] {
     width: auto;
 }
-#paylater .formhandler-button.formhandler-backward{
-    display:none;
+
+#paylater .formhandler-button.formhandler-backward {
+    display: none;
 }
 
+a.formhandler-button,
+input.formhandler-button,
+button.formhandler-button {
+    margin: 1.5rem 0.5rem;
+    padding: 4px 14px;
+    background-color: #9D0633;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+a.formhandler-button.formhandler-backward {
+    background-color: #9D0633;
+}
+
+a.formhandler-button.formhandler-forward {
+    background-color: #9D0633;
+}
 
 a.formhandler-button.formhandler-backward {
     margin-left: 0.5rem;
-}
-button.formhandler-button {
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
-a.formhandler-button.formhandler-backward {
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    padding: 0 1rem 0.05rem 1rem;
-}
-a.formhandler-button.formhandler-forward {
-    background-color: #9D0633;
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
 }
