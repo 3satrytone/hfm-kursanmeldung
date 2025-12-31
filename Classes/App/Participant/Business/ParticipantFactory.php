@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hfm\Kursanmeldung\App\Participant\Business;
 
 use Hfm\Kursanmeldung\App\Participant\Business\Hydrator\ParticipantHydrator;

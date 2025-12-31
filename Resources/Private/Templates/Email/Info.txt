@@ -1,0 +1,5 @@
+<f:layout name='DefaultEmailTxt'/>
+
+<f:section name='Main'>
+    TextEmail
+</f:section>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hfm\Kursanmeldung\App\Participant\Business;
 
 use Hfm\Kursanmeldung\App\Dto\StepDataParticipantDto;
@@ -11,9 +13,7 @@ class ParticipantFacade
      */
     public function __construct(
         protected ParticipantFactory $factory
-    )
-    {
-
+    ) {
     }
 
     /**

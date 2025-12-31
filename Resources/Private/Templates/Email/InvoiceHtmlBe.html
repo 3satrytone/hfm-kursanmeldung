@@ -1,0 +1,145 @@
+<f:layout name='DefaultEmail'/>
+
+<f:section name='Main'>
+<table class="header">
+	<tr>
+		<td><f:format.html><img src="###cid_0###" alt="logo"" /></f:format.html></td>
+		<td style="padding-left:10px;"><f:format.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Institut an der Bauhaus-Universität Weimar</span><br /><span style="font-size:11px;color:#666666;"><f:link.external uri="http://www.wba-weimar.de" target="_blank" style="font-family:Helvetica,Arial;font-size:11px;color:#666666;text-decoration:none;">www.wba-weimar.de</f:link.external></span>
+</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+</table>
+<table class="content" style="font-family:Helvetica,Arial;font-size:14px;color:#000000;">
+	<tr>
+		<td colspan="2" style="border-top:1px solid #000000;padding-top:10px;"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html><strong>RECHNUNG / INVOICE - {body.no}</strong></f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Rechnungsdatum / Date of invoice</f:format.html></td>
+		<td><f:format.html>{body.invoiceDate}</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td style="vertical-align:top"><f:format.html>Empfänger / recipient:<br />&nbsp;<br />&nbsp;<br />&nbsp;</f:format.html></td>
+		<td><f:format.html>{body.fname} {body.sname}<br />{body.address}<br />{body.addressadd}<br />{body.zip} {body.location}<br />{body.country}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Veranstaltung / event:</f:format.html></td>
+		<td><f:format.html><f:if condition="{body.novalnet.invoicedata_event}"><f:then>{body.novalnet.invoicedata_event}</f:then><f:else>{body.kurs}</f:else></f:if></f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Datum / date:</f:format.html></td>
+		<td><f:format.html><f:if condition="{body.novalnet.invoicedata_date}"><f:then>{body.novalnet.invoicedata_date}</f:then><f:else>{body.kursstart}</f:else></f:if></f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<f:if condition="{body.novalnet.invoicedata_text1}"><f:then>
+	<tr>
+		<td colspan="2"><f:format.html>{body.novalnet.invoicedata_text1}</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	</f:then></f:if>
+	<tr>
+		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html><strong>Posten / entry</strong></f:format.html></td>
+		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html><strong>Betrag / amount  in Euro</strong></f:format.html></td>
+	</tr>
+	<tr style="border-bottom:1px solid #000000;padding-bottom:10px;">
+		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html>Anmeldegebühr / registration fee</f:format.html></td>
+		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html>{body.amount -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html>Umsatzsteuerbefreit aufgrund § 4 Nr. 22b UStG / Auf Rechnung der Hochschule für Musik FRANZ LISZT Weimar</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html><strong>Rechnungsbetrag / invoice amount:</strong></f:format.html></td>
+		<td><f:format.html><strong>{body.amount -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}</strong></f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<f:if condition="{body.novalnet.invoicedata_text2}"><f:then>
+	<tr>
+		<td colspan="2"><f:format.html>{body.novalnet.invoicedata_text2}</f:format.html></td>
+	</tr>
+	</f:then><f:else>
+	<tr>
+		<td colspan="2"><f:format.html>Bitte überweisen Sie den Rechnungsbetrag sofort unter<br />Angabe der Rechnungsnummer auf folgendes Konto:<br /><br />
+			Please transfer the invoice amount immediately (see bank details below)<br />by specifying your invoice number:
+		</f:format.html></td>
+	</tr></f:else></f:if>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Empfänger / account holder:</f:format.html></td>
+		<td><f:format.html>{body.novalnet.invoice_account_name}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>IBAN:</f:format.html></td>
+		<td><f:format.html>{body.novalnet.invoice_iban}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>BIC:</f:format.html></td>
+		<td><f:format.html>{body.novalnet.invoice_bic}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Kreditinstitut / bank:</f:format.html></td>
+		<td><f:format.html>{body.novalnet.invoice_bankname}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>&nbsp;</f:format.html></td>
+		<td><f:format.html>{body.novalnet.invoice_bankplace}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>Verwendungszweck / Payment reason:</f:format.html></td>
+		<td><f:format.html>{body.novalnet.tid}</f:format.html></td>
+	</tr>
+	<tr>
+		<td><f:format.html>&nbsp;</f:format.html></td>
+		<td><f:format.html>Bitte unbedingt angeben! / Definitely required!</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+	<tr>
+		<td colspan="2"><f:format.html>&nbsp;</f:format.html></td>
+	</tr>
+</table>
+<table class="footer">
+	<tr>
+		<td style="width:30%;vertical-align:top;"><f:format.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">Michael Prager</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Finanzmanagement</span><br /><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Coudraystr. 13A | 99423 Weimar</span><br />
+		<f:link.email email="michael.prager@uni-weimar.de" style="font-family:Helvetica,Arial;font-size:11px;color:#666666;text-decoration:none;">michael.prager@uni-weimar.de</f:link.email><br /><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Telefon: +49 (0) 3643 58 42 38</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Telefax: +49 (0) 3643 58 42 26</span></f:format.html></td>
+		<td style="width:50%;vertical-align:top;"><f:format.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Eingetragen im Vereinsregister Amtsgericht Weimar VR 130613</span><br /><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Geschäftsführerin Vorstand Dipl.-Ing. Carola Westphalen</span><br /><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Bankverbindung</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Deutsche Bank Weimar</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">IBAN: DE80820700240287706605</span><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">BIC: DEUTDEDBERF</span><br /><br />
+		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Steuernummer: 162/141/01703</span></f:format.html></td>
+	</tr>
+</table>
+</f:section>

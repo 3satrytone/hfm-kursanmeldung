@@ -85,6 +85,16 @@ class Step1Data extends AbstractEntity {
 
     protected string $engrplace;
 
+    public function __construct()
+    {
+        $this->enconf = 0;
+    }
+
+    public function initializeObject()
+    {
+        $this->enconf = $this->enconf ?? 0;
+    }
+
     /**
      * @return int
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hfm\Kursanmeldung\App\Dto;
 
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;

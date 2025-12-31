@@ -93,6 +93,7 @@ class ParticipantUtility
     {
         $kursName = '';
         if (!empty($kurs) && $kurs !== null) {
+            $kurs->getProfessor()->rewind();
             $prof = $kurs->getProfessor()->current();
             // Name für Head
             if (!empty($prof)) {

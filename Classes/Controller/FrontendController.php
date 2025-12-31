@@ -4,7 +4,11 @@ namespace Hfm\Kursanmeldung\Controller;
 
 
 use Exception;
+use Hfm\Kursanmeldung\App\Dto\MailDto;
+use Hfm\Kursanmeldung\App\Dto\NovalnetResponseDto;
 use Hfm\Kursanmeldung\App\Dto\StepDataParticipantDto;
+use Hfm\Kursanmeldung\App\Mail\Business\MailFacade;
+use Hfm\Kursanmeldung\App\Novalnet\Business\NovalnetFacade;
 use Hfm\Kursanmeldung\App\Participant\Business\ParticipantFacade;
 use Hfm\Kursanmeldung\Constants\Constants;
 use Hfm\Kursanmeldung\Domain\Model\Ensemble;
@@ -85,6 +89,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly FormatUtility $formatUtility,
         protected readonly PropertyConverterUtility $propertyConverterUtility,
         protected readonly ParticipantFacade $participantFacade,
+        protected readonly NovalnetFacade $novalnetFacade,
+        protected readonly MailFacade $mailFacade,
         private readonly PersistenceManager $persistenceManager,
         private readonly CountryProvider $countryProvider,
     ) {
@@ -256,7 +262,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $kurs = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_KURS);
         if (!$this->request->hasArgument(Constants::KURS)) {
             if (empty($kurs)) {
-                $this->redirect(Constants::ACTION_KURS_WAHL);
+                return $this->redirect(Constants::ACTION_KURS_WAHL);
             }
         }
 
@@ -354,7 +360,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         // check if step3 completed no backwards functions
         $this->sessionUtility->setFrontendUser($this->getUser());
         if ($this->sessionUtility->isCompletedRegistration()) {
-            $this->redirect(Constants::ACTION_KURS_WAHL);
+            return $this->redirect(Constants::ACTION_KURS_WAHL);
         }
         // check Browser for reload
         $this->forceHeader();
@@ -518,8 +524,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     {
         // check if step3 completed no backwards functions
         $this->sessionUtility->setFrontendUser($this->getUser());
-        if (!$this->sessionUtility->isCompletedRegistration()) {
-            $this->redirect(Constants::ACTION_KURS_WAHL);
+        if ($this->sessionUtility->isCompletedRegistration()) {
+            return $this->redirect(Constants::ACTION_KURS_WAHL);
         }
         // check Browser for reload
         $this->forceHeader();
@@ -663,8 +669,9 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             if ($zahlart === 9 || !in_array(
                     $this->zahlungsartArr[$zahlart],
                     $this->zahlungsartNovalnetArr
-                )) {
-                $this->redirect('step5');
+                )
+            ) {
+                return $this->redirect('step5');
             }
         }
 
@@ -837,6 +844,9 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
                 // no email because is send
                 //$this->sendInfoMail($newKursanmeldung,$newTn);
+                $mailDto = new MailDto();
+                $this->mailFacade->sendFluidEmail($mailDto);
+
                 $this->sessionUtility->setData(
                     SessionUtility::FORM_SESSION_SEND_MAIL,
                     $newKursanmeldung->getUid()
@@ -870,7 +880,17 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
                     $xml_response = $this->curl_xml_post(
                         $request
-                    ); // Die Variable $request enthält den XML-Aufruf. Sehen Sie sich dazu das Aufrufbeispiel oben an
+                    );
+                    // Die Variable $request enthält den XML-Aufruf. Sehen Sie sich dazu das Aufrufbeispiel oben an
+                    $novalnetReposeDto = new NovalnetResponseDto(
+                        $xml_response,
+                        [],
+                        false,
+                        ''
+                    );
+
+                    $novalnetReposeDto = $this->novalnetFacade->getNovalnetResponse($novalnetReposeDto);
+
                     $response = new \SimpleXMLElement($xml_response);
 
                     $novalnet['status'] = (string)$response->{transaction_response}->status;
@@ -1047,7 +1067,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
 
         if ($kurs === null) {
-            $this->redirect(Constants::ACTION_KURS_WAHL);
+            return $this->redirect(Constants::ACTION_KURS_WAHL);
         }
 
         // check free places again
@@ -1139,7 +1159,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung = new Kursanmeldung();
             $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
             $newKursanmeldung->setKurs($kurs);
-            $newKursanmeldung->setStudentship($step2data->getStudentship());
+            $newKursanmeldung->setStudentship($step2data->getStudentship() ?? 0);
             $newKursanmeldung->setStudystat($step2data->getStudystat());
             $newKursanmeldung->setZahlart($step2data->getZahlungsart());
             $newKursanmeldung->setZahltbis($zahlungstermin);
@@ -1154,7 +1174,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung->setDatein(new \DateTime('NOW'));
             $newKursanmeldung->setTeilnahmeart($step2data->getTnaction());
             $newKursanmeldung->setProgramm($step2data->getProgramm());
-            $newKursanmeldung->setOrchesterstudio($step2data->getOrchesterstudio());
+            $newKursanmeldung->setOrchesterstudio($step2data->getOrchesterstudio() ?? '');
             $newKursanmeldung->setComment($step2data->getComment());
             $newKursanmeldung->setAgb($step3data->getTnb());
             $newKursanmeldung->setDatenschutz($step3data->getPrivacy());
@@ -1353,6 +1373,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             return $this->redirect(Constants::ACTION_STEP_1);
         }
 
+        $kursname = $this->participantUtility->getKursname($kurs);
+
+        $this->view->assign('kursname', $kursname);
+        $this->view->assign(Constants::KURS, $kurs);
+
         return $this->htmlResponse();
     }
 
@@ -1372,6 +1397,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $kursAnmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
 
         if ($kursAnmeldung && $kursAnmeldung->getUid() > 0) {
+            $kursname = $this->participantUtility->getKursname($kursAnmeldung->getKurs());
+
+            $this->view->assign('kursname', $kursname);
+            $this->view->assign(Constants::KURS, $kursAnmeldung->getKurs());
+
             // emails versenden
             $address = $kursAnmeldung->getTn()->current();
             $this->sessionUtility->cleanSession($this->getUser());
@@ -1700,14 +1730,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $test_mode = $this->testmode;
         $password = $this->novalnetSecret;
 
-        switch ($GLOBALS['TSFE']->sys_language_isocode) {
-            case "de":
-                $lang = 'DE';
-                break;
-            case "en":
-                $lang = 'EN';
-                break;
-        }
+        $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
+            'site'
+        )->getDefaultLanguage();
+        $lang = $language->getLocale()->getCountryCode();
 
         if ($kursanmeldung !== null) {
             $tn = null;
@@ -1894,12 +1920,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         return $formVars;
     }
 
-    private function curl_xml_post($request)
+    private function curl_xml_post($request): mixed
     {
         $ch = curl_init($request['url']);
-        $f = fopen($_SERVER['DOCUMENT_ROOT'] . '/request.txt', 'w');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: close', 'Content-Type: text/xml'));
-        curl_setopt($ch, CURLOPT_FILE, $f);
         curl_setopt(
             $ch,
             CURLOPT_POST,
@@ -1928,16 +1952,12 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         curl_setopt($ch, CURLOPT_STDERR, $f);
         ## Herstellung einer Verbindung
         $xml_response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         ## Prüfung, ob es bei der Ausführung von cURL zu Problemen kam
         $errno = curl_errno($ch);
         $errmsg = curl_error($ch);
-        # Schließen der Verbindung
-        fwrite($f, '-------------------------------' . "\n");
-        fwrite($f, $request['doc']);
-        fwrite($f, '-------------------------------' . "\n");
-        fwrite($f, $xml_response);
-        fclose($f);
         curl_close($ch);
+
         return $xml_response;
     }
 

@@ -50,5 +50,13 @@ services:
     public: true
   Hfm\Kursanmeldung\App\Participant\Business\ParticipantFactory:
     public: true
+  Hfm\Kursanmeldung\App\Novalnet\Business\NovalnetFacade:
+    public: true
+  Hfm\Kursanmeldung\App\Novalnet\Business\NovalnetFactory:
+    public: true
+  Hfm\Kursanmeldung\App\Mail\Business\MailFacade:
+    public: true
+  Hfm\Kursanmeldung\App\Mail\Business\MailFactory:
+    public: true
 
 
