@@ -2,7 +2,6 @@
 
 namespace Hfm\Kursanmeldung\Controller;
 
-
 use Exception;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Dto\NovalnetResponseDto;
@@ -33,11 +32,15 @@ use Hfm\Kursanmeldung\Utility\SessionUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -93,6 +96,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly MailFacade $mailFacade,
         private readonly PersistenceManager $persistenceManager,
         private readonly CountryProvider $countryProvider,
+        protected UriBuilder $uriBuilder
     ) {
     }
 
@@ -211,7 +215,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $kurse = $this->kursRepository->findAll();
         $kurseActive = array();
         $tnStatus = array();
-
         // Professor zuordnen
         if (!empty($kurse)) {
             foreach ($kurse as $kurs) {
@@ -841,11 +844,19 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->getUid()
             );
 
+            $url = $this->getLinkByRegistration($newKursanmeldung);
             if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
-                // no email because is send
-                //$this->sendInfoMail($newKursanmeldung,$newTn);
                 $mailDto = new MailDto();
-                $this->mailFacade->sendFluidEmail($mailDto);
+                $mailDto->setSendTo($newTn->getEmail());
+                $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+                $mailDto->setSubject($this->emailSubject);
+                $mailDto->setPageUid($this->infoMailId);
+                $mailDto->setRequest($this->request);
+                $mailDto->setTemplate('RegistrationUserInfoHtml');
+                $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+                $mailDto->setKursanmeldung($newKursanmeldung);
+                $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
+                $this->mailFacade->sendFluidMailWithPageContent($mailDto);
 
                 $this->sessionUtility->setData(
                     SessionUtility::FORM_SESSION_SEND_MAIL,
@@ -859,9 +870,9 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             switch ($newKursanmeldung->getZahlart()) {
                 case 1:
                     $payment = 'banktransfer';
-                    $this->logger->error('banktransfer suc:');
+                    $this->logger->info('banktransfer suc:');
                     $banktransfer = $this->getBanktransferData($newKursanmeldung);
-                    $this->logger->error('banktransfer suc POST:' . print_r($banktransfer, true));
+                    $this->logger->info('banktransfer suc POST:' . print_r($banktransfer, true));
                     $this->kursanmeldungRepository->update($newKursanmeldung);
                     $this->persistenceManager->persistAll();
 
@@ -1002,10 +1013,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         if ($p == 'suc') {
             // if payment successfully
             // save paymentstatus
-            $this->logger->error('Step4 redirect POST:' . print_r($_POST, true));
+            $this->logger->info('Step4 redirect POST:' . print_r($_POST, true));
 
             $kurs = (empty($kursAnmeldung)) ? 0 : $kursAnmeldung->getKurs()->current()->getUid();
-            $this->logger->error('Step 4 redirect Kurs:' . $kurs);
+            $this->logger->info('Step 4 redirect Kurs:' . $kurs);
 
             $kursActive = $this->kursRepository->findByUid($kurs);
             if ($kursActive === null) {
@@ -1032,7 +1043,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $this->kursanmeldungRepository->update($kursAnmeldung);
                 $this->persistenceManager->persistAll();
 
-                $this->logger->error('Step 4 redirect SUCCESS:' . $kurs);
+                $this->logger->info('Step 4 redirect SUCCESS:' . $kurs);
             } else {
                 $this->logger->info('Step 4 redirect ERROR:' . $kurs . ' : ' . $_POST['tid']);
             }
@@ -1328,7 +1339,17 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
             if ($newKursanmeldung->getUid() > 0) {
                 if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
-                    //$this->sendInfoMail($newKursanmeldung, $newTn);
+                    $mailDto = new MailDto();
+                    $mailDto->setSendTo($newTn->getEmail());
+                    $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+                    $mailDto->setSubject($this->emailSubject);
+                    $mailDto->setPageUid($this->infoMailId);
+                    $mailDto->setRequest($this->request);
+                    $mailDto->setTemplate('RegistrationUserInfoHtml');
+                    $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+                    $mailDto->setKursanmeldung($newKursanmeldung);
+                    $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
+                    $this->mailFacade->sendFluidMailWithPageContent($mailDto);
                     $this->sessionUtility->setData(SessionUtility::FORM_SESSION_SEND_MAIL, $newKursanmeldung->getUid());
                 }
                 // emails versenden
@@ -1346,9 +1367,25 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                         // emails versenden
                         #$this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
                         #$this->sendRegisterMail($newKursanmeldung, $newTn);
-                        #$this->cleanSession();
+                        $mailDto = new MailDto();
+                        $mailDto->setSendTo($newTn->getEmail());
+                        $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+                        $mailDto->setSubject($this->emailSubject);
+                        $mailDto->setPageUid($this->infoMailId);
+                        $mailDto->setRequest($this->request);
+                        $mailDto->setTemplate('RegistrationUserInfoHtml');
+                        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+                        $mailDto->setKursanmeldung($newKursanmeldung);
+                        $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
+                        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+                        $this->sessionUtility->setData(
+                            SessionUtility::FORM_SESSION_SEND_MAIL,
+                            $newKursanmeldung->getUid()
+                        );
+                        $this->sessionUtility->cleanSession($this->getUser());
                         break;
                     default:
+
                         #$this->sendRegisterMail($newKursanmeldung, $newTn);
                         $this->sessionUtility->cleanSession($this->getUser());
                 }
@@ -1546,6 +1583,47 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $this->view->assign(Constants::KURS, $kursActive);
         $this->view->assign('pl', $pl);
         $this->view->assign('p', $p);
+
+        return $this->htmlResponse();
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
+     */
+    public function doiconfirmAction(): ResponseInterface {
+        // confirmed by timestamp_uid and hash
+        $hash = '';
+        $ts = '';
+        $id = '';
+
+        if($this->request->hasArgument('hash')){
+            $hash = base64_decode($this->request->getArgument('hash'));
+        }
+
+        if($this->request->hasArgument('st')){
+            $st = $this->request->getArgument('st');
+            $stArr = explode('_' , $st);
+            if(count($stArr) === 2){
+                $ts = intval($stArr[0]);
+                $id = intval($stArr[1]);
+            }
+        }
+        // go on if values filled
+        if(!empty($hash) && !empty($ts) && !empty($id)){
+            $regTup = $this->kursanmeldungRepository->getRegistration($hash,$id,$ts);
+            if($regTup->count() == 1){
+                $register = $regTup->current();
+                $register->setDoitime(new \DateTime('NOW'));
+                $this->kursanmeldungRepository->update($register);
+            }else{
+                $this->view->assign('error', 1);
+            }
+        }
+        else{
+            $this->view->assign('error', 1);
+        }
 
         return $this->htmlResponse();
     }
@@ -1922,8 +2000,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
     private function curl_xml_post($request): mixed
     {
+        $logFile = Environment::getVarPath() . '/log/kursanmeldung.log';
         $ch = curl_init($request['url']);
+        $f = fopen($logFile, 'w');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: close', 'Content-Type: text/xml'));
+        curl_setopt($ch, CURLOPT_FILE, $f);
         curl_setopt(
             $ch,
             CURLOPT_POST,
@@ -2044,5 +2125,27 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
 
         return $register;
+    }
+
+    private function getLinkByRegistration(Kursanmeldung $registration): string
+    {
+        $this->uriBuilder->setRequest($this->request);
+
+        $url = $this->uriBuilder
+            ->reset()
+            ->setCreateAbsoluteUri(true)
+            ->setNoCache(true)
+            ->uriFor(
+                'doiconfirm', // only action name, not `myAction`
+                [
+                    'st' => $registration->getDatein()->getTimestamp() . '_' . $registration->getUid(),
+                    'hash' => base64_encode($registration->getRegistrationkey())
+                ],
+                'Frontend', // only controller name, not `MyController`
+                'kursanmeldung',
+                'KursanmeldungFe',
+            );
+
+        return $url;
     }
 }

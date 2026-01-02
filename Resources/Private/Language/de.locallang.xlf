@@ -1415,6 +1415,19 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>You will receive an e-mail in return from us within next few minutes.</source>
             <target>Sie erhalten in den nächsten Minuten eine Bestätigungsemail.</target>
         </trans-unit>
+        <!-- tx_jokursanmeldung_jokursanmeldungfe Frontend email-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.email.link">
+            <source>Please Confirm here:</source>
+            <target>Bitte hier BESTÄTIGEN:</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.email.gender.0">
+            <source>Ms./Mrs.</source>
+            <target>Frau</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.email.gender.1">
+            <source>Mr.</source>
+            <target>Herr</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

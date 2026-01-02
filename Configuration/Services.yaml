@@ -58,5 +58,9 @@ services:
     public: true
   Hfm\Kursanmeldung\App\Mail\Business\MailFactory:
     public: true
+  Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader:
+    public: true
+  Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator:
+    public: true
 
 

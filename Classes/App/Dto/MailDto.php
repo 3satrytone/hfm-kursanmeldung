@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hfm\Kursanmeldung\App\Dto;
 
+use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 
 class MailDto
 {
     private RequestInterface $request;
     private string $sendTo;
-    private string $sendFrom;
+    private Address $sendFrom;
     private string $subject;
     private string $format;
     private string $template;
+    private array $assignments = [];
+    private ?int $pageUid;
+    private ?Kursanmeldung $kursanmeldung;
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\RequestInterface
@@ -46,17 +53,18 @@ class MailDto
     }
 
     /**
-     * @return string
+     * @return \Symfony\Component\Mime\Address
      */
-    public function getSendFrom(): string
+    public function getSendFrom(): Address
     {
         return $this->sendFrom;
     }
 
     /**
-     * @param string $sendFrom
+     * @param \Symfony\Component\Mime\Address $sendFrom
+     * @return void
      */
-    public function setSendFrom(string $sendFrom): void
+    public function setSendFrom(Address $sendFrom): void
     {
         $this->sendFrom = $sendFrom;
     }
@@ -107,5 +115,53 @@ class MailDto
     public function setTemplate(string $template): void
     {
         $this->template = $template;
+    }
+
+    /**
+     * @return ?int
+     */
+    public function getPageUid(): ?int
+    {
+        return $this->pageUid;
+    }
+
+    /**
+     * @param int $pageUid
+     */
+    public function setPageUid(?int $pageUid): void
+    {
+        $this->pageUid = $pageUid;
+    }
+
+    /**
+     * @return \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null
+     */
+    public function getKursanmeldung(): ?Kursanmeldung
+    {
+        return $this->kursanmeldung;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null $kursanmeldung
+     */
+    public function setKursanmeldung(?Kursanmeldung $kursanmeldung): void
+    {
+        $this->kursanmeldung = $kursanmeldung;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssignments(): array
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param array $assignments
+     */
+    public function setAssignments(array $assignments): void
+    {
+        $this->assignments = $assignments;
     }
 }

@@ -2,8 +2,11 @@
 
 namespace Hfm\Kursanmeldung\Utility;
 
+use DateTime;
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
+use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
+use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -18,7 +21,8 @@ class ParticipantUtility
      * @param \Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository $kursanmeldungRepository
      */
     public function __construct(
-        protected readonly KursanmeldungRepository $kursanmeldungRepository
+        protected readonly KursanmeldungRepository $kursanmeldungRepository,
+        protected readonly HotelRepository $hotelRepository,
     ) {
     }
 
@@ -167,5 +171,52 @@ class ParticipantUtility
         $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
 
         return $hashInstance->getHashedPassword($password);
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $register
+     * @return array
+     */
+    public function getFluidAssignments(Kursanmeldung $register): array
+    {
+        $assignments = [];
+
+        $hotel = '';
+        $hotelId = $register->getHotel();
+        if ($hotelId > 0) {
+            $hotelObj = $this->hotelRepository->findByUid($hotelId);
+            if (!empty($hotelObj) && $hotelObj != null) {
+                $roomFromDate = new DateTime($register->getRoomfrom());
+                $roomToDate = new DateTime($register->getRoomTo());
+                $hotel = $hotelObj->getHotel() . ", " . $this->translateFromXlf(
+                        'tx_kursanmeldung_domain_model_kursanmeldung.step2.val' . $register->getRoom()
+                    ) . ', ' . $roomFromDate->format('d.m.Y') . '-' . $roomToDate->format('d.m.Y');
+            }
+        }
+        $assignments['hotel'] = $hotel;
+
+        $tn = $register->getTn();
+        $tn->rewind();
+        $address = $tn->current();
+        $assignments['address'] = $address->getAdresse1() . ', ' . $address->getAdresse2();
+        $assignments['birth'] = $address->getGebdate() ? $address->getGebdate()->format('d.m.Y') : '';
+
+        $gender = $address->getAnrede();
+        $genderText = $this->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.email.gender.' . $gender);
+        $assignments['gender'] = $genderText;
+        $assignments['firstname'] = ucfirst($address->getVorname());
+	    $assignments['lastname'] = ucfirst($address->getNachname());
+        $assignments['comment'] = $register->getComment();
+        $assignments['fee'] = $register->getGebuehr() . ' EUR';
+        $assignments['kurs'] = $this->getKursname($register->getKurs(), true);
+        $assignments['city'] = $address->getOrt();
+        $assignments['zip'] = $address->getPlz();
+        $assignments['phone'] = $address->getTelefon();
+        $assignments['mobile'] = $address->getMobil();
+        $assignments['email'] = $address->getEmail();
+        $assignments['addressObj'] = $address;
+        $assignments['registerObj'] = $register;
+
+        return $assignments;
     }
 }
