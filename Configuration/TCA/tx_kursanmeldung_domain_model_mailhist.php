@@ -13,7 +13,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'subject,sendername,sendermail,pageid,mailtype,nachricht',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
         '1' => [

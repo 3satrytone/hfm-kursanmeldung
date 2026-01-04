@@ -3,6 +3,8 @@ return [
     'ctrl' => [
         'title' => 'Teilnehmer',
         'label' => 'nachname',
+        'label_alt' => 'nachname, gebdate',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -13,7 +15,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'vorname,nachname,email,matrikel,adresse1,ort,land,telefon,mobil',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
         '1' => [

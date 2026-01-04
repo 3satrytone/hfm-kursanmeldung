@@ -12,13 +12,11 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'tn,kurs,zahlart,gebuehr,duoname,comment,programm,orchesterstudio,registrationkey,novalnettid,novalnetcno,notice',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'searchFields' => 'tn,kurs,uploads,gebuehr,gebuehrag,gebuehrdat,bezahltag,bezahlt,zahlart,zahltbis,gezahlt,gezahltag,gezahltos,hotel,datein,teilnahmeart,anmeldestatus,profstatus,programm,orchesterstudio,duo,duosel,duoname,comment,agb,datenschutz,savedata,salt,registrationkey,doitime,novalnettid,novalnettidag,novalnetcno,notice,deflang,stipendiat,studentship,studystat',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
-        '1' => [
-            'showitem' => '--div--;Record, hidden, deflang, tn, kurs, uploads, anmeldestatus, profstatus, teilnahmeart, duo, duosel, duoname, programm, orchesterstudio, hotel, room, roomwith, roomfrom, roomto, --div--;Zahlung, bezahlt, bezahltag, zahlart, zahltbis, gezahlt, gezahltag, gezahltos, gebuehr, gebuehrag, gebuehrdat, novalnettid, novalnettidag, novalnetcno, --div--;Rechtliches, agb, datenschutz, savedata, --div--;Technik, salt, registrationkey, doitime, notice, ensemble, stipendiat, studentship, studystat, datein, --div--;Access, starttime, endtime'
-        ],
+        '1' => ['showitem' => '--div--;Record, hidden, tn, kurs, uploads, bezahlt, gebuehr, gebuehrag, gebuehrdat, bezahltag, zahlart, zahltbis, gezahlt, gezahltag, gezahltos, hotel, room, roomwith, roomfrom, roomto, datein, teilnahmeart, anmeldestatus, profstatus, programm, orchesterstudio, duo, duosel, duoname, comment, agb, datenschutz, savedata, salt, registrationkey, doitime, novalnettid, novalnettidag, novalnetcno, notice, ensemble, deflang, stipendiat, studentship, studystat, --div--;Access, starttime, endtime'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
@@ -72,9 +70,9 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => [[ '-', 0 ]],
                 'foreign_table' => 'tx_kursanmeldung_domain_model_teilnehmer',
-                'default' => 0,
+                'minitems' => 1,
+                'maxitems' => 1,
             ],
         ],
         'kurs' => [
@@ -89,14 +87,15 @@ return [
             ],
         ],
         'uploads' => [
-            'exclude' => false,
+            'exclude' => true,
             'label' => 'Uploads',
             'config' => [
                 'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [[ '-', 0 ]],
+                'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'tx_kursanmeldung_domain_model_uploads',
-                'default' => 0,
+                'foreign_table_where' => "ORDER BY tx_kursanmeldung_domain_model_uploads.datein",
+                'MM' => 'tx_kursanmeldung_domain_model_uploads_mm',
+                'foreign_label' => 'path',
             ],
         ],
         'bezahlt' => [

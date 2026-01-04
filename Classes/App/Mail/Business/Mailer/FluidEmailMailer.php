@@ -81,7 +81,14 @@ class FluidEmailMailer implements MailerInterface
 
         if (!empty($mailDto->getAssignments())) {
             foreach ($mailDto->getAssignments() as $key => $value) {
-                $email->assign($key, $value);
+                if ($key === 'embedLogo') {
+                    if (is_string($value) && file_exists($value)) {
+                        $email->embedFromPath($value, 'logo_wba_112x25px.png', 'image/png');
+                        $email->assign('logoCid', 'cid:logo_wba_112x25px.png');
+                    }
+                }else{
+                    $email->assign($key, $value);
+                }
             }
         }
 

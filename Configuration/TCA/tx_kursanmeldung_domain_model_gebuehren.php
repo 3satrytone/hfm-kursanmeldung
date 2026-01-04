@@ -3,6 +3,8 @@ return [
     'ctrl' => [
         'title' => 'Gebühren',
         'label' => 'anmeldung',
+        'label_alt' => 'anmeldungerm, aktivengeb, aktivengeberm, passivgeb, passivgeberm',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -13,7 +15,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'anmeldung,anmeldungerm,aktivengeb,aktivengeberm,passivgeb,passivgeberm',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
         '1' => [

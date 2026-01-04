@@ -5,11 +5,11 @@ namespace Hfm\Kursanmeldung\Utility;
 use DateTime;
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
+use Hfm\Kursanmeldung\Domain\Model\Prof;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -198,14 +198,13 @@ class ParticipantUtility
         $tn = $register->getTn();
         $tn->rewind();
         $address = $tn->current();
-        $assignments['address'] = $address->getAdresse1() . ', ' . $address->getAdresse2();
         $assignments['birth'] = $address->getGebdate() ? $address->getGebdate()->format('d.m.Y') : '';
 
         $gender = $address->getAnrede();
         $genderText = $this->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.email.gender.' . $gender);
         $assignments['gender'] = $genderText;
         $assignments['firstname'] = ucfirst($address->getVorname());
-	    $assignments['lastname'] = ucfirst($address->getNachname());
+        $assignments['lastname'] = ucfirst($address->getNachname());
         $assignments['comment'] = $register->getComment();
         $assignments['fee'] = $register->getGebuehr() . ' EUR';
         $assignments['kurs'] = $this->getKursname($register->getKurs(), true);
@@ -216,7 +215,35 @@ class ParticipantUtility
         $assignments['email'] = $address->getEmail();
         $assignments['addressObj'] = $address;
         $assignments['registerObj'] = $register;
+        $assignments['address'] = trim($address->getAdresse1() . ' ' . $address->getHausnr());
+        $assignments['addressadd'] = $address->getAdresse2();
+
+        $assignments['country'] = $address->getLand();
+        $assignments['invoiceDate'] = $register->getDatein()->format('d.m.Y');
+
+        $assignments['no'] = $register->getUid();
+        $assignments['amount'] = $register->getGebuehr();
+        $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m');
+        $assignments['kursend'] = $register->getKurs()->getKurszeitend()->format('d.m.Y');
 
         return $assignments;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kurs $kurs
+     * @return string
+     */
+    public function getProfInstrument(Kurs $kurs): string
+    {
+        $kursName = '';
+
+        $kurs->getProfessor()->rewind();
+        $prof = $kurs->getProfessor()->current();
+
+        if ($prof instanceof Prof) {
+            $kursName = $prof->getName() . ' ' . $kurs->getInstrument();
+        }
+
+        return $kursName;
     }
 }

@@ -35,7 +35,7 @@ class MailBodyHydrator
 
         foreach ($assignments as $key => $value){
             if(in_array(gettype($value), ['string','double','integer','NULL']) ){
-                $html = str_replace('{' . $key . '}', $value, $html);
+                $html = str_replace('{' . $key . '}', (string)$value, $html);
             }
         }
 

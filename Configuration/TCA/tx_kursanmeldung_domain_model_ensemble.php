@@ -13,7 +13,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'enname,enfirstn,enlastn,ennatio,eninstru,engrplace,entype',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
         '1' => [

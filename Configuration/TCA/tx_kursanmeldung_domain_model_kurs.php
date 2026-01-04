@@ -3,6 +3,8 @@ return [
     'ctrl' => [
         'title' => 'Kurs',
         'label' => 'kursnr',
+        'label_alt' => 'kursnr, instrument, professor, kurszeitstart, kurszeitend',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -13,7 +15,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'kursnr,instrument,professor,gebuehrcom,duosel,ensemble',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-table.svg',
+        'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
     ],
     'types' => [
         '1' => [

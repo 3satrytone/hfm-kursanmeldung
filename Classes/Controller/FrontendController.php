@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -705,13 +706,16 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
         if ($kursanmeldungUid === 0) {
             $newKursanmeldung = new Kursanmeldung();
+            $newKursanmeldung->setPid($this->settings['records']['tn']);
             $newTn = new Teilnehmer();
+            $newTn->setPid($this->settings['records']['tn']);
             $addTN = true;
         } else {
             $newKursanmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
             $newTn = $newKursanmeldung->getTn()->current();
             if (empty($newTn)) {
                 $newTn = new Teilnehmer();
+                $newTn->setPid($this->settings['records']['tn']);
                 $addTN = true;
             }
         }
@@ -752,7 +756,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $newKursanmeldung->setZahltbis($zahlungstermin);
         $newKursanmeldung->setHotel((int)$step2data->getHotel());
         $newKursanmeldung->setRoom($step2data->getRoom());
-        if ($step2data->getHotel() != '') {
+        if ($step2data->getHotel() !== '') {
             $newKursanmeldung->setRoomwith($step2data->getRoomwith());
             $newKursanmeldung->setRoomfrom($step2data->getRoomfrom());
             $newKursanmeldung->setRoomto($step2data->getRoomto());
@@ -767,12 +771,93 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $newKursanmeldung->setDatenschutz($step3data->getPrivacy());
         $newKursanmeldung->setDeflang((int)$language->getLanguageId());
 
+        // duodaten speichern
+        if((int)$step1data->getDuo() === 1){
+            $newKursanmeldung->setDuo((int)$step1data->getDuo());
+            $newKursanmeldung->setDuosel($step1data->getDuosel());
+            $newKursanmeldung->setDuoname($step1data->getDuoname());
+        }
+
+        // Ensemble speichern
+        if (!empty($step1data->getEnconf())) {
+            if (!empty($step1data->getEnuid())) {
+                $uidArr = $step1data->getEnuid();
+                $enfirstnArr = $step1data->getEnfirstn();
+                $enlastnArr = $step1data->getEnlastn();
+                $eninstruArr = $step1data->getEninstru();
+                $engebdateArr = $step1data->getEngebdate();
+                $ennatioArr = $step1data->getEnnatio();
+
+                foreach ($uidArr as $key => $uid) {
+                    $newensemble = new Ensemble();
+                    $newensemble->setEnconf($step1data->getEnconf());
+                    $newensemble->setEntn($step1data->getEntn());
+                    $newensemble->setEnfirstn($enfirstnArr[$key]);
+                    $newensemble->setEnlastn($enlastnArr[$key]);
+                    $newensemble->setEninstru($eninstruArr[$key]);
+
+                    $date = \DateTime::createFromFormat('d.m.Y', $engebdateArr[$key]);
+                    if ($date) {
+                        $engebdateArr[$key] = $date->format('Y-m-d');
+                    }
+
+                    $newensemble->setEngebdate($engebdateArr[$key]);
+                    $newensemble->setEnnatio($ennatioArr[$key]);
+
+                    $date = \DateTime::createFromFormat('d.m.Y', $step1data->getEngrdate());
+                    if ($date) {
+                        $step1data->setEngrdate($date->format('Y-m-d'));
+                    }
+
+                    $newensemble->setEngrdate($step1data->getEngrdate());
+                    $newensemble->setEnname($step1data->getEnname());
+                    $newensemble->setEntype($step1data->getEntype());
+                    $newensemble->setEngrplace($step1data->getEngrplace());
+                    $newKursanmeldung->addEnsemble($newensemble);
+                }
+            } else {
+                $key = 0;
+                $enfirstnArr = $step1data->getEnfirstn();
+                $enlastnArr = $step1data->getEnlastn();
+                $eninstruArr = $step1data->getEninstru();
+                $engebdateArr = $step1data->getEngebdate();
+                $ennatioArr = $step1data->getEnnatio();
+
+                $newensemble = new Ensemble();
+                $newensemble->setEnconf($step1data->getEnconf());
+                $newensemble->setEntn($step1data->getEntn());
+                $newensemble->setEnfirstn($enfirstnArr[$key]);
+                $newensemble->setEnlastn($enlastnArr[$key]);
+                $newensemble->setEninstru($eninstruArr[$key]);
+
+                $date = \DateTime::createFromFormat('d.m.Y', $engebdateArr[$key]);
+                if ($date) {
+                    $engebdateArr[$key] = $date->format('Y-m-d');
+                }
+
+                $newensemble->setEngebdate($engebdateArr[$key]);
+                $newensemble->setEnnatio($ennatioArr[$key]);
+
+                $date = \DateTime::createFromFormat('d.m.Y', $step1data->getEngrdate());
+                if ($date) {
+                    $step1data->setEngrdate($date->format('Y-m-d'));
+                }
+
+                $newensemble->setEngrdate($step1data->getEngrdate());
+                $newensemble->setEnname($step1data->getEnname());
+                $newensemble->setEntype($step1data->getEntype());
+                $newensemble->setEngrplace($step1data->getEngrplace());
+                $newKursanmeldung->addEnsemble($newensemble);
+            }
+        }
+
         if (!empty($step2data->getDownload())) {
             $downloads = $step2data->getDownload();
             if (!empty($downloads)) {
                 foreach ($downloads as $fileReference) {
                     if (!empty($fileReference)) {
                         $newDl = new Uploads();
+                        $newDl->setPid($this->settings['records']['tn']);
                         $newDl->setKurs($kurs);
                         $newDl->setKat('download');
                         $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
@@ -786,14 +871,15 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
 
         if (!empty($step2data->getYoutube())) {
-            $src = $step2data->getYoutube();
+            $src = trim($step2data->getYoutube());
             if (!empty($src)) {
                 $srcBn = pathinfo($src);
                 $newDl = new Uploads();
+                $newDl->setPid($this->settings['records']['tn']);
                 $newDl->setKurs($kurs);
                 $newDl->setKat('youtube');
                 $newDl->setName($srcBn['basename']);
-                $newDl->setPfad($srcBn['dirname']);
+                $newDl->setPfad($src);
                 $newDl->setDatein(new \DateTime('NOW'));
                 $newKursanmeldung->addUploads($newDl);
             }
@@ -803,6 +889,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $fileReference = $step2data->getVita();
             if (!empty($fileReference->getOriginalResource())) {
                 $newDl = new Uploads();
+                $newDl->setPid($this->settings['records']['tn']);
                 $newDl->setKurs($kurs);
                 $newDl->setKat('vita');
                 $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
@@ -817,10 +904,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $src = trim($step2data->getLink());
             $srcBn = pathinfo($src);
             $newDl = new Uploads();
+            $newDl->setPid($this->settings['records']['tn']);
             $newDl->setKurs($kurs);
             $newDl->setKat('link');
             $newDl->setName($srcBn['basename']);
-            $newDl->setPfad($srcBn['dirname']);
+            $newDl->setPfad($src);
             $newDl->setDatein(new \DateTime('NOW'));
             $newKursanmeldung->addUploads($newDl);
         }
@@ -844,25 +932,17 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->getUid()
             );
 
-            $url = $this->getLinkByRegistration($newKursanmeldung);
             if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
-                $mailDto = new MailDto();
-                $mailDto->setSendTo($newTn->getEmail());
-                $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
-                $mailDto->setSubject($this->emailSubject);
-                $mailDto->setPageUid($this->infoMailId);
-                $mailDto->setRequest($this->request);
-                $mailDto->setTemplate('RegistrationUserInfoHtml');
-                $mailDto->setFormat(FluidEmail::FORMAT_HTML);
-                $mailDto->setKursanmeldung($newKursanmeldung);
-                $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
-                $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+                $this->sendInfoMail($newTn, $newKursanmeldung);
 
                 $this->sessionUtility->setData(
                     SessionUtility::FORM_SESSION_SEND_MAIL,
                     $newKursanmeldung->getUid()
                 );
             }
+
+
+            $this->sendInvoiceMail($newKursanmeldung, $newTn, []);
 
             $formVars = $this->novalnetArray($newKursanmeldung);
 
@@ -877,8 +957,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                     $this->persistenceManager->persistAll();
 
                     // emails versenden
-                    //$this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
-                    //$this->sendRegisterMail($newKursanmeldung, $newTn);
+                    $this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
+                    $this->sendRegisterMail($newKursanmeldung, $newTn);
                     $this->sessionUtility->cleanSession($this->getUser());
                     break;
                 case 2:
@@ -1197,6 +1277,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->setDuosel($step1data->getDuosel());
                 $newKursanmeldung->setDuoname($step1data->getDuoname());
             }
+
             // Ensemble speichern			
             if (!empty($step1data->getEnconf())) {
                 if (!empty($step1data->getEnuid())) {
@@ -1290,14 +1371,14 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             }
 
             if (!empty($step2data->getYoutube())) {
-                $src = $step2data->getYoutube();
+                $src = trim($step2data->getYoutube());
                 if (!empty($src)) {
                     $srcBn = pathinfo($src);
                     $newDl = new Uploads();
                     $newDl->setKurs($kurs);
                     $newDl->setKat('youtube');
                     $newDl->setName($srcBn['basename']);
-                    $newDl->setPfad($srcBn['dirname']);
+                    $newDl->setPfad($src);
                     $newDl->setDatein(new \DateTime('NOW'));
                     $newKursanmeldung->addUploads($newDl);
                 }
@@ -1324,7 +1405,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newDl->setKurs($kurs);
                 $newDl->setKat('link');
                 $newDl->setName($srcBn['basename']);
-                $newDl->setPfad($srcBn['dirname']);
+                $newDl->setPfad($src);
                 $newDl->setDatein(new \DateTime('NOW'));
                 $newKursanmeldung->addUploads($newDl);
             }
@@ -1339,17 +1420,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
             if ($newKursanmeldung->getUid() > 0) {
                 if (!$this->sessionUtility->getData(SessionUtility::FORM_SESSION_SEND_MAIL)) {
-                    $mailDto = new MailDto();
-                    $mailDto->setSendTo($newTn->getEmail());
-                    $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
-                    $mailDto->setSubject($this->emailSubject);
-                    $mailDto->setPageUid($this->infoMailId);
-                    $mailDto->setRequest($this->request);
-                    $mailDto->setTemplate('RegistrationUserInfoHtml');
-                    $mailDto->setFormat(FluidEmail::FORMAT_HTML);
-                    $mailDto->setKursanmeldung($newKursanmeldung);
-                    $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
-                    $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+                    $this->sendInfoMail($newTn, $newKursanmeldung);
                     $this->sessionUtility->setData(SessionUtility::FORM_SESSION_SEND_MAIL, $newKursanmeldung->getUid());
                 }
                 // emails versenden
@@ -1365,19 +1436,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                         $this->persistenceManager->persistAll();
 
                         // emails versenden
-                        #$this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
-                        #$this->sendRegisterMail($newKursanmeldung, $newTn);
-                        $mailDto = new MailDto();
-                        $mailDto->setSendTo($newTn->getEmail());
-                        $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
-                        $mailDto->setSubject($this->emailSubject);
-                        $mailDto->setPageUid($this->infoMailId);
-                        $mailDto->setRequest($this->request);
-                        $mailDto->setTemplate('RegistrationUserInfoHtml');
-                        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
-                        $mailDto->setKursanmeldung($newKursanmeldung);
-                        $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
-                        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+                        $this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
+                        $this->sendRegisterMail($newKursanmeldung, $newTn);
                         $this->sessionUtility->setData(
                             SessionUtility::FORM_SESSION_SEND_MAIL,
                             $newKursanmeldung->getUid()
@@ -1592,36 +1652,36 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
      */
-    public function doiconfirmAction(): ResponseInterface {
+    public function doiconfirmAction(): ResponseInterface
+    {
         // confirmed by timestamp_uid and hash
         $hash = '';
         $ts = '';
         $id = '';
 
-        if($this->request->hasArgument('hash')){
+        if ($this->request->hasArgument('hash')) {
             $hash = base64_decode($this->request->getArgument('hash'));
         }
 
-        if($this->request->hasArgument('st')){
+        if ($this->request->hasArgument('st')) {
             $st = $this->request->getArgument('st');
-            $stArr = explode('_' , $st);
-            if(count($stArr) === 2){
+            $stArr = explode('_', $st);
+            if (count($stArr) === 2) {
                 $ts = intval($stArr[0]);
                 $id = intval($stArr[1]);
             }
         }
         // go on if values filled
-        if(!empty($hash) && !empty($ts) && !empty($id)){
-            $regTup = $this->kursanmeldungRepository->getRegistration($hash,$id,$ts);
-            if($regTup->count() == 1){
+        if (!empty($hash) && !empty($ts) && !empty($id)) {
+            $regTup = $this->kursanmeldungRepository->getRegistration($hash, $id, $ts);
+            if ($regTup->count() == 1) {
                 $register = $regTup->current();
                 $register->setDoitime(new \DateTime('NOW'));
                 $this->kursanmeldungRepository->update($register);
-            }else{
+            } else {
                 $this->view->assign('error', 1);
             }
-        }
-        else{
+        } else {
             $this->view->assign('error', 1);
         }
 
@@ -2147,5 +2207,121 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             );
 
         return $url;
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $newTn
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null $newKursanmeldung
+     * @return void
+     */
+    public function sendInfoMail(Teilnehmer $newTn, ?Kursanmeldung $newKursanmeldung): void
+    {
+        // TeilnehmerEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($newTn->getEmail());
+        $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+        $mailDto->setSubject($this->emailSubject);
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('RegistrationUserInfoHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+
+        //AdminEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($this->emailHostAddress);
+        $mailDto->setSendFrom(new Address($newTn->getEmail(), ucfirst($newTn->getVorname()) . ' ' . ucfirst($newTn->getNachname())));
+        $mailDto->setSubject($this->emailSubject);
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('RegistrationAdminHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $newKursanmeldung
+     * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $newTn
+     * @param array $banktransfer
+     * @return void
+     */
+    private function sendInvoiceMail(Kursanmeldung $newKursanmeldung, Teilnehmer $newTn, array $banktransfer): void
+    {
+        $assignments = $this->participantUtility->getFluidAssignments($newKursanmeldung);
+        $assignments['kurs'] = $this->nameVeranstaltung .'<br />'.$this->participantUtility->getProfInstrument($newKursanmeldung->getKurs());
+        $assignments['novalnet'] = $banktransfer;
+        $assignments['embedLogo'] = GeneralUtility::getFileAbsFileName(
+            'EXT:kursanmeldung/Resources/Public/Images/logo_wba_112x25px.png'
+        );
+
+        // TeilnehmerEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($newTn->getEmail());
+        $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+        $mailDto->setSubject($this->emailSubjectInvoice);
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('InvoiceHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($assignments);
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+
+        //AdminEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($this->emailHostAddress);
+        $mailDto->setSendFrom(new Address($newTn->getEmail(), ucfirst($newTn->getVorname()) . ' ' . ucfirst($newTn->getNachname())));
+        $mailDto->setSubject('Kursanmeldung Administrator Rechnung');
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('InvoiceHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($assignments);
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+    }
+
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $newKursanmeldung
+     * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $newTn
+     * @param array $banktransfer
+     * @return void
+     */
+    private function sendRegisterMail(Kursanmeldung $newKursanmeldung, Teilnehmer $newTn): void
+    {
+        $assignments = $this->participantUtility->getFluidAssignments($newKursanmeldung);
+        $assignments['kurs'] = $this->nameVeranstaltung .'<br />'.$this->participantUtility->getProfInstrument($newKursanmeldung->getKurs());
+        $assignments['link'] = $this->getLinkByRegistration($newKursanmeldung);
+
+        // TeilnehmerEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($newTn->getEmail());
+        $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
+        $mailDto->setSubject($this->emailSubject);
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('RegistrationUserHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($assignments);
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+
+        //AdminEmail
+        $mailDto = new MailDto();
+        $mailDto->setSendTo($this->emailHostAddress);
+        $mailDto->setSendFrom(new Address($newTn->getEmail(), ucfirst($newTn->getVorname()) . ' ' . ucfirst($newTn->getNachname())));
+        $mailDto->setSubject($this->emailSubjectAdmin);
+        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setRequest($this->request);
+        $mailDto->setTemplate('RegistrationAdminHtml');
+        $mailDto->setFormat(FluidEmail::FORMAT_HTML);
+        $mailDto->setKursanmeldung($newKursanmeldung);
+        $mailDto->setAssignments($assignments);
+        $this->mailFacade->sendFluidMailWithPageContent($mailDto);
     }
 }
