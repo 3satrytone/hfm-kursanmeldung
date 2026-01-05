@@ -7,11 +7,11 @@
     {kurs.instrument}
 </div>
 <div class="row pt-3">
-    <f:if condition="{kurs.professor.0}">
-        <div class="row">{kurs.professor.0.name}</div>
-        <f:if condition="{kurs.professor.0.image}">
+    <f:if condition="{kurs.professor}">
+        <div class="row">{kurs.professor.name}</div>
+        <f:if condition="{kurs.professor.image}">
             <div class="row p-0 pt-3">
-                <f:image image="{kurs.professor.0.image}"/>
+                <f:image image="{kurs.professor.image}"/>
             </div>
         </f:if>
     </f:if>

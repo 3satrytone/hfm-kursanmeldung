@@ -1428,6 +1428,57 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>Mr.</source>
             <target>Herr</target>
         </trans-unit>
+
+        <!-- tx_kursanmeldung_jokursanmeldungfe Frontend getBanktransferData-->
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_account_name">
+            <source>WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</source>
+            <target>WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_bankname">
+            <source>Deutsche Bank Weimar</source>
+            <target>Deutsche Bank Weimar</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_bankplace">
+            <source></source>
+            <target></target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_bic">
+            <source>DEUTDEDBERF</source>
+            <target>DEUTDEDBERF</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_iban">
+            <source>DE80820700240287706605</source>
+            <target>DE80820700240287706605</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_text1">
+            <source></source>
+            <target></target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_text2">
+            <source><![CDATA[Bitte überweisen Sie den Rechnungsbetrag innerhalb von 5 Tagen unter<br />Angabe der Rechnungsnummer auf folgendes Konto:<br /><br />Please transfer the invoice amount by 5 days  (see bank details below)<br />specifying your invoice number:]]></source>
+            <target><![CDATA[Bitte überweisen Sie den Rechnungsbetrag innerhalb von 5 Tagen unter<br />Angabe der Rechnungsnummer auf folgendes Konto:<br /><br />Please transfer the invoice amount by 5 days  (see bank details below)<br />specifying your invoice number:]]></target>
+        </trans-unit>
+        <!-- tx_kursanmeldung_jokursanmeldungfe Frontend steppaylater-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater">
+            <source>Step Payment</source>
+            <target>Schritt Bezahlung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.pleasechoose">
+            <source>Please select</source>
+            <target>Bitte wählen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.suc">
+            <source>Thank you, your payment was successful.</source>
+            <target>Vielen Dank, Ihre Bezahlung war erfolgreich.</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.startbtn">
+            <source>to home page</source>
+            <target>Zur Startseite</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.change.payment">
+            <source>choose payment</source>
+            <target>Zahlungsart wählen</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

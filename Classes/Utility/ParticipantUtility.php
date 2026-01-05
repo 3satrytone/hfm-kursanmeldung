@@ -97,8 +97,7 @@ class ParticipantUtility
     {
         $kursName = '';
         if (!empty($kurs) && $kurs !== null) {
-            $kurs->getProfessor()->rewind();
-            $prof = $kurs->getProfessor()->current();
+            $prof = $kurs->getProfessor();
             // Name für Head
             if (!empty($prof)) {
                 if ($onlyName) {
@@ -223,7 +222,7 @@ class ParticipantUtility
 
         $assignments['no'] = $register->getUid();
         $assignments['amount'] = $register->getGebuehr();
-        $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m');
+        $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m.Y');
         $assignments['kursend'] = $register->getKurs()->getKurszeitend()->format('d.m.Y');
 
         return $assignments;
@@ -237,8 +236,7 @@ class ParticipantUtility
     {
         $kursName = '';
 
-        $kurs->getProfessor()->rewind();
-        $prof = $kurs->getProfessor()->current();
+        $prof = $kurs->getProfessor();
 
         if ($prof instanceof Prof) {
             $kursName = $prof->getName() . ' ' . $kurs->getInstrument();

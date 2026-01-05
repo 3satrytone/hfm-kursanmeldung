@@ -39,8 +39,9 @@ class Kursanmeldung extends AbstractEntity
     protected string $roomfrom = '';
     protected string $roomto = '';
     protected string $gebuehr = '';
+    protected ?\DateTime $gebuehreingang;
     protected string $gebuehrag = '';
-    protected int $gebuehrdat = 0;
+    protected ?\DateTime $gebuehrdat;
     protected ?\DateTime $datein;
     protected string $teilnahmeart = '';
 
@@ -321,6 +322,16 @@ class Kursanmeldung extends AbstractEntity
         $this->gebuehr = $gebuehr;
     }
 
+    public function getGebuehreingang(): ?\DateTime
+    {
+        return $this->gebuehreingang;
+    }
+
+    public function setGebuehreingang(?\DateTime $gebuehreingang): void
+    {
+        $this->gebuehreingang = $gebuehreingang;
+    }
+
     public function getGebuehrag(): string
     {
         return $this->gebuehrag;
@@ -331,12 +342,12 @@ class Kursanmeldung extends AbstractEntity
         $this->gebuehrag = $gebuehrag;
     }
 
-    public function getGebuehrdat(): int
+    public function getGebuehrdat(): ?\DateTime
     {
         return $this->gebuehrdat;
     }
 
-    public function setGebuehrdat(int $gebuehrdat): void
+    public function setGebuehrdat(?\DateTime $gebuehrdat): void
     {
         $this->gebuehrdat = $gebuehrdat;
     }

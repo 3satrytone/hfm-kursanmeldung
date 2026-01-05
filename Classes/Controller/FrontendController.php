@@ -751,7 +751,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
         $newKursanmeldung->setKurs($kurs);
         $newKursanmeldung->setStudentship($step2data->getStudentship() ?? 0);
-        $newKursanmeldung->setStudystat($step2data->getStudystat());
+        $newKursanmeldung->setStudystat((int)$step2data->getStudystat());
         $newKursanmeldung->setZahlart($step2data->getZahlungsart());
         $newKursanmeldung->setZahltbis($zahlungstermin);
         $newKursanmeldung->setHotel((int)$step2data->getHotel());
@@ -941,8 +941,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 );
             }
 
-
-            $this->sendInvoiceMail($newKursanmeldung, $newTn, []);
+            $banktransfer = $this->getBanktransferData($newKursanmeldung);
+            $this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
 
             $formVars = $this->novalnetArray($newKursanmeldung);
 
@@ -1251,7 +1251,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
             $newKursanmeldung->setKurs($kurs);
             $newKursanmeldung->setStudentship($step2data->getStudentship() ?? 0);
-            $newKursanmeldung->setStudystat($step2data->getStudystat());
+            $newKursanmeldung->setStudystat((int)$step2data->getStudystat());
             $newKursanmeldung->setZahlart($step2data->getZahlungsart());
             $newKursanmeldung->setZahltbis($zahlungstermin);
             $newKursanmeldung->setHotel((int)$step2data->getHotel());
@@ -1453,7 +1453,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 // fehler redirect btstep1
                 $this->addFlashMessage(
                     $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_body'),
-                    $this->participantUtility->translateFromXlf('tx_JoKursanmeldung_domain_model_type.err001_title'),
+                    $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_title'),
                     ContextualFeedbackSeverity::ERROR
                 );
 
@@ -1508,7 +1508,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             // fehler redirect btstep1
             $this->addFlashMessage(
                 $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_body'),
-                $this->participantUtility->translateFromXlf('tx_JoKursanmeldung_domain_model_type.err001_title'),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_type.err001_title'),
                 ContextualFeedbackSeverity::ERROR
             );
 
@@ -1785,39 +1785,39 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $banktransfer['tid'] = $this->paymentReason($competition);
 
         $banktransfer['invoice_account_name'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_account_name'
+            'tx_kursanmeldung.complete.invoicemail.invoice_account_name'
         );
         if (isset($this->setup['invoicedata_accountname']) && !empty($this->setup['invoicedata_accountname'])) {
             $banktransfer['invoice_account_name'] = $this->setup['invoicedata_accountname'];
         }
 
         $banktransfer['invoice_bankcode'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_bankcode'
+            'tx_kursanmeldung.complete.invoicemail.invoice_bankcode'
         );
 
         $banktransfer['invoice_iban'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_iban'
+            'tx_kursanmeldung.complete.invoicemail.invoice_iban'
         );
         if (isset($this->setup['invoicedata_iban']) && !empty($this->setup['invoicedata_iban'])) {
             $banktransfer['invoice_iban'] = $this->setup['invoicedata_iban'];
         }
 
         $banktransfer['invoice_bic'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_bic'
+            'tx_kursanmeldung.complete.invoicemail.invoice_bic'
         );
         if (isset($this->setup['invoicedata_bic']) && !empty($this->setup['invoicedata_bic'])) {
             $banktransfer['invoice_bic'] = $this->setup['invoicedata_bic'];
         }
 
         $banktransfer['invoice_bankname'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_bankname'
+            'tx_kursanmeldung.complete.invoicemail.invoice_bankname'
         );
         if (isset($this->setup['invoicedata_bic']) && !empty($this->setup['invoicedata_bankname'])) {
             $banktransfer['invoice_bankname'] = $this->setup['invoicedata_bankname'];
         }
 
         $banktransfer['invoice_bankplace'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_bankplace'
+            'tx_kursanmeldung.complete.invoicemail.invoice_bankplace'
         );
         if (isset($this->setup['invoicedata_bankplace']) && !empty($this->setup['invoicedata_bankplace'])) {
             $banktransfer['invoice_bankplace'] = $this->setup['invoicedata_bankplace'];
@@ -1827,14 +1827,14 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $banktransfer['invoicedata_date'] = $this->setup['invoicedata_date'];
 
         $banktransfer['invoicedata_text1'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_text1'
+            'tx_kursanmeldung.complete.invoicemail.invoice_text1'
         );
         if (isset($this->setup['invoicedata_text1']) && !empty($this->setup['invoicedata_text1'])) {
             $banktransfer['invoicedata_text1'] = $this->setup['invoicedata_text1'];
         }
 
         $banktransfer['invoicedata_text2'] = $this->participantUtility->translateFromXlf(
-            'tx_jokursanmeldung.complete.invoicemail.invoice_text2'
+            'tx_kursanmeldung.complete.invoicemail.invoice_text2'
         );
         if (isset($this->setup['invoicedata_text2']) && !empty($this->setup['invoicedata_text2'])) {
             $banktransfer['invoicedata_text2'] = $this->setup['invoicedata_text2'];

@@ -10,13 +10,13 @@
 				<f:if condition="{tnact.onlyPassive} == 1"><f:then>
 					<tr class="kursanmeldung-kurs only-passive">
 						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.instrument}</f:link.action></td>
-						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.0.name}</f:link.action></td>
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.name}</f:link.action></td>
 						<td class="jo-extra"><span class="ui-icon ui-icon-alert"></span><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.kurswahl.onlypassive" default="Nur noch passiv möglich!" /></td>
 					</tr>
 				</f:then><f:else>
 					<tr class="kursanmeldung-kurs">
 						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.instrument}</f:link.action></td>
-						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.0.name}</f:link.action></td>
+						<td><f:link.action action="step1" arguments="{kurs : kursanmeldungKurs.uid}">{kursanmeldungKurs.professor.name}</f:link.action></td>
 						<td class="jo-extra">&nbsp;</td>
 					</tr>
 				</f:else></f:if>

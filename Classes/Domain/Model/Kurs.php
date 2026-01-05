@@ -59,9 +59,9 @@ class Kurs extends AbstractEntity
     protected ObjectStorage $kursort;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Prof>
+     * @var \Hfm\Kursanmeldung\Domain\Model\Prof|null
      */
-    protected ObjectStorage $professor;
+    protected ?Prof $professor = null;
 
     /**
      * @var int
@@ -226,17 +226,18 @@ class Kurs extends AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Prof>
+     * @return \Hfm\Kursanmeldung\Domain\Model\Prof|null
      */
-    public function getProfessor(): ObjectStorage
+    public function getProfessor(): ?Prof
     {
         return $this->professor;
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Prof> $professor
+     * @param \Hfm\Kursanmeldung\Domain\Model\Prof|null $professor
+     * @return void
      */
-    public function setProfessor(ObjectStorage $professor): void
+    public function setProfessor(?Prof $professor): void
     {
         $this->professor = $professor;
     }
