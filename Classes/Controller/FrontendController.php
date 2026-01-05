@@ -1969,7 +1969,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $invoice['reference'] = '';                                // Nein	Rechnungsnummer
             $invoice['type'] = 'DEBIT';                                // Ja	Rechnungstyp CREDIT,DEBIT
             $invoice['order_no'] = '';                                // Nein	Bestellnummer aus dem Shop
-            $invoice['order_no'] = $kursanmeldung->getRegistrationkey() . '_' . $kursanmeldung->getUid();
+            $invoice['order_no'] = base64_encode($kursanmeldung->getRegistrationkey()) . '_' . $kursanmeldung->getUid();
             $invoice['order_uid'] = '';                                // Nein	Bestellnummer aus dem Shop
             $invoice['order_uid'] = $kursanmeldung->getUid();
             $invoice['currency'] = 'EUR';                            // Ja	Währung
