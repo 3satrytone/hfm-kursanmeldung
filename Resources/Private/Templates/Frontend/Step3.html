@@ -282,8 +282,12 @@
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.filesupload"/>
                 </td>
                 <td>
-                    <div>{step2data.link}</div>
-                    <div>{step2data.youtube}</div>
+                    <div>
+                        <f:link.external uri="{step2data.link}" target="_blank">{step2data.link}</f:link.external>
+                    </div>
+                    <div>
+                        <f:link.external uri="{step2data.youtube}" target="_blank">{step2data.youtube}</f:link.external>
+                    </div>
                     <f:if condition="{step2data.download}">
                         <f:for each="{step2data.download}" as="dl">
                             <div>{dl.originalResource.originalFile.name}</div>

@@ -14,16 +14,52 @@ return [
         ],
         'searchFields' => 'hotel,beschreibung,ezpreis,ezpreiserm,dzpreis,dzpreiserm,dz2preis,dz2preiserm',
         'iconfile' => 'EXT:kursanmeldung/Resources/Public/Icons/Logo.svg',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'translationSource' => 'l10n_source',
     ],
     'types' => [
         '1' => [
-            'showitem' => '--div--;Record, hidden, hotel, beschreibung, --div--;Preise, ezpreis, ezpreiserm, dzpreis, dzpreiserm, dz2preis, dz2preiserm, --div--;Access, starttime, endtime'
+            'showitem' => '--div--;Record, hidden, hotel, beschreibung, --div--;Preise, ezpreis, ezpreiserm, dzpreis, dzpreiserm, dz2preis, dz2preiserm, --div--;Language, sys_language_uid, l10n_parent, l10n_diffsource, --div--;Access, starttime, endtime'
         ],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
     ],
     'columns' => [
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'language',
+            ],
+        ],
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent', 0]
+                ],
+                'foreign_table' => 'tx_kursanmeldung_domain_model_hotel',
+                'foreign_table_where' => 'AND {#tx_kursanmeldung_domain_model_hotel}.{#pid}=###CURRENT_PID### AND {#tx_kursanmeldung_domain_model_hotel}.{#sys_language_uid} IN (0,-1)',
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
+        'l10n_source' => [
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'Hidden',

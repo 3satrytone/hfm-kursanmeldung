@@ -16,6 +16,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_setup (
   propname varchar(255) DEFAULT '' NOT NULL,
   propvalue text NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -44,6 +49,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_orte (
   lati double(11,2) DEFAULT '0' NOT NULL,
   beschreibung text NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -65,26 +75,32 @@ CREATE TABLE tx_kursanmeldung_domain_model_orte_mm (
 # Table structure for table 'tx_kursanmeldung_domain_model_uploads'
 #
 CREATE TABLE tx_kursanmeldung_domain_model_uploads (
-  uid int(11) NOT NULL auto_increment,
-  pid int(11) DEFAULT '0' NOT NULL,
+   uid int(11) NOT NULL auto_increment,
+   pid int(11) DEFAULT '0' NOT NULL,
 
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  starttime int(11) unsigned DEFAULT '0' NOT NULL,
-  endtime int(11) unsigned DEFAULT '0' NOT NULL,
+   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+   crdate int(11) unsigned DEFAULT '0' NOT NULL,
+   cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+   deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+   hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+   starttime int(11) unsigned DEFAULT '0' NOT NULL,
+   endtime int(11) unsigned DEFAULT '0' NOT NULL,
 
-  kurs int(11) DEFAULT '0' NOT NULL,
-  kat varchar(255) DEFAULT '' NOT NULL,
-  name varchar(255) DEFAULT '' NOT NULL,
-  pfad varchar(255) DEFAULT '' NOT NULL,
-  datein varchar(255) DEFAULT '' NOT NULL,
+   kurs int(11) DEFAULT '0' NOT NULL,
+   kat varchar(255) DEFAULT '' NOT NULL,
+   name varchar(255) DEFAULT '' NOT NULL,
+   pfad varchar(255) DEFAULT '' NOT NULL,
+   datein datetime NULL,
 
-  PRIMARY KEY (uid),
-  KEY parent (pid)
+   sys_language_uid int(11) DEFAULT 0 NOT NULL,
+   l10n_parent int(11) DEFAULT 0 NOT NULL,
+   l10n_diffsource mediumblob,
+   l10n_source int(11) DEFAULT 0 NOT NULL,
+
+   PRIMARY KEY (uid),
+   KEY parent (pid)
 );
+
 
 #
 # Table structure for table 'tx_kursanmeldung_domain_model_uploads_mm'
@@ -122,6 +138,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_hotel (
   dzpreiserm double(11,2) DEFAULT '0' NOT NULL,
   dz2preis double(11,2) DEFAULT '0' NOT NULL,
   dz2preiserm double(11,2) DEFAULT '0' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -178,6 +199,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_kurs (
   duosel text NOT NULL,
   ensemble varchar(255) DEFAULT '' NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -204,6 +230,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_gebuehren (
   passivgeb double(11,2) DEFAULT '0' NOT NULL,
   passivgeberm double(11,2) DEFAULT '0' NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -226,6 +257,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_prof (
   name varchar(255) DEFAULT '' NOT NULL,
   link varchar(255) DEFAULT '' NOT NULL,
   image varchar(255) DEFAULT '' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -266,31 +302,10 @@ CREATE TABLE tx_kursanmeldung_domain_model_teilnehmer (
   email varchar(255) DEFAULT '' NOT NULL,
   datein datetime NULL,
 
-  PRIMARY KEY (uid),
-  KEY parent (pid)
-);
-
-
-#
-# Table structure for table 'tx_kursanmeldung_domain_model_uploads'
-#
-CREATE TABLE tx_kursanmeldung_domain_model_uploads (
-  uid int(11) NOT NULL auto_increment,
-  pid int(11) DEFAULT '0' NOT NULL,
-
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-  deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  starttime int(11) unsigned DEFAULT '0' NOT NULL,
-  endtime int(11) unsigned DEFAULT '0' NOT NULL,
-
-  kurs int(11) DEFAULT '0' NOT NULL,
-  kat varchar(255) DEFAULT '' NOT NULL,
-  name varchar(255) DEFAULT '' NOT NULL,
-  pfad varchar(255) DEFAULT '' NOT NULL,
-  datein datetime NULL,
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -356,6 +371,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_kursanmeldung (
   studentship tinyint(4) DEFAULT '0' NOT NULL,
   studystat tinyint(4) DEFAULT '0' NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -380,6 +400,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_anmeldestatus (
   kurz varchar(255) DEFAULT '' NOT NULL,
   beschreibung text NOT NULL,
   reducetnart tinyint(4) DEFAULT '0' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -408,6 +433,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_mailhist (
   nachricht text NOT NULL,
   recipients int(11) DEFAULT '0' NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -431,6 +461,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_mailhistrecipients (
   recipient varchar(255) DEFAULT '' NOT NULL,
   datesend int(11) unsigned DEFAULT '0' NOT NULL,
   regid int(11) unsigned DEFAULT '0' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
@@ -468,6 +503,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_exportlist (
   tables text NOT NULL,
   notice text NOT NULL,
 
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
   PRIMARY KEY (uid),
   KEY parent (pid)
 );
@@ -498,6 +538,11 @@ CREATE TABLE tx_kursanmeldung_domain_model_ensemble (
   eninstru varchar(255) DEFAULT '' NOT NULL,
   engebdate date DEFAULT NULL,
   ennatio varchar(255) DEFAULT '' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
