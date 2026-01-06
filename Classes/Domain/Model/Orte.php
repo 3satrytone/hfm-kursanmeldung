@@ -12,13 +12,13 @@ class Orte extends AbstractEntity
     protected string $plz = '';
     protected string $adresse = '';
     /**
-     * @var float
+     * @var float|null
      */
-    protected float $longi = 0.00;
+    protected ?float $longi = null;
     /**
-     * @var float
+     * @var float|null
      */
-    protected float $lati = 0.00;
+    protected ?float $lati = null;
     protected string $beschreibung = '';
 
     public function getName(): string { return $this->name; }
@@ -33,11 +33,11 @@ class Orte extends AbstractEntity
     public function getAdresse(): string { return $this->adresse; }
     public function setAdresse(string $adresse): void { $this->adresse = $adresse; }
 
-    public function getLongi(): float { return $this->longi; }
-    public function setLongi(float $longi): void { $this->longi = $longi; }
+    public function getLongi(): ?float { return $this->longi; }
+    public function setLongi(?float $longi): void { $this->longi = $longi; }
 
-    public function getLati(): float { return $this->lati; }
-    public function setLati(float $lati): void { $this->lati = $lati; }
+    public function getLati(): ?float { return $this->lati; }
+    public function setLati(?float $lati): void { $this->lati = $lati; }
 
     public function getBeschreibung(): string { return $this->beschreibung; }
     public function setBeschreibung(string $beschreibung): void { $this->beschreibung = $beschreibung; }

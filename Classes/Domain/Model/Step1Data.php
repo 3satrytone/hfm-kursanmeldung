@@ -55,11 +55,11 @@ class Step1Data extends AbstractEntity {
     #[Validate(['validator' => 'EmailAddress'])]
 	protected string $emailrp;
 
-	protected string $duo;
+	protected ?string $duo = null;
 
-	protected string $duosel;
+	protected ?string $duosel = null;
 
-	protected string $duoname;
+	protected ?string $duoname = null;
 
     protected ?int $enconf;
 	
@@ -368,52 +368,52 @@ class Step1Data extends AbstractEntity {
 	}
 
     /**
-     * @return string
+     * @return string|null
      */
-	public function getDuo(): string
+	public function getDuo(): ?string
     {
 		return $this->duo;
 	}
 
     /**
-     * @param string $duo
+     * @param string|null $duo
      * @return void
      */
-	public function setDuo(string $duo): void
+	public function setDuo(?string $duo): void
     {
 		$this->duo = $duo;
 	}
 
     /**
-     * @return string
+     * @return string|null
      */
-	public function getDuosel(): string
+	public function getDuosel(): ?string
     {
 		return $this->duosel;
 	}
 
     /**
-     * @param string $duosel
+     * @param string|null $duosel
      * @return void
      */
-	public function setDuosel(string $duosel): void
+	public function setDuosel(?string $duosel): void
     {
 		$this->duosel = $duosel;
 	}
 
     /**
-     * @return string
+     * @return string|null
      */
-	public function getDuoname(): string
+	public function getDuoname(): ?string
     {
 		return $this->duoname;
 	}
 
     /**
-     * @param string $duoname
+     * @param string|null $duoname
      * @return void
      */
-	public function setDuoname(string $duoname): void
+	public function setDuoname(?string $duoname): void
     {
 		$this->duoname = $duoname;
 	}

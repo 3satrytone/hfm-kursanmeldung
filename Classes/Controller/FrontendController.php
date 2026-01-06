@@ -214,8 +214,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $this->sessionUtility->cleanSession($this->getUser());
         $this->kursRepository->setStoragePageIds([$this->settings['records']['kurs']]);
         $kurse = $this->kursRepository->findAll();
-        $kurseActive = array();
-        $tnStatus = array();
+        $kurseActive = [];
+        $tnStatus = [];
         // Professor zuordnen
         if (!empty($kurse)) {
             foreach ($kurse as $kurs) {

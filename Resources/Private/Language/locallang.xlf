@@ -180,7 +180,23 @@
             <source>member nationality</source>
             <target>Mitglied Nationalität</target>
         </trans-unit>
-        
+        <!-- anzeige list kurse-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kurszeitstart.th">
+            <source>Startet am</source>
+            <target>Startet am</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.kurszeitend.th">
+            <source>Endet am</source>
+            <target>Endet am</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.aktivtn.th">
+            <source>Anzahl aktiv</source>
+            <target>Anzahl aktiv</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kurs.passivtn.th">
+            <source>Anzahl passiv</source>
+            <target>Anzahl passiv</target>
+        </trans-unit>
         
         <trans-unit id="tx_kursanmeldung_domain_model_gebuehren">
             <source>Kursanmeldung Gebuehren</source>
@@ -1478,6 +1494,35 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.steppaylater.change.payment">
             <source>choose payment</source>
             <target>Zahlungsart wählen</target>
+        </trans-unit>
+        <!-- orte model -->
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.name">
+            <source>Name des Eintrages</source>
+            <target>Name des Eintrages</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.ort">
+            <source>Ort</source>
+            <target>Ort</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.plz">
+            <source>PLZ</source>
+            <target>PLZ</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.adresse">
+            <source>Adresse</source>
+            <target>Adresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.longi">
+            <source>Longitude als Decimalwert</source>
+            <target>Longitude als Decimalwert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.lati">
+            <source>Latitude als Decimalwert</source>
+            <target>Latitude als Decimalwert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_orte.beschreibung">
+            <source>Beschreibung</source>
+            <target>Beschreibung</target>
         </trans-unit>
     </body>
   </file>
