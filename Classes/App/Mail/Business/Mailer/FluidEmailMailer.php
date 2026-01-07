@@ -7,12 +7,13 @@ namespace Hfm\Kursanmeldung\App\Mail\Business\Mailer;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator;
 use Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Mail\MailerInterface as TypoMailerInterface;
 
-class FluidEmailMailer implements MailerInterface
+class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
