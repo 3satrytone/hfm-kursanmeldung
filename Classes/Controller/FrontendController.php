@@ -913,7 +913,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung->addUploads($newDl);
         }
 
-        $newKursanmeldung->setSavedata($step3data->getSavedata());
+        $newKursanmeldung->setSavedata((int)$step3data->getSavedata());
 
         if ($kursanmeldungUid === 0) {
             $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
@@ -1410,7 +1410,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->addUploads($newDl);
             }
 
-            $newKursanmeldung->setSavedata($step3data->getSavedata());
+            $newKursanmeldung->setSavedata((int)$step3data->getSavedata());
 
             $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
             $newKursanmeldung->setRegistrationkey($hash);
