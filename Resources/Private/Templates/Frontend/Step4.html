@@ -57,7 +57,7 @@
                 </f:format.html>
             </div>
             <f:render partial="Novalnet/SofortueberweisungForm"
-                      arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
+                      arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
         </div>
     </f:if>
     <f:if condition="{payment}=='giropay'">
@@ -79,7 +79,7 @@
                 </f:format.html>
             </div>
             <f:render partial="Novalnet/GiropayForm"
-                      arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
+                      arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
 
         </div>
     </f:if>
@@ -100,7 +100,7 @@
         <div class="row pt-3">
             <div class="col-12">
                 <f:render partial="Novalnet/PaypalForm"
-                          arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
+                          arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars}"/>
             </div>
         </div>
     </f:if>

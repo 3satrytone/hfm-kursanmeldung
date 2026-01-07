@@ -52,7 +52,7 @@
 				<div>
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet/SofortueberweisungFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/SofortueberweisungFormPl" arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if>
 
 			<f:if condition="{payment}=='giropay'">
@@ -62,7 +62,7 @@
 				<div>
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet/GiropayFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/GiropayFormPl" arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if>
 			<f:if condition="{payment}=='paypal'">
 				<div>
@@ -71,7 +71,7 @@
 				<div>
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
 				</div>
-				<f:render partial="Novalnet/PaypalFormPl" arguments="{baseURL:baseURL,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
+				<f:render partial="Novalnet/PaypalFormPl" arguments="{baseURL:baseURL,returnUrlSuccess:returnUrlSuccess,returnUrlError:returnUrlError,header: form.vars.header,customer: form.vars.customer,invoice: form.vars.invoice,invoice_detail: form.vars.invoice_detail,invoice_details: form.vars.invoice_details,encodeVars: form.vars.encodeVars,pl:pl}"/>
 			</f:if></f:else>
 		</f:if>
 		</f:else>

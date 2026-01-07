@@ -1040,6 +1040,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
         $this->view->assign('kursname', $kursname);
         $this->view->assign('baseURL', $baseUrl);
+        $this->view->assign('returnUrlSuccess', $this->getStep4RedirectUrl('suc'));
+        $this->view->assign('returnUrlError', $this->getStep4RedirectUrl('err'));
         $this->view->assign('newKursanmeldung', $newKursanmeldung);
         $this->view->assign('payment', $payment);
         $this->view->assign('p', $p);
@@ -1636,6 +1638,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $baseUrl = (string)$site->getBase();
 
             $this->view->assign('baseURL', $baseUrl);
+            $this->view->assign('returnUrlSuccess', $this->getStep4RedirectUrl('suc'));
+            $this->view->assign('returnUrlError', $this->getStep4RedirectUrl('err'));
             $this->view->assign('payment', $payment);
             $this->view->assign('form', $form);
         }
@@ -2200,6 +2204,27 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 [
                     'st' => $registration->getDatein()->getTimestamp() . '_' . $registration->getUid(),
                     'hash' => base64_encode($registration->getRegistrationkey())
+                ],
+                'Frontend', // only controller name, not `MyController`
+                'kursanmeldung',
+                'KursanmeldungFe',
+            );
+
+        return $url;
+    }
+
+    private function getStep4RedirectUrl(string $parameter): string
+    {
+        $this->uriBuilder->setRequest($this->request);
+
+        $url = $this->uriBuilder
+            ->reset()
+            ->setCreateAbsoluteUri(true)
+            ->setNoCache(true)
+            ->uriFor(
+                'step4redirect', // only action name, not `myAction`
+                [
+                    'p' => $parameter,
                 ],
                 'Frontend', // only controller name, not `MyController`
                 'kursanmeldung',
