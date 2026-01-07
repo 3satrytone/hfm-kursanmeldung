@@ -39,7 +39,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
 
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
         } catch (\Exception $e) {
-            $this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
+            #$this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
         }
     }
 
@@ -62,7 +62,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
             $email = $this->setupMail($mailDto);
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
         } catch (\Exception $e) {
-            $this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
+            #$this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
         }
     }
 
