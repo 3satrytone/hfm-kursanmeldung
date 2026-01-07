@@ -9,6 +9,7 @@ use Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator;
 use Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Mail\MailerInterface as TypoMailerInterface;
@@ -25,6 +26,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
         private readonly ContentReader $contentReader,
         private readonly MailBodyHydrator $mailBodyHydrator,
     ) {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
     /**
@@ -39,7 +41,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
 
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
         } catch (\Exception $e) {
-            #$this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
+            $this->logger?->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
         }
     }
 
@@ -62,7 +64,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
             $email = $this->setupMail($mailDto);
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
         } catch (\Exception $e) {
-            #$this->logger->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
+            $this->logger?->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
         }
     }
 
