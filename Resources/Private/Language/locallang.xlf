@@ -1022,8 +1022,8 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>Besetzungspräferenzen, 1. und 2. Wahl, bei Kategorie 1 ggf. mit Teilbesetzung</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm">
-            <source><![CDATA[e.g. Composer, Name of Work...]]></source>
-            <target><![CDATA[z.B. Komponist, Werkname...]]></target>
+            <source></source>
+            <target></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio.head">
             <source>I apply also for Orchesta Studio:</source>
@@ -1199,12 +1199,12 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>weiter</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.tnb">
-            <source><![CDATA[Yes, I have read the <span><a href="https://www.hfm-weimar.de/masterclasses/61st-weimar-master-classes-2020/information-conditions/?L=1#c14266" target="_blank">terms and condition</a></span> of the Weimar Master Classes and accept them]]></source>
-            <target><![CDATA[Ja, Ich habe die <span><a href="https://www.hfm-weimar.de/weimarer-meisterkurse/61-weimarer-meisterkurse-2020/informationen-konditionen/#c14266" target="_blank">Teilnahmebedingungen</a></span> gelesen und erkläre mich damit einverstanden.]]></target>
+            <source><![CDATA[Yes, I have read the <span><a href="https://www.hfm-weimar.de/en/weimar-master-classes/66th-weimar-master-classes-2026/information-conditions#HfM" target="_blank">terms and condition</a></span> of the Weimar Master Classes and accept them]]></source>
+            <target><![CDATA[Ja, Ich habe die <span><a href="https://www.hfm-weimar.de/weimar-master-classes/66th-weimar-master-classes-2026/informationen-konditionen" target="_blank">Teilnahmebedingungen</a></span> gelesen und erkläre mich damit einverstanden.]]></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.privacy">
-            <source><![CDATA[Yes, I have read the <span><a href="https://www.hfm-weimar.de/masterclasses/61st-weimar-master-classes-2020/information-conditions/?L=1#c14250" target="_blank">data protection</a></span> and accept them.]]></source>
-            <target><![CDATA[Ja, Ich habe die <span><a href="https://www.hfm-weimar.de/weimarer-meisterkurse/61-weimarer-meisterkurse-2020/informationen-konditionen/#c14250" target="_blank">Datenschutzerklärung</a></span> gelesen und erkläre mich damit einverstanden.]]></target>
+            <source><![CDATA[Yes, I have read the <span><a href="https://www.hfm-weimar.de/en/footer/data-protection" target="_blank">data protection</a></span> and accept them.]]></source>
+            <target><![CDATA[Ja, Ich habe die <span><a href="https://www.hfm-weimar.de/footer/datenschutz" target="_blank">Datenschutzerklärung</a></span> gelesen und erkläre mich damit einverstanden.]]></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.savedata">
             <source>I agree that my data can be saved and that I will be regularly informed about competitions and master classes of the Franz Liszt School of Music in Weimar.</source>

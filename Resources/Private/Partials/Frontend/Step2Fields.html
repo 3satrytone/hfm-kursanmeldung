@@ -107,9 +107,6 @@
         <span id="additionalfee"
               data-feeaktivengeb="{gebuehr.aktivengeb -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}"
               data-feeaktivengeberm="{gebuehr.aktivengeberm -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')}">{additionalfee -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} EUR</span>
-        <span class="stipendiumhint ps-5"><f:format.html><f:translate
-                key="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint"/></f:format.html>
-        </span>
     </div>
     <f:if condition="{kurs.gebuehrcom}">
         <div class="gebuehrcom col-12">
