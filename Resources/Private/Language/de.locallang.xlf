@@ -1010,20 +1010,20 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>Ich bewerbe mich um ein Stipendium</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.stipendiumhint">
-            <source>Information about fees payable you will get after examining your documents.</source>
-            <target>Informationen über zu zahlende Gebühren erhalten Sie nach Sichtung der Unterlagen.</target>
+            <source></source>
+            <target></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.matrikel">
             <source>Please sign your number of your student ID card from the HfM Weimar</source>
             <target>Meine Matrikelnummer der HfM Weimar</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head">
-            <source>Preferred cast, first and second choices, for category 1 with partial cast if applicable</source>
+            <source>Preferred instrumentation, first and second choices, for category 1 with partial instrumentation if applicable</source>
             <target>Besetzungspräferenzen, 1. und 2. Wahl, bei Kategorie 1 ggf. mit Teilbesetzung</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm">
-            <source><![CDATA[e.g. Composer, Name of Work...]]></source>
-            <target><![CDATA[z.B. Komponist, Werkname...]]></target>
+            <source></source>
+            <target></target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio.head">
             <source>I apply also for Orchesta Studio:</source>
@@ -1088,6 +1088,10 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.additionalfee">
             <source>Further fees (To transfer after approval for active participation): </source>
             <target>Weitere Gebühren (Nach Zulassung zur aktiven Teilnahme zu überweisen): </target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.additionalfee.after">
+            <source> Information about fees payable you will get after examining your documents.</source>
+            <target> Informationen über zu zahlende Gebühren erhalten Sie nach Sichtung der Unterlagen.</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.hotel">
             <source>No Hotel</source>
@@ -1154,8 +1158,8 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>Medien zum anhängen (Format: gif, jpg, png, mp3, mp4, wav, mpeg, aiff, wmv, pdf):</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.link">
-            <source>http://meinlink.de</source>
-            <target>http://meinlink.de</target>
+            <source>http://my-link-here.de</source>
+            <target>http://my-link-here.de</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.youtube">
             <source>https://youtube.com/watch?v=abcd1234</source>

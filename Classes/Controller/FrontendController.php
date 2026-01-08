@@ -790,6 +790,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
                 foreach ($uidArr as $key => $uid) {
                     $newensemble = new Ensemble();
+                    $newensemble->setPid($this->settings['records']['tn']);
                     $newensemble->setEnconf($step1data->getEnconf());
                     $newensemble->setEntn($step1data->getEntn());
                     $newensemble->setEnfirstn($enfirstnArr[$key]);
@@ -824,6 +825,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $ennatioArr = $step1data->getEnnatio();
 
                 $newensemble = new Ensemble();
+                $newensemble->setPid($this->settings['records']['tn']);
                 $newensemble->setEnconf($step1data->getEnconf());
                 $newensemble->setEntn($step1data->getEntn());
                 $newensemble->setEnfirstn($enfirstnArr[$key]);
@@ -1237,6 +1239,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
             /* Teilnehmer speichern */
             $newTn = new Teilnehmer();
+            $newTn->setPid($this->settings['records']['tn']);
             $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
                 'site'
             )->getDefaultLanguage();
@@ -1250,6 +1253,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $this->participantFacade->hydrateParticipantFromStepData($stepDataDto);
 
             $newKursanmeldung = new Kursanmeldung();
+            $newKursanmeldung->setPid($this->settings['records']['tn']);
             $newKursanmeldung->addTn($stepDataDto->getTeilnehmer());
             $newKursanmeldung->setKurs($kurs);
             $newKursanmeldung->setStudentship($step2data->getStudentship() ?? 0);
@@ -1292,6 +1296,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
                     foreach ($uidArr as $key => $uid) {
                         $newensemble = new Ensemble();
+                        $newensemble->setPid($this->settings['records']['tn']);
                         $newensemble->setEnconf($step1data->getEnconf());
                         $newensemble->setEntn($step1data->getEntn());
                         $newensemble->setEnfirstn($enfirstnArr[$key]);
@@ -1326,6 +1331,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                     $ennatioArr = $step1data->getEnnatio();
 
                     $newensemble = new Ensemble();
+                    $newensemble->setPid($this->settings['records']['tn']);
                     $newensemble->setEnconf($step1data->getEnconf());
                     $newensemble->setEntn($step1data->getEntn());
                     $newensemble->setEnfirstn($enfirstnArr[$key]);
@@ -1360,6 +1366,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                     foreach ($downloads as $fileReference) {
                         if (!empty($fileReference)) {
                             $newDl = new Uploads();
+                            $newDl->setPid($this->settings['records']['tn']);
                             $newDl->setKurs($kurs);
                             $newDl->setKat('download');
                             $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
@@ -1377,6 +1384,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 if (!empty($src)) {
                     $srcBn = pathinfo($src);
                     $newDl = new Uploads();
+                    $newDl->setPid($this->settings['records']['tn']);
                     $newDl->setKurs($kurs);
                     $newDl->setKat('youtube');
                     $newDl->setName($srcBn['basename']);
@@ -1390,6 +1398,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $fileReference = $step2data->getVita();
                 if (!empty($fileReference->getOriginalResource())) {
                     $newDl = new Uploads();
+                    $newDl->setPid($this->settings['records']['tn']);
                     $newDl->setKurs($kurs);
                     $newDl->setKat('vita');
                     $newDl->setName($fileReference->getOriginalResource()?->getName() ?? '');
@@ -1404,6 +1413,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $src = trim($step2data->getLink());
                 $srcBn = pathinfo($src);
                 $newDl = new Uploads();
+                $newDl->setPid($this->settings['records']['tn']);
                 $newDl->setKurs($kurs);
                 $newDl->setKat('link');
                 $newDl->setName($srcBn['basename']);
