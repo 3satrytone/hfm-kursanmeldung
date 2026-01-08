@@ -1457,8 +1457,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                         $this->sessionUtility->cleanSession($this->getUser());
                         break;
                     default:
-
-                        #$this->sendRegisterMail($newKursanmeldung, $newTn);
+                        $this->sendRegisterMail($newKursanmeldung, $newTn);
                         $this->sessionUtility->cleanSession($this->getUser());
                 }
             } else {
