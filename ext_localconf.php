@@ -77,7 +77,7 @@ ExtensionUtility::configurePlugin(
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['Hfm']['Kursanmeldung']['Controller']['FrontendController']['writerConfiguration'] = [
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Hfm']['Kursanmeldung']['writerConfiguration'] = [
     LogLevel::INFO => [
         // Add a FileWriter
         FileWriter::class => [

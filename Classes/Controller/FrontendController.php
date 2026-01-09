@@ -955,8 +955,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                     $this->logger->info('banktransfer suc:');
                     $banktransfer = $this->getBanktransferData($newKursanmeldung);
                     $this->logger->info('banktransfer suc POST:' . print_r($banktransfer, true));
-                    $this->kursanmeldungRepository->update($newKursanmeldung);
-                    $this->persistenceManager->persistAll();
 
                     // emails versenden
                     $this->sendInvoiceMail($newKursanmeldung, $newTn, $banktransfer);
@@ -1427,7 +1425,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $hash = $this->participantUtility->getHashedPasswordFromPassword($newTn->getEmail());
             $newKursanmeldung->setRegistrationkey($hash);
             $this->kursanmeldungRepository->add($newKursanmeldung);
-
             $this->persistenceManager->persistAll();
 
             if ($newKursanmeldung->getUid() > 0) {
