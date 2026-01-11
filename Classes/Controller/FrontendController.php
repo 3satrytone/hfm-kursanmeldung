@@ -1683,8 +1683,9 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
         // go on if values filled
         if (!empty($hash) && !empty($ts) && !empty($id)) {
+            $this->kursanmeldungRepository->setStoragePageIds([$this->settings['records']['tn']]);
             $regTup = $this->kursanmeldungRepository->getRegistration($hash, $id, $ts);
-            if ($regTup->count() == 1) {
+            if ($regTup->count() === 1) {
                 $register = $regTup->current();
                 $register->setDoitime(new \DateTime('NOW'));
                 $this->kursanmeldungRepository->update($register);
@@ -2251,7 +2252,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $mailDto = new MailDto();
         $mailDto->setSendTo($newTn->getEmail());
         $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
-        $mailDto->setSubject($this->emailSubject);
+        $mailDto->setSubject($this->emailSubjectInfo);
         $mailDto->setPageUid($this->infoMailId);
         $mailDto->setRequest($this->request);
         $mailDto->setTemplate('RegistrationUserInfoHtml');
@@ -2264,8 +2265,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $mailDto = new MailDto();
         $mailDto->setSendTo($this->emailHostAddress);
         $mailDto->setSendFrom(new Address($newTn->getEmail(), ucfirst($newTn->getVorname()) . ' ' . ucfirst($newTn->getNachname())));
-        $mailDto->setSubject($this->emailSubject);
-        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setSubject($this->emailSubjectAdmin);
+        $mailDto->setPageUid($this->adminMailId);
         $mailDto->setRequest($this->request);
         $mailDto->setTemplate('RegistrationAdminHtml');
         $mailDto->setFormat(FluidEmail::FORMAT_HTML);
@@ -2334,7 +2335,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $mailDto->setSendTo($newTn->getEmail());
         $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
         $mailDto->setSubject($this->emailSubject);
-        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setPageUid($this->userMailId);
         $mailDto->setRequest($this->request);
         $mailDto->setTemplate('RegistrationUserHtml');
         $mailDto->setFormat(FluidEmail::FORMAT_HTML);
@@ -2347,7 +2348,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $mailDto->setSendTo($this->emailHostAddress);
         $mailDto->setSendFrom(new Address($newTn->getEmail(), ucfirst($newTn->getVorname()) . ' ' . ucfirst($newTn->getNachname())));
         $mailDto->setSubject($this->emailSubjectAdmin);
-        $mailDto->setPageUid($this->infoMailId);
+        $mailDto->setPageUid($this->adminMailId);
         $mailDto->setRequest($this->request);
         $mailDto->setTemplate('RegistrationAdminHtml');
         $mailDto->setFormat(FluidEmail::FORMAT_HTML);

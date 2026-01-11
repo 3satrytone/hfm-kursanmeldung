@@ -11,6 +11,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class KursanmeldungRepository extends Repository
 {
+    private const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+
     /**
      * @param array $storagePageIds
      * @return void
@@ -55,6 +57,7 @@ class KursanmeldungRepository extends Repository
     }
 
     /**
+     * @param int $pid
      * @param string $hash
      * @param int $id
      * @param int $ts
@@ -62,15 +65,19 @@ class KursanmeldungRepository extends Repository
      */
     public function getRegistration(string $hash,int $id, int $ts): QueryResultInterface
     {
-        $hash = $GLOBALS['TYPO3_DB']->quoteStr($hash, 'tx_kursanmeldung_domain_model_kursanmeldung');
+        $dateIn = new \DateTime();
+        $dateIn->setTimestamp($ts);
+        $dateIn->format(self::DATE_TIME_FORMAT);
+
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
                 $query->equals('uid', $id),
                 $query->equals('registrationkey', $hash),
-                $query->equals('datein', $ts)
+                $query->equals('datein', $dateIn)
             )
         );
+
         return $query->execute();
     }
 }
