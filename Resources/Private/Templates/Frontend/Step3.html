@@ -94,12 +94,14 @@
             </td>
             <td>{step1data.country}</td>
         </tr>
+        <f:if condition="{step1data.phone} != ''">
         <tr>
             <td>
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.phone"/>
             </td>
             <td>{step1data.phone}</td>
         </tr>
+        </f:if>
         <tr>
             <td>
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.mobile"/>

@@ -1,8 +1,261 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Default" />
+<f:layout name="Default"/>
+
 <f:section name="Main">
     <h1>Teilnehmer</h1>
-    <p>Listen-Ansicht (Platzhalter).</p>
-    <p><f:link.action controller="General" action="index">Zur Übersicht</f:link.action></p>
-  </f:section>
+
+    <!-- Gesamtliste mit Pagination -->
+    <h2>Alle Teilnehmer</h2>
+
+    <f:if condition="{paginator.paginatedItems}">
+        <f:then>
+            <!-- Pagination: oben -->
+            <div class="pagination pagination--top">
+                <div class="pagination__info p-2">
+                    Zeige {pagination.startRecordNumber}–{pagination.endRecordNumber}
+                </div>
+                <ul class="pagination" aria-label="Seiten">
+                    <f:if condition="{pagination.previousPageNumber}">
+                        <li class="page-item">
+                            <f:link.action action="list" arguments="{page: pagination.previousPageNumber}"
+                                           class="page-link">&laquo;
+                            </f:link.action>
+                        </li>
+                    </f:if>
+                    <f:for each="{pagination.allPageNumbers}" as="pageNumber">
+                        <li class="page-item">
+                            <f:if condition="{pageNumber} == {paginator.currentPageNumber}">
+                                <span class="page-link active">{pageNumber}</span>
+                            </f:if>
+                            <f:if condition="{pageNumber} != {paginator.currentPageNumber}">
+                                <f:link.action action="list" arguments="{page: pageNumber}" class="page-link">
+                                    {pageNumber}
+                                </f:link.action>
+                            </f:if>
+                        </li>
+                    </f:for>
+                    <f:if condition="{pagination.nextPageNumber}">
+                        <li class="page-item">
+                            <f:link.action action="list" arguments="{page: pagination.nextPageNumber}"
+                                           class="page-link">&raquo;
+                            </f:link.action>
+                        </li>
+                    </f:if>
+                </ul>
+            </div>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th data-field="uid" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.uid" default="Nr." /></th>
+                    <th data-field="k.datein" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.datein" /></th>
+                    <th data-field="prof.name" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.prof" default="Professor" /></th>
+                    <th data-field="tn.vorname" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.vorname" /></th>
+                    <th data-field="tn.nachname" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nachname" /></th>
+                    <th data-field="tn.gebdate" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebdat" default="Geburtsdatum" /></th>
+                    <th data-field="teilnahmeart" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.teilnahmeart" /></th>
+                    <th data-field="doitime" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.doi" /></th>
+                    <th data-field="bezahlt" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt" /></th>
+                    <th data-field="k.gebuehr" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebuehr" default="ANG Gebühr" /></th>
+                    <th data-field="gezahlt" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt" default="ANG Gezahlt" /></th>
+                    <th data-field="k.gebuehrag" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebuehrag" default="TNG Gebühr" /></th>
+                    <th data-field="gezahltag" class="hdr-srt"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahltag" default="TNG Gezahlt" /></th>
+                    <th data-field="jo_mail" class="hdr-srt">Mail</th>
+                    <th data-field="ast.kurz" class="hdr-srt">Stat</th>
+                    <th data-field="k.profstatus" class="hdr-srt">Prof</th>
+
+                    <th class="text-end">&nbsp;</th>
+                    <th class="text-end">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{paginator.paginatedItems}" as="kursanmeldung" iteration="i">
+                    <tr>
+                        <td>{kursanmeldung.uid}</td>
+                        <td>{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
+                        <td>{kursanmeldung.kurs.professor.name}</td>
+                        <td>{kursanmeldung.tn.0.vorname}</td>
+                        <td><b>{kursanmeldung.tn.0.nachname}</b></td>
+                        <td>{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
+                        <td>
+                            <f:switch expression="{kursanmeldung.teilnahmeart}">
+                                <f:case value="0">
+                                    <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.0" default=""/>
+                                </f:case>
+                                <f:case value="1">
+                                    <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.1" default=""/>
+                                </f:case>
+                            </f:switch>
+                        </td>
+                        <td><f:if condition="{kursanmeldung.doitime > 0}"><f:then></f:then><f:else>{kursanmeldung.doitime -> f:format.date(format:'d.m.Y H:i')}</f:else></f:if></td>
+                        <td>{kursanmeldung.bezahlt}</td>
+                        <td><f:if condition="{kursanmeldung.gebuehr}>0"> {kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
+                        <td><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
+                        <td><f:if condition="{kursanmeldung.gebuehrag}>0"> {kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
+                        <td><f:if condition="{kursanmeldung.gezahltag}>0"> {kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
+                        <td><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></td>
+                        <td>{kursanmeldung.anmeldestatus.0.kurz}</td>
+                        <td>{kursanmeldung.profstatus.0.kurz}</td>
+                        <td class="text-end">
+                            <f:link.action action="delete"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"
+                                           class="btn btn-sm btn-link">
+                                <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt="edit"/></span>
+                                <span class="visually-hidden">Bearbeiten</span>
+                            </f:link.action>
+                        </td>
+                        <td class="text-end">
+                            <f:link.action action="delete"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"
+                                           class="btn btn-sm btn-link"
+                                           onclick="return confirm('Ist das wirklich eine gute Idee?');"
+                            >
+                                <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt="delete"/></span>
+                                <span class="visually-hidden">Löschen</span>
+                            </f:link.action>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+
+            <!-- Pagination: unten -->
+            <div class="pagination pagination--bottom">
+                <div class="pagination__info p-2">
+                    Zeige {pagination.startRecordNumber}–{pagination.endRecordNumber}
+                </div>
+                <ul class="pagination" aria-label="Seiten">
+                    <f:if condition="{pagination.previousPageNumber}">
+                        <li class="page-item">
+                            <f:link.action action="list" arguments="{page: pagination.previousPageNumber}"
+                                           class="page-link">&laquo;
+                            </f:link.action>
+                        </li>
+                    </f:if>
+                    <f:for each="{pagination.allPageNumbers}" as="pageNumber">
+                        <li class="page-item">
+                            <f:if condition="{pageNumber} == {paginator.currentPageNumber}">
+                                <span class="page-link active">{pageNumber}</span>
+                            </f:if>
+                            <f:if condition="{pageNumber} != {paginator.currentPageNumber}">
+                                <f:link.action action="list" arguments="{page: pageNumber}" class="page-link">
+                                    {pageNumber}
+                                </f:link.action>
+                            </f:if>
+                        </li>
+                    </f:for>
+                    <f:if condition="{pagination.nextPageNumber}">
+                        <li class="page-item">
+                            <f:link.action action="list" arguments="{page: pagination.nextPageNumber}"
+                                           class="page-link">&raquo;
+                            </f:link.action>
+                        </li>
+                    </f:if>
+                </ul>
+            </div>
+        </f:then>
+        <f:else>
+            <p>Keine Teilnehmer gefunden.</p>
+        </f:else>
+    </f:if>
+
+    <!-- Teilnehmer nach Kurs -->
+    <h2>Teilnehmer nach Kurs</h2>
+    <f:for each="{participantsByCourse}" as="group">
+        <f:if condition="{group.teilnehmer -> f:count()} > 0">
+            <div class="row pt-4">
+                <div class="btn btn-primary" data-bs-toggle="collapse"
+                     data-bs-target="#collapseWidthId-{group.kurs.uid}"
+                     aria-expanded="false" aria-controls="collapseWidthExample"><h3>Kurs {group.kurs.kursnr} –
+                    {group.kurs.instrument}</h3>
+                </div>
+                <div class="collapse collapse-horizontal" id="collapseWidthId-{group.kurs.uid}">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                        <tr>
+                            <th data-field="uid" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.uid" default="Nr."/>
+                            </th>
+                            <th data-field="k.datein" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.datein"
+                                             default="Anmeldedatum"/>
+                            </th>
+                            <th data-field="tn.anrede" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.anrede" default="Anrede"/>
+                            </th>
+                            <th data-field="tn.vorname" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.vorname" default="Vorname"/>
+                            </th>
+                            <th data-field="tn.nachname" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nachname"
+                                             default="Nachname"/>
+                            </th>
+                            <th data-field="tn.nationality" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nationality"
+                                             default="Nationalität"/>
+                            </th>
+                            <th data-field="tn.country" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.country" default="Land"/>
+                            </th>
+                            <th data-field="tn.ort" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.ort" default="Ort"/>
+                            </th>
+                            <th data-field="tn.matrikel" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.matrikel"
+                                             default="Matrikel"/>
+                            </th>
+                            <th data-field="bezahlt" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt"
+                                             default="ANG Bezahlt"/>
+                            </th>
+                            <th data-field="gezahlt" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt"
+                                             default="ANG Gezahlt"/>
+                            </th>
+                            <th data-field="gezahltag" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahltag"
+                                             default="TNG Gezahlt"/>
+                            </th>
+                            <th data-field="gezahltos" class="hdr-srt">
+                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahltos" default="OG"/>
+                            </th>
+                            <th data-field="jo_mail" class="hdr-srt">Mail</th>
+                            <th data-field="anmeldestatus" class="hdr-srt">Stat</th>
+                            <th data-field="profstatus" class="hdr-srt">Prof</th>
+                            <th class="text-end">&nbsp;</th>
+                            <th class="text-end">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <f:for each="{group.teilnehmer}" as="tn" iteration="it">
+                            <tr>
+                                <td>{it.cycle}</td>
+                                <td>{tn.nachname}, {tn.vorname}</td>
+                                <td>
+                                    <f:if condition="{tn.email}">
+                                        <a href="mailto:{tn.email}">{tn.email}</a>
+                                    </f:if>
+                                </td>
+                                <td class="text-end">
+                                    <f:link.action action="edit" controller="Teilnehmer" arguments="{teilnehmer: tn}"
+                                                   title="Bearbeiten" class="btn btn-sm btn-link">
+                                        <span aria-hidden="true">✎</span>
+                                        <span class="visually-hidden">Bearbeiten</span>
+                                    </f:link.action>
+                                </td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </f:if>
+    </f:for>
+
+    <p>
+        <f:link.action controller="General" action="index">Zur Übersicht</f:link.action>
+    </p>
+</f:section>
 </html>

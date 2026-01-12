@@ -224,6 +224,7 @@ class ParticipantUtility
         $assignments['amount'] = $register->getGebuehr();
         $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m.Y');
         $assignments['kursend'] = $register->getKurs()->getKurszeitend()->format('d.m.Y');
+        $assignments['instrument'] = $register->getKurs()->getInstrument();
 
         return $assignments;
     }

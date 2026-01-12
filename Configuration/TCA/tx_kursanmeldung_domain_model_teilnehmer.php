@@ -3,7 +3,7 @@ return [
     'ctrl' => [
         'title' => 'Teilnehmer',
         'label' => 'nachname',
-        'label_alt' => 'nachname, gebdate',
+        'label_alt' => 'vorname, gebdate',
         'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

@@ -42,7 +42,7 @@ class Step1Data extends AbstractEntity {
     #[Validate(['validator' => 'NotEmpty'])]
 	protected string $country;
 
-	protected string $phone;
+	protected string $phone = '';
 
     #[Validate(['validator' => 'NotEmpty'])]
 	protected string $mobile;

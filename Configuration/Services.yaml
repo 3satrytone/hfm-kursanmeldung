@@ -34,7 +34,7 @@ services:
     public: true
   Hfm\Kursanmeldung\Controller\TeilnehmerController:
     public: true
-  Hfm\Kursanmeldung\Domain\Repository\TelnehmerRepository:
+  Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository:
     public: true
   Hfm\Kursanmeldung\Utility\PropertyConverterUtility:
     public: true
