@@ -1018,7 +1018,7 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>Meine Matrikelnummer der HfM Weimar</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head">
-            <source>Preferred cast, first and second choices, for category 1 with partial cast if applicable</source>
+            <source>Preferred instrumentation, first and second choices, for category 1 with partial instrumentation if applicable</source>
             <target>Besetzungspräferenzen, 1. und 2. Wahl, bei Kategorie 1 ggf. mit Teilbesetzung</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm">

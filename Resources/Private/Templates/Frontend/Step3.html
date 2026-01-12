@@ -215,12 +215,14 @@
             </td>
         </tr>
         <f:if condition="{settings.hidePaymentDate} != 1">
+            <f:if condition="{enrollmentfee} > 0">
             <tr>
                 <td>
                     <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.zahlungstermin"/>
                 </td>
                 <td>{step2data.zahlungstermin}</td>
             </tr>
+            </f:if>
         </f:if>
         <f:if condition="{additionalfee} > 0">
             <tr>

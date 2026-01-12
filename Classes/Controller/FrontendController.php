@@ -81,6 +81,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     protected $adminMailId = 29;
     protected $nameVeranstaltung = 'Weimarer Meisterkurse';
     protected $testmode = 1;
+    protected $syslang = 0;
 
     public function __construct(
         protected readonly KursRepository $kursRepository,
@@ -103,6 +104,11 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
     public function initializeAction(): void
     {
+        $language =
+            $this->request->getAttribute('language')
+            ?? $this->request->getAttribute('site')->getDefaultLanguage();
+        $this->syslang = $language->getLanguageId();
+
         $this->zahlungsartArr = [9 => 'standard'];
         if (isset($this->settings)) {
             if (isset($this->settings['payment'])) {
@@ -412,7 +418,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             'tx_kursanmeldung_domain_model_kursanmeldung.step2.'
         );
         $zahlungstermin = new \DateTime('NOW');
-        $zahlungstermin->add(new \DateInterval('P10D'));
+        $zahlungstermin->add(new \DateInterval('P5D'));
 
         // downloads src und name teilen
         if ($step2data != null) {
@@ -1854,7 +1860,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         // depend on language
         $banktransfer['invoicedata_subjectuser'] = $this->setup['invoicedata_subjectuser'];
         $banktransfer['invoicedata_subjectadmin'] = $this->setup['invoicedata_subjectadmin'];
-        if ($this->settings['syslang'] == 1) {
+        if ($this->syslang === 1) {
             if (isset($this->setup['invoicedata_subjectuser']) && !empty($this->setup['invoicedata_subjectuser'])) {
                 $banktransfer['invoicedata_subjectuser'] = $this->setup['invoicedata_subjectuser_en'];
             }
@@ -2249,6 +2255,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     public function sendInfoMail(Teilnehmer $newTn, ?Kursanmeldung $newKursanmeldung): void
     {
         // TeilnehmerEmail
+        /*
         $mailDto = new MailDto();
         $mailDto->setSendTo($newTn->getEmail());
         $mailDto->setSendFrom(new Address($this->emailHostAddress, $this->emailHostName));
@@ -2260,6 +2267,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $mailDto->setKursanmeldung($newKursanmeldung);
         $mailDto->setAssignments($this->participantUtility->getFluidAssignments($newKursanmeldung));
         $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+        */
 
         //AdminEmail
         $mailDto = new MailDto();
