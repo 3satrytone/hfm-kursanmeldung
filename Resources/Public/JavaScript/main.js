@@ -123,6 +123,47 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Bestätigungsdialog für Step3-Formular absenden
+document.addEventListener('DOMContentLoaded', function () {
+    try {
+        var form = document.getElementById('step3form');
+        if (!form) return;
+
+        // Mehrfach-Bindungen vermeiden
+        if (form.getAttribute('data-confirm-bound') === '1') return;
+        form.setAttribute('data-confirm-bound', '1');
+
+        // Listener im Capture-Phase registrieren, damit vor anderen Submit-Handlern (z. B. Dialog-Öffnern) bestätigt wird
+        form.addEventListener('submit', function (e) {
+            // Wenn bereits bestätigt wurde (z. B. bei programmatic submit), nicht erneut fragen
+            if (form.getAttribute('data-confirmed') === '1') return;
+
+            // Nachricht aus data-Attribut, ansonsten Fallback-Text
+            var msg = form.getAttribute('data-confirm');
+            if (!msg) {
+                // Optional: Text aus einem versteckten Element auf der Seite nutzen
+                var node = document.querySelector('.step3-confirm-message');
+                msg = node && node.textContent ? node.textContent.trim() : 'Möchten Sie die Anmeldung jetzt verbindlich abschicken?';
+            }
+
+            if (!window.confirm(msg)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // Markieren, damit bei nachfolgendem programmatic submit nicht erneut gefragt wird
+            form.setAttribute('data-confirmed', '1');
+            return true;
+        }, true);
+    } catch (err) {
+        // Falls etwas schiefgeht, keine Blockade des Submits verursachen
+        if (window && window.console && console.warn) {
+            console.warn('Step3 Confirm-Init fehlgeschlagen:', err);
+        }
+    }
+});
+
 // show students passiv mesage
 document.addEventListener('DOMContentLoaded', function () {
     //toggle passiv students @see collapsePassivMeldung()

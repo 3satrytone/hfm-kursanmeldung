@@ -1202,6 +1202,10 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>next</source>
             <target>weiter</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm">
+            <source>Would you like to submit your registration now?</source>
+            <target>Möchten Sie die Anmeldung jetzt verbindlich abschicken?</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.tnb">
             <source><![CDATA[Yes, I have read the <span><a href="https://www.hfm-weimar.de/en/weimar-master-classes/66th-weimar-master-classes-2026/information-conditions#HfM" target="_blank">terms and condition</a></span> of the Weimar Master Classes and accept them]]></source>
             <target><![CDATA[Ja, Ich habe die <span><a href="https://www.hfm-weimar.de/weimar-master-classes/66th-weimar-master-classes-2026/informationen-konditionen" target="_blank">Teilnahmebedingungen</a></span> gelesen und erkläre mich damit einverstanden.]]></target>

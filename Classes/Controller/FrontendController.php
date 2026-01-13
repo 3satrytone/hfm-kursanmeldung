@@ -35,6 +35,8 @@ use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -98,12 +100,15 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         protected readonly MailFacade $mailFacade,
         private readonly PersistenceManager $persistenceManager,
         private readonly CountryProvider $countryProvider,
+        private readonly LanguageServiceFactory $languageServiceFactory,
         protected UriBuilder $uriBuilder
     ) {
     }
 
     public function initializeAction(): void
     {
+        $this->kursanmeldungRepository->setStoragePageIds([$this->settings['records']['tn']]);
+
         $language =
             $this->request->getAttribute('language')
             ?? $this->request->getAttribute('site')->getDefaultLanguage();
@@ -226,7 +231,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         if (!empty($kurse)) {
             foreach ($kurse as $kurs) {
                 if ($kurs->getAktiv()) {
-                    $this->kursanmeldungRepository->setStoragePageIds([$this->settings['records']['tn']]);
                     $kursTn = $this->kursanmeldungRepository->getParticipantsByKurs($kurs->getUid());
                     $activePassiveTn = $this->participantUtility->checkKursParticipant(
                         $kurs,
@@ -609,6 +613,17 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         $hidedl = 0;
         if (empty($vita) && empty($downloads) && empty($step2data->getLink()) && empty($step2data->getYoutube())) {
             $hidedl = 1;
+        }
+
+        if(!empty($step1data)){
+            $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
+                'site'
+            )->getDefaultLanguage();
+            $languageService = $this->languageServiceFactory->create(new Locale($language->getLocale()->getLanguageCode()));
+            $landCountry = $this->countryProvider->getByIsoCode($step1data->getCountry());
+            $step1data->setCountry($languageService->sl($landCountry->getLocalizedNameLabel()));
+            $nationCountry = $this->countryProvider->getByIsoCode($step1data->getNationality());
+            $step1data->setNationality($languageService->sl($nationCountry->getLocalizedNameLabel()));
         }
 
         $this->view->assign(Constants::KURS, $kurs);
@@ -1689,7 +1704,6 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         }
         // go on if values filled
         if (!empty($hash) && !empty($ts) && !empty($id)) {
-            $this->kursanmeldungRepository->setStoragePageIds([$this->settings['records']['tn']]);
             $regTup = $this->kursanmeldungRepository->getRegistration($hash, $id, $ts);
             if ($regTup->count() === 1) {
                 $register = $regTup->current();

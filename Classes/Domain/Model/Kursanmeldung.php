@@ -66,7 +66,7 @@ class Kursanmeldung extends AbstractEntity
     protected int $savedata = 0;
     protected string $salt = '';
     protected string $registrationkey = '';
-    protected ?\DateTime $doitime;
+    protected ?\DateTime $doitime = null;
     protected string $novalnettid = '';
     protected string $novalnettidag = '';
     protected string $novalnetcno = '';
