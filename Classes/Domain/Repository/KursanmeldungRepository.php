@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hfm\Kursanmeldung\Domain\Repository;
 
 use Hfm\Kursanmeldung\Constants\Constants;
-use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -77,6 +77,19 @@ class KursanmeldungRepository extends Repository
                 $query->equals('datein', $dateIn)
             )
         );
+
+        return $query->execute();
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllSortedByUid(): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $query->setOrderings([
+            'uid' => QueryInterface::ORDER_DESCENDING,
+        ]);
 
         return $query->execute();
     }

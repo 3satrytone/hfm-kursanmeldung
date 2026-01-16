@@ -1,12 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<head>
-    <meta charset="utf-8"/>
-    <title><f:translate key="module.kursanmeldung" extensionName="Kursanmeldung" /></title>
-    <link href="{f:uri.resource(path:'EXT:backend/Resources/Public/Css/backend.css')}" rel="stylesheet"/>
-    <link href="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/Css/Backend.css')}" rel="stylesheet"/>
-    <link href="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/Css/hfmMain.css')}" rel="stylesheet"/>
-</head>
-<body>
-<f:render section="Main"/>
-</body>
+    <head>
+        <meta charset="utf-8"/>
+        <title><f:translate key="module.kursanmeldung" extensionName="Kursanmeldung" /></title>
+        <link href="{f:uri.resource(path:'EXT:backend/Resources/Public/Css/backend.css')}" rel="stylesheet"/>
+        <link href="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/Css/Backend.css')}" rel="stylesheet"/>
+        <link href="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/Css/hfmMain.css')}" rel="stylesheet"/>
+        <script type="module" src="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/JavaScript/Contrib/bootstrap.bundle.min.js')}"></script>
+        <script type="module" src="{f:uri.resource(path:'EXT:kursanmeldung/Resources/Public/JavaScript/Teilnehmer.js')}"></script>
+    </head>
+    <body>
+    <f:render section="Main"/>
+    </body>
 </html>

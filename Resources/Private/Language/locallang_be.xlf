@@ -164,6 +164,10 @@
             <source>Ordner mit Teilnehmerdaten</source>
             <target>Ordner mit Teilnehmerdaten</target>
         </trans-unit>
+        <trans-unit id="teilnehmer.confirmation">
+            <source>Ist das wirklich eine gute Idee?</source>
+            <target>Ist das wirklich eine gute Idee?</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

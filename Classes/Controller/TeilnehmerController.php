@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Controller;
 
+use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository;
@@ -19,19 +18,18 @@ class TeilnehmerController extends ActionController
     public function __construct(
         private readonly TeilnehmerRepository $teilnehmerRepository,
         private readonly KursRepository $kursRepository,
-        private readonly KursanmeldungRepository $kursanmeldungRepository
+        private readonly KursanmeldungRepository $kursanmeldungRepository,
     ) {
     }
 
-    protected function addBackendAssets(): void
+    public function addAsets(): void
     {
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addJsFile('EXT:kursanmeldung/Resources/Public/JavaScript/Teilnehmer.js');
+
     }
 
     public function listAction(): ResponseInterface
     {
-        $this->addBackendAssets();
+        $this->addAsets();
 
         // Pagination parameters
         $currentPage = 1;
@@ -44,7 +42,7 @@ class TeilnehmerController extends ActionController
         }
 
         // All participants with pagination
-        $allParticipants = $this->kursanmeldungRepository->findAll();
+        $allParticipants = $this->kursanmeldungRepository->findAllSortedByUid();
         $paginator = new QueryResultPaginator($allParticipants, $currentPage, $itemsPerPage);
         $pagination = new SimplePagination($paginator);
 
@@ -53,15 +51,9 @@ class TeilnehmerController extends ActionController
         $courses = $this->kursRepository->findAll();
         foreach ($courses as $kurs) {
             $registrations = $this->kursanmeldungRepository->getParticipantsByKurs($kurs->getUid());
-            $participants = [];
-            foreach ($registrations as $registration) {
-                foreach ($registration->getTn() as $tn) {
-                    $participants[] = $tn;
-                }
-            }
             $participantsByCourse[] = [
                 'kurs' => $kurs,
-                'teilnehmer' => $participants,
+                'registrations' => $registrations,
             ];
         }
 
@@ -74,16 +66,10 @@ class TeilnehmerController extends ActionController
         return $this->htmlResponse();
     }
 
-    public function showAction(Teilnehmer $teilnehmer): void
-    {
-        // Implement showing a single Teilnehmer record when templates are available.
-        $this->view->assign('teilnehmer', $teilnehmer);
-    }
-
-    public function editAction(Teilnehmer $teilnehmer): ResponseInterface
+    public function editAction(Kursanmeldung $kursanmeldung): ResponseInterface
     {
         // Simple edit view (template handles rendering); saving is not part of this task
-        $this->view->assign('teilnehmer', $teilnehmer);
+        $this->view->assign('kursanmeldung', $kursanmeldung);
 
         return $this->htmlResponse();
     }
