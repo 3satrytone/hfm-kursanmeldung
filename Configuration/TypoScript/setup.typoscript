@@ -20,3 +20,13 @@ plugin.tx_kursanmeldung_kursanmeldungfe {
         layoutRootPaths.0 = EXT:kursanmeldung/Resources/Private/Layouts/
     }
 }
+
+# Module configuration
+module.tx_kursanmeldung {
+	settings{
+		# Page UID where Data stored
+		dataPages{
+			0 = 18
+		}
+	}
+}

@@ -53,7 +53,6 @@
                     <th data-field="tn.nachname" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nachname" /></span><span class="srt-ico"></span></th>
                     <th data-field="tn.gebdate" data-type="date" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebdat" default="Geburtsdatum" /></span><span class="srt-ico"></span></th>
                     <th data-field="teilnahmeart" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.teilnahmeart" /></span><span class="srt-ico"></span></th>
-                    <th data-field="doitime" data-type="datetime" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.doi" /></span><span class="srt-ico"></span></th>
                     <th data-field="bezahlt" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt" /></span><span class="srt-ico"></span></th>
                     <th data-field="k.gebuehr" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebuehr" default="ANG Gebühr" /></span><span class="srt-ico"></span></th>
                     <th data-field="gezahlt" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt" default="ANG Gezahlt" /></span><span class="srt-ico"></span></th>
@@ -86,7 +85,6 @@
                                 </f:case>
                             </f:switch>
                         </td>
-                        <td><f:if condition="{kursanmeldung.doitime} == NULL"><f:then></f:then><f:else>{kursanmeldung.doitime -> f:format.date(format:'d.m.Y H:i')}</f:else></f:if></td>
                         <td>{kursanmeldung.bezahlt}</td>
                         <td><f:if condition="{kursanmeldung.gebuehr}>0">{kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
                         <td><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>

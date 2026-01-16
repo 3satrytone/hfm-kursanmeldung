@@ -6,7 +6,6 @@ namespace Hfm\Kursanmeldung\Controller;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
@@ -22,14 +21,22 @@ class TeilnehmerController extends ActionController
     ) {
     }
 
-    public function addAsets(): void
+    public function initializeAction(): void
     {
-
+        // if dbdata distributed over more pages
+        if(isset($this->settings['dataPages'])){
+            if(isset($this->KursanmeldungKursRepository))$this->KursanmeldungKursRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->hotelRepository))$this->hotelRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->profRepository))$this->profRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->gebuehrenRepository))$this->gebuehrenRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->orteRepository))$this->orteRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->ExportlistRepository))$this->ExportlistRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->AnmeldestatusRepository))$this->AnmeldestatusRepository->setPageIds($this->settings['dataPages']);
+        }
     }
 
     public function listAction(): ResponseInterface
     {
-        $this->addAsets();
 
         // Pagination parameters
         $currentPage = 1;
