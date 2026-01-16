@@ -36,6 +36,8 @@ services:
     public: true
   Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository:
     public: true
+  Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository:
+    public: true
   Hfm\Kursanmeldung\Utility\PropertyConverterUtility:
     public: true
   Hfm\Kursanmeldung\Utility\FormatUtility:

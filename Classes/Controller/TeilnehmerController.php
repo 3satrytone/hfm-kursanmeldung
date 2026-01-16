@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Hfm\Kursanmeldung\Controller;
 
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
+use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository;
@@ -15,7 +16,7 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 class TeilnehmerController extends ActionController
 {
     public function __construct(
-        private readonly TeilnehmerRepository $teilnehmerRepository,
+        private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
     ) {
@@ -25,13 +26,8 @@ class TeilnehmerController extends ActionController
     {
         // if dbdata distributed over more pages
         if(isset($this->settings['dataPages'])){
-            if(isset($this->KursanmeldungKursRepository))$this->KursanmeldungKursRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->hotelRepository))$this->hotelRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->profRepository))$this->profRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->gebuehrenRepository))$this->gebuehrenRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->orteRepository))$this->orteRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->ExportlistRepository))$this->ExportlistRepository->setPageIds($this->settings['dataPages']);
-            if(isset($this->AnmeldestatusRepository))$this->AnmeldestatusRepository->setPageIds($this->settings['dataPages']);
+            if(isset($this->kursRepository))$this->kursRepository->setStoragePageIds($this->settings['dataPages']);
+            if(isset($this->anmeldestatusRepository))$this->anmeldestatusRepository->setStoragePageIds($this->settings['dataPages']);
         }
     }
 
