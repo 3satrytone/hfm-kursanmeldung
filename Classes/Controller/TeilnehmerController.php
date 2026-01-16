@@ -12,6 +12,8 @@ use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 class TeilnehmerController extends ActionController
 {
@@ -19,6 +21,7 @@ class TeilnehmerController extends ActionController
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
+        private readonly PersistenceManagerInterface $persistenceManager,
     ) {
     }
 
@@ -64,6 +67,7 @@ class TeilnehmerController extends ActionController
             'paginator' => $paginator,
             'pagination' => $pagination,
             'participantsByCourse' => $participantsByCourse,
+            'anmeldestatusList' => $this->anmeldestatusRepository->findAll(),
         ]);
 
         return $this->htmlResponse();
@@ -75,5 +79,44 @@ class TeilnehmerController extends ActionController
         $this->view->assign('kursanmeldung', $kursanmeldung);
 
         return $this->htmlResponse();
+    }
+
+    public function updateAnmeldestatusAction(): ResponseInterface
+    {
+        try {
+            $kaUid = (int)($this->request->hasArgument('kursanmeldung') ? $this->request->getArgument('kursanmeldung') : 0);
+            $astUid = (int)($this->request->hasArgument('anmeldestatus') ? $this->request->getArgument('anmeldestatus') : 0);
+
+            if ($kaUid <= 0 || $astUid <= 0) {
+                $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'invalid_arguments']));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            /** @var \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung|null $ka */
+            $ka = $this->kursanmeldungRepository->findByIdentifier($kaUid);
+            if ($ka === null) {
+                $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'not_found']));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            /** @var \Hfm\Kursanmeldung\Domain\Model\Anmeldestatus|null $status */
+            $status = $this->anmeldestatusRepository->findByIdentifier($astUid);
+            if ($status === null) {
+                $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'status_not_found']));
+                return $response->withHeader('Content-Type', 'application/json');
+            }
+
+            $storage = new ObjectStorage();
+            $storage->attach($status);
+            $ka->setAnmeldestatus($storage);
+            $this->kursanmeldungRepository->update($ka);
+            $this->persistenceManager->persistAll();
+
+            $response = $this->htmlResponse(json_encode(['success' => true]));
+            return $response->withHeader('Content-Type', 'application/json');
+        } catch (\Throwable $e) {
+            $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'exception', 'message' => $e->getMessage()]));
+            return $response->withHeader('Content-Type', 'application/json');
+        }
     }
 }

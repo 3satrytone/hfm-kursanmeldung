@@ -188,6 +188,50 @@ export function init() {
     };
 
     attachDeleteConfirm();
+
+    // Status-Select (Anmeldestatus) via AJAX speichern
+    const attachStatusHandler = () => {
+        const selects = document.querySelectorAll('select.js-ast-select');
+        if (!selects.length) return;
+        selects.forEach((sel) => {
+            if (sel.dataset.astBound === '1') return;
+            sel.dataset.astBound = '1';
+            sel.addEventListener('change', async () => {
+                const url = sel.dataset.url;
+                const ka = sel.dataset.ka;
+                const ast = sel.value;
+                if (!url || !ka || !ast) return;
+                // kleines visuelles Feedback
+                const oldBg = sel.style.backgroundColor;
+                sel.style.backgroundColor = '#fff3cd'; // gelb
+                try {
+                    const body = new URLSearchParams();
+                    body.set('kursanmeldung', String(ka));
+                    body.set('anmeldestatus', String(ast));
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                        },
+                        body: body.toString()
+                    });
+                    const json = await resp.json().catch(() => null);
+                    if (resp.ok && json && json.success) {
+                        sel.style.backgroundColor = '#d1e7dd'; // grün
+                        setTimeout(() => sel.style.backgroundColor = oldBg || '', 600);
+                    } else {
+                        sel.style.backgroundColor = '#f8d7da'; // rot
+                        setTimeout(() => sel.style.backgroundColor = oldBg || '', 1200);
+                    }
+                } catch (e) {
+                    sel.style.backgroundColor = '#f8d7da';
+                    setTimeout(() => sel.style.backgroundColor = oldBg || '', 1200);
+                }
+            });
+        });
+    };
+
+    attachStatusHandler();
 }
 
 // Auto-Initialisierung nach DOM-Ladung

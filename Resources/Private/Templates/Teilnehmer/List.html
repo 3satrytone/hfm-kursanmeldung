@@ -91,7 +91,23 @@
                         <td><f:if condition="{kursanmeldung.gebuehrag}>0">{kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
                         <td><f:if condition="{kursanmeldung.gezahltag}>0">{kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
                         <td><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></td>
-                        <td>{kursanmeldung.anmeldestatus.0.kurz}</td>
+                        <td>
+                            <select class="form-select form-select-sm js-ast-select"
+                                    data-ka="{kursanmeldung.uid}"
+                                    data-url="{f:uri.action(action: 'updateAnmeldestatus')}">
+                                <option value=""></option>
+                                <f:for each="{anmeldestatusList}" as="ast">
+                                    <f:if condition="{ast.uid} == {kursanmeldung.anmeldestatus.0.uid}">
+                                        <f:then>
+                                            <option value="{ast.uid}" selected="selected">{ast.kurz}</option>
+                                        </f:then>
+                                        <f:else>
+                                            <option value="{ast.uid}">{ast.kurz}</option>
+                                        </f:else>
+                                    </f:if>
+                                </f:for>
+                            </select>
+                        </td>
                         <td>{kursanmeldung.profstatus.0.kurz}</td>
                         <td class="text-end">
                             <f:link.action action="edit"
@@ -240,7 +256,22 @@
                                 <td><f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
                                 <td><f:if condition="{reg.gebuehrag}>0">{reg.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
                                 <td><f:for each="{regMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={reg.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></td>
-                                <td>{reg.anmeldestatus.0.kurz}</td>
+                                <td>
+                                    <select class="form-select form-select-sm js-ast-select"
+                                            data-ka="{reg.uid}"
+                                            data-url="{f:uri.action(action: 'updateAnmeldestatus')}">
+                                        <f:for each="{anmeldestatusList}" as="ast">
+                                            <f:if condition="{ast.uid} == {reg.anmeldestatus.0.uid}">
+                                                <f:then>
+                                                    <option value="{ast.uid}" selected="selected">{ast.kurz}</option>
+                                                </f:then>
+                                                <f:else>
+                                                    <option value="{ast.uid}">{ast.kurz}</option>
+                                                </f:else>
+                                            </f:if>
+                                        </f:for>
+                                    </select>
+                                </td>
                                 <td>{reg.profstatus.0.kurz}</td>
                                 <td class="text-end">
                                     <f:link.action action="edit"
