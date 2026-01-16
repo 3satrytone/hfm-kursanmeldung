@@ -232,6 +232,129 @@ export function init() {
     };
 
     attachStatusHandler();
+
+    // Popup für Feldauswahl an Suchfeldern: öffnen bei Klick/Fokus
+    const initFieldPopups = () => {
+        const wrappers = document.querySelectorAll('.js-search-wrap');
+        if (!wrappers.length) return;
+
+        const closeAll = () => {
+            document.querySelectorAll('.js-field-popup.show').forEach((p) => {
+                p.classList.remove('show');
+                p.style.display = 'none';
+            });
+        };
+
+        wrappers.forEach((wrap) => {
+            const input = wrap.querySelector('.js-search-input');
+            const popup = wrap.querySelector('.js-field-popup');
+            if (!input || !popup) return;
+
+            let isTriggered = false;
+
+            // Positionierung relativ zum Wrapper
+            const openPopup = () => {
+                // Wrapper ist position: relative; Popup absolut NEBEN der Inputbox (rechts) anzeigen
+                popup.style.position = 'absolute';
+                // Vertikal bündig mit der Oberkante des Inputs
+                popup.style.top = input.offsetTop + 'px';
+                // Horizontal rechts neben dem Input mit kleinem Abstand
+                popup.style.left = (input.offsetLeft + input.offsetWidth + 8) + 'px';
+                popup.style.display = 'block';
+                popup.classList.add('show');
+            };
+
+            const closePopup = () => {
+                popup.classList.remove('show');
+                popup.style.display = 'none';
+            };
+
+            if (input.dataset.popupBound === '1') return;
+            input.dataset.popupBound = '1';
+
+            input.addEventListener('focus', () => {
+                if(!isTriggered) {
+                    isTriggered = true;
+                    closeAll();
+                    openPopup();
+                }
+            });
+            input.addEventListener('click', () => {
+                if(!isTriggered) {
+                    isTriggered = true;
+                    // Toggle bei wiederholtem Klick
+                    if (popup.classList.contains('show')) {
+                        closePopup();
+                    } else {
+                        closeAll();
+                        openPopup();
+                    }
+                }
+                isTriggered = false;
+            });
+
+            // Schließen-Button im Popup
+            popup.querySelectorAll('.js-close-popup').forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closePopup();
+                });
+            });
+
+            // Klick außerhalb schließt Popup
+            document.addEventListener('click', (e) => {
+                if (!wrap.contains(e.target)) {
+                    closePopup();
+                }
+            });
+
+            // ESC schließt Popup
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closePopup();
+                }
+            });
+        });
+    };
+
+    initFieldPopups();
+
+    // Nach Seitenladen: Wenn View das Scroll-Ziel markiert (data-scroll-to="1"),
+    // den betroffenen Kurs aufklappen und in den Sichtbereich scrollen
+    const openFirstSearchedCourse = () => {
+        try {
+            const target = document.querySelector('.collapse[data-scroll-to="1"]');
+            if (!target) return;
+
+            // Bootstrap Collapse öffnen (falls verfügbar), sonst Klasse setzen
+            try {
+                const instance = (typeof bootstrap !== 'undefined' && bootstrap.Collapse)
+                    ? bootstrap.Collapse.getOrCreateInstance(target, {toggle: false})
+                    : null;
+                if (instance) {
+                    instance.show();
+                } else {
+                    target.classList.add('show');
+                }
+            } catch (e) {
+                target.classList.add('show');
+            }
+
+            // Zum Bereich scrollen (mit Header-Offset)
+            const headerOffset = 80; // konfigurierbarer Offset für fixierte Header
+            let scrollTarget = target;
+            const row = target.closest('.row');
+            if (row) scrollTarget = row;
+            const rect = scrollTarget.getBoundingClientRect();
+            const scrollTop = window.pageYOffset + rect.top - headerOffset;
+            window.scrollTo({top: Math.max(scrollTop, 0), behavior: 'smooth'});
+        } catch (e) {
+            // still
+        }
+    };
+
+    // etwas verzögert, damit Bootstrap/DOM fertig ist
+    setTimeout(openFirstSearchedCourse, 0);
 }
 
 // Auto-Initialisierung nach DOM-Ladung

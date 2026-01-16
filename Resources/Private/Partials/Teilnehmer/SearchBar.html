@@ -1,0 +1,128 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers/" data-namespace-typo3-fluid="true">
+<!-- Suchfeld über der Gesamtliste -->
+<f:form action="list" noCache="true" noCacheHash="true" class="row g-2 mb-3 js-search-form">
+    <div class="col-sm-6 col-md-5 col-lg-4 position-relative js-search-wrap">
+        <f:if condition="{uid} > 0">
+            <input type="hidden" name="kurs" value="{uid}">
+        </f:if>
+        <f:if condition="{uid} > 0">
+            <f:then>
+                <input type="text" class="form-control js-search-input" name="searchKurs[{uid}]" placeholder="Suchen…" value="{search}"/>
+            </f:then>
+            <f:else>
+                <input type="text" class="form-control js-search-input" name="searchAll" placeholder="Suchen…" value="{search}"/>
+            </f:else>
+        </f:if>
+        <!-- Popup für Feldauswahl (Checkboxen) -->
+        <div class="dropdown-menu p-3 js-field-popup" style="min-width: 260px;">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.tn_vorname}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.vorname"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.vorname"/>
+                        </f:else>
+                    </f:if>
+                    Vorname
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.tn_nachname}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.nachname"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.nachname"/>
+                        </f:else>
+                    </f:if>
+                    Nachname
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.tn_gebdate}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.gebdate"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="tn.gebdate"/>
+                        </f:else>
+                    </f:if>
+                    Geburtsdatum
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.kurs_professor}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="kurs.professor"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="kurs.professor"/>
+                        </f:else>
+                    </f:if>
+                    Professor
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.datein}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="datein"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="datein"/>
+                        </f:else>
+                    </f:if>
+                    Anmeldedatum
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.teilnahmeart}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="teilnahmeart"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="teilnahmeart"/>
+                        </f:else>
+                    </f:if>
+                    Teilnahmeart
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.anmeldestatus}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="anmeldestatus"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="anmeldestatus"/>
+                        </f:else>
+                    </f:if>
+                    Anmeldestatus
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.gezahlt}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="gezahlt"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="gezahlt"/>
+                        </f:else>
+                    </f:if>
+                    Gezahlt
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <f:if condition="{selectedMap.uid}">
+                        <f:then><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="uid"
+                                       checked="checked"/></f:then>
+                        <f:else><input class="form-check-input" type="checkbox" name="{f:if(condition: '{uid} > 0', then: 'fieldsKurs[{uid}][]', else: 'fieldsAll[]')}" value="uid"/></f:else>
+                    </f:if>
+                    UID
+                </label>
+            </div>
+            <div class="mt-2 text-end">
+                <button type="button" class="btn btn-sm btn-secondary js-close-popup">Schließen</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-5 col-lg-5 d-flex align-items-start gap-2">
+        <button type="submit" class="btn btn-primary"><core:icon title="Filtern" identifier="apps-toolbar-menu-search" /></button>
+        <f:link.action action="list" arguments="{reset: 'all'}" class="btn btn-sm btn-default btn-outline-secondary">
+            <core:icon title="Zurücksetzen" identifier="actions-undo" />
+        </f:link.action>
+    </div>
+</f:form>
+</html>
