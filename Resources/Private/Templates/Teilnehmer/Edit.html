@@ -1,0 +1,20 @@
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:asset.css identifier="main" href="EXT:kursanmeldung/Resources/Public/Css/hfmMain.css" />
+    <f:asset.script identifier="main" src="EXT:kursanmeldung/Resources/Public/JavaScript/Teilnehmer.Edit.js" />
+
+    <h1>Teilnehmer bearbeiten</h1>
+
+    <h2>{kursanmeldung.kurs.professor.name} - {kursanmeldung.kurs.instrument}</h2><br />
+    <f:flashMessages />
+    <f:render partial="FormErrors" arguments="{object:kursanmeldung}" />
+    <f:form action="update" id="kursanmeldung-teilnehmer-edit" name="kursanmeldung" object="{kursanmeldung}" enctype="multipart/form-data">
+        <f:render partial="ButtonBars/Edit" arguments="{class: 'teilnehmer-edit'}"/>
+        <f:render partial="Teilnehmer/FormFields" arguments="{_all}" />
+        <f:render partial="ButtonBars/Edit" arguments="{class: 'teilnehmer-edit'}"/>
+    </f:form>
+</f:section>
+</html>

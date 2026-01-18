@@ -172,3 +172,7 @@ a.formhandler-button.formhandler-forward,
 a.formhandler-button.formhandler-backward {
     margin-left: 0.5rem;
 }
+
+#kursanmeldung-teilnehmer-edit .teilnehmer-edit-new{
+    display:none;
+}

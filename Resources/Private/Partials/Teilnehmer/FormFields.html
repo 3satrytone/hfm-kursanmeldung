@@ -1,0 +1,680 @@
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<div id="teilnehmer-edit-form">
+    <f:form.hidden property="tn.uid" value="{kursanmeldung.tn.0.uid}" />
+    <div class="table-fit mt-4">
+        <table class="tx_kursanmeldung table table-striped table-hover">
+            <tbody>
+            <tr>
+                <td><label for="deflang">
+                    <f:translate key="be_export.tn_sprache"/>
+                </label></td>
+                <td>
+                    <f:form.select
+                            property="deflang" options="{deflangOpt}"
+                            class="form-select"
+                            aria-label="{f:translate(key='be_export.tn_sprache')}"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="anmeldestatus">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.status" default="Status"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="anmeldestatus" options="{statuus}" value="{kursanmeldung.anmeldestatus}"
+                                   optionLabelField="anmeldestatus" sortByOptionLabel="FALSE"
+                                   optionValueField="uid"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}"
+                                   prependOptionValue=""
+                                   class="form-select"
+                                   aria-label="{f:translate(key='tx_kursanmeldung_domain_model_teilnehmer.status')}"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="profstatus">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.profstatus" default="Profstatus"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="profstatus" options="{statuus}" value="{kursanmeldung.profstatus}"
+                                   class="form-select"
+                                   optionValueField="uid"
+                                   optionLabelField="anmeldestatus" sortByOptionLabel="FALSE"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}"
+                                   prependOptionValue=""
+                                   title="{f:render(partial: 'FormTitleError', arguments: {field: 'kursanmeldung.anmeldestatus'})}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="kurs">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.kurs" default="Kurs"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select name="newkursuid" options="{newkurs}" value="{kursanmeldung.kurs.uid}"
+                                   class="form-select"
+                                   optionLabelField="name" optionValueField="uid" sortByOptionLabel="FALSE"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.kurs.prependLabel',default:'Bitte wählen')}"
+                                   prependOptionValue=""
+                                   title="{f:render(partial: 'FormTitleError', arguments: {field: 'kursanmeldung.kurs'})}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.vorname">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.vorname"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.vorname" value="{kursanmeldung.tn.0.vorname}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.nachname">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nachname"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.nachname" value="{kursanmeldung.tn.0.nachname}"
+                                      class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.anrede">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.anrede"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="tn.0.anrede" options="{gender}" value="{kursanmeldung.tn.0.anrede}"
+                                   class="form-select"
+                                   optionLabelField="nameLocalized" sortByOptionLabel="1"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.gender')}"
+                                   prependOptionValue=""
+                                   title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.anrede'})}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.titel">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.titel"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.titel" value="{kursanmeldung.tn.0.titel}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.matrikel">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.matrikel"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.matrikel" value="{kursanmeldung.tn.0.matrikel}"
+                                      class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="studystat">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.studystat"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="studystat" value="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="studentship">
+                        <f:translate
+                                key="tx_kursanmeldung_domain_model_kursanmeldung.studentship"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="studentship" value="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="deflang">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.stipendiat"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="stipendiat" value="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.gebdate">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebdate"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.gebdate"
+                                      class="form-control" type="date"
+                                      value="{kursanmeldung.tn.0.gebdate->f:format.date(format:'Y-m-d')}"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.nation">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nation"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.countrySelect class="form-select" property="tn.0.nation" value="{kursanmeldung.tn.0.nation}"
+                                          prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.nationality')}"
+                                          prependOptionValue=""
+                                          title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.nation'})}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.adresse1">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.adresse1"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.adresse1" value="{kursanmeldung.tn.0.adresse1}"
+                                      class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.hausnr">
+                        <f:translate key="tx_jokursanmeldung_domain_model_teilnehmer.hausnr"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.hausnr" value="{kursanmeldung.tn.0.hausnr}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.adresse2">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.adresse2"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.adresse2" value="{kursanmeldung.tn.0.adresse2}"
+                                      class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.plz">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.plz"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.plz" value="{kursanmeldung.tn.0.plz}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.ort">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.ort"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.ort" value="{kursanmeldung.tn.0.ort}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.land">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.land"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.countrySelect class="form-select" property="tn.0.land" value="{kursanmeldung.tn.0.land}"
+                                          prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step1.country')}"
+                                          prependOptionValue=""
+                                          title="{f:render(partial: 'FormTitleError', arguments: {field: 'tn.land'})}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.telefon">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.telefon"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.telefon" value="{kursanmeldung.tn.0.telefon}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.mobil">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.mobil"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.mobil" value="{kursanmeldung.tn.0.mobil}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tn.0.email">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.email"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="tn.0.email" value="{kursanmeldung.tn.0.email}" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gebuehr">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gebuehr"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="gebuehr" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="bezahlt">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.bezahlt"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="bezahlt" value="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="zahlart">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.zahlart"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="zahlart" options="{zahlungsart}" optionLabelField="nameLocalized"
+                                   sortByOptionLabel="1"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}"
+                                   prependOptionValue=""
+                                   title="{f:render(partial: 'FormTitleError', arguments: {field: 'zahlart'})}"
+                                   class="form-select"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="zahltbis">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.zahltbis"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield class="form-control" type="datetime-local" property="zahltbis"
+                                      value="{kursanmeldung.zahltbis->f:format.date(format:'Y-m-d h:i')}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gezahlt">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gezahlt"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="gezahlt" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="paylaterang">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.paylater.ang"/>
+                    </label>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input class="form-control linkToCopy" value="{paylater.ang}"/>
+                        <button type="button" class="btn btn-outline-secondary copyButton">copy</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gebuehrag">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gebuehrag"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="gebuehrag" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="bezahltag">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.bezahltag"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="bezahltag" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gezahltag">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gezahltag"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="gezahltag" value="1" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gebuehrdat">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gebuehrdat"/>
+                    </label>
+                </td>
+                <td>
+                    <f:if condition="{kursanmeldung.gebuehrdat}">
+                        <f:form.textfield property="gebuehrdat"
+                                          type="datetime-local" class="form-control"
+                                          value="{kursanmeldung.gebuehrdat->f:format.date(format:'Y-m-d h:i')}"/>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="paylater.tng">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.paylater.tng"/>
+                    </label>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input class="form-control linkToCopy" value="{paylater.tng}"/>
+                        <button type="button" class="btn btn-outline-secondary copyButton">copy</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="gezahltos">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.gezahltos"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="gezahltos" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="paybyadminlink">
+                        <f:translate key="rtechkeditor.payment.paybyadmin"/>
+                    </label>
+                </td>
+                <td>
+                    <f:link.action action="paybyadmin" arguments="{payment:1,reguid:kursanmeldung.uid}"
+                                   onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">Rechnung jetzt
+                        erstellen
+                        und sofort via Mail versenden
+                    </f:link.action>
+                    <br/>
+                    <f:link.action action="paybyadmin" arguments="{payment:6,reguid:kursanmeldung.uid}"
+                                   onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">
+                        Novalnet-Rechnung
+                        jetzt
+                        erstellen und sofort via Mail versenden
+                    </f:link.action>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="hotel">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.hotel"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="hotel" options="{hotels.hotel}" optionLabelField="nameLocalized"
+                                   sortByOptionLabel="1" class="form-select"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.hotel')}"
+                                   prependOptionValue="0"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="room">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.room"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="room" options="{hotels.room}" value="{kursanmeldung.room}"
+                                   class="form-select"
+                                   prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.room')}"
+                                   prependOptionValue=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="roomwith">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.roomwith"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="roomwith" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="roomfrom">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.roomfrom"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="roomfrom"
+                                      value="{kursanmeldung.roomfrom->f:format.date(format:'Y-m-d h:i')}"
+                                      type="datetime-local" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="roomto">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.roomto"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="roomto"
+                                      value="{kursanmeldung.roomto->f:format.date(format:'Y-m-d h:i')}"
+                                      type="datetime-local" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="datein">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.datein"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="roomto"
+                                      value="{kursanmeldung.datein->f:format.date(format:'Y-m-d h:i')}"
+                                      type="datetime-local" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="teilnahmeart">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.teilnahmeart"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.select property="teilnahmeart" options="{teilnahmeartOpt}" class="form-select"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="programm">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.programm"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textarea property="programm" class="form-control" rows="3"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="orchesterstudio">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.orchesterstudio"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="orchesterstudio" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="duo">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.duo"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.checkbox property="duo" value="1" class=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="duosel">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.duosel"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="duosel" class="form-control"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="duoname">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.duoname"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="duoname" class="form-control" id="duoname"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="comment">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.comment"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textarea property="comment" class="form-control" rows="3" id="comment"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="doitime">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.doitime" id="doitime"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield property="doitime"
+                                      value="{kursanmeldung.doitime->f:format.date(format:'Y-m-d h:i')}"
+                                      type="datetime-local" class="form-control"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="notice">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.notice"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.textarea property="notice" class="form-control" rows="3" id="notice"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="downloads">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.documents"/>
+                    </label>
+                </td>
+                <td>
+                    <f:if condition="{kursanmeldung.uploads.count > 0}">
+                        <f:for each="{kursanmeldung.uploads}" as="ul">
+                            <div>
+                            <f:switch expression="{ul.kat}">
+                                <f:case value="download"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
+                                <f:case value="link"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
+                                <f:case value="vita"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
+                                <f:case value="youtube"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
+                            </f:switch>
+                            </div>
+                        </f:for>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="agb">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.agb"/>
+                    </label>
+                </td>
+                <td>
+                    <f:if condition="{kursanmeldung.agb} == 0">
+                        <f:then>
+                            <span class="red"><f:translate
+                                    key="tx_kursanmeldung_domain_model_kursanmeldung.agb.{kursanmeldung.agb}"/></span>
+                        </f:then>
+                        <f:else>
+                            <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.agb.{kursanmeldung.agb}"/>
+                        </f:else>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="datenschutz">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz"/>
+                    </label>
+                </td>
+                <td>
+                    <f:if condition="{kursanmeldung.datenschutz} == 0">
+                        <f:then>
+                            <span class="red"><f:translate
+                                    key="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz.{kursanmeldung.datenschutz}"/></span>
+                        </f:then>
+                        <f:else>
+                            <f:translate
+                                    key="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz.{kursanmeldung.datenschutz}"/>
+                        </f:else>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="savedata">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.savedata"/>
+                    </label>
+                </td>
+                <td>
+                    <f:if condition="{kursanmeldung.savedata} == 0">
+                        <f:then>
+                <span class="red"><f:translate
+                        key="tx_kursanmeldung_domain_model_kursanmeldung.savedata.{kursanmeldung.savedata}"/></span>
+                        </f:then>
+                        <f:else>
+                            <f:translate
+                                    key="tx_kursanmeldung_domain_model_kursanmeldung.savedata.{kursanmeldung.savedata}"/>
+                        </f:else>
+                    </f:if>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

@@ -168,6 +168,27 @@
             <source>Ist das wirklich eine gute Idee?</source>
             <target>Ist das wirklich eine gute Idee?</target>
         </trans-unit>
+        <!-- exportliste texte -->
+        <trans-unit id="teilnahmeart.choose">
+            <source>Teilnahmeart wählen...</source>
+            <target>Teilnahmeart wählen...</target>
+        </trans-unit>
+        <trans-unit id="teilnahmeart.0">
+            <source>aktiv</source>
+            <target>aktiv</target>
+        </trans-unit>
+        <trans-unit id="teilnahmeart.1">
+            <source>passiv</source>
+            <target>passiv</target>
+        </trans-unit>
+        <trans-unit id="tn.anrede.1">
+            <source>Herr</source>
+            <target>Mr</target>
+        </trans-unit>
+        <trans-unit id="tn.anrede.0">
+            <source>Frau</source>
+            <target>Ms</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

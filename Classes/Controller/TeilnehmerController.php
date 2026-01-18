@@ -1,37 +1,77 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Controller;
 
+use Hfm\Kursanmeldung\Domain\Model\Anmeldestatus;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
+use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use Hfm\Kursanmeldung\Utility\TypeConverter\IntegerConverter;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter;
+use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class TeilnehmerController extends ActionController
+#[AsController]
+final class TeilnehmerController extends ActionController
 {
+    /**
+     * page there frontentPlugin is used
+     * @var int $fePluginPage
+     */
+    private int $fePluginPage = 3;
+    private array $zahlungsartArr = [
+        1 => 'banktransfer',
+        2 => 'prepayment',
+        3 => 'paypal',
+        4 => 'onlinetransfer',
+        5 => 'giropay',
+        6 => 'invoice',
+        7 => 'nopayment'
+    ];
+
+
     public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
         private readonly PersistenceManagerInterface $persistenceManager,
         protected UriBuilder $uriBuilder,
+        private readonly ParticipantUtility $participantUtility,
     ) {
     }
 
     public function initializeAction(): void
     {
         // if dbdata distributed over more pages
-        if(isset($this->settings['dataPages'])){
-            if(isset($this->kursRepository))$this->kursRepository->setStoragePageIds($this->settings['dataPages']);
-            if(isset($this->anmeldestatusRepository))$this->anmeldestatusRepository->setStoragePageIds($this->settings['dataPages']);
+        if (isset($this->settings['dataPages'])) {
+            if (isset($this->kursRepository)) {
+                $this->kursRepository->setStoragePageIds($this->settings['dataPages']);
+            }
+            if (isset($this->anmeldestatusRepository)) {
+                $this->anmeldestatusRepository->setStoragePageIds($this->settings['dataPages']);
+            }
+        }
+        if (isset($this->settings['fePluginPage'])) {
+            $this->fePluginPage = (int)$this->settings['fePluginPage'];
         }
     }
 
@@ -182,8 +222,8 @@ class TeilnehmerController extends ActionController
         if ($this->request->hasArgument('page')) {
             $currentPage = max(1, (int)$this->request->getArgument('page'));
             $setSession($sessionPagination, $currentPage);
-        }else{
-            $currentPage = (int)$getSession($sessionPagination);
+        } else {
+            $currentPage = ((int)$getSession($sessionPagination) === 0) ? 1 : (int)$getSession($sessionPagination);
         }
         if (isset($this->settings['itemsPerPage'])) {
             $itemsPerPage = max(1, (int)$this->settings['itemsPerPage']);
@@ -207,7 +247,11 @@ class TeilnehmerController extends ActionController
             $kSearch = $searchKurs[$kUid] ?? null;
             $kFields = $fieldsKurs[$kUid] ?? ['tn.vorname', 'tn.nachname'];
             if ($kSearch !== null && trim((string)$kSearch) !== '') {
-                $registrations = $this->kursanmeldungRepository->getParticipantsByKursFiltered($kUid, (string)$kSearch, $kFields);
+                $registrations = $this->kursanmeldungRepository->getParticipantsByKursFiltered(
+                    $kUid,
+                    (string)$kSearch,
+                    $kFields
+                );
             } else {
                 $registrations = $this->kursanmeldungRepository->getParticipantsByKurs($kUid);
             }
@@ -247,30 +291,52 @@ class TeilnehmerController extends ActionController
 
     public function editAction(Kursanmeldung $kursanmeldung): ResponseInterface
     {
-        $paylater['ang'] = $this->uriBuilder
-            ->setTargetPageUid($this->fePage)
-            ->setArguments(['tx_jokursanmeldung_jokursanmeldungfe' => ['action' => 'paylater', 'controller' => 'Frontend', 'st' => $kursanmeldung->getDatein()->getTimestamp() . '_' . $kursanmeldung->getUid(), 'pl' => 'ang', 'hash' => $kursanmeldung->getRegistrationkey()]])
-            ->setCreateAbsoluteUri(true)
-            ->buildFrontendUri();
-
-        $paylater['tng'] = $this->controllerContext->getUriBuilder()
-            ->setTargetPageUid($this->fePage)
-            ->setArguments(['tx_jokursanmeldung_jokursanmeldungfe' => ['action' => 'paylater', 'controller' => 'Frontend', 'st' => $kursanmeldung->getDatein()->getTimestamp() . '_' . $kursanmeldung->getUid(), 'pl' => 'tng', 'hash' => $kursanmeldung->getRegistrationkey()]])
-            ->setCreateAbsoluteUri(true)
-            ->buildFrontendUri();
-
-        $uploadTypes = array(
-            '' => 'Bitte Kategorie wählen...',
-            'link' => 'Links',
-            'youtube' => 'Youtube (gesamte URL eingeben)',
-            'vita' => 'Lebenslauf',
-            'download' => 'Bilder, Dokumente oder Urkunden',
+        $gender = $this->participantUtility->getOptions([0 => 'f', 1 => 'm'],
+            'tx_kursanmeldung_domain_model_kursanmeldung.step1.');
+        $zahlungsart = $this->participantUtility->getOptions(
+            $this->zahlungsartArr,
+            'tx_kursanmeldung_domain_model_kursanmeldung.step2.'
         );
 
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId($this->fePluginPage);
+
+        $dateIn = $kursanmeldung->getDatein()?->getTimestamp() ?? 0;
+        $arguments = [
+            'tx_kursanmeldung_kursanmeldungfe' => [
+                'action' => 'paylater',
+                'controller' => 'Frontend',
+                'st' => $dateIn . '_' . $kursanmeldung->getUid(),
+                'pl' => 'ang',
+                'hash' => base64_encode($kursanmeldung->getRegistrationkey()),
+            ]
+        ];
+        $paylater['ang'] = (string)$site->getRouter()->generateUri($this->fePluginPage, $arguments);
+
+        $arguments = [
+            'tx_kursanmeldung_kursanmeldungfe' => [
+                'action' => 'paylater',
+                'controller' => 'Frontend',
+                'st' => $dateIn . '_' . $kursanmeldung->getUid(),
+                'pl' => 'tng',
+                'hash' => base64_encode($kursanmeldung->getRegistrationkey()),
+            ]
+        ];
+        $paylater['tng'] = (string)$site->getRouter()->generateUri($this->fePluginPage, $arguments);
+
         $teilnahmeartOpt = array(
-            '' => $this->joTranslate('teilnahmeart.choose'),
-            0 => $this->joTranslate('teilnahmeart.0'),
-            1 => $this->joTranslate('teilnahmeart.1')
+            '' => LocalizationUtility::translate(
+                'teilnahmeart.choose',
+                'kursanmeldung'
+            ),
+            0 => LocalizationUtility::translate(
+                'teilnahmeart.0',
+                'kursanmeldung'
+            ),
+            1 => LocalizationUtility::translate(
+                'teilnahmeart.1',
+                'kursanmeldung'
+            )
         );
 
         $deflangOpt = array(
@@ -278,17 +344,177 @@ class TeilnehmerController extends ActionController
             1 => 'englisch'
         );
 
-        // Simple edit view (template handles rendering); saving is not part of this task
-        $this->view->assign('kursanmeldung', $kursanmeldung);
+        $statuus = $this->anmeldestatusRepository->findAll();
+        $newkurs = $this->getKursOptions();
 
-        return $this->htmlResponse();
+        $hotel = $this->participantUtility->splitHotel($kursanmeldung->getKurs()->getHotel());
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('teilnahmeartOpt', $teilnahmeartOpt);
+        $moduleTemplate->assign('deflangOpt', $deflangOpt);
+        $moduleTemplate->assign('kursanmeldung', $kursanmeldung);
+        $moduleTemplate->assign('statuus', $statuus);
+        $moduleTemplate->assign('newkurs', $newkurs);
+        $moduleTemplate->assign('gender', $gender);
+        $moduleTemplate->assign('zahlungsart', $zahlungsart);
+        $moduleTemplate->assign('paylater', $paylater);
+        $moduleTemplate->assign('hotels', $hotel);
+
+        return $moduleTemplate->renderResponse('Teilnehmer/Edit');
+    }
+
+    /**
+     * initialize update action
+     *
+     * @return void
+     */
+    public function initializeUpdateAction(): void
+    {
+        try {
+            if ($this->arguments->hasArgument('kursanmeldung')) {
+                $pmc = $this->arguments
+                    ->getArgument('kursanmeldung')
+                    ->getPropertyMappingConfiguration();
+                $pmc->allowAllProperties();
+                $pmc->forProperty('studystat')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('studentship')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('stipendiat')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('bezahlt')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('duo')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('tn.0.gebdate')
+                    ->setTypeConverter(
+                        GeneralUtility::makeInstance(DateTimeConverter::class)
+                    )
+                    ->setTypeConverterOption(
+                        DateTimeConverter::class,
+                        DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'Y-m-d'
+                    );
+                $pmc->forProperty('zahltbis')
+                    ->setTypeConverter(
+                        GeneralUtility::makeInstance(DateTimeConverter::class)
+                    )
+                    ->setTypeConverterOption(
+                        DateTimeConverter::class,
+                        DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'Y-m-d\TH:i'
+                    );
+                $pmc->forProperty('doitime')
+                    ->setTypeConverter(
+                        GeneralUtility::makeInstance(DateTimeConverter::class)
+                    )
+                    ->setTypeConverterOption(
+                        DateTimeConverter::class,
+                        DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'Y-m-d\TH:i'
+                    );
+                $pmc->forProperty('datein')
+                    ->setTypeConverter(
+                        GeneralUtility::makeInstance(DateTimeConverter::class)
+                    )
+                    ->setTypeConverterOption(
+                        DateTimeConverter::class,
+                        DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'Y-m-d\TH:i'
+                    );
+                $pmc->forProperty('gebuehrdat')
+                    ->setTypeConverter(
+                        GeneralUtility::makeInstance(DateTimeConverter::class)
+                    )
+                    ->setTypeConverterOption(
+                        DateTimeConverter::class,
+                        DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+                        'Y-m-d\TH:i'
+                    );
+            }
+
+            // Für skalare Action-Argumente ist i. d. R. keine spezielle
+            // Konfiguration nötig; wir prüfen dennoch auf Existenz, damit
+            // Extbase den Request-Wert (z. B. newkursuid=123) sauber mappen kann.
+            if ($this->arguments->hasArgument('newkursuid')) {
+                $this->arguments
+                    ->getArgument('newkursuid')
+                    ->getPropertyMappingConfiguration()
+                    ->allowAllProperties();
+            }
+        } catch (\Throwable $e) {
+            // still: keine harte Ausnahme im Initializer auslösen
+        }
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $kursanmeldung
+     * @param int $newkursuid
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    #[IgnoreValidation(['argumentName' => 'kursanmeldung'])]
+    public function updateAction(Kursanmeldung $kursanmeldung, int $newkursuid = 0): ResponseInterface
+    {
+        $redirect = 'list';
+
+        try {
+            if (!empty($kursanmeldung)) {
+                if ($newkursuid && $newkursuid !== $kursanmeldung->getKurs()->getUid()) {
+                    $kurs = $this->kursRepository->findByUid($newkursuid);
+                    if ($kurs !== null) {
+                        $kursanmeldung->setKurs($kurs);
+                    }
+                }
+
+                $kursanmeldungArg = $this->request->getArgument('kursanmeldung');
+                if(isset($kursanmeldungArg['anmeldestatus']) && (int)$kursanmeldungArg['anmeldestatus'] > 0){
+                    $status = $this->anmeldestatusRepository->findByUid((int)$kursanmeldungArg['anmeldestatus']);
+                    if($status !== null) {
+                        $objStorage = new ObjectStorage();
+                        $objStorage->attach($status);
+                        $kursanmeldung->setAnmeldestatus($objStorage);
+                    }
+                }
+
+                if(isset($kursanmeldungArg['profstatus']) && (int)$kursanmeldungArg['profstatus'] > 0){
+                    $profstatus = $this->anmeldestatusRepository->findByUid((int)$kursanmeldungArg['profstatus']);
+                    if($profstatus !== null) {
+                        $objStorage = new ObjectStorage();
+                        $objStorage->attach($profstatus);
+                        $kursanmeldung->setProfstatus($objStorage);
+                    }
+                }
+
+                $this->kursanmeldungRepository->update($kursanmeldung);
+                $this->persistenceManager->persistAll();
+            }
+
+            $this->addFlashMessage(
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.ok001_body'),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.ok001_title'),
+                ContextualFeedbackSeverity::OK
+            );
+        } catch (\Exception $e) {
+            $this->addFlashMessage(
+                $e->getMessage(),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.err003'),
+                ContextualFeedbackSeverity::ERROR
+            );
+        }
+
+        return $this->redirect('list');
     }
 
     public function updateAnmeldestatusAction(): ResponseInterface
     {
         try {
-            $kaUid = (int)($this->request->hasArgument('kursanmeldung') ? $this->request->getArgument('kursanmeldung') : 0);
-            $astUid = (int)($this->request->hasArgument('anmeldestatus') ? $this->request->getArgument('anmeldestatus') : 0);
+            $kaUid = (int)($this->request->hasArgument('kursanmeldung') ? $this->request->getArgument(
+                'kursanmeldung'
+            ) : 0);
+            $astUid = (int)($this->request->hasArgument('anmeldestatus') ? $this->request->getArgument(
+                'anmeldestatus'
+            ) : 0);
 
             if ($kaUid <= 0 || $astUid < 0) {
                 $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'invalid_arguments']));
@@ -303,7 +529,7 @@ class TeilnehmerController extends ActionController
             }
 
             $storage = new ObjectStorage();
-            if($astUid > 0) {
+            if ($astUid > 0) {
                 /** @var \Hfm\Kursanmeldung\Domain\Model\Anmeldestatus|null $status */
                 $status = $this->anmeldestatusRepository->findByIdentifier($astUid);
                 if ($status === null) {
@@ -320,8 +546,47 @@ class TeilnehmerController extends ActionController
             $response = $this->htmlResponse(json_encode(['success' => true]));
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Throwable $e) {
-            $response = $this->htmlResponse(json_encode(['success' => false, 'error' => 'exception', 'message' => $e->getMessage()]));
+            $response = $this->htmlResponse(
+                json_encode(['success' => false, 'error' => 'exception', 'message' => $e->getMessage()])
+            );
             return $response->withHeader('Content-Type', 'application/json');
         }
+    }
+
+    public function deleteAction(Kursanmeldung $kursanmeldung): ResponseInterface
+    {
+        try{
+            $this->kursanmeldungRepository->remove($kursanmeldung);
+            $this->addFlashMessage(
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.ok002_body'),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.ok002_title'),
+                ContextualFeedbackSeverity::OK
+            );
+        } catch (\Exception $e) {
+            $this->addFlashMessage(
+                $e->getMessage(),
+                $this->participantUtility->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.err003'),
+                ContextualFeedbackSeverity::ERROR
+            );
+        }
+
+        return $this->redirect('list');
+    }
+
+    protected function getKursOptions(): array
+    {
+        $kursOpt = array();
+        $kurse = $this->kursRepository->findAll();
+        if (!empty($kurse) && $kurse->count() > 0) {
+            foreach ($kurse as $kurs) {
+                $prof = $kurs->getProfessor();
+                $name = $kurs->getInstrument();
+                if (!empty($prof)) {
+                    $name .= ', ' . $prof->getName();
+                }
+                $kursOpt[] = array('uid' => $kurs->getUid(), 'name' => $name);
+            }
+        }
+        return $kursOpt;
     }
 }

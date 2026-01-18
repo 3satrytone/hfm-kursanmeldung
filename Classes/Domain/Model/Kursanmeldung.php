@@ -29,7 +29,7 @@ class Kursanmeldung extends AbstractEntity
     protected int $bezahlt = 0;
     protected int $bezahltag = 0;
     protected string $zahlart = '';
-    protected ?\DateTime $zahltbis;
+    protected ?\DateTime $zahltbis = null;
     protected string $gezahlt = '';
     protected string $gezahltag = '';
     protected string $gezahltos = '';
@@ -39,9 +39,9 @@ class Kursanmeldung extends AbstractEntity
     protected string $roomfrom = '';
     protected string $roomto = '';
     protected string $gebuehr = '';
-    protected ?\DateTime $gebuehreingang;
+    protected ?\DateTime $gebuehreingang = null;
     protected string $gebuehrag = '';
-    protected ?\DateTime $gebuehrdat;
+    protected ?\DateTime $gebuehrdat = null;
     protected ?\DateTime $datein;
     protected string $teilnahmeart = '';
 

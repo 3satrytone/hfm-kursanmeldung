@@ -398,6 +398,18 @@
             <source>Einschreibegebühr gezahlter Betrag</source>
             <target>Einschreibegebühr gezahlter Betrag</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.bezahltag">
+            <source>Aktivengebühr bezahlt</source>
+            <target>Aktivengebühr bezahlt</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gebuehrdat">
+            <source>Aktivengebühr Rechnung erstellt am</source>
+            <target>Aktivengebühr Rechnung erstellt am</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gebuehrag">
+            <source>Aktivengebühr</source>
+            <target>Aktivengebühr</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.gezahltag">
             <source>Aktivengebühr gezahlter Betrag</source>
             <target>Aktivengebühr gezahlter Betrag</target>
@@ -450,10 +462,45 @@
             <source>Agb</source>
             <target>Agb</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.agb.0">
+            <source>AGB nicht akzeptiert</source>
+            <target>AGB nicht akzeptiert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.agb.1">
+            <source>AGB akzeptiert</source>
+            <target>AGB akzeptiert</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz">
             <source>Datenschutz</source>
             <target>Datenschutz</target>
-        </trans-unit>	
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz.0">
+            <source>Datenschutz nicht akzeptiert</source>
+            <target>Datenschutz nicht akzeptiert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz.1">
+            <source>Datenschutz akzeptiert</source>
+            <target>Datenschutz akzeptiert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.savedata">
+            <source>Datenverarbeitung (fakultativ)</source>
+            <target>Datenverarbeitung (fakultativ)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.savedata.0">
+            <source>Datenverarbeitung nicht akzeptiert</source>
+            <target>Datenverarbeitung nicht akzeptiert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.savedata.1">
+            <source>Datenverarbeitung akzeptiert</source>
+            <target>Datenverarbeitung akzeptiert</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.notice">
+            <source>Bemerkungen</source>
+            <target>Bemerkungen</target>
+        </trans-unit>
+        <trans-unit id="rtechkeditor.payment.paybyadmin">
+            <source>Adminlink zur Erstellung manueller Rechnung (Einschreibegebühr)</source>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.stipendiat">
             <source>Stipendium zugelassen</source>
             <target>Stipendium zugelassen</target>
@@ -1748,6 +1795,302 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
         <trans-unit id="tx_kursanmeldung_domain_model_teilnehmer.documents.upload">
             <source>or upload file</source>
             <target>oder Datei hochladen</target>
+        </trans-unit>
+        <!-- tablenames -->
+        <trans-unit id="be_export.anmeldestatus_anmeldestatus">
+         <source>Status</source>
+         <target>Status</target>
+        </trans-unit>
+        <trans-unit id="be_export.anmeldestatus_kurz">
+         <source>Status kurz</source>
+         <target>Status kurz</target>
+        </trans-unit>
+        <trans-unit id="be_export.anmeldestatus_beschreibung">
+         <source>Status info</source>
+         <target>Status info</target>
+        </trans-unit>
+        <trans-unit id="be_export.anmeldestatus_reducetnart">
+         <source>erhöht Anzahl</source>
+         <target>erhöht Anzahl</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_anrede">
+         <source>Anrede</source>
+         <target>Anrede</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_vorname">
+         <source>Vorname</source>
+         <target>Vorname</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_nachname">
+         <source>Nachname</source>
+         <target>Nachname</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_titel">
+         <source>Titel</source>
+         <target>Titel</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_gebdate">
+         <source>Geb. Datum</source>
+         <target>Geb. Datum</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_matrikel">
+         <source>Matrikel</source>
+         <target>Matrikel</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_sprache">
+         <source>Sprache</source>
+         <target>Sprache</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_nation">
+         <source>Nationalität</source>
+         <target>Nationalität</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_adresse1">
+         <source>Adresse</source>
+         <target>Adresse</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_hausnr">
+         <source>house no.</source>
+         <target>Haus Nr.</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_adresse2">
+         <source>Adresszusatz</source>
+         <target>Adresszusatz</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_plz">
+         <source>PLZ</source>
+         <target>PLZ</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_ort">
+         <source>Ort</source>
+         <target>Ort</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_land">
+         <source>Land</source>
+         <target>Land</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_telefon">
+         <source>Telefon</source>
+         <target>Telefon</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_mobil">
+         <source>Mobil</source>
+         <target>Mobil</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_email">
+         <source>E-Mail</source>
+         <target>E-Mail</target>
+        </trans-unit>
+        <trans-unit id="be_export.tn_datein">
+         <source>Datum Eintrag</source>
+         <target>Datum Eintrag</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_stipendien">
+         <source>Stipendien anzeigen</source>
+         <target>Stipendien anzeigen</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_aktiv">
+         <source>Kurs aktiv</source>
+         <target>Kurs aktiv</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_kursnr">
+         <source>Kursnummer</source>
+         <target>Kursnummer</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_instrument">
+         <source>Instrument</source>
+         <target>Instrument</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_professor">
+         <source>Professor</source>
+         <target>Professor</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_prof">
+         <source>Professor</source>
+         <target>Professor</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_kurszeitstart">
+         <source>Kursstart</source>
+         <target>Kursstart</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_kurszeitend">
+         <source>Kursende</source>
+         <target>Kursende</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_anreisedate">
+         <source>Kursanreise</source>
+         <target>Kursanreise</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_kursort">
+         <source>Kursort</source>
+         <target>Kursort</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_gebuehr">
+         <source>Kursgebühr</source>
+         <target>Kursgebühr</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_gebuehrcom">
+         <source>Kursgebühr Zusatz</source>
+         <target>Kursgebühr Zusatz</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_orchstudio">
+         <source>Kurs Orchester aktiv</source>
+         <target>Kurs Orchester aktiv</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_aktivtn">
+         <source>Kurs Anzahl Teilnehmer (aktiv)</source>
+         <target>Kurs Anzahl Teilnehmer (aktiv)</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_passivtn">
+         <source>Kurs Anzahl Teilnehmer (passiv)</source>
+         <target>Kurs Anzahl Teilnehmer (passiv)</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_hotel">
+         <source>Kurs Hotelauswahl</source>
+         <target>Kurs Hotelauswahl</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_weblink">
+         <source>Kurs Weblinks zulassen</source>
+         <target>Kurs Weblinks zulassen</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_youtube">
+         <source>Kurs Youtube zulassen</source>
+         <target>Kurs Youtube zulassen</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_vita">
+         <source>Kurs Vita zulassen</source>
+         <target>Kurs Vita zulassen</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_maxupload">
+         <source>Kurs max. Uploads</source>
+         <target>Kurs max. Uploads</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_duo">
+         <source>Kurs Duo/Ensemble zulassen</source>
+         <target>Kurs Duo/Ensemble zulassen</target>
+        </trans-unit>
+        <trans-unit id="be_export.kurs_duosel">
+         <source>Kurs Duo/Ensemble Auswahl</source>
+         <target>Kurs Duo/Ensemble Auswahl</target>
+        </trans-unit>
+        <trans-unit id="be_export.zahlart">
+         <source>Zahlart</source>
+         <target>Zahlart</target>
+        </trans-unit>
+        <trans-unit id="be_export.zahltbis">
+         <source>zahlt bis</source>
+         <target>zahlt bis</target>
+        </trans-unit>
+        <trans-unit id="be_export.agb">
+         <source>AGB zugestimmt</source>
+         <target>AGB zugestimmt</target>
+        </trans-unit>
+        <trans-unit id="be_export.datenschutz">
+         <source>Datenschutz zugestimmt</source>
+         <target>Datenschutz zugestimmt</target>
+        </trans-unit>
+        <trans-unit id="be_export.savedata">
+         <source>Datenverarbeitung (fakultativ)</source>
+         <target>Datenverarbeitung (fakultativ)</target>
+        </trans-unit>
+        <trans-unit id="be_export.savedata.0">
+         <source>Nein</source>
+         <target>Nein</target>
+        </trans-unit>
+        <trans-unit id="be_export.savedata.1">
+         <source>Ja</source>
+         <target>Ja</target>
+        </trans-unit>
+        <trans-unit id="be_export.salt">
+         <source>ID Schlüssel (Salt)</source>
+         <target>ID Schlüssel (Salt)</target>
+        </trans-unit>
+        <trans-unit id="be_export.registrationkey">
+         <source>E-Mail ID</source>
+         <target>E-Mail ID</target>
+        </trans-unit>
+        <trans-unit id="be_export.doitime">
+         <source>Datum E-Mail Bestätigung</source>
+         <target>Datum E-Mail Bestätigung</target>
+        </trans-unit>
+        <trans-unit id="be_export.novalnettid">
+         <source>Novalnet ID</source>
+         <target>Novalnet ID</target>
+        </trans-unit>
+        <trans-unit id="be_export.novalnetcno">
+         <source>Novalnet Kundennummer</source>
+         <target>Novalnet Kundennummer</target>
+        </trans-unit>
+        <trans-unit id="be_export.notice">
+         <source>Notizen</source>
+         <target>Notizen</target>
+        </trans-unit>
+        <!-- Backend Kursanmeldung Kursanmeldung-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.duo">
+            <source>Register as Duo/Ensemble</source>
+            <target>Duo/Ensemble anmelden</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.duosel">
+            <source>Instrument / subject of the Duo-Partner/Ensemble-Partner </source>
+            <target>Duopartner/Ensemblepartner Instrument / Fach</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.duoname">
+            <source>Name of the Duo-Partner/Ensemble-Partner </source>
+            <target>Duo-/Ensemblepartnername</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.comment">
+            <source>Comment</source>
+            <target>Kommentar</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.doitime">
+            <source>Bestätigt am</source>
+            <target>Bestätigt am</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.paylater.ang">
+            <source>Einschreibegebühr Link kopieren</source>
+            <target>Einschreibegebühr Link kopieren</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.paylater.tng">
+            <source>Aktivengebühr Link kopieren</source>
+            <target>Aktivengebühr Link kopieren</target>
+        </trans-unit>
+        <!-- standard texte -->
+        <trans-unit id="anrede.add.1">
+         <source>Dear</source>
+         <target>Sehr geehrter</target>
+        </trans-unit>
+        <trans-unit id="anrede.add.0">
+         <source>Dear</source>
+         <target>Sehr geehrte</target>
+        </trans-unit>
+        <trans-unit id="anrede.1">
+         <source>Mr</source>
+         <target>Herr</target>
+        </trans-unit>
+        <trans-unit id="anrede.0">
+         <source>Ms</source>
+         <target>Frau</target>
+        </trans-unit>
+        <!-- exportliste texte -->
+        <trans-unit id="teilnahmeart.choose">
+            <source>Teilnahmeart wählen...</source>
+            <target>Teilnahmeart wählen...</target>
+        </trans-unit>
+        <trans-unit id="teilnahmeart.0">
+            <source>aktiv</source>
+            <target>aktiv</target>
+        </trans-unit>
+        <trans-unit id="teilnahmeart.1">
+            <source>passiv</source>
+            <target>passiv</target>
+        </trans-unit>
+        <trans-unit id="tn.anrede.1">
+            <source>Herr</source>
+            <target>Mr</target>
+        </trans-unit>
+        <trans-unit id="tn.anrede.0">
+            <source>Frau</source>
+            <target>Ms</target>
         </trans-unit>
     </body>
   </file>

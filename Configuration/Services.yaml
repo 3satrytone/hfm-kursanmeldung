@@ -46,6 +46,7 @@ services:
     public: true
   Hfm\Kursanmeldung\Controller\FrontendController:
     public: true
+    tags: ['backend.controller']
   Hfm\Kursanmeldung\Utility\ParticipantUtility:
     public: true
   Hfm\Kursanmeldung\App\Participant\Business\ParticipantFacade:
