@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Bestätigungsdialog für Step3-Formular absenden
+// Bestätigungsdialog für Step3-Formular absenden (per Bootstrap-Modal statt native confirm)
 document.addEventListener('DOMContentLoaded', function () {
     try {
         var form = document.getElementById('step3form');
@@ -133,7 +133,45 @@ document.addEventListener('DOMContentLoaded', function () {
         if (form.getAttribute('data-confirm-bound') === '1') return;
         form.setAttribute('data-confirm-bound', '1');
 
-        // Listener im Capture-Phase registrieren, damit vor anderen Submit-Handlern (z. B. Dialog-Öffnern) bestätigt wird
+        function ensureSubmitConfirmModal() {
+            var modal = document.getElementById('step3ConfirmModal');
+            if (modal) return modal;
+            var wrapper = document.createElement('div');
+            wrapper.innerHTML = '\n<div class="modal fade" id="step3ConfirmModal" tabindex="-1" aria-labelledby="step3ConfirmModalLabel" aria-hidden="true">\n  <div class="modal-dialog modal-dialog-centered">\n    <div class="modal-content">\n      <div class="modal-header">\n        <h5 class="modal-title fw-bold" id="step3ConfirmModalLabel">Bestätigung</h5>\n        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>\n      </div>\n      <div class="modal-body">\n        <p id="step3ConfirmModalMessage">Möchten Sie die Anmeldung jetzt verbindlich abschicken?</p>\n      </div>\n      <div class="modal-footer">\n        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="step3ConfirmModalCancel">Abbrechen</button>\n        <button type="button" class="btn btn-primary" id="step3ConfirmModalOk">Ja, abschicken</button>\n      </div>\n    </div>\n  </div>\n</div>';
+            var el = wrapper.firstElementChild;
+            document.body.appendChild(el);
+            return el;
+        }
+
+        // Blockierendes Lade-Modal für finale Bestellung (Inhalt aus #popup-orderfinal)
+        function showOrderFinalBlockingModal() {
+            try {
+                var modalEl = document.getElementById('orderFinalModal');
+                console.log(modalEl);
+                if (!modalEl) return; // wenn nicht vorhanden, einfach überspringen
+
+                // Titel/Text aus #popup-orderfinal übernehmen
+                var src = document.getElementById('popup-orderfinal');
+                if (src) {
+                    var title = src.getAttribute('title') || '';
+                    var bodyHtml = src.innerHTML || '';
+                    var titleEl = modalEl.querySelector('#orderFinalModalLabel');
+                    var bodyEl = modalEl.querySelector('#orderFinalModalContent');
+                    if (titleEl) titleEl.textContent = title;
+                    if (bodyEl) bodyEl.innerHTML = bodyHtml;
+                }
+
+                var modal = bootstrap.Modal.getOrCreateInstance(modalEl, {backdrop: 'static', keyboard: false});
+                modal.show();
+            } catch (ex) {
+                // Ignoriere Fehler, Modal ist rein kosmetisch
+                if (window && window.console && console.warn) {
+                    console.warn('OrderFinalModal konnte nicht angezeigt werden:', ex);
+                }
+            }
+        }
+
+        // Listener im Capture-Phase registrieren, damit vor anderen Submit-Handlern bestätigt wird
         form.addEventListener('submit', function (e) {
             // Wenn bereits bestätigt wurde (z. B. bei programmatic submit), nicht erneut fragen
             if (form.getAttribute('data-confirmed') === '1') return;
@@ -141,20 +179,67 @@ document.addEventListener('DOMContentLoaded', function () {
             // Nachricht aus data-Attribut, ansonsten Fallback-Text
             var msg = form.getAttribute('data-confirm');
             if (!msg) {
-                // Optional: Text aus einem versteckten Element auf der Seite nutzen
                 var node = document.querySelector('.step3-confirm-message');
                 msg = node && node.textContent ? node.textContent.trim() : 'Möchten Sie die Anmeldung jetzt verbindlich abschicken?';
             }
 
-            if (!window.confirm(msg)) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
+            var titleNode = document.querySelector('.step3-confirm-title');
+            var title = titleNode && titleNode.textContent ? titleNode.textContent.trim() : 'Bestätigung';
+
+            var btnCancelNode = document.querySelector('.step3-confirm-btn-cancel');
+            var btnCancel = btnCancelNode && btnCancelNode.textContent ? btnCancelNode.textContent.trim() : 'Abbrechen';
+
+            var btnSubmitNode = document.querySelector('.step3-confirm-btn-submit');
+            var btnSubmit = btnSubmitNode && btnSubmitNode.textContent ? btnSubmitNode.textContent.trim() : 'Ja, abschicken';
+
+            // Wenn Bootstrap nicht vorhanden ist, auf native confirm zurückfallen
+            if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
+                if (!window.confirm(msg)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+                form.setAttribute('data-confirmed', '1');
+                return true;
             }
 
-            // Markieren, damit bei nachfolgendem programmatic submit nicht erneut gefragt wird
-            form.setAttribute('data-confirmed', '1');
-            return true;
+            // Mit Modal bestätigen
+            e.preventDefault();
+            e.stopPropagation();
+
+            var modalEl = ensureSubmitConfirmModal();
+            var msgEl = modalEl.querySelector('#step3ConfirmModalMessage');
+            if (msgEl) msgEl.textContent = msg;
+
+            var titleEl = modalEl.querySelector('#step3ConfirmModalLabel');
+            if (titleEl) titleEl.textContent = title;
+
+            var btnOkEl = modalEl.querySelector('#step3ConfirmModalOk');
+            if (btnOkEl) btnOkEl.textContent = btnSubmit;
+
+            var btnCancelEl = modalEl.querySelector('#step3ConfirmModalCancel');
+            if (btnCancelEl) btnCancelEl.textContent = btnCancel;
+
+
+            var okBtn = modalEl.querySelector('#step3ConfirmModalOk');
+            // vorherige Handler entfernen, indem wir Knoten klonen
+            okBtn.replaceWith(okBtn.cloneNode(true));
+            var okBtnFresh = modalEl.querySelector('#step3ConfirmModalOk');
+
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl, {backdrop: 'static'});
+            okBtnFresh.addEventListener('click', function () {
+                form.setAttribute('data-confirmed', '1');
+                modal.hide();
+                // Blockierendes Lade-Popup anzeigen
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    showOrderFinalBlockingModal();
+                }
+                // programmatic submit, damit andere Submit-Handler normal laufen
+                form.submit();
+            }, {once: true});
+
+            modal.show();
+            return false;
         }, true);
     } catch (err) {
         // Falls etwas schiefgeht, keine Blockade des Submits verursachen

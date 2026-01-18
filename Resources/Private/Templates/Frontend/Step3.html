@@ -2,7 +2,7 @@
 <f:layout name="DefaultFe"/>
 
 <f:section name="Headline">
-    <div id="popup-orderfinal"
+    <div id="popup-orderfinal" class=" d-none"
          title="<f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.h2' />">
         <p>
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.p"/>
@@ -320,11 +320,30 @@
         <f:link.action action="step2" class="formhandler-button formhandler-backward">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.back"/>
         </f:link.action>
-        <div class="step3-confirm-message d-none"><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.confirm"/></div>
+        <div class="step3-confirm-title d-none"><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm.title"/></div>
+        <div class="step3-confirm-message d-none"><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm.message"/></div>
+        <div class="step3-confirm-btn-cancel d-none"><f:translate key="extension.btn.cancel"/></div>
+        <div class="step3-confirm-btn-submit d-none"><f:translate key="extension.btn.yes_go"/></div>
         <f:form.submit value="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step3.next')}"
                        class="formhandler-button orderfinal" data="{layer:zahlungsart}"/>
         <a href="javascript:window.print();" class="formhandler-button formhandler-backward">
             <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.print"/>
         </a>
     </f:form>
+    <!-- Blockierendes Lade-Popup (wird beim Absenden nach Bestätigung angezeigt) -->
+    <div class="modal fade" id="orderFinalModal" tabindex="-1" aria-labelledby="orderFinalModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="orderFinalModalLabel"><f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.h2' /></h5>
+                </div>
+                <div class="modal-body text-center py-5">
+                    <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
+                    <div id="orderFinalModalContent"><f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step3.dialog.p' /></div>
+                </div>
+            </div>
+        </div>
+        <!-- kein Footer, keine Close-Buttons: Modal bleibt blockierend offen -->
+        <!-- Hinweis: Inhalt (Titel/Text) wird per JS aus #popup-orderfinal übernommen -->
+    </div>
 </f:section>

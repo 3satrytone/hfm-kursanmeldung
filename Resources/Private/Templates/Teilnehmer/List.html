@@ -71,13 +71,39 @@
                 <tbody>
                 <f:for each="{paginator.paginatedItems}" as="kursanmeldung" iteration="i">
                     <tr>
-                        <td>{kursanmeldung.uid}</td>
-                        <td>{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
-                        <td>{kursanmeldung.kurs.professor.name}</td>
-                        <td>{kursanmeldung.tn.0.vorname}</td>
-                        <td><b>{kursanmeldung.tn.0.nachname}</b></td>
-                        <td>{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
-                        <td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.uid}
+                        </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}
+                        </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.kurs.professor.name}
+                        </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.tn.0.vorname}
+                        </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><b>{kursanmeldung.tn.0.nachname}</b>
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                            title="Bearbeiten">
                             <f:switch expression="{kursanmeldung.teilnahmeart}">
                                 <f:case value="0">
                                     <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.0" default=""/>
@@ -86,18 +112,43 @@
                                     <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.1" default=""/>
                                 </f:case>
                             </f:switch>
+                            </f:link.action>
                         </td>
-                        <td>{kursanmeldung.bezahlt}</td>
-                        <td><f:if condition="{kursanmeldung.gebuehr}>0">{kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                        <td><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                        <td><f:if condition="{kursanmeldung.gebuehrag}>0">{kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                        <td><f:if condition="{kursanmeldung.gezahltag}>0">{kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                        <td><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.bezahlt}
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gebuehr}>0">{kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gebuehrag}>0">{kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gezahltag}>0">{kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                            </f:link.action>
+                        </td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten"><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for>
+                            </f:link.action>
+                        </td>
                         <td>
                             <select class="form-select form-select-sm js-ast-select"
                                     data-ka="{kursanmeldung.uid}"
                                     data-url="{f:uri.action(action: 'updateAnmeldestatus')}">
-                                <option value=""></option>
+                                <option value="0"></option>
                                 <f:for each="{anmeldestatusList}" as="ast">
                                     <f:if condition="{ast.uid} == {kursanmeldung.anmeldestatus.0.uid}">
                                         <f:then>
@@ -110,7 +161,11 @@
                                 </f:for>
                             </select>
                         </td>
-                        <td>{kursanmeldung.profstatus.0.kurz}</td>
+                        <td><f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">{kursanmeldung.profstatus.0.kurz}
+                            </f:link.action>
+                        </td>
                         <td class="text-end">
                             <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"

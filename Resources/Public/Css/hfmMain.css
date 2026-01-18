@@ -163,11 +163,9 @@ button.formhandler-button {
     outline: none;
 }
 
-a.formhandler-button.formhandler-backward {
-    background-color: #9D0633;
-}
-
-a.formhandler-button.formhandler-forward {
+a.formhandler-button.formhandler-backward,
+a.formhandler-button.formhandler-forward,
+#step3ConfirmModalOk {
     background-color: #9D0633;
 }
 

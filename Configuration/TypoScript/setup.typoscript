@@ -28,5 +28,6 @@ module.tx_kursanmeldung {
 		dataPages{
 			0 = 18
 		}
+		fePluginPage = 2
 	}
 }

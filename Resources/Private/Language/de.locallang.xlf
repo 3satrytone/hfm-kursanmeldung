@@ -5,6 +5,14 @@
       <trans-unit id="extension.title">
         <source>Kursanmeldung</source>
       </trans-unit>
+      <trans-unit id="extension.btn.cancel">
+        <source>cancel</source>
+        <target>Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="extension.btn.yes_go">
+        <source>yes, submit</source>
+        <target>Ja, abschicken</target>
+      </trans-unit>
       <trans-unit id="extension.description">
         <source>Course registration extension (Kursanmeldung) by HFM.</source>
       </trans-unit>
@@ -1202,7 +1210,11 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>next</source>
             <target>weiter</target>
         </trans-unit>
-        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm">
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm.title">
+            <source>Confirmation</source>
+            <target>Bestätigung</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step3.confirm.message">
             <source>Would you like to submit your registration now?</source>
             <target>Möchten Sie die Anmeldung jetzt verbindlich abschicken?</target>
         </trans-unit>
