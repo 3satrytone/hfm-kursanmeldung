@@ -272,4 +272,24 @@ class KursanmeldungRepository extends Repository
         $query->matching($query->logicalAnd(...$constraints));
         return $query->execute();
     }
+
+    public function findByKursNotPassive(int $kurs): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+
+        $joQuery = $query->logicalAnd(
+            $query->equals('kurs', $kurs),
+            $query->equals('teilnahmeart', 0),
+            $query->logicalNot(
+                $query->in('anmeldestatus', array(2,5))
+            )
+        );
+
+        $query->matching(
+            $joQuery
+        );
+        return $query->execute();
+    }
 }

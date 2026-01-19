@@ -1,3 +1,4 @@
+		<f:debug>{_all}</f:debug>
 		<tr class="joToggle {f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')}" data-trtype="slide" data-trsrc="{kursanmeldung.uid}" data-trsel="johide">
 			<td>{kursanmeldung.uid}</td>
 			<td>{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
@@ -9,7 +10,7 @@
 			<td><b>{kursanmeldung.tn.0.nachname}</b></td>
 			<td>{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
 			<td colspan="2"><f:if condition="{kursanmeldung.anmeldestatus}">{kursanmeldung.anmeldestatus.0.anmeldestatus}</f:if></td>
-			<td colspan="2"><f:form.select class="prof-sel" name="anmeldestatus[{kursanmeldung.uid}]" value="{kursanmeldung.profstatus}" options="{profSelStatus}" optionValueField="uid" optionLabelField="kurzTranslated" prependOptionLabel="<f:translate key='tx_jokursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel' />" prependOptionValue="NULL" /></td>	
+			<td colspan="2"><f:form.select class="form-select" name="anmeldestatus[{kursanmeldung.uid}]" value="{kursanmeldung.profstatus}" options="{profSelStatus}" optionValueField="uid" optionLabelField="kurzTranslated" prependOptionLabel="<f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel' />" prependOptionValue="NULL" /></td>
 		</tr><f:if condition="{profSelStatus}">
 		<tr class="{f:if(condition:'{i.isOdd}',then:'odd',else:'even')}{f:if(condition:'{kursanmeldung.doitime}==\'\'',then:' joDoi')} joHide" data-trtrg="{kursanmeldung.uid}">
 			<td colspan="3">{kursanmeldung.tn.0.email}</td>

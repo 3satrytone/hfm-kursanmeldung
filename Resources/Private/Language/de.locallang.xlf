@@ -2179,6 +2179,31 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>Ordner mit Benutzerdaten</source>
             <target>Ordner mit Benutzerdaten</target>
         </trans-unit>
+        <!-- Backend Kursanmeldung Professorliste-->
+        <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.statusprof">
+            <source>Assign status</source>
+            <target>Status zuweisen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursliste.statusprof">
+            <source>assign status</source>
+            <target>Status zuweisen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursliste.status">
+            <source>Status</source>
+            <target>Status</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursliste.statusprof.prof_nein">
+            <source>rejected</source>
+            <target>Abgelehnt</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursliste.statusprof.prof_ja">
+            <source>accepted</source>
+            <target>Angenommen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_kursliste.statusprof.prof_vlt">
+            <source>maybe</source>
+            <target>Vielleicht</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
