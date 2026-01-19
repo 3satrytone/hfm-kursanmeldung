@@ -1741,6 +1741,10 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>Invoice</source>
             <target>Rechnung</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_teilnehmer.tnart">
+            <source>Teilnahmeart</source>
+            <target>Teilnahmeart</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_teilnehmer.tnart.0">
             <source>active participation</source>
             <target>Anmeldung aktiv</target>

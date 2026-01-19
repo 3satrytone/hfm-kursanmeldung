@@ -1,6 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:layout name="Default"/>
-<f:section name="Main">
+<f:layout name="Module"/>
+<f:section name="Content">
+    <f:asset.script identifier="main" src="EXT:kursanmeldung/Resources/Public/JavaScript/Kurs.List.js" />
+
     <h1>Kurse</h1>
 
     <f:flashMessages/>
@@ -84,15 +86,15 @@
                         </f:link.action>
                     </td>
                     <td>
-                        <f:link.action action="delete" arguments="{kurs : kurs}" title="löschen"
-                                       onclick="return confirm('Ist das wirklich eine gute Idee?');">
+                        <f:link.action action="delete" arguments="{kurs : kurs}" title="löschen">
                             <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt=""/>
                         </f:link.action>
                     </td>
                     <td>
                         <f:link.typolink
-                                parameter="4"
-                                additionalParams="&tx_jokursanmeldung_jokursanmeldungfe[kurs]={kurs.uid}"
+                                class="btn btn-outline-secondary copyLink"
+                                additionalParams="tx_kursanmeldung_kursanmeldungfe[action]=step1&tx_kursanmeldung_kursanmeldungfe[controller]=Frontend&tx_kursanmeldung_kursanmeldungfe[kurs]={kurs.uid}"
+                                parameter="{feUid}"
                                 absolute="1"
                                 language="0">
                             <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-copy-de.png" alt=""/>
@@ -100,8 +102,9 @@
                     </td>
                     <td>
                         <f:link.typolink
+                                class="btn btn-outline-secondary copyLink"
                                 parameter="4"
-                                additionalParams="&tx_jokursanmeldung_jokursanmeldungfe[kurs]={kurs.uid}"
+                                additionalParams="tx_kursanmeldung_kursanmeldungfe[action]=step1&tx_kursanmeldung_kursanmeldungfe[controller]=Frontend&tx_kursanmeldung_kursanmeldungfe[kurs]={kurs.uid}"
                                 absolute="1"
                                 language="1">
                             <f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-copy-en.png" alt=""/>

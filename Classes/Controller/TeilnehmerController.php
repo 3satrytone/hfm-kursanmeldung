@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Controller;
 
-use Hfm\Kursanmeldung\Domain\Model\Anmeldestatus;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
@@ -25,8 +24,6 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectStorageConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 #[AsController]
@@ -346,6 +343,10 @@ final class TeilnehmerController extends ActionController
 
         $statuus = $this->anmeldestatusRepository->findAll();
         $newkurs = $this->getKursOptions();
+        $tnaction = $this->participantUtility->getOptions(
+            [0,1],
+            'tx_kursanmeldung_domain_model_teilnehmer.tnart.'
+        );
 
         $hotel = $this->participantUtility->splitHotel($kursanmeldung->getKurs()->getHotel());
 
@@ -360,6 +361,7 @@ final class TeilnehmerController extends ActionController
         $moduleTemplate->assign('zahlungsart', $zahlungsart);
         $moduleTemplate->assign('paylater', $paylater);
         $moduleTemplate->assign('hotels', $hotel);
+        $moduleTemplate->assign('tnaction', $tnaction);
 
         return $moduleTemplate->renderResponse('Teilnehmer/Edit');
     }

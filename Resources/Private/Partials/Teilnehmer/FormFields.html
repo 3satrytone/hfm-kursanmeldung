@@ -5,15 +5,27 @@
         <table class="tx_kursanmeldung table table-striped table-hover">
             <tbody>
             <tr>
-                <td><label for="deflang">
+                <td class="col-3">
+                    <label for="deflang">
                     <f:translate key="be_export.tn_sprache"/>
-                </label></td>
-                <td>
-                    <f:form.select
+                    </label>
+                </td>
+                <td class="col-9">
+                    <f:form.select id="deflang"
                             property="deflang" options="{deflangOpt}"
                             class="form-select"
                             aria-label="{f:translate(key='be_export.tn_sprache')}"
                     />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="anmeldeart">
+                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart" default="Teilnahmeart"/>
+                    </label>
+                </td>
+                <td>
+                    <span class="px-2"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.{kursanmeldung.teilnahmeart}" default="Teilnahmeart"/></span>
                 </td>
             </tr>
             <tr>
@@ -29,6 +41,7 @@
                                    prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}"
                                    prependOptionValue=""
                                    class="form-select"
+                                   id="anmeldestatus"
                                    aria-label="{f:translate(key='tx_kursanmeldung_domain_model_teilnehmer.status')}"
                     />
                 </td>
@@ -280,7 +293,7 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.textfield property="gebuehr" class="form-control"/>
+                    <f:form.textfield property="gebuehr" class="form-control" id="gebuehr"/>
                 </td>
             </tr>
             <tr>
@@ -290,7 +303,7 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.checkbox property="bezahlt" value="1"/>
+                    <f:form.checkbox property="bezahlt" value="1" id="bezahlt"/>
                 </td>
             </tr>
             <tr>
@@ -305,7 +318,7 @@
                                    prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.step2.zahlungsart')}"
                                    prependOptionValue=""
                                    title="{f:render(partial: 'FormTitleError', arguments: {field: 'zahlart'})}"
-                                   class="form-select"
+                                   class="form-select" id="zahlart"
                     />
                 </td>
             </tr>
@@ -317,7 +330,9 @@
                 </td>
                 <td>
                     <f:form.textfield class="form-control" type="datetime-local" property="zahltbis"
-                                      value="{kursanmeldung.zahltbis->f:format.date(format:'Y-m-d h:i')}"/>
+                                      value="{kursanmeldung.zahltbis->f:format.date(format:'Y-m-d h:i')}"
+                                      id="zahltbis"
+                    />
                 </td>
             </tr>
             <tr>
@@ -350,7 +365,7 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.textfield property="gebuehrag" class="form-control"/>
+                    <f:form.textfield property="gebuehrag" class="form-control" id="gebuehrag"/>
                 </td>
             </tr>
             <tr>
@@ -421,13 +436,6 @@
                                    onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">Rechnung jetzt
                         erstellen
                         und sofort via Mail versenden
-                    </f:link.action>
-                    <br/>
-                    <f:link.action action="paybyadmin" arguments="{payment:6,reguid:kursanmeldung.uid}"
-                                   onclick="return confirm('Sicher? Die Rechnung wird direkt erstellt.')">
-                        Novalnet-Rechnung
-                        jetzt
-                        erstellen und sofort via Mail versenden
                     </f:link.action>
                 </td>
             </tr>
@@ -576,11 +584,11 @@
             <tr>
                 <td>
                     <label for="doitime">
-                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.doitime" id="doitime"/>
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.doitime"/>
                     </label>
                 </td>
                 <td>
-                    <f:form.textfield property="doitime"
+                    <f:form.textfield property="doitime" id="doitime"
                                       value="{kursanmeldung.doitime->f:format.date(format:'Y-m-d h:i')}"
                                       type="datetime-local" class="form-control"
                     />
@@ -626,7 +634,7 @@
                 <td>
                     <f:if condition="{kursanmeldung.agb} == 0">
                         <f:then>
-                            <span class="red"><f:translate
+                            <span class="red fw-bold"><f:translate
                                     key="tx_kursanmeldung_domain_model_kursanmeldung.agb.{kursanmeldung.agb}"/></span>
                         </f:then>
                         <f:else>
@@ -644,7 +652,7 @@
                 <td>
                     <f:if condition="{kursanmeldung.datenschutz} == 0">
                         <f:then>
-                            <span class="red"><f:translate
+                            <span class="red fw-bold"><f:translate
                                     key="tx_kursanmeldung_domain_model_kursanmeldung.datenschutz.{kursanmeldung.datenschutz}"/></span>
                         </f:then>
                         <f:else>
@@ -663,7 +671,7 @@
                 <td>
                     <f:if condition="{kursanmeldung.savedata} == 0">
                         <f:then>
-                <span class="red"><f:translate
+                <span class="red fw-bold"><f:translate
                         key="tx_kursanmeldung_domain_model_kursanmeldung.savedata.{kursanmeldung.savedata}"/></span>
                         </f:then>
                         <f:else>

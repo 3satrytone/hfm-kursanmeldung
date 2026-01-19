@@ -753,6 +753,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 ) : $gebuehr->getAnmeldungerm();
             }
         }
+        $aktivenGebuehr = ($step2data->getStudystat() !== 1) ? $gebuehr->getAktivengeb() : $gebuehr->getAktivengeberm();
 
         $language = $this->request->getAttribute('language') ?? $this->request->getAttribute(
             'site'
@@ -783,6 +784,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $newKursanmeldung->setRoomto($step2data->getRoomto());
         }
         $newKursanmeldung->setGebuehr($enrollmentfee);
+        $newKursanmeldung->setGebuehrag($aktivenGebuehr);
         $newKursanmeldung->setDatein(new \DateTime('NOW'));
         $newKursanmeldung->setTeilnahmeart($step2data->getTnaction());
         $newKursanmeldung->setProgramm($step2data->getProgramm());
@@ -1254,6 +1256,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                     ) : $gebuehr->getAnmeldungerm();
                 }
             }
+            $aktivenGebuehr = ($step2data->getStudystat() !== 1) ? $gebuehr->getAktivengeb() : $gebuehr->getAktivengeberm();
 
 
             /* Teilnehmer speichern */
@@ -1287,6 +1290,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
                 $newKursanmeldung->setRoomto($step2data->getRoomto());
             }
             $newKursanmeldung->setGebuehr($enrollmentfee);
+            $newKursanmeldung->setGebuehrag($aktivenGebuehr);
             $newKursanmeldung->setDatein(new \DateTime('NOW'));
             $newKursanmeldung->setTeilnahmeart($step2data->getTnaction());
             $newKursanmeldung->setProgramm($step2data->getProgramm());

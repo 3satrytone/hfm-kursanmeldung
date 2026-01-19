@@ -13,6 +13,7 @@ use Hfm\Kursanmeldung\Domain\Repository\ProfRepository;
 use Hfm\Kursanmeldung\Utility\FormatUtility;
 use Hfm\Kursanmeldung\Utility\PropertyConverterUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Model\Kurs;
@@ -25,6 +26,7 @@ class KursController extends ActionController
      * @param \Hfm\Kursanmeldung\Utility\PropertyConverterUtility $propertyConverterUtility
      */
     public function __construct(
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         private KursRepository $kursRepository,
         private readonly PropertyConverterUtility $propertyConverterUtility,
         private readonly FormatUtility $formatUtility,
@@ -135,9 +137,11 @@ class KursController extends ActionController
      */
     public function listAction(): ResponseInterface
     {
-        $this->view->assign(Constants::KURSE, $this->kursRepository->findAll());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign(Constants::KURSE, $this->kursRepository->findAll());
+        $moduleTemplate->assign('feUid', $this->settings['fePluginPage'] ?? 1);
 
-        return $this->htmlResponse();
+        return $moduleTemplate->renderResponse('Kurs/List');
     }
 
     /**
