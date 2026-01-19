@@ -2089,6 +2089,92 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>Frau</source>
             <target>Ms</target>
         </trans-unit>
+
+        <!-- tx_kursanmeldung_kursanmeldungfe Flexform -->
+        <trans-unit id="tx_kursanmeldung_flexform.general">
+            <source>Allgemeines Setup</source>
+            <target>Allgemeines Setup</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.banktransfer">
+            <source>Rechnung (WBA)</source>
+            <target>Rechnung (WBA)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.prepayment">
+            <source>Vorauskasse zulassen</source>
+            <target>Vorauskasse zulassen</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.paypal">
+            <source>PayPal zulassen (über Novalnet)</source>
+            <target>PayPal zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.onlinetransfer">
+            <source>Onlinebanking zulassen (über Novalnet)</source>
+            <target>Onlinebanking zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.giropay">
+            <source>Giropay zulassen (über Novalnet)</source>
+            <target>Giropay zulassen (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.invoice">
+            <source>Rechnung (über Novalnet)</source>
+            <target>Rechnung (über Novalnet)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.general.nopayment">
+            <source>Bereits gezahlt</source>
+            <target>Bereits gezahlt</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email">
+            <source>E-Mail Setup</source>
+            <target>E-Mail Setup</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.email">
+            <source>Absenderemailadresse</source>
+            <target>Absenderemailadresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailhost">
+            <source>Absendername</source>
+            <target>Absendername</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubject">
+            <source>Betreff</source>
+            <target>Betreff</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubjectadmin">
+            <source>Betreff Adminmails</source>
+            <target>Betreff Adminmails</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailsubjectinfo">
+            <source>Betreff Infomails (ohne Bestätigungslink)</source>
+            <target>Betreff Infomails (ohne Bestätigungslink)</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailtoadmin">
+            <source>Administrator Empfang E-Mailadresse</source>
+            <target>Administrator Empfang E-Mailadresse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailccuser">
+            <source>CC Empfang E-Mailadress</source>
+            <target>CC Empfang E-Mailadress</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailadminpid">
+            <source>Page Id for Adminmaillayout</source>
+            <target>Seiten ID mit der Adminvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailuserpid">
+            <source>Page Id for confirmation by usermaillayout</source>
+            <target>Seiten ID mit der Kursanmeldung bestätigen E-Mailvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.email.emailinfopid">
+            <source>Page Id for info usermaillayout</source>
+            <target>Seiten ID mit der Kursanmeldung Info E-Mailvorlage</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.kursids.choice">
+            <source>In dieser Liste angezeigte Kurse</source>
+            <target>In dieser Liste angezeigte Kurse</target>
+        </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.records.user">
+            <source>Ordner mit Benutzerdaten</source>
+            <target>Ordner mit Benutzerdaten</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,0 +1,37 @@
+<T3DataStructure>
+	<sheets>
+		<sGeneral>
+			<ROOT>
+				<sheetTitle>
+					LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xml:tx_kursanmeldung_flexform.general
+				</sheetTitle>
+				<type>array</type>
+				<el>
+					<settings.kursids>
+							<label>
+								LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xml:tx_kursanmeldung_flexform.kursids.choice
+							</label>
+                            <config type="array">
+                                <type>group</type>
+                                <allowed>tx_kursanmeldung_domain_model_kurs</allowed>
+								<size>10</size>
+								<minitems>1</minitems>
+								<maxitems>50</maxitems>
+                            </config>
+					</settings.kursids>
+					<settings.records.user>
+						<label>
+							LLL:EXT:kursanmeldung/Resources/Private/Language/locallang.xlf:tx_kursanmeldung_flexform.records.user
+						</label>
+						<config>
+							<type>group</type>
+							<allowed>pages</allowed>
+							<maxitems>1</maxitems>
+							<minitems>0</minitems>
+						</config>
+					</settings.records.user>
+				</el>
+			</ROOT>
+		</sGeneral>
+	</sheets>
+</T3DataStructure>

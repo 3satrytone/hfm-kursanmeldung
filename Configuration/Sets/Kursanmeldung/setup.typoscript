@@ -19,3 +19,11 @@ plugin.tx_kursanmeldung_kursanmeldungfe {
         layoutRootPaths.0 = EXT:kursanmeldung/Resources/Private/Layoutsr/
     }
 }
+
+plugin.tx_kursanmeldung_kursanmeldungkl {
+    view {
+        templateRootPaths.0 = EXT:kursanmeldung/Resources/Private/Templatesr/
+        partialRootPaths.0 = EXT:kursanmeldung/Resources/Private/Partialsr/
+        layoutRootPaths.0 = EXT:kursanmeldung/Resources/Private/Layoutsr/
+    }
+}

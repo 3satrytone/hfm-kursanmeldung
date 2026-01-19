@@ -5,6 +5,7 @@ declare(strict_types=1);
 defined('TYPO3') or die('Access denied.');
 
 use Hfm\Kursanmeldung\Controller\FrontendController;
+use Hfm\Kursanmeldung\Controller\KursListeController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
@@ -73,6 +74,26 @@ ExtensionUtility::configurePlugin(
             'zahlart',
             'paylater'
         ]
+    ],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
+);
+
+ExtensionUtility::configurePlugin(
+    'Kursanmeldung',           // Extension name (UpperCamelCase)
+    'KursanmeldungKl',          // Plugin name (UpperCamelCase)
+    [
+        KursListeController::class => [
+            'list',
+            'exportkurs',
+            'updatestatus'
+        ],
+    ],
+    [
+        KursListeController::class => [
+            'list',
+            'exportkurs',
+            'updatestatus'
+        ],
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
 );
