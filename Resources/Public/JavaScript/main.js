@@ -605,4 +605,54 @@ document.addEventListener('DOMContentLoaded', function () {
         var toast = bootstrap.Toast.getOrCreateInstance(toastEl)
         toast.show();
     }
+
+    // Status-Select (Anmeldestatus) via AJAX speichern
+    const attachStatusHandler = () => {
+        const selects = document.querySelectorAll('select.js-profstatus');
+        if (!selects.length) return;
+        selects.forEach((sel) => {
+            if (sel.dataset.astBound === '1') return;
+            sel.dataset.astBound = '1';
+            sel.addEventListener('change', async () => {
+                const url = sel.dataset.url;
+                const uid = sel.dataset.uid;
+                const status = sel.value;
+                if (!url || !uid || !status) return;
+                // kleines visuelles Feedback
+                const oldBg = sel.style.backgroundColor;
+                sel.style.backgroundColor = '#fff3cd'; // gelb
+                try {
+                    const namespace = 'tx_kursanmeldung_kursanmeldungkl';
+                    const formData = new URLSearchParams();
+                    console.log(uid);
+                    console.log(status);
+                    formData.set(namespace + '[uid]', uid);
+                    formData.set(namespace + '[status]', status);
+                    formData.set(namespace + '[action]', 'updatestatus');
+                    formData.set(namespace + '[controller]', 'KursListe');
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                        },
+                        body: formData.toString(),
+                        credentials: 'same-origin'
+                    });
+                    const json = await resp.json().catch(() => null);
+                    if (resp.ok && json && json.success) {
+                        sel.style.backgroundColor = '#d1e7dd'; // grün
+                        setTimeout(() => sel.style.backgroundColor = oldBg || '', 600);
+                    } else {
+                        sel.style.backgroundColor = '#f8d7da'; // rot
+                        setTimeout(() => sel.style.backgroundColor = oldBg || '', 1200);
+                    }
+                } catch (e) {
+                    sel.style.backgroundColor = '#f8d7da';
+                    setTimeout(() => sel.style.backgroundColor = oldBg || '', 1200);
+                }
+            });
+        });
+    };
+
+    attachStatusHandler();
 });

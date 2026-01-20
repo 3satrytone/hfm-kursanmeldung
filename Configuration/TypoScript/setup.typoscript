@@ -13,6 +13,32 @@ page {
   	}
 }
 
+ajax_endpoint = PAGE
+ajax_endpoint {
+    typeNum = 12345
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-type: application/json
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Kursanmeldung
+        pluginName = KursanmeldungKl
+        vendorName = Hfm
+        # Optional: Force a specific controller/action
+        switchableControllerActions {
+            KursListeController {
+                1 = updatestatusAction
+            }
+        }
+    }
+}
+
+
 plugin.tx_kursanmeldung_kursanmeldungfe {
     view {
         templateRootPaths.0 = EXT:kursanmeldung/Resources/Private/Templates/

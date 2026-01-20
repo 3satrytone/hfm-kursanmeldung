@@ -1,15 +1,13 @@
 <f:layout name="KursListe" />
 
 <f:section name="main">
-    <f:debug>{_all}</f:debug>
-    <link rel="stylesheet" type="text/css" href="/typo3conf/ext/kursanmeldung/Resources/Public/Css/fontello-embedded.css" media="all">
     <f:if condition="kursanmeldungenGrouped != ''">
     <f:form action="updatestatus" name="newKursanmeldungKl">
     <f:for each="{kursanmeldungenGrouped}" as="kursanmeldungGrouped">
     <div class="joKursGrouped panel panel-space panel-default">
         <div class="joHead panel-heading"><span class="joCursor">{kursanmeldungGrouped.registrations.0.kurs.kursnr} - {kursanmeldungGrouped.registrations.0.kurs.instrument} - {kursanmeldungGrouped.registrations.0.kurs.prof} (<f:count>{kursanmeldungGrouped.registrations}</f:count>/{kursanmeldungGrouped.total})</span><f:form.textfield name="paginateSearch[{kursanmeldungGrouped.registrations.0.kurs.uid}]" value="{kursanmeldungGrouped.search}" class="form-control"/></div>
         <div class="">
-            <table  class="tx_kursanmeldung_anmeldungen" >
+            <table  class="tx_kursanmeldung_anmeldungen table table-bordered" >
                 <tr>
                     <th><f:translate key="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.uid" /></th>
 					<th><f:translate key="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.datein" /></th>
@@ -29,4 +27,33 @@
     </f:for>
     </f:form>
 </f:if>
+
+<f:asset.script identifier="kursliste-updatestatus">
+    const updateUrl = '<f:uri.action action="updatestatus" />';
+    const namespace = 'tx_kursanmeldung_kursliste';
+    document.addEventListener('change', function(e) {
+        const sel = e.target;
+        if (!(sel instanceof HTMLSelectElement)) return;
+        if (!sel.classList.contains('js-profstatus')) return;
+        const uid = sel.getAttribute('data-uid');
+        const status = sel.value;
+        if (!uid) return;
+        const formData = new URLSearchParams();
+        formData.set(namespace + '[uid]', uid);
+        formData.set(namespace + '[status]', status);
+        formData.set(namespace + '[action]', 'updatestatus');
+        formData.set(namespace + '[controller]', 'KursListe');
+        fetch(updateUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            body: formData.toString(),
+            credentials: 'same-origin'
+        }).then(r => r.json()).then(data => {
+            // Optional: visuelles Feedback
+            if (!data?.success) {
+                console.error('Update fehlgeschlagen', data);
+            }
+        }).catch(err => console.error('Update error', err));
+    });
+</f:asset.script>
 </f:section>

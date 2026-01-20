@@ -8,6 +8,8 @@ use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfRepository;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -178,36 +180,82 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      */
     public function updatestatusAction(): ResponseInterface
     {
-        $kursid = $this->settings['kursids'];
-        $tempData = $this->kursanmeldungRepository->findByKurs($kursid);
-        $status = null;
+        // Unterstützt zwei Varianten der Übergabe:
+        // 1) uid + status als einzelne Argumente (empfohlen für AJAX)
+        // 2) anmeldestatus[<uid>] => <statusUid> (aus dem Fluid-Formular)
+        $uid = null;
+        $statusUid = null;
 
-        $updateStatus = array();
-        if ($this->request->hasArgument('anmeldestatuschanged')) {
-            $updateStatus = $this->request->getArgument('anmeldestatuschanged');
+        if ($this->request->hasArgument('uid')) {
+            $uid = (int)$this->request->getArgument('uid');
         }
-        if (!empty($updateStatus)) {
-            // geänderte keys suchen
-            foreach ($updateStatus as $key => $value) {
-                // wenn kurse hinterlegt sind teilnehmer iterieren
-                if (!empty($tempData)) {
-                    foreach ($tempData as $kursanmeldung) {
-                        if ($kursanmeldung->getUid() == $key) {
-                            $status = $this->anmeldestatusRepository->findByUid($value);
-                            if ($status != null) {
-                                $kursanmeldung->setProfstatus($status);
-                                $this->kursanmeldungRepository->update($kursanmeldung);
-                            } else {
-                                $kursanmeldung->setProfstatus(null);
-                                $this->kursanmeldungRepository->update($kursanmeldung);
-                            }
-                        }
-                    }
-                }
+        if ($this->request->hasArgument('status')) {
+            $statusUid = $this->request->getArgument('status') !== 'NULL'
+                ? (int)$this->request->getArgument('status')
+                : null;
+        }
+
+        if ($this->request->hasArgument('anmeldestatus')) {
+            $arr = (array)$this->request->getArgument('anmeldestatus');
+            // Erwartet genau einen Eintrag: [<uid>] => <statusUid|NULL>
+            foreach ($arr as $key => $val) {
+                $uid = (int)$key;
+                $statusUid = $val !== 'NULL' ? (int)$val : null;
+                break;
             }
         }
 
-        return $this->redirect('list');
+        if (empty($uid)) {
+            return $this->jsonResponse(
+                json_encode([
+                    'success' => false,
+                    'message' => 'Missing uid',
+                ])
+            )->withStatus(400);
+        }
+
+        // Kursanmeldung laden
+        $kursanmeldung = $this->kursanmeldungRepository->findByUid($uid);
+        if ($kursanmeldung === null) {
+            return $this->jsonResponse(
+                json_encode([
+                    'success' => false,
+                    'message' => 'Kursanmeldung not found',
+                ])
+            )->withStatus(404);
+        }
+        try {
+            // Prof-Status aktualisieren (als Einzelwert in ObjectStorage)
+            $storage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+            if (!empty($statusUid)) {
+                $status = $this->anmeldestatusRepository->findByUid((int)$statusUid);
+                if ($status !== null) {
+                    $storage->attach($status);
+                }
+            }
+            $kursanmeldung->setProfstatus($storage);
+
+            // Persistieren
+            $this->kursanmeldungRepository->update($kursanmeldung);
+            GeneralUtility::makeInstance(
+                PersistenceManager::class
+            )->persistAll();
+        }catch (\Exception $e){
+            if (empty($uid)) {
+                return $this->jsonResponse(
+                    json_encode([
+                        'success' => false,
+                        'message' => 'Could not persist',
+                    ])
+                )->withStatus(400);
+            }
+        }
+
+        return $this->jsonResponse(json_encode([
+            'success' => true,
+            'uid' => $uid,
+            'statusUid' => $statusUid,
+        ]))->withStatus(200);
     }
 
     /**
