@@ -2,10 +2,12 @@
 
 <f:section name="main">
     <f:if condition="kursanmeldungenGrouped != ''">
-    <f:form action="updatestatus" name="newKursanmeldungKl">
+    <f:form action="list" name="newKursanmeldungKl">
     <f:for each="{kursanmeldungenGrouped}" as="kursanmeldungGrouped">
     <div class="joKursGrouped panel panel-space panel-default">
-        <div class="joHead panel-heading"><span class="joCursor">{kursanmeldungGrouped.registrations.0.kurs.kursnr} - {kursanmeldungGrouped.registrations.0.kurs.instrument} - {kursanmeldungGrouped.registrations.0.kurs.prof} (<f:count>{kursanmeldungGrouped.registrations}</f:count>/{kursanmeldungGrouped.total})</span><f:form.textfield name="paginateSearch[{kursanmeldungGrouped.registrations.0.kurs.uid}]" value="{kursanmeldungGrouped.search}" class="form-control"/></div>
+        <div class="panel-heading">
+            <span class="">{kursanmeldungGrouped.registrations.0.kurs.kursnr} - {kursanmeldungGrouped.registrations.0.kurs.instrument} - {kursanmeldungGrouped.registrations.0.kurs.prof} (<f:count>{kursanmeldungGrouped.registrations}</f:count>/{kursanmeldungGrouped.total})</span>
+            <f:form.textfield name="paginateSearch[{kursanmeldungGrouped.registrations.0.kurs.uid}]" value="{kursanmeldungGrouped.search}" class="form-control js-paginate-search"/></div>
         <div class="">
             <table  class="tx_kursanmeldung_anmeldungen table table-bordered" >
                 <tr>

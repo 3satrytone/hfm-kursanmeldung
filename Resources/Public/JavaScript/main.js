@@ -655,4 +655,22 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     attachStatusHandler();
+
+    // PaginateSearch (Kursliste Suche) bei Blur oder Enter absenden
+    const paginateSearchInputs = document.querySelectorAll('.js-paginate-search');
+    paginateSearchInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.form) {
+                this.form.submit();
+            }
+        });
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (this.form) {
+                    this.form.submit();
+                }
+            }
+        });
+    });
 });

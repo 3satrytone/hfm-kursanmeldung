@@ -121,34 +121,50 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             }
         }
         if ($this->request->hasArgument('paginateSearch')) {
-            $search = $this->request->getArgument('paginateSearch');
-            if (!empty($search)) {
-                foreach ($search as $key => $value) {
-                    $kursanmeldungenSearch[$key] = $this->kursanmeldungRepository->findBySearchExtbase($key, $value);
+            $searchArr = $this->request->getArgument('paginateSearch');
+            if (is_array($searchArr)) {
+                foreach ($searchArr as $kursUid => $searchTerm) {
+                    if (empty($searchTerm)) {
+                        continue;
+                    }
 
-                    if ($key == 0) {
-                        $kursanmeldungen = array();
-                        $kursanmeldungen = $kursanmeldungenSearch[$key];
-                        $kursanmeldungen['search'] = $value;
-                    } else {
-                        if (!empty($kursanmeldungenSearch[$key])) {
-                            $kursanmeldungenGrouped[$key]['kurs'] = '';
-                            foreach ($kursanmeldungenSearch[$key] as $skey => $svalue) {
-                                // nicht in der Liste Anzeigen wenn Status Abgesagt oder Abgemeldet ist
-                                $showIfClassMember = true;
-                                $status = $this->getAnmeldestatus($svalue);
-                                if (in_array($status, $this->hideIfClassMemberArr)) {
-                                    $showIfClassMember = false;
-                                }
-                                if ($svalue->getTeilnahmeart() == 0) {
-                                    if ($showIfClassMember) {
-                                        $kursanmeldungenGrouped[$key]['kurs'][] = $svalue;
-                                    }
-                                }
+                    $kursUid = (int)$kursUid;
+                    $searchResults = $this->kursanmeldungRepository->getParticipantsByKursFiltered(
+                        $kursUid,
+                        $searchTerm,
+                        ['tn.vorname', 'tn.nachname', 'kurs.instrument']
+                    );
+
+                    if (!empty($searchResults)) {
+                        // Wenn wir Suchergebnisse für diesen Kurs haben, ersetzen wir die Liste
+                        // Aber wir müssen sicherstellen, dass wir nur die anzeigen, die auch vorher (nicht passiv, richtiger Status) erlaubt waren.
+                        // Die getParticipantsByKursFiltered Methode filtert noch nicht auf teilnahmeart=0 und Status.
+                        $filteredResults = [];
+                        foreach ($searchResults as $res) {
+                            $status = $this->getAnmeldestatus($res);
+                            if ($res->getTeilnahmeart() === "0" && !in_array($status, $this->hideIfClassMemberArr) && $status !== null) {
+                                $filteredResults[] = $res;
                             }
                         }
-                        $kursanmeldungenGrouped[$key]['search'] = $value;
-                        $kursanmeldungenGrouped[$key]['showGrouped'] = 1;
+
+                        if (isset($kursanmeldungenGrouped[$kursUid])) {
+                            $kursanmeldungenGrouped[$kursUid]['registrations'] = $filteredResults;
+                            $kursanmeldungenGrouped[$kursUid]['search'] = $searchTerm;
+                        } elseif ($kursUid > 0) {
+                            // Falls der Kurs noch nicht in der Grouped Liste war (unwahrscheinlich bei der aktuellen Logik)
+                            $kursanmeldungenGrouped[$kursUid] = [
+                                'registrations' => $filteredResults,
+                                'search' => $searchTerm,
+                                'total' => count($filteredResults), // Das ist hier ungenau, da 'total' eigentlich alle (ungefilterten) meint
+                                'showGrouped' => 0
+                            ];
+                        }
+                    } else {
+                        // Suche ohne Ergebnis für diesen Kurs
+                        if (isset($kursanmeldungenGrouped[$kursUid])) {
+                            $kursanmeldungenGrouped[$kursUid]['registrations'] = [];
+                            $kursanmeldungenGrouped[$kursUid]['search'] = $searchTerm;
+                        }
                     }
                 }
             }
@@ -342,7 +358,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                                     foreach ($temp[$value] as $obj) {
                                         array_push($tempArr, $this->getValueFromMethodname($method_name, $obj));
                                     }
-                                    $temp[$value] = implode($tempArr, ',');
+                                    $temp[$value] = implode(',', $tempArr);
                                 }
                             }
                             // bestimmte Werte übersetzen

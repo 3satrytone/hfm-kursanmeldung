@@ -208,6 +208,7 @@ class KursanmeldungRepository extends Repository
                 'tn.nachname' => 'tn.nachname',
                 'tn.gebdate' => 'tn.gebdate',
                 'kurs.professor' => 'kurs.professor.name',
+                'kurs.instrument' => 'kurs.instrument',
                 'datein' => 'datein',
                 'teilnahmeart' => 'teilnahmeart',
                 'anmeldestatus' => 'anmeldestatus.kurz',
@@ -232,7 +233,7 @@ class KursanmeldungRepository extends Repository
 
             foreach ($selected as $key) {
                 $prop = $fieldMap[$key];
-                if (in_array($key, ['tn.vorname', 'tn.nachname', 'kurs.professor', 'teilnahmeart', 'anmeldestatus'], true)) {
+                if (in_array($key, ['tn.vorname', 'tn.nachname', 'kurs.professor', 'kurs.instrument', 'teilnahmeart', 'anmeldestatus'], true)) {
                     $or[] = $query->like($prop, '%' . $search . '%');
                     continue;
                 }
