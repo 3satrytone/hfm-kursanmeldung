@@ -18,8 +18,8 @@
     <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.tn.0.vorname}</td>
     <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}"><b>{kursanmeldung.tn.0.nachname}</b></td>
     <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
-    <td colspan="2" class="{bg-class}">
-        <f:if condition="{kursanmeldung.anmeldestatus} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.anmeldestatus.0.anmeldestatus}</f:if>
+    <td colspan="2" class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">
+        <f:if condition="{kursanmeldung.anmeldestatus}">{kursanmeldung.anmeldestatus.0.anmeldestatus}</f:if>
     </td>
     <td colspan="2" class="{bg-class}">
         <f:form.select class="form-select js-profstatus"
