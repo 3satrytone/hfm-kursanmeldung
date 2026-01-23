@@ -176,3 +176,8 @@ a.formhandler-button.formhandler-backward {
 #kursanmeldung-teilnehmer-edit .teilnehmer-edit-new{
     display:none;
 }
+
+
+.tx_kursanmeldung_anmeldungen .pointer-event{
+    cursor: pointer;
+}

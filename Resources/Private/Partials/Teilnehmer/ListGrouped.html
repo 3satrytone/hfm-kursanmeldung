@@ -2,10 +2,10 @@
 <f:if condition="{i.isEven}">
     <f:variable name="bg-class">bg-secondary-subtle</f:variable>
 </f:if>
-<tr data-bs-toggle="collapse" data-bs-target=".multi-collapse-{i.index}">
-    <td class="{bg-class}">{kursanmeldung.uid}</td>
-    <td class="{bg-class}">{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
-    <td class="{bg-class}">
+<tr>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.uid}</td>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}</td>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">
         <f:switch expression="{kursanmeldung.tn.0.anrede}">
             <f:case value="0">
                 <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.email.gender.0"/>
@@ -15,13 +15,13 @@
             </f:case>
         </f:switch>
     </td>
-    <td class="{bg-class}">{kursanmeldung.tn.0.vorname}</td>
-    <td class="{bg-class}"><b>{kursanmeldung.tn.0.nachname}</b></td>
-    <td class="{bg-class}">{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.tn.0.vorname}</td>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}"><b>{kursanmeldung.tn.0.nachname}</b></td>
+    <td class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}</td>
     <td colspan="2" class="{bg-class}">
         <f:if condition="{kursanmeldung.anmeldestatus}">{kursanmeldung.anmeldestatus.0.anmeldestatus}</f:if>
     </td>
-    <td colspan="2" class="{bg-class}">
+    <td colspan="2" class="{bg-class} pointer-event" data-bs-toggle="collapse" data-bs-target=".multi-collapse-{kursanmeldung.uid}">
         <f:form.select class="form-select js-profstatus"
                        data-uid="{kursanmeldung.uid}" data-url="{f:uri.action(action: 'updatestatus', pageType: '12345')}"
                        value="{kursanmeldung.profstatus}" name="anmeldestatus[{kursanmeldung.uid}]"
@@ -31,13 +31,13 @@
     </td>
 </tr>
 <f:if condition="{profSelStatus}">
-    <tr class="collapse multi-collapse-{i.index}">
+    <tr class="collapse multi-collapse-{kursanmeldung.uid}">
         <td colspan="3" class="{bg-class}">{kursanmeldung.tn.0.email}</td>
         <td colspan="3" class="{bg-class}">{kursanmeldung.tn.0.ort}</td>
         <td colspan="3" class="{bg-class}">{kursanmeldung.tn.0.land}</td>
     </tr>
 </f:if>
-<tr class="collapse multi-collapse-{i.index}">
+<tr class="collapse multi-collapse-{kursanmeldung.uid}">
     <f:if condition="{kursanmeldung.orchesterstudio}">
         <f:then>
             <td colspan="6" class="{bg-class}"><b>
@@ -57,32 +57,35 @@
         </f:else>
     </f:if>
 </tr>
-<tr class="collapse multi-collapse-{i.index}">
+<tr class="collapse multi-collapse-{kursanmeldung.uid}">
     <td colspan="9" class="{bg-class}"><b>
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.comment"/>
     </b><br/>{kursanmeldung.comment}
     </td>
 </tr>
-<tr class="collapse multi-collapse-{i.index}">
+<tr class="collapse multi-collapse-{kursanmeldung.uid}">
     <td colspan="6" class="{bg-class}"><b>
         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.uploads" default="Uploads:"/>
     </b><br/>
         <f:if condition="{kursanmeldung.uploads}">
-            <f:for each="{kursanmeldung.uploads}" as="dl">
-                <f:debug>{dl}</f:debug>
-                <f:if condition="{dl.pfad}!=''">
-                    <div>{dl.kat}:
-                        <f:link.external uri="{dl.pfad}" class="joKursListeDl" target="_blank">{dl.name}
-                        </f:link.external>
+            <f:for each="{kursanmeldung.uploads}" as="ul">
+                <f:if condition="{ul.pfad}!=''">
+                    <div>
+                        <f:switch expression="{ul.kat}">
+                            <f:case value="download"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
+                            <f:case value="link"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
+                            <f:case value="vita"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
+                            <f:case value="youtube"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
+                        </f:switch>
                     </div>
                 </f:if>
             </f:for>
         </f:if>
     </td>
     <td colspan="3" class="{bg-class}"><b>
-        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.duosel"/>
+        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel"/>
     </b><br/>{kursanmeldung.duosel}<br/><b>
-        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step3.duoname"/>
+        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step1.duoname"/>
     </b><br/>{kursanmeldung.duoname}
     </td>
 </tr>

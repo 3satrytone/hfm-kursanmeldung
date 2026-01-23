@@ -27,33 +27,4 @@
     </f:for>
     </f:form>
 </f:if>
-
-<f:asset.script identifier="kursliste-updatestatus">
-    const updateUrl = '<f:uri.action action="updatestatus" />';
-    const namespace = 'tx_kursanmeldung_kursliste';
-    document.addEventListener('change', function(e) {
-        const sel = e.target;
-        if (!(sel instanceof HTMLSelectElement)) return;
-        if (!sel.classList.contains('js-profstatus')) return;
-        const uid = sel.getAttribute('data-uid');
-        const status = sel.value;
-        if (!uid) return;
-        const formData = new URLSearchParams();
-        formData.set(namespace + '[uid]', uid);
-        formData.set(namespace + '[status]', status);
-        formData.set(namespace + '[action]', 'updatestatus');
-        formData.set(namespace + '[controller]', 'KursListe');
-        fetch(updateUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-            body: formData.toString(),
-            credentials: 'same-origin'
-        }).then(r => r.json()).then(data => {
-            // Optional: visuelles Feedback
-            if (!data?.success) {
-                console.error('Update fehlgeschlagen', data);
-            }
-        }).catch(err => console.error('Update error', err));
-    });
-</f:asset.script>
 </f:section>
