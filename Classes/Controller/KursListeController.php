@@ -129,6 +129,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                     }
 
                     $kursUid = (int)$kursUid;
+                    $this->kursanmeldungRepository->setRespectStoragePage(false);
                     $searchResults = $this->kursanmeldungRepository->getParticipantsByKursFiltered(
                         $kursUid,
                         $searchTerm,

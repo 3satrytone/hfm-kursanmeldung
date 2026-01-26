@@ -26,6 +26,17 @@ class KursanmeldungRepository extends Repository
     }
 
     /**
+     * @param bool $value
+     * @return void
+     */
+    public function setRespectStoragePage(bool $value): void
+    {
+        $querySettings = $this->createQuery()->getQuerySettings();
+        $querySettings->setRespectStoragePage($value);
+        $this->setDefaultQuerySettings($querySettings);
+    }
+
+    /**
      * @param int $kurs
      */
     public function getParticipantsByKurs($kursId): QueryResultInterface
