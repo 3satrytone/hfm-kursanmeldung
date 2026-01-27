@@ -51,7 +51,7 @@ class Kursanmeldung extends AbstractEntity
     protected ObjectStorage $anmeldestatus;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\ProfStatus>
      */
     protected ObjectStorage $profstatus;
 
@@ -390,7 +390,7 @@ class Kursanmeldung extends AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus>
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\ProfStatus>
      */
     public function getProfstatus(): ObjectStorage
     {
@@ -398,7 +398,7 @@ class Kursanmeldung extends AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\Anmeldestatus> $profstatus
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Hfm\Kursanmeldung\Domain\Model\ProfStatus> $profstatus
      * @return void
      */
     public function setProfstatus(ObjectStorage $profstatus): void

@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Controller;
 
+use Hfm\Kursanmeldung\Domain\Model\ProfStatus;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfRepository;
+use Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -28,6 +31,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         private readonly KursanmeldungRepository $kursanmeldungRepository,
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly ProfRepository $profRepository,
+        private readonly ProfStatusRepository $profStatusRepository,
     ) {
     }
 
@@ -56,6 +60,9 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 }
                 if (isset($this->anmeldestatusRepository)) {
                     $this->anmeldestatusRepository->setPageIds($this->settings['dataPages']);
+                }
+                if (isset($this->profStatusRepository)) {
+                    $this->profStatusRepository->setPageIds($this->settings['dataPages']);
                 }
             }
         }
@@ -87,6 +94,8 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         $showGrouped = [];
 
+        $feUserUid = $this->getCurrentFeUserUid();
+
         if (!empty($kurse)) {
             foreach ($kurse as $kursid) {
                 $kursanmeldungen = $this->kursanmeldungRepository->findByKursNotPassive((int)$kursid);
@@ -106,10 +115,17 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                             $kurs = $kursanmeldung->getKurs();
                             if (!empty($kurs)) {
                                 if ($showIfClassMember) {
+
+                                    $profStatus = $this->profStatusRepository->findOneByKursanmeldungAndFeuser((int)$kursanmeldung->getUid(), (int)$feUserUid);
+                                    if(!empty($profStatus)) {
+                                        $objStorage = new ObjectStorage();
+                                        $objStorage->attach($profStatus);
+                                        $kursanmeldung->setProfStatus($objStorage);
+                                    }
                                     $kursanmeldungenGrouped[$kurs->getUid()]['registrations'][] = $kursanmeldung;
                                 }
                                 $kursanmeldungenGrouped[$kurs->getUid()]['showGrouped'] = 0;
-                                $kursanmeldungenGrouped[$kurs->getUid()]['total']++;
+                                isset($kursanmeldungenGrouped[$kurs->getUid()]['total']) ? $kursanmeldungenGrouped[$kurs->getUid()]['total']++ : $kursanmeldungenGrouped[$kurs->getUid()]['total'] = 1;
                                 if (isset($showGrouped[$kurs->getUid()])) {
                                     $kursanmeldungenGrouped[$kurs->getUid(
                                     )]['showGrouped'] = $showGrouped[$kurs->getUid()];
@@ -242,21 +258,41 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             )->withStatus(404);
         }
         try {
+            // Aktuellen FE-User ermitteln
+            $feUserUid = $this->getCurrentFeUserUid();
+
             // Prof-Status aktualisieren (als Einzelwert in ObjectStorage)
             $storage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
             if (!empty($statusUid)) {
-                $status = $this->anmeldestatusRepository->findByUid((int)$statusUid);
+                $status = $this->profStatusRepository->findOneByKursanmeldungAndFeuser((int)$uid, (int)$feUserUid);
+                $anmeldeStatus = $this->anmeldestatusRepository->findByUid($statusUid);
                 if ($status !== null) {
-                    $storage->attach($status);
+                    // Falls wir die Felder im Modell setzen wollen (kursanmeldung + feuser)
+                    // Diese Felder sind im ProfStatus Modell vorhanden.
+                    $status->setKursanmeldung((int)$uid);
+                    $status->setFeuser((int)$feUserUid);
+                    $status->setStatus($anmeldeStatus);
+                    $status->setKurz($anmeldeStatus->getKurz());
+                    $this->profStatusRepository->update($status);
+                }else{
+                    $status = new ProfStatus();
+                    $status->setKursanmeldung((int)$uid);
+                    $status->setFeuser((int)$feUserUid);
+                    $status->setStatus($anmeldeStatus);
+                    $status->setKurz($anmeldeStatus->getKurz());
+                    $this->profStatusRepository->add($status);
                 }
             }
-            $kursanmeldung->setProfstatus($storage);
 
-            // Persistieren
-            $this->kursanmeldungRepository->update($kursanmeldung);
             GeneralUtility::makeInstance(
                 PersistenceManager::class
             )->persistAll();
+
+            // Debug-Log (kann später entfernt werden)
+            if ($status !== null) {
+                // Hier könnte man prüfen, ob die UID gesetzt wurde, falls persistAll erfolgreich war
+                // aber die kursanmeldung und feuser felder sind interne properties.
+            }
         }catch (\Exception $e){
             if (empty($uid)) {
                 return $this->jsonResponse(
@@ -316,6 +352,16 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         $settings['size'] = 64;
 
         $this->Joexport->Joexport($settings, true);
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getCurrentFeUserUid(): mixed
+    {
+        $feUser = $this->request->getAttribute('frontend.user') ?? null;
+        $feUserUid = $feUser->user['uid'] ?? 0;
+        return $feUserUid;
     }
 
     protected function getStastusProfObj()

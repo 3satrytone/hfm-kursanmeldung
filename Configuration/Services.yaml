@@ -40,6 +40,8 @@ services:
     public: true
   Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository:
     public: true
+  Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository:
+    public: true
   Hfm\Kursanmeldung\Utility\PropertyConverterUtility:
     public: true
   Hfm\Kursanmeldung\Utility\FormatUtility:

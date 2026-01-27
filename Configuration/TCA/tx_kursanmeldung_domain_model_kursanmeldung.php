@@ -270,8 +270,9 @@ return [
             'exclude' => false,
             'label' => 'Prof-Status',
             'config' => [
-                'type' => 'number',
-                'size' => 3,
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tx_kursanmeldung_domain_model_profstatus',
                 'default' => 0,
             ],
         ],

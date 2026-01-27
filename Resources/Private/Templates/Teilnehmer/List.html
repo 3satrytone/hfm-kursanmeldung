@@ -1,13 +1,15 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers/" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers/" data-namespace-typo3-fluid="true">
 <f:layout name="Default"/>
 <f:section name="Main">
     <h1>Teilnehmer</h1>
 
     <!-- Gesamtliste mit Pagination -->
     <h2>Alle Teilnehmer</h2>
-    <f:flashMessages />
+    <f:flashMessages/>
 
-    <f:render partial="Teilnehmer/SearchBar" arguments="{uid: 0, search: searchAll, selectedFields: selectedFieldsAll, selectedMap:selectedMapAll}"/>
+    <f:render partial="Teilnehmer/SearchBar"
+              arguments="{uid: 0, search: searchAll, selectedFields: selectedFieldsAll, selectedMap:selectedMapAll}"/>
 
     <f:if condition="{paginator.paginatedItems}">
         <f:then>
@@ -19,7 +21,8 @@
                 <ul class="pagination" aria-label="Seiten">
                     <f:if condition="{pagination.previousPageNumber}">
                         <li class="page-item">
-                            <f:link.action action="list" arguments="{page: pagination.previousPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                            <f:link.action action="list"
+                                           arguments="{page: pagination.previousPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
                                            class="page-link">&laquo;
                             </f:link.action>
                         </li>
@@ -30,7 +33,9 @@
                                 <span class="page-link active">{pageNumber}</span>
                             </f:if>
                             <f:if condition="{pageNumber} != {paginator.currentPageNumber}">
-                                <f:link.action action="list" arguments="{page: pageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}" class="page-link">
+                                <f:link.action action="list"
+                                               arguments="{page: pageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                                               class="page-link">
                                     {pageNumber}
                                 </f:link.action>
                             </f:if>
@@ -38,7 +43,8 @@
                     </f:for>
                     <f:if condition="{pagination.nextPageNumber}">
                         <li class="page-item">
-                            <f:link.action action="list" arguments="{page: pagination.nextPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                            <f:link.action action="list"
+                                           arguments="{page: pagination.nextPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
                                            class="page-link">&raquo;
                             </f:link.action>
                         </li>
@@ -49,21 +55,48 @@
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th data-field="uid" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.uid" default="Nr." /></span><span class="srt-ico"></span></th>
-                    <th data-field="k.datein" data-type="datetime" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.datein" /></span><span class="srt-ico"></span></th>
-                    <th data-field="prof.name" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.prof" default="Professor" /></span><span class="srt-ico"></span></th>
-                    <th data-field="tn.vorname" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.vorname" /></span><span class="srt-ico"></span></th>
-                    <th data-field="tn.nachname" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.nachname" /></span><span class="srt-ico"></span></th>
-                    <th data-field="tn.gebdate" data-type="date" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebdat" default="Geburtsdatum" /></span><span class="srt-ico"></span></th>
-                    <th data-field="teilnahmeart" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.teilnahmeart" /></span><span class="srt-ico"></span></th>
-                    <th data-field="bezahlt" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt" /></span><span class="srt-ico"></span></th>
-                    <th data-field="k.gebuehr" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebuehr" default="ANG Gebühr" /></span><span class="srt-ico"></span></th>
-                    <th data-field="gezahlt" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt" default="ANG Gezahlt" /></span><span class="srt-ico"></span></th>
-                    <th data-field="k.gebuehrag" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gebuehrag" default="TNG Gebühr" /></span><span class="srt-ico"></span></th>
-                    <th data-field="gezahltag" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahltag" default="TNG Gezahlt" /></span><span class="srt-ico"></span></th>
-                    <th data-field="jo_mail" data-type="text" class="hdr-srt" role="button" tabindex="0"><span>Mail</span><span class="srt-ico"></span></th>
-                    <th data-field="ast.kurz" data-type="text" class="hdr-srt" role="button" tabindex="0"><span>Stat</span><span class="srt-ico"></span></th>
-                    <th data-field="k.profstatus" data-type="text" class="hdr-srt" role="button" tabindex="0"><span>Prof</span><span class="srt-ico"></span></th>
+                    <th data-field="uid" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.uid" default="Nr."/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="k.datein" data-type="datetime" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.datein"/></span><span class="srt-ico"></span>
+                    </th>
+                    <th data-field="prof.name" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.prof" default="Professor"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="tn.vorname" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.vorname"/></span><span class="srt-ico"></span>
+                    </th>
+                    <th data-field="tn.nachname" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.nachname"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="tn.gebdate" data-type="date" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.gebdat" default="Geburtsdatum"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="teilnahmeart" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.teilnahmeart"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="bezahlt" data-type="text" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt"/></span><span class="srt-ico"></span>
+                    </th>
+                    <th data-field="k.gebuehr" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.gebuehr" default="ANG Gebühr"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="gezahlt" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt" default="ANG Gezahlt"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="k.gebuehrag" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.gebuehrag" default="TNG Gebühr"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="gezahltag" data-type="number" class="hdr-srt" role="button" tabindex="0"><span><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.gezahltag" default="TNG Gezahlt"/></span><span
+                            class="srt-ico"></span></th>
+                    <th data-field="jo_mail" data-type="text" class="hdr-srt" role="button" tabindex="0">
+                        <span>Mail</span><span class="srt-ico"></span></th>
+                    <th data-field="ast.kurz" data-type="text" class="hdr-srt" role="button" tabindex="0">
+                        <span>Stat</span><span class="srt-ico"></span></th>
+                    <th data-field="k.profstatus" data-type="text" class="hdr-srt" role="button" tabindex="0">
+                        <span>Prof</span><span class="srt-ico"></span></th>
 
                     <th class="text-end">&nbsp;</th>
                     <th class="text-end">&nbsp;</th>
@@ -72,77 +105,112 @@
                 <tbody>
                 <f:for each="{paginator.paginatedItems}" as="kursanmeldung" iteration="i">
                     <tr>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten">{kursanmeldung.uid}
-                        </f:link.action>
+                            </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten">{kursanmeldung.datein -> f:format.date(format:'d.m.Y H:i')}
-                        </f:link.action>
+                                           title="Bearbeiten">{kursanmeldung.datein -> f:format.date(format:'d.m.Y
+                                H:i')}
+                            </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten">{kursanmeldung.kurs.professor.name}
-                        </f:link.action>
+                            </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten">{kursanmeldung.tn.0.vorname}
-                        </f:link.action>
+                            </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten"><b>{kursanmeldung.tn.0.nachname}</b>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten">{kursanmeldung.tn.0.gebdate -> f:format.date(format:'d.m.Y')}
+                                           title="Bearbeiten">{kursanmeldung.tn.0.gebdate ->
+                                f:format.date(format:'d.m.Y')}
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
-                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                            title="Bearbeiten">
-                            <f:switch expression="{kursanmeldung.teilnahmeart}">
-                                <f:case value="0">
-                                    <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.0" default=""/>
-                                </f:case>
-                                <f:case value="1">
-                                    <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.1" default=""/>
-                                </f:case>
-                            </f:switch>
+                        <td>
+                            <f:link.action action="edit"
+                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                           title="Bearbeiten">
+                                <f:switch expression="{kursanmeldung.teilnahmeart}">
+                                    <f:case value="0">
+                                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.0" default=""/>
+                                    </f:case>
+                                    <f:case value="1">
+                                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.1" default=""/>
+                                    </f:case>
+                                </f:switch>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten">{kursanmeldung.bezahlt}
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gebuehr}>0">{kursanmeldung.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                                           title="Bearbeiten">
+                                <f:if condition="{kursanmeldung.gebuehr}>0">{kursanmeldung.gebuehr ->
+                                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
+                                </f:if>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                                           title="Bearbeiten">
+                                <f:if condition="{kursanmeldung.gezahlt}>0">{kursanmeldung.gezahlt ->
+                                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
+                                </f:if>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gebuehrag}>0">{kursanmeldung.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                                           title="Bearbeiten">
+                                <f:if condition="{kursanmeldung.gebuehrag}>0">{kursanmeldung.gebuehrag ->
+                                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
+                                </f:if>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten"><f:if condition="{kursanmeldung.gezahltag}>0">{kursanmeldung.gezahltag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if>
+                                           title="Bearbeiten">
+                                <f:if condition="{kursanmeldung.gezahltag}>0">{kursanmeldung.gezahltag ->
+                                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
+                                </f:if>
                             </f:link.action>
                         </td>
-                        <td><f:link.action action="edit"
+                        <td>
+                            <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten"><f:for each="{kursanmeldungMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={kursanmeldung.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for>
+                                           title="Bearbeiten">
+                                <f:for each="{kursanmeldungMailings}" as="kM" key="kKM">
+                                    <f:if condition="{kKM}=={kursanmeldung.uid}">
+                                        <f:if condition="{kM.Zulassung}>0">ZL</f:if>
+                                        <f:if condition="{kM.ZulassungR}>0"> ZLR</f:if>
+                                        <f:if condition="{kM.Absage}>0"> AS</f:if>
+                                        <f:if condition="{kM.Warteliste}>0"> WL</f:if>
+                                    </f:if>
+                                </f:for>
                             </f:link.action>
                         </td>
                         <td>
@@ -162,17 +230,29 @@
                                 </f:for>
                             </select>
                         </td>
-                        <td><f:link.action action="edit"
-                                           arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
-                                           title="Bearbeiten">{kursanmeldung.profstatus.0.kurz}
-                            </f:link.action>
+                        <td>
+                            <span title="prof_ja">
+                            <f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_ja}">
+                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_ja}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span> -
+                            <span title="prof_vlt"><f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_vlt}">
+                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_vlt}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span> -
+                            <span title="prof_nein"><f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_nein}">
+                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_nein}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span>
                         </td>
                         <td class="text-end">
                             <f:link.action action="edit"
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten"
                                            class="btn btn-sm btn-link">
-                                <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt="edit"/></span>
+                                <span aria-hidden="true"><f:image
+                                        src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg"
+                                        alt="edit"/></span>
                                 <span class="visually-hidden">Bearbeiten</span>
                             </f:link.action>
                         </td>
@@ -181,7 +261,9 @@
                                            arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
                                            title="Bearbeiten"
                                            class="btn btn-sm btn-link js-confirm-delete">
-                                <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt="delete"/></span>
+                                <span aria-hidden="true"><f:image
+                                        src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg"
+                                        alt="delete"/></span>
                                 <span class="visually-hidden">Löschen</span>
                             </f:link.action>
                         </td>
@@ -198,7 +280,8 @@
                 <ul class="pagination" aria-label="Seiten">
                     <f:if condition="{pagination.previousPageNumber}">
                         <li class="page-item">
-                            <f:link.action action="list" arguments="{page: pagination.previousPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                            <f:link.action action="list"
+                                           arguments="{page: pagination.previousPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
                                            class="page-link">&laquo;
                             </f:link.action>
                         </li>
@@ -209,7 +292,9 @@
                                 <span class="page-link active">{pageNumber}</span>
                             </f:if>
                             <f:if condition="{pageNumber} != {paginator.currentPageNumber}">
-                                <f:link.action action="list" arguments="{page: pageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}" class="page-link">
+                                <f:link.action action="list"
+                                               arguments="{page: pageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                                               class="page-link">
                                     {pageNumber}
                                 </f:link.action>
                             </f:if>
@@ -217,7 +302,8 @@
                     </f:for>
                     <f:if condition="{pagination.nextPageNumber}">
                         <li class="page-item">
-                            <f:link.action action="list" arguments="{page: pagination.nextPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
+                            <f:link.action action="list"
+                                           arguments="{page: pagination.nextPageNumber, searchAll: searchAll, fieldsAll: selectedFieldsAll}"
                                            class="page-link">&raquo;
                             </f:link.action>
                         </li>
@@ -241,19 +327,23 @@
                      aria-expanded="false" aria-controls="collapseWidthExample"><h3>Kurs {group.kurs.kursnr} –
                     {group.kurs.instrument}</h3>
                 </div>
-                <div class="collapse{f:if(condition: '{openKursUid} == {group.kurs.uid}', then: ' show')}" id="collapseWidthId-{group.kurs.uid}" data-scroll-to="{f:if(condition: '{openKursUid} == {group.kurs.uid}', then: '1', else: '0')}">
+                <div class="collapse{f:if(condition: '{openKursUid} == {group.kurs.uid}', then: ' show')}"
+                     id="collapseWidthId-{group.kurs.uid}"
+                     data-scroll-to="{f:if(condition: '{openKursUid} == {group.kurs.uid}', then: '1', else: '0')}">
 
-                    <f:render partial="Teilnehmer/SearchBar" arguments="{uid: group.kurs.uid, search: group.search, selectedFields: group.selectedFields, selectedMap: group.selectedMap}"/>
+                    <f:render partial="Teilnehmer/SearchBar"
+                              arguments="{uid: group.kurs.uid, search: group.search, selectedFields: group.selectedFields, selectedMap: group.selectedMap}"/>
 
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th data-field="uid" data-type="number" class="hdr-srt" role="button" tabindex="0">
-                                <span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.uid" default="Nr."/></span><span class="srt-ico"></span>
+                                <span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.uid"
+                                                   default="Nr."/></span><span class="srt-ico"></span>
                             </th>
                             <th data-field="k.datein" data-type="datetime" class="hdr-srt" role="button" tabindex="0">
                                 <span><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.datein"
-                                             default="Anmeldedatum"/></span><span class="srt-ico"></span>
+                                                   default="Anmeldedatum"/></span><span class="srt-ico"></span>
                             </th>
                             <th data-field="tn.anrede" class="hdr-srt">
                                 <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.anrede" default="Anrede"/>
@@ -314,10 +404,31 @@
                                 <td>{reg.tn.0.ort}</td>
                                 <td>{reg.tn.0.matrikel}</td>
                                 <td>{reg.bezahlt}</td>
-                                <td><f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                                <td><f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                                <td><f:if condition="{reg.gebuehrag}>0">{reg.gebuehrag -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}</f:if></td>
-                                <td><f:for each="{regMailings}" as="kM" key="kKM"><f:if condition="{kKM}=={reg.uid}"><f:if condition="{kM.Zulassung}>0">ZL</f:if><f:if condition="{kM.ZulassungR}>0"> ZLR</f:if><f:if condition="{kM.Absage}>0"> AS</f:if><f:if condition="{kM.Warteliste}>0"> WL</f:if></f:if></f:for></td>
+                                <td>
+                                    <f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2,
+                                        decimalSeparator:',', thousandsSeparator:'.')}
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2,
+                                        decimalSeparator:',', thousandsSeparator:'.')}
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:if condition="{reg.gebuehrag}>0">{reg.gebuehrag -> f:format.number(decimals:2,
+                                        decimalSeparator:',', thousandsSeparator:'.')}
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:for each="{regMailings}" as="kM" key="kKM">
+                                        <f:if condition="{kKM}=={reg.uid}">
+                                            <f:if condition="{kM.Zulassung}>0">ZL</f:if>
+                                            <f:if condition="{kM.ZulassungR}>0"> ZLR</f:if>
+                                            <f:if condition="{kM.Absage}>0"> AS</f:if>
+                                            <f:if condition="{kM.Warteliste}>0"> WL</f:if>
+                                        </f:if>
+                                    </f:for>
+                                </td>
                                 <td>
                                     <select class="form-select form-select-sm js-ast-select"
                                             data-ka="{reg.uid}"
@@ -334,22 +445,42 @@
                                         </f:for>
                                     </select>
                                 </td>
-                                <td>{reg.profstatus.0.kurz}</td>
+                                <td>
+                            <span title="prof_ja">
+                            <f:if condition="{profStatusSum.{reg.uid}.prof_ja}">
+                                <f:then>{profStatusSum.{reg.uid}.prof_ja}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span> -
+                                    <span title="prof_vlt"><f:if
+                                            condition="{reg.{kursanmeldung.uid}.prof_vlt}">
+                                <f:then>{profStatusSum.{reg.uid}.prof_vlt}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span> -
+                                    <span title="prof_nein"><f:if
+                                            condition="{profStatusSum.{reg.uid}.prof_nein}">
+                                <f:then>{profStatusSum.{reg.uid}.prof_nein}</f:then>
+                                <f:else>0</f:else>
+                            </f:if></span>
+                                </td>
                                 <td class="text-end">
                                     <f:link.action action="edit"
-                                                   arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}"
                                                    title="Bearbeiten"
                                                    class="btn btn-sm btn-link">
-                                        <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg" alt="edit"/></span>
+                                        <span aria-hidden="true"><f:image
+                                                src="EXT:kursanmeldung/Resources/Public/Images/actions-edit.svg"
+                                                alt="edit"/></span>
                                         <span class="visually-hidden">Bearbeiten</span>
                                     </f:link.action>
                                 </td>
                                 <td class="text-end">
                                     <f:link.action action="delete"
-                                                   arguments="{kursanmeldung: kursanmeldung, page: paginator.currentPageNumber}"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}"
                                                    title="Bearbeiten"
                                                    class="btn btn-sm btn-link js-confirm-delete">
-                                        <span aria-hidden="true"><f:image src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg" alt="delete"/></span>
+                                        <span aria-hidden="true"><f:image
+                                                src="EXT:kursanmeldung/Resources/Public/Images/actions-delete.svg"
+                                                alt="delete"/></span>
                                         <span class="visually-hidden">Löschen</span>
                                     </f:link.action>
                                 </td>

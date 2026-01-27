@@ -349,7 +349,7 @@ CREATE TABLE tx_kursanmeldung_domain_model_kursanmeldung (
   datein datetime DEFAULT NULL,
   teilnahmeart varchar(255) DEFAULT '' NOT NULL,
   anmeldestatus tinyint(4) unsigned DEFAULT NULL,
-  profstatus tinyint(4) unsigned DEFAULT NULL,
+  profstatus int(11) DEFAULT '0' NOT NULL,
   programm text NOT NULL,
   orchesterstudio text NOT NULL,
   duo tinyint(4) DEFAULT '0' NOT NULL,
@@ -461,6 +461,35 @@ CREATE TABLE tx_kursanmeldung_domain_model_mailhistrecipients (
   recipient varchar(255) DEFAULT '' NOT NULL,
   datesend int(11) unsigned DEFAULT '0' NOT NULL,
   regid int(11) unsigned DEFAULT '0' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT 0 NOT NULL,
+  l10n_parent int(11) DEFAULT 0 NOT NULL,
+  l10n_diffsource mediumblob,
+  l10n_source int(11) DEFAULT 0 NOT NULL,
+
+  PRIMARY KEY (uid),
+  KEY parent (pid)
+);
+
+#
+# Table structure for table 'tx_kursanmeldung_domain_model_profstatus'
+#
+CREATE TABLE tx_kursanmeldung_domain_model_profstatus (
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  crdate int(11) unsigned DEFAULT '0' NOT NULL,
+  cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
+  deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+  starttime int(11) unsigned DEFAULT '0' NOT NULL,
+  endtime int(11) unsigned DEFAULT '0' NOT NULL,
+
+  status int(11) DEFAULT '0' NOT NULL,
+  kurz varchar(255) DEFAULT '' NOT NULL,
+  kursanmeldung int(11) DEFAULT '0' NOT NULL,
+  feuser int(11) DEFAULT '0' NOT NULL,
 
   sys_language_uid int(11) DEFAULT 0 NOT NULL,
   l10n_parent int(11) DEFAULT 0 NOT NULL,

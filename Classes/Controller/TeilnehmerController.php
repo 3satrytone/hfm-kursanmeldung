@@ -6,6 +6,7 @@ namespace Hfm\Kursanmeldung\Controller;
 
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
+use Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
@@ -50,6 +51,7 @@ final class TeilnehmerController extends ActionController
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
+        private readonly ProfStatusRepository $profStatusRepository,
         private readonly PersistenceManagerInterface $persistenceManager,
         protected UriBuilder $uriBuilder,
         private readonly ParticipantUtility $participantUtility,
@@ -272,6 +274,15 @@ final class TeilnehmerController extends ActionController
             $selectedMapAll[str_replace('.', '_', $f)] = true;
         }
 
+        $this->profStatusRepository->setRespectStoragePage(false);
+        $profStatuus = $this->profStatusRepository->findAll();
+        foreach($profStatuus as $profStatus){
+            if(!isset($profStatusExplained[$profStatus->getKursanmeldung()])){
+                $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()] = 0;
+            }
+            $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()]++;
+        }
+
         $this->view->assignMultiple([
             'paginator' => $paginator,
             'pagination' => $pagination,
@@ -281,6 +292,7 @@ final class TeilnehmerController extends ActionController
             'selectedFieldsAll' => $fieldsAll,
             'selectedMapAll' => $selectedMapAll,
             'openKursUid' => $openKursUid,
+            'profStatusSum' => $profStatusExplained,
         ]);
 
         return $this->htmlResponse();
