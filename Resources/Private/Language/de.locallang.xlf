@@ -1713,6 +1713,10 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>TNG Gezahlt</source>
             <target>TNG Gezahlt</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_domain_model_teilnehmer.gezahltos">
+            <source>OS Gezahlt</source>
+            <target>OS Gezahlt</target>
+        </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_teilnehmer.zahlart.0">
             <source>no</source>
             <target>k.A.</target>

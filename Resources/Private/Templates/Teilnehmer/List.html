@@ -369,10 +369,6 @@
                                 <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.matrikel"
                                              default="Matrikel"/>
                             </th>
-                            <th data-field="bezahlt" class="hdr-srt">
-                                <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.bezahlt"
-                                             default="ANG Bezahlt"/>
-                            </th>
                             <th data-field="gezahlt" class="hdr-srt">
                                 <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.gezahlt"
                                              default="ANG Gezahlt"/>
@@ -399,11 +395,16 @@
                                 <td>{reg.tn.0.anrede}</td>
                                 <td>{reg.tn.0.vorname}</td>
                                 <td><b>{reg.tn.0.nachname}</b></td>
-                                <td>{reg.tn.0.nation}</td>
-                                <td>{reg.tn.0.land}</td>
+                                <td>
+                                    <f:if condition="{reg.tn.0.nation}">
+                                        <f:translate key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.nation}.name" default="{reg.tn.0.nation}"/>
+                                    </f:if>
+                                </td>
+                                <td><f:if condition="{reg.tn.0.land}">
+                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.land}.name" default="{reg.tn.0.land}"/>
+                                </f:if></td>
                                 <td>{reg.tn.0.ort}</td>
                                 <td>{reg.tn.0.matrikel}</td>
-                                <td>{reg.bezahlt}</td>
                                 <td>
                                     <f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2,
                                         decimalSeparator:',', thousandsSeparator:'.')}
@@ -433,6 +434,7 @@
                                     <select class="form-select form-select-sm js-ast-select"
                                             data-ka="{reg.uid}"
                                             data-url="{f:uri.action(action: 'updateAnmeldestatus')}">
+                                        <option value="0"></option>
                                         <f:for each="{anmeldestatusList}" as="ast">
                                             <f:if condition="{ast.uid} == {reg.anmeldestatus.0.uid}">
                                                 <f:then>

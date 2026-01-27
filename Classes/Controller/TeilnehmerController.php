@@ -283,6 +283,10 @@ final class TeilnehmerController extends ActionController
             $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()]++;
         }
 
+        $language =
+            $this->request->getAttribute('language')
+            ?? $this->request->getAttribute('site')->getDefaultLanguage();
+
         $this->view->assignMultiple([
             'paginator' => $paginator,
             'pagination' => $pagination,
@@ -293,6 +297,7 @@ final class TeilnehmerController extends ActionController
             'selectedMapAll' => $selectedMapAll,
             'openKursUid' => $openKursUid,
             'profStatusSum' => $profStatusExplained,
+            'lang' => $language,
         ]);
 
         return $this->htmlResponse();

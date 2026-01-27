@@ -199,6 +199,12 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
 
         ksort($kursanmeldungenGrouped, SORT_NUMERIC);
+
+        $language =
+            $this->request->getAttribute('language')
+            ?? $this->request->getAttribute('site')->getDefaultLanguage();
+
+        $this->view->assign('lang', $language);
         $this->view->assign('kursanmeldungen', $kursanmeldungen);
         $this->view->assign('kursanmeldungenGrouped', $kursanmeldungenGrouped);
         $this->view->assign('profSelStatus', $profSelStatus);

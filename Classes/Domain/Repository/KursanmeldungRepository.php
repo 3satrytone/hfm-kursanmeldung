@@ -43,6 +43,9 @@ class KursanmeldungRepository extends Repository
     {
         $kurs = intval($kursId);
         $query = $this->createQuery();
+        $query->setOrderings([
+            'uid' => QueryInterface::ORDER_DESCENDING,
+        ]);
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->equals(Constants::DB_FIELD_KURS, $kurs)
@@ -64,7 +67,7 @@ class KursanmeldungRepository extends Repository
                 $query->like('tn.email', $email)
             )
         )
-        ->execute();
+            ->execute();
     }
 
     /**
@@ -74,7 +77,7 @@ class KursanmeldungRepository extends Repository
      * @param int $ts
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function getRegistration(string $hash,int $id, int $ts): QueryResultInterface
+    public function getRegistration(string $hash, int $id, int $ts): QueryResultInterface
     {
         $dateIn = new \DateTime();
         $dateIn->setTimestamp($ts);
@@ -158,7 +161,11 @@ class KursanmeldungRepository extends Repository
 
         foreach ($selected as $key) {
             $prop = $fieldMap[$key];
-            if (in_array($key, ['tn.vorname', 'tn.nachname', 'kurs.professor', 'teilnahmeart', 'anmeldestatus'], true)) {
+            if (in_array(
+                $key,
+                ['tn.vorname', 'tn.nachname', 'kurs.professor', 'teilnahmeart', 'anmeldestatus'],
+                true
+            )) {
                 $constraints[] = $query->like($prop, '%' . $search . '%');
                 continue;
             }
@@ -244,7 +251,11 @@ class KursanmeldungRepository extends Repository
 
             foreach ($selected as $key) {
                 $prop = $fieldMap[$key];
-                if (in_array($key, ['tn.vorname', 'tn.nachname', 'kurs.professor', 'kurs.instrument', 'teilnahmeart', 'anmeldestatus'], true)) {
+                if (in_array(
+                    $key,
+                    ['tn.vorname', 'tn.nachname', 'kurs.professor', 'kurs.instrument', 'teilnahmeart', 'anmeldestatus'],
+                    true
+                )) {
                     $or[] = $query->like($prop, '%' . $search . '%');
                     continue;
                 }
@@ -289,13 +300,13 @@ class KursanmeldungRepository extends Repository
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
 
         $joQuery = $query->logicalAnd(
             $query->equals('kurs', $kurs),
             $query->equals('teilnahmeart', 0),
             $query->logicalNot(
-                $query->in('anmeldestatus', array(2,5))
+                $query->in('anmeldestatus', array(2, 5))
             )
         );
 
