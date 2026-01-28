@@ -369,6 +369,15 @@ final class TeilnehmerController extends ActionController
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
+        $this->profStatusRepository->setRespectStoragePage(false);
+        $profStatuus = $this->profStatusRepository->findByKursanmeldung($kursanmeldung->getUid());
+        foreach($profStatuus as $profStatus){
+            if(!isset($profStatusExplained[$profStatus->getKursanmeldung()])){
+                $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()] = 0;
+            }
+            $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()]++;
+        }
+
         $moduleTemplate->assign('teilnahmeartOpt', $teilnahmeartOpt);
         $moduleTemplate->assign('deflangOpt', $deflangOpt);
         $moduleTemplate->assign('kursanmeldung', $kursanmeldung);
@@ -379,6 +388,7 @@ final class TeilnehmerController extends ActionController
         $moduleTemplate->assign('paylater', $paylater);
         $moduleTemplate->assign('hotels', $hotel);
         $moduleTemplate->assign('tnaction', $tnaction);
+        $moduleTemplate->assign('profStatusSum', $profStatusExplained);
 
         return $moduleTemplate->renderResponse('Teilnehmer/Edit');
     }

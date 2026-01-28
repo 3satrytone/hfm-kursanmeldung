@@ -1,20 +1,20 @@
 <html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <div id="teilnehmer-edit-form">
-    <f:form.hidden property="tn.uid" value="{kursanmeldung.tn.0.uid}" />
+    <f:form.hidden property="tn.uid" value="{kursanmeldung.tn.0.uid}"/>
     <div class="table-fit mt-4">
         <table class="tx_kursanmeldung table table-striped table-hover">
             <tbody>
             <tr>
                 <td class="col-3">
                     <label for="deflang">
-                    <f:translate key="be_export.tn_sprache"/>
+                        <f:translate key="be_export.tn_sprache"/>
                     </label>
                 </td>
                 <td class="col-9">
                     <f:form.select id="deflang"
-                            property="deflang" options="{deflangOpt}"
-                            class="form-select"
-                            aria-label="{f:translate(key='be_export.tn_sprache')}"
+                                   property="deflang" options="{deflangOpt}"
+                                   class="form-select"
+                                   aria-label="{f:translate(key='be_export.tn_sprache')}"
                     />
                 </td>
             </tr>
@@ -25,7 +25,9 @@
                     </label>
                 </td>
                 <td>
-                    <span class="px-2"><f:translate key="tx_kursanmeldung_domain_model_teilnehmer.tnart.{kursanmeldung.teilnahmeart}" default="Teilnahmeart"/></span>
+                    <span class="px-2"><f:translate
+                            key="tx_kursanmeldung_domain_model_teilnehmer.tnart.{kursanmeldung.teilnahmeart}"
+                            default="Teilnahmeart"/></span>
                 </td>
             </tr>
             <tr>
@@ -48,13 +50,36 @@
             </tr>
             <tr>
                 <td>
-                    <label for="profstatus">
-                        <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.profstatus" default="Profstatus"/>
-                    </label>
+                    <div class="col-6">
+                        <label for="profstatus">
+                            <f:translate key="tx_kursanmeldung_domain_model_teilnehmer.profstatus"
+                                         default="Profstatus"/>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                    <span title="prof_ja">
+                        <f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_ja}">
+                            <f:then>{profStatusSum.{kursanmeldung.uid}.prof_ja}</f:then>
+                            <f:else>0</f:else>
+                        </f:if>
+                    </span> -
+                        <span title="prof_vlt">
+                        <f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_vlt}">
+                            <f:then>{profStatusSum.{kursanmeldung.uid}.prof_vlt}</f:then>
+                            <f:else>0</f:else>
+                        </f:if>
+                    </span> -
+                        <span title="prof_nein">
+                        <f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_nein}">
+                            <f:then>{profStatusSum.{kursanmeldung.uid}.prof_nein}</f:then>
+                            <f:else>0</f:else>
+                        </f:if>
+                    </span>
+                    </div>
                 </td>
                 <td>
                     <f:form.select property="profstatus" options="{statuus}" value="{kursanmeldung.profstatus}"
-                                   class="form-select"
+                                   class="form-select" id="profstatus"
                                    optionValueField="uid"
                                    optionLabelField="anmeldestatus" sortByOptionLabel="FALSE"
                                    prependOptionLabel="{f:translate(key:'tx_kursanmeldung_domain_model_kursanmeldung.anmeldestatus',default:'Bitte wählen')}"
@@ -84,7 +109,8 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.textfield property="tn.0.vorname" value="{kursanmeldung.tn.0.vorname}" class="form-control"/>
+                    <f:form.textfield property="tn.0.vorname" value="{kursanmeldung.tn.0.vorname}"
+                                      class="form-control"/>
                 </td>
             </tr>
             <tr>
@@ -263,7 +289,8 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.textfield property="tn.0.telefon" value="{kursanmeldung.tn.0.telefon}" class="form-control"/>
+                    <f:form.textfield property="tn.0.telefon" value="{kursanmeldung.tn.0.telefon}"
+                                      class="form-control"/>
                 </td>
             </tr>
             <tr>
@@ -614,12 +641,20 @@
                     <f:if condition="{kursanmeldung.uploads.count > 0}">
                         <f:for each="{kursanmeldung.uploads}" as="ul">
                             <div>
-                            <f:switch expression="{ul.kat}">
-                                <f:case value="download"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
-                                <f:case value="link"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
-                                <f:case value="vita"><f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}" /></f:case>
-                                <f:case value="youtube"><f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}" /></f:case>
-                            </f:switch>
+                                <f:switch expression="{ul.kat}">
+                                    <f:case value="download">
+                                        <f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}"/>
+                                    </f:case>
+                                    <f:case value="link">
+                                        <f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}"/>
+                                    </f:case>
+                                    <f:case value="vita">
+                                        <f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}"/>
+                                    </f:case>
+                                    <f:case value="youtube">
+                                        <f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}"/>
+                                    </f:case>
+                                </f:switch>
                             </div>
                         </f:for>
                     </f:if>

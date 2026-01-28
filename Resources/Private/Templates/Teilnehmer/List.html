@@ -390,35 +390,91 @@
                         <tbody>
                         <f:for each="{group.registrations}" as="reg" iteration="it">
                             <tr>
-                                <td>{reg.uid}</td>
-                                <td>{reg.datein -> f:format.date(format:'d.m.Y H:i')}</td>
-                                <td>{reg.tn.0.anrede}</td>
-                                <td>{reg.tn.0.vorname}</td>
-                                <td><b>{reg.tn.0.nachname}</b></td>
                                 <td>
-                                    <f:if condition="{reg.tn.0.nation}">
-                                        <f:translate key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.nation}.name" default="{reg.tn.0.nation}"/>
-                                    </f:if>
-                                </td>
-                                <td><f:if condition="{reg.tn.0.land}">
-                                    <f:translate key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.land}.name" default="{reg.tn.0.land}"/>
-                                </f:if></td>
-                                <td>{reg.tn.0.ort}</td>
-                                <td>{reg.tn.0.matrikel}</td>
-                                <td>
-                                    <f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2,
-                                        decimalSeparator:',', thousandsSeparator:'.')}
-                                    </f:if>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.uid}
+                                    </f:link.action>
                                 </td>
                                 <td>
-                                    <f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2,
-                                        decimalSeparator:',', thousandsSeparator:'.')}
-                                    </f:if>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.datein -> f:format.date(format:'d.m.Y H:i')}
+                                    </f:link.action>
                                 </td>
                                 <td>
-                                    <f:if condition="{reg.gebuehrag}>0">{reg.gebuehrag -> f:format.number(decimals:2,
-                                        decimalSeparator:',', thousandsSeparator:'.')}
-                                    </f:if>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.tn.0.anrede}
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.tn.0.vorname}
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <b>{reg.tn.0.nachname}</b>
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <f:if condition="{reg.tn.0.nation}">
+                                            <f:translate
+                                                    key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.nation}.name"
+                                                    default="{reg.tn.0.nation}"/>
+                                        </f:if>
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <f:if condition="{reg.tn.0.land}">
+                                            <f:translate
+                                                    key="LLL:EXT:core/Resources/Private/Language/Iso/{lang.locale.languageCode}.countries.xlf:{reg.tn.0.land}.name"
+                                                    default="{reg.tn.0.land}"/>
+                                        </f:if>
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.tn.0.ort}
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        {reg.tn.0.matrikel}
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2,
+                                            decimalSeparator:',', thousandsSeparator:'.')}
+                                        </f:if>
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2,
+                                            decimalSeparator:',', thousandsSeparator:'.')}
+                                        </f:if>
+                                    </f:link.action>
+                                </td>
+                                <td>
+                                    <f:link.action action="edit"
+                                                   arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
+                                        <f:if condition="{kursanmeldung.gezahltos}>0">{kursanmeldung.gezahltos ->
+                                            f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
+                                        </f:if>
+                                    </f:link.action>
                                 </td>
                                 <td>
                                     <f:for each="{regMailings}" as="kM" key="kKM">
@@ -448,21 +504,24 @@
                                     </select>
                                 </td>
                                 <td>
-                            <span title="prof_ja">
-                            <f:if condition="{profStatusSum.{reg.uid}.prof_ja}">
-                                <f:then>{profStatusSum.{reg.uid}.prof_ja}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span> -
-                                    <span title="prof_vlt"><f:if
-                                            condition="{reg.{kursanmeldung.uid}.prof_vlt}">
-                                <f:then>{profStatusSum.{reg.uid}.prof_vlt}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span> -
-                                    <span title="prof_nein"><f:if
-                                            condition="{profStatusSum.{reg.uid}.prof_nein}">
-                                <f:then>{profStatusSum.{reg.uid}.prof_nein}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span>
+                                    <span title="prof_ja">
+                                        <f:if condition="{profStatusSum.{reg.uid}.prof_ja}">
+                                            <f:then>{profStatusSum.{reg.uid}.prof_ja}</f:then>
+                                            <f:else>0</f:else>
+                                        </f:if>
+                                    </span> -
+                                    <span title="prof_vlt">
+                                        <f:if condition="{profStatusSum.{reg.uid}.prof_vlt}">
+                                            <f:then>{profStatusSum.{reg.uid}.prof_vlt}</f:then>
+                                            <f:else>0</f:else>
+                                        </f:if>
+                                    </span> -
+                                    <span title="prof_nein">
+                                        <f:if condition="{profStatusSum.{reg.uid}.prof_nein}">
+                                            <f:then>{profStatusSum.{reg.uid}.prof_nein}</f:then>
+                                            <f:else>0</f:else>
+                                        </f:if>
+                                    </span>
                                 </td>
                                 <td class="text-end">
                                     <f:link.action action="edit"
