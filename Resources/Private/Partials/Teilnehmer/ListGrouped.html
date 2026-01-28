@@ -35,6 +35,7 @@
         <f:form.select class="form-select js-profstatus"
                        data-uid="{kursanmeldung.uid}"
                        data-url="{f:uri.action(action: 'updatestatus', pageType: '12345')}"
+                       data-page="{pageIds}"
                        value="{kursanmeldung.profstatus.0.status.uid}" name="anmeldestatus[{kursanmeldung.uid}]"
                        options="{profSelStatus}" optionValueField="uid" optionLabelField="kurzTranslated"
                        prependOptionLabel="<f:translate key='tx_kursanmeldung_domain_model_kursanmeldung.step1.duosel.prependLabel' />"

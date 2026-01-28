@@ -616,7 +616,9 @@ document.addEventListener('DOMContentLoaded', function () {
             sel.addEventListener('change', async () => {
                 const url = sel.dataset.url;
                 const uid = sel.dataset.uid;
+                const pageIds = sel.dataset.page;
                 const status = sel.value;
+
                 if (!url || !uid || !status) return;
                 // kleines visuelles Feedback
                 const oldBg = sel.style.backgroundColor;
@@ -624,12 +626,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 try {
                     const namespace = 'tx_kursanmeldung_kursanmeldungkl';
                     const formData = new URLSearchParams();
-                    console.log(uid);
-                    console.log(status);
                     formData.set(namespace + '[uid]', uid);
                     formData.set(namespace + '[status]', status);
                     formData.set(namespace + '[action]', 'updatestatus');
                     formData.set(namespace + '[controller]', 'KursListe');
+                    formData.set(namespace + '[pageIds]', pageIds);
                     const resp = await fetch(url, {
                         method: 'POST',
                         headers: {

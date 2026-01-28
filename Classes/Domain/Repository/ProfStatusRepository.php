@@ -12,6 +12,18 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class ProfStatusRepository extends Repository
 {
     /**
+     * @param array $storagePageIds
+     * @return void
+     */
+    public function setStoragePageIds(array $storagePageIds): void
+    {
+        $querySettings = $this->createQuery()->getQuerySettings();
+        $querySettings->setRespectStoragePage(false);
+        $querySettings->setStoragePageIds($storagePageIds);
+        $this->setDefaultQuerySettings($querySettings);
+    }
+
+    /**
      * @param bool $value
      * @return void
      */
@@ -30,7 +42,6 @@ class ProfStatusRepository extends Repository
     public function findOneByKursanmeldungAndFeuser(int $kursanmeldung, int $feuser): ?ProfStatus
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching(
             $query->logicalAnd(
                 $query->equals('kursanmeldung', $kursanmeldung),

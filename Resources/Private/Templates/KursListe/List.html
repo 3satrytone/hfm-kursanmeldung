@@ -21,7 +21,7 @@
                     <th colspan="2"><f:translate key="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.statusprof" default="Status zuweisen" /></th>
                 </tr>
                 <f:for each="{kursanmeldungGrouped.registrations}" as="pkg" iteration="i">
-                    <f:render partial="Teilnehmer/ListGrouped" arguments="{kursanmeldung: pkg, i:i, profSelStatus:profSelStatus, lang: lang}" />
+                    <f:render partial="Teilnehmer/ListGrouped" arguments="{kursanmeldung: pkg, i:i, profSelStatus:profSelStatus, lang: lang, pageIds: pageIds}" />
                 </f:for>
             </table>
         </div>

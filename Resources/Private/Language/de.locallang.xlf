@@ -2183,6 +2183,10 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>Ordner mit Benutzerdaten</source>
             <target>Ordner mit Benutzerdaten</target>
         </trans-unit>
+        <trans-unit id="tx_kursanmeldung_flexform.records.tn">
+            <source>Ordner mit Teilnehmerdaten</source>
+            <target>Ordner mit Teilnehmerdaten</target>
+        </trans-unit>
         <!-- Backend Kursanmeldung Professorliste-->
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldungteilnehmer.statusprof">
             <source>Assign status</source>

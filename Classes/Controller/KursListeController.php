@@ -25,7 +25,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
      *
      * @var array hideIfClassMemberArr Keine Anzeige wenn UID aus anmeldestatus überienstimmt
      */
-    protected $hideIfClassMemberArr = array(5, 6);
+    protected $hideIfClassMemberArr = [5, 6];
 
     public function __construct(
         private readonly KursanmeldungRepository $kursanmeldungRepository,
@@ -39,30 +39,9 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
     {
         if (isset($this->settings)) {
             // if dbdata distributed over more pages
-            if (isset($this->settings['dataPages'])) {
-                if (isset($this->KursanmeldungKursRepository)) {
-                    $this->KursanmeldungKursRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->hotelRepository)) {
-                    $this->hotelRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->profRepository)) {
-                    $this->profRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->gebuehrenRepository)) {
-                    $this->gebuehrenRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->orteRepository)) {
-                    $this->orteRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->ExportlistRepository)) {
-                    $this->ExportlistRepository->setPageIds($this->settings['dataPages']);
-                }
-                if (isset($this->anmeldestatusRepository)) {
-                    $this->anmeldestatusRepository->setPageIds($this->settings['dataPages']);
-                }
+            if (isset($this->settings['records']['tn'])) {
                 if (isset($this->profStatusRepository)) {
-                    $this->profStatusRepository->setPageIds($this->settings['dataPages']);
+                    $this->profStatusRepository->setStoragePageIds(explode(',', $this->settings['records']['tn']));
                 }
             }
         }
@@ -71,7 +50,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         if ($disStat->count() > 0) {
             $this->hideIfClassMemberArr = array();
             foreach ($disStat as $key => $value) {
-                array_push($this->hideIfClassMemberArr, $value->getUid());
+                $this->hideIfClassMemberArr[] = $value->getUid();
             }
         }
         if (isset($this->settings['hideIfClassMemberArr'])) {
@@ -204,6 +183,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
             $this->request->getAttribute('language')
             ?? $this->request->getAttribute('site')->getDefaultLanguage();
 
+        $this->view->assign('pageIds', $this->settings['records']['tn'] ?? []);
         $this->view->assign('lang', $language);
         $this->view->assign('kursanmeldungen', $kursanmeldungen);
         $this->view->assign('kursanmeldungenGrouped', $kursanmeldungenGrouped);
@@ -234,6 +214,17 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 : null;
         }
 
+        $pageIds = [0];
+        if ($this->request->hasArgument('pageIds')) {
+            $pageIdsList = $this->request->getArgument('pageIds') !== 'NULL'
+                ? (string)$this->request->getArgument('pageIds')
+                : '';
+            $pageIds = explode(',', $pageIdsList);
+            foreach ($pageIds as $key => $pageId) {
+                $pageIds[$key] = (int)$pageId;
+            }
+        }
+
         if ($this->request->hasArgument('anmeldestatus')) {
             $arr = (array)$this->request->getArgument('anmeldestatus');
             // Erwartet genau einen Eintrag: [<uid>] => <statusUid|NULL>
@@ -254,6 +245,7 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         }
 
         // Kursanmeldung laden
+        $this->profStatusRepository->setStoragePageIds($pageIds);
         $kursanmeldung = $this->kursanmeldungRepository->findByUid($uid);
         if ($kursanmeldung === null) {
             return $this->jsonResponse(
@@ -266,7 +258,6 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
         try {
             // Aktuellen FE-User ermitteln
             $feUserUid = $this->getCurrentFeUserUid();
-
             // Prof-Status aktualisieren (als Einzelwert in ObjectStorage)
             $storage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
             if (!empty($statusUid)) {
@@ -283,11 +274,15 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                 }else{
                     $status = new ProfStatus();
                     $status->setKursanmeldung((int)$uid);
+                    $status->setPid((int)$pageIds[0]);
                     $status->setFeuser((int)$feUserUid);
                     $status->setStatus($anmeldeStatus);
                     $status->setKurz($anmeldeStatus->getKurz());
                     $this->profStatusRepository->add($status);
                 }
+            } else{
+                $status = $this->profStatusRepository->findOneByKursanmeldungAndFeuser((int)$uid, (int)$feUserUid);
+                $this->profStatusRepository->remove($status);
             }
 
             GeneralUtility::makeInstance(

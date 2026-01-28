@@ -301,6 +301,7 @@ class KursanmeldungRepository extends Repository
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->setOrderings(['uid' => QueryInterface::ORDER_DESCENDING]);
 
         $joQuery = $query->logicalAnd(
             $query->equals('kurs', $kurs),
