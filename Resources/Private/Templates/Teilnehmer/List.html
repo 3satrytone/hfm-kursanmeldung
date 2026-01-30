@@ -471,7 +471,7 @@
                                 <td>
                                     <f:link.action action="edit"
                                                    arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
-                                        <f:if condition="{kursanmeldung.gezahltos}>0">{kursanmeldung.gezahltos ->
+                                        <f:if condition="{reg.gezahltos}>0">{reg.gezahltos ->
                                             f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')}
                                         </f:if>
                                     </f:link.action>

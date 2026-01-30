@@ -212,6 +212,7 @@ class ParticipantUtility
         $assignments['phone'] = $address->getTelefon();
         $assignments['mobile'] = $address->getMobil();
         $assignments['email'] = $address->getEmail();
+        $assignments['emailfrom'] = $address->getEmail();
         $assignments['addressObj'] = $address;
         $assignments['registerObj'] = $register;
         $assignments['address'] = trim($address->getAdresse1() . ' ' . $address->getHausnr());

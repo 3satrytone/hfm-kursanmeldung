@@ -371,6 +371,7 @@ final class TeilnehmerController extends ActionController
 
         $this->profStatusRepository->setRespectStoragePage(false);
         $profStatuus = $this->profStatusRepository->findByKursanmeldung($kursanmeldung->getUid());
+        $profStatusExplained = [];
         foreach($profStatuus as $profStatus){
             if(!isset($profStatusExplained[$profStatus->getKursanmeldung()])){
                 $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()] = 0;
@@ -413,6 +414,8 @@ final class TeilnehmerController extends ActionController
                 $pmc->forProperty('stipendiat')
                     ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
                 $pmc->forProperty('bezahlt')
+                    ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
+                $pmc->forProperty('bezahltag')
                     ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
                 $pmc->forProperty('duo')
                     ->setTypeConverter(GeneralUtility::makeInstance(IntegerConverter::class));
