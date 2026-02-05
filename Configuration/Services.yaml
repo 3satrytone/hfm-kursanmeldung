@@ -36,6 +36,7 @@ services:
     public: true
   Hfm\Kursanmeldung\Controller\TeilnehmerController:
     public: true
+    tags: ['backend.controller']
   Hfm\Kursanmeldung\Domain\Repository\TeilnehmerRepository:
     public: true
   Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository:
@@ -68,6 +69,8 @@ services:
   Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader:
     public: true
   Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator:
+    public: true
+  Hfm\Kursanmeldung\Controller\MailingController:
     public: true
 
 

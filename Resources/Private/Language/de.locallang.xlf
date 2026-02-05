@@ -2212,6 +2212,18 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <source>maybe</source>
             <target>Vielleicht</target>
         </trans-unit>
+        <trans-unit id="be_export.room.ezpreis">
+            <source>Einzelzimmer</source>
+            <target>Einzelzimmer</target>
+        </trans-unit>
+        <trans-unit id="be_export.room.dz2preis">
+            <source>1/2 Doppelzimmer</source>
+            <target>1/2 Doppelzimmer</target>
+        </trans-unit>
+        <trans-unit id="be_export.room.dzpreis">
+            <source>Doppelzimmer</source>
+            <target>Doppelzimmer</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

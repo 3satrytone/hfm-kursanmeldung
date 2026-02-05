@@ -8,6 +8,14 @@
     <h2>Alle Teilnehmer</h2>
     <f:flashMessages/>
 
+    <div class="row mb-3">
+        <div class="col">
+            <f:link.action action="export" class="btn btn-outline-success">
+                <core:icon identifier="actions-document-export-csv" size="small" /> Excel Export (CSV)
+            </f:link.action>
+        </div>
+    </div>
+
     <f:render partial="Teilnehmer/SearchBar"
               arguments="{uid: 0, search: searchAll, selectedFields: selectedFieldsAll, selectedMap:selectedMapAll}"/>
 
@@ -321,6 +329,14 @@
 
     <f:for each="{participantsByCourse}" as="group">
         <f:if condition="{group.registrations -> f:count()} > 0">
+            <div class="row pt-4">
+                <div class="col-auto">
+                    <f:link.action action="export" arguments="{kurs: group.kurs.uid}" class="btn btn-sm btn-outline-success mb-2" title="Gefilterte Kursliste exportieren">
+                        <core:icon identifier="actions-document-export-csv" size="small" /> CSV Export
+                    </f:link.action>
+                </div>
+            </div>
+
             <div class="row pt-4">
                 <div class="btn btn-primary" data-bs-toggle="collapse"
                      data-bs-target="#collapseWidthId-{group.kurs.uid}"
