@@ -827,30 +827,48 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $competition = $this->kursanmeldungRepository->findByUid($args['reguid']);
 
             if (!empty($competition)) {
-                if ($competition->getBezahlt() == 0 && empty($competition->getNovalnettid())) {
+                if ($competition->getBezahlt() === 0 && empty($competition->getNovalnettid())) {
                     switch (intval($args['payment'])) {
                         case 1:
                             $payment = 'banktransfer';
                             $competition->setZahlart("1");
                             $banktransfer['tid'] = $this->paymentReason($competition);
                             $banktransfer['invoice_account_name'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_account_name'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_account_name'
                             );
+                            if($banktransfer['invoice_account_name'] === 'tx_kursanmeldung.complete.invoicemail.invoice_account_name'){
+                                $banktransfer['invoice_account_name'] = '';
+                            }
                             $banktransfer['invoice_bankcode'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_bankcode'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_bankcode'
                             );
+                            if($banktransfer['invoice_bankcode'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankcode'){
+                                $banktransfer['invoice_bankcode'] = '';
+                            }
                             $banktransfer['invoice_iban'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_iban'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_iban'
                             );
+                            if($banktransfer['invoice_iban'] === 'tx_kursanmeldung.complete.invoicemail.invoice_iban'){
+                                $banktransfer['invoice_iban'] = '';
+                            }
                             $banktransfer['invoice_bic'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_bic'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_bic'
                             );
+                            if($banktransfer['invoice_bic'] === 'tx_kursanmeldung.complete.invoicemail.invoicemail'){
+                                $banktransfer['invoice_bic'] = '';
+                            }
                             $banktransfer['invoice_bankname'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_bankname'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_bankname'
                             );
+                            if($banktransfer['invoice_bankname'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankname'){
+                                $banktransfer['invoice_bankname'] = '';
+                            }
                             $banktransfer['invoice_bankplace'] = $this->translate(
-                                'tx_jowettbewerbe.complete.invoicemail.invoice_bankplace'
+                                'tx_kursanmeldung.complete.invoicemail.invoice_bankplace'
                             );
+                            if($banktransfer['invoice_bankplace'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankplace'){
+                                $banktransfer['invoice_bankplace'] = '';
+                            }
                             $this->logger->info('banktransfer suc CURL:' . print_r($banktransfer, true));
                             $this->kursanmeldungRepository->update($competition);
                             $this->persistenceManager->persistAll();
@@ -862,9 +880,8 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                                 'Daten erfolgreich versendet.',
                                 ContextualFeedbackSeverity::OK
                             );
-                            return $this->redirect('edit', null, null, ['kursanmeldung' => $competition]);
 
-                            break;
+                            return $this->redirect('edit', null, null, ['kursanmeldung' => $competition]);
                         case 6:
                             $competition->setZahlart('6');
                             $novalnetArr = $this->novalnetArray($competition);

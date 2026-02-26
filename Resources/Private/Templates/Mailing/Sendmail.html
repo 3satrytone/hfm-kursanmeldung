@@ -1,0 +1,25 @@
+<f:layout name="Default" />
+
+This Template is responsible for creating a table of domain objects.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+  Resources:
+    Private:
+      Templates:
+        List.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="Main">
+    <h1>Mailversand Teilnehmer</h1>
+
+<f:flashMessages />
+
+<div class="joMailing">
+	<div class="joRow joSend">Versendet: <f:count>{send}</f:count></div>	
+	<div class="joRow joError">Fehler: <f:count>{error}</f:count></div>	
+	<div class="joRow joDouble">Doppelt: <f:count>{double}</f:count></div>	
+	<f:link.action controller="Backend" action="general" class="joBack">zur Backendauswahl</f:link.action>
+</div>
+</f:section>

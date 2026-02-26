@@ -1,0 +1,143 @@
+<f:layout name="Default" />
+
+This Template is responsible for creating a table of domain objects.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+  Resources:
+    Private:
+      Templates:
+        List.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="Main">
+<h1>Mailings Teilnehmer</h1>
+<f:flashMessages />
+<div class="joMailing">
+	<f:form action="sendmail" name="sendmail" onsubmit="return confirm('{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_kursanmeldungbe.xlf:kursanmeldung_mail.confirm')}')">
+		<div class="joSubject joRow">
+			<label for="subject">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.subject" />
+			</label>
+			<div class="joBox">
+				<f:form.textfield name="subject" />
+			</div>
+		</div>
+		<div class="joFrom joRow">
+			<label for="fromemail">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.fromemail" />
+			</label>
+			<div class="joBox">
+				<f:form.textfield name="fromemail" value="{mailpremail}" />
+			</div>
+		</div>
+		<div class="joFromName joRow">
+			<label for="fromname">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.fromname" />
+			</label>
+			<div class="joBox">
+				<f:form.textfield name="fromname" value="{mailprename}" />
+			</div>
+		</div>
+		<div class="joUser joRow">
+			<label for="sendmail">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.user" />
+			</label>
+			<div class="filter">
+				Suchwort: <input id="searchInput" value=""><br />
+				Filter aus: <input name="filter" type="radio" value="" checked>
+				Nur im Kurs suchen: <input name="filter" type="radio" value="kurs">
+				Nur im Namen suchen: <input name="filter" type="radio" value="name"><br />
+				Filter aus : <input id="offen" type="radio" name="bezahlt" value="" checked>
+				Nur ANG offene: <input id="offen" type="radio" name="bezahlt" value="0">
+				Nur ANG bezahlte: <input id="bezahlt" type="radio" name="bezahlt" value="1"><br />
+				Filter aus : <input id="offen" type="radio" name="bezahltag" value="" checked>
+				Nur TNG offene: <input id="offen" type="radio" name="bezahltag" value="0">
+				Nur TNG bezahlte: <input id="bezahltag" type="radio" name="bezahltag" value="1"><br />
+				Status Anmeldung: <f:form.select name="status" options="{statuus}" optionLabelField="anmeldestatus" id="anmeldestatus" prependOptionValue="" prependOptionLabel="ohne" /><br />
+				Filter aus : <input type="radio" name="dv" value="" checked>
+				Nur ohne DV fak.: <input type="radio" name="dv" value="0">
+				Nur mit DV fak.: <input type="radio" name="dv" value="1"><br />
+			</div>
+			<div class="joUserScroll joScrollBox">
+				<table>
+				    <thead>
+				        <tr>
+				            <th><input type="checkbox" id="selectAll"></th>
+				            <th>Id</th>
+				            <th>Kurs</th>
+				            <th>Vorname</th>
+				            <th>Nachname</th>
+				            <th>Email</th>
+				            <th>ANG bez</th>
+				            <th>TNG bez</th>
+				            <th>Status</th>
+							<th>DV fak.</th>
+				        </tr>
+				    </thead>
+				    <tbody id="fbody">
+			<f:for each="{Kursanmeldungen}" as="anmeldung"><tr>
+				            <td><f:form.checkbox name="sendmail[]" value="{anmeldung.uid}" /></td>
+				            <td class="all uid">{anmeldung.uid}</td>
+				            <td class="all kurs">{anmeldung.kurs.0.prof}</td>
+				            <td class="all name">{anmeldung.tn.0.vorname}</td>
+				            <td class="all name">{anmeldung.tn.0.nachname}</td>
+				            <td class="all email">{anmeldung.tn.0.email}</td>
+				            <td class="bezahlt">{anmeldung.bezahlt}</td>
+							<td class="bezahltag">{anmeldung.bezahltag}</td>
+				            <td class="status status_{anmeldung.anmeldestatus.0.uid}">{anmeldung.anmeldestatus.0.anmeldestatus}</td>
+							<td class="dv">{anmeldung.savedata}</td>
+				        </tr>
+			</f:for>
+				    </tbody>
+				</table>
+			</div>
+		</div>
+		<div class="joMailsto joRow">
+			<label for="sendmailto">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.sendmailto" />
+			</label>
+			<div class="joBox">
+				<f:form.textfield name="sendmailto" />
+			</div>
+		</div>
+		<div class="joPages joRow">
+			<label for="pagemail">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemail" />
+			</label>
+			<div class="joBox">
+				<f:form.select name="pagemail" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagesprepend')}" prependOptionValue="message" />
+			</div>
+		</div>
+		<div class="joTyp joRow">
+			<label for="mailtyp">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.mailtyp" />
+			</label>
+			<div class="joBox">
+				<f:form.select name="mailtyp" options="{mailTyps}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.mailtypprepend')}" prependOptionValue="" />
+			</div>
+		</div>
+		<div class="joPagesInvoice joRow joHide">
+			<label for="pagemailinvoice">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemailinvoice" />
+			</label>
+			<div class="joBox">
+				<f:form.select name="pagemailinvoice" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemailinvoiceprepend')}" prependOptionValue="" />
+			</div>
+		</div>
+		<div class="joMessage joRow">
+			<label for="nachricht">
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.nachricht" />
+			</label>
+			<div class="joBox">
+				<f:form.textarea name="nachricht" value="" />
+			</div>
+		</div>
+		<div class="joSubmitField joRow">
+			<f:link.action controller="Backend" action="general" class="joBack">zur Backendauswahl</f:link.action>
+			<f:form.submit value="Absenden" class="joSubmit" />
+		</div>
+	</f:form>
+</div>
+</f:section>
