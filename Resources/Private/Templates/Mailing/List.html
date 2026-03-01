@@ -15,10 +15,10 @@ Otherwise your changes will be overwritten the next time you save the extension 
 <h1>Mailings Teilnehmer</h1>
 <f:flashMessages />
 <div class="joMailing">
-	<f:form action="sendmail" name="sendmail" onsubmit="return confirm('{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_kursanmeldungbe.xlf:kursanmeldung_mail.confirm')}')">
+	<f:form action="sendmail" name="sendmail" onsubmit="return confirm('{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.confirm')}')">
 		<div class="joSubject joRow">
 			<label for="subject">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.subject" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.subject" />
 			</label>
 			<div class="joBox">
 				<f:form.textfield name="subject" />
@@ -26,7 +26,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</div>
 		<div class="joFrom joRow">
 			<label for="fromemail">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.fromemail" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.fromemail" />
 			</label>
 			<div class="joBox">
 				<f:form.textfield name="fromemail" value="{mailpremail}" />
@@ -34,7 +34,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</div>
 		<div class="joFromName joRow">
 			<label for="fromname">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.fromname" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.fromname" />
 			</label>
 			<div class="joBox">
 				<f:form.textfield name="fromname" value="{mailprename}" />
@@ -42,7 +42,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</div>
 		<div class="joUser joRow">
 			<label for="sendmail">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.user" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.user" />
 			</label>
 			<div class="filter">
 				Suchwort: <input id="searchInput" value=""><br />
@@ -96,7 +96,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</div>
 		<div class="joMailsto joRow">
 			<label for="sendmailto">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.sendmailto" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.sendmailto" />
 			</label>
 			<div class="joBox">
 				<f:form.textfield name="sendmailto" />
@@ -104,31 +104,31 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</div>
 		<div class="joPages joRow">
 			<label for="pagemail">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemail" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemail" />
 			</label>
 			<div class="joBox">
-				<f:form.select name="pagemail" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagesprepend')}" prependOptionValue="message" />
+				<f:form.select name="pagemail" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagesprepend')}" prependOptionValue="message" />
 			</div>
 		</div>
 		<div class="joTyp joRow">
 			<label for="mailtyp">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.mailtyp" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.mailtyp" />
 			</label>
 			<div class="joBox">
-				<f:form.select name="mailtyp" options="{mailTyps}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.mailtypprepend')}" prependOptionValue="" />
+				<f:form.select name="mailtyp" options="{mailTyps}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.mailtypprepend')}" prependOptionValue="" />
 			</div>
 		</div>
 		<div class="joPagesInvoice joRow joHide">
 			<label for="pagemailinvoice">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemailinvoice" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemailinvoice" />
 			</label>
 			<div class="joBox">
-				<f:form.select name="pagemailinvoice" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.pagemailinvoiceprepend')}" prependOptionValue="" />
+				<f:form.select name="pagemailinvoice" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemailinvoiceprepend')}" prependOptionValue="" />
 			</div>
 		</div>
 		<div class="joMessage joRow">
 			<label for="nachricht">
-				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_jokursanmeldungbe.xlf:kursanmeldung_mail.nachricht" />
+				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.nachricht" />
 			</label>
 			<div class="joBox">
 				<f:form.textarea name="nachricht" value="" />

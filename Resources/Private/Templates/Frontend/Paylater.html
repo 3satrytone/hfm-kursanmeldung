@@ -44,7 +44,7 @@
 			</div>
 			<f:if condition="{payment}=='onlinetransfer'">
 				<div>
-				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+					<f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /></f:format.html><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div class="red">
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.payment.addtext.sofort" />
@@ -57,7 +57,7 @@
 
 			<f:if condition="{payment}=='giropay'">
 				<div>
-				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+				<f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /></f:format.html><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div>
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />
@@ -66,7 +66,7 @@
 			</f:if>
 			<f:if condition="{payment}=='paypal'">
 				<div>
-				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
+					<f:format.html><f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.text" default="Sie werden auf das Portal unseres Zahlungsanbieters weitergeleitet:" /></f:format.html><span class="joBold"> <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.{payment}" /></span><br /><br />
 				</div>
 				<div>
 				<f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step4.onlinebanking.paymentselection" />

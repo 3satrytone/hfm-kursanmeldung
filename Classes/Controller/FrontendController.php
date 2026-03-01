@@ -1580,7 +1580,8 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
         if ($this->request->hasArgument('hash')) {
             $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS_UID, '');
             $args = $this->request->getArguments();
-            $registration = $this->getRegistrationByHashAndSt($args['hash'], $args['st']);
+            $hash = $args['hash'] ? base64_decode($args['hash']) : '';
+            $registration = $this->getRegistrationByHashAndSt($hash, $args['st']);
         }
 
         // wenn aus session
@@ -1618,7 +1619,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
 
             $this->sessionUtility->setData(SessionUtility::FORM_SESSION_KURS_UID, $registration->getUid());
 
-            if (count($registration->getKurs()) === 1) {
+            if ($registration->getKurs()) {
                 $kursActive = $this->kursRepository->findByUid(
                     $registration->getKurs()->getUid()
                 );
