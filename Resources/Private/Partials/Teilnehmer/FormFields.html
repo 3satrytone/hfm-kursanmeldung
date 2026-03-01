@@ -412,7 +412,7 @@
                     </label>
                 </td>
                 <td>
-                    <f:form.checkbox property="gezahltag" value="1" class="form-control" id="gezahltag"/>
+                    <f:form.textfield property="gezahltag" class="form-control" id="gezahltag"/>
                 </td>
             </tr>
             <tr>
@@ -422,11 +422,9 @@
                     </label>
                 </td>
                 <td>
-                    <f:if condition="{kursanmeldung.gebuehrdat}">
                         <f:form.textfield property="gebuehrdat" id="gebuehrdat"
                                           type="datetime-local" class="form-control"
                                           value="{kursanmeldung.gebuehrdat->f:format.date(format:'Y-m-d h:i')}"/>
-                    </f:if>
                 </td>
             </tr>
             <tr>
