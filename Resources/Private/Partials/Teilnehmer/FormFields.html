@@ -662,6 +662,36 @@
             </tr>
             <tr>
                 <td>
+                    <label for="new_uploads_kat">
+                        Kategorie für neue Uploads
+                    </label>
+                </td>
+                <td>
+                    <f:form.select name="new_uploads_kat" options="{download: 'Download', vita: 'Vita', link: 'Link', youtube: 'Youtube'}" class="form-select" id="new_uploads_kat"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="new_uploads">
+                        <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.step2.filesupload"/>
+                    </label>
+                </td>
+                <td>
+                    <f:form.upload name="new_uploads" multiple="1" class="form-control" id="new_uploads"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="new_uploads_link">
+                        Link für neue Uploads
+                    </label>
+                </td>
+                <td>
+                    <f:form.textfield name="new_uploads_link" class="form-control" id="new_uploads_link" type="url"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <label for="agb">
                         <f:translate key="tx_kursanmeldung_domain_model_kursanmeldung.agb"/>
                     </label>

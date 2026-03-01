@@ -30,6 +30,9 @@ use Hfm\Kursanmeldung\Utility\TypeConverter\IntegerConverter;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use Hfm\Kursanmeldung\Domain\Model\Uploads;
+use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
@@ -345,7 +348,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
 
         $kursUid = 0;
 
-        if($this->request->hasArgument('kurs')){
+        if ($this->request->hasArgument('kurs')) {
             $kursUid = (int)$this->request->getArgument('kurs');
         }
 
@@ -356,7 +359,11 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $kFields = $fieldsKurs[$kursUid] ?? ['tn.vorname', 'tn.nachname'];
 
             if ($kSearch !== null && trim((string)$kSearch) !== '') {
-                $participants = $this->kursanmeldungRepository->getParticipantsByKursFiltered($kursUid, (string)$kSearch, $kFields);
+                $participants = $this->kursanmeldungRepository->getParticipantsByKursFiltered(
+                    $kursUid,
+                    (string)$kSearch,
+                    $kFields
+                );
             } else {
                 $participants = $this->kursanmeldungRepository->getParticipantsByKurs($kursUid);
             }
@@ -374,7 +381,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         }
 
         $handle = fopen('php://temp', 'r+');
-        fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
+        fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
         $header = [
             'Lfd. Nr.',
@@ -424,14 +431,14 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         ];
         fputcsv($handle, $header, ';');
 
-        $i=0;
+        $i = 0;
         foreach ($participants as $reg) {
             $tn = $reg->getTn()->current();
             $row = [
                 ++$i,
                 $reg->getUid(),
                 $reg->getDatein()?->format('d.m.Y H:i') ?? '',
-                $reg->getTeilnahmeart() === 0 ? 'PT': 'AT',
+                $reg->getTeilnahmeart() === 0 ? 'PT' : 'AT',
                 $reg->getAnmeldestatus()->current()?->getKurz() ?? '',
                 $reg->getStipendiat() === 0 ? 'Nein' : 'Ja',
                 $reg->getBezahlt() === 0 ? 'Nein' : 'Ja',
@@ -709,6 +716,82 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 }
 
                 $this->kursanmeldungRepository->update($kursanmeldung);
+
+                // Handle file uploads
+                if ($this->request->hasArgument('new_uploads')) {
+                    $newUploads = $this->request->getArgument('new_uploads');
+                    if (!empty($newUploads)) {
+                        $newUploadsKat = $this->request->hasArgument('new_uploads_kat') ? $this->request->getArgument(
+                            'new_uploads_kat'
+                        ) : 'download';
+                        if (in_array($newUploadsKat, ['download', 'vita'])) {
+                            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+                            $storage = $resourceFactory->getDefaultStorage();
+                            if ($storage) {
+                                $targetFolder = $storage->getFolder('user_upload/hfm_kursanmeldung/');
+                                foreach ($newUploads as $upload) {
+                                    if ($upload->getError() === UPLOAD_ERR_OK) {
+                                        $file = $storage->addFile(
+                                            $upload->getTemporaryFileName(),
+                                            $targetFolder,
+                                            $upload->getClientFilename()
+                                        );
+                                        if ($file) {
+                                            $newDl = GeneralUtility::makeInstance(Uploads::class);
+                                            $newDl->setPid($kursanmeldung->getPid());
+                                            $newDl->setKurs($kursanmeldung->getKurs());
+                                            $newDl->setName($file->getName());
+                                            $newDl->setPfad($file->getPublicUrl());
+                                            $newDl->setDatein(new \DateTime());
+                                            $newDl->setKat($newUploadsKat);
+
+                                            $fileReference = GeneralUtility::makeInstance(
+                                                \TYPO3\CMS\Extbase\Domain\Model\FileReference::class
+                                            );
+                                            $coreFileReference = $resourceFactory->createFileReferenceObject(
+                                                [
+                                                    'uid_local' => $file->getUid(),
+                                                    'uid_foreign' => 0,
+                                                    // Will be set by Extbase/DataHandler if assigned correctly
+                                                    'tablenames' => 'tx_kursanmeldung_domain_model_uploads',
+                                                    'fieldname' => 'fileref',
+                                                    'table_local' => 'sys_file',
+                                                ]
+                                            );
+                                            $fileReference->setOriginalResource($coreFileReference);
+                                            $newDl->setFileref($fileReference);
+
+                                            $kursanmeldung->addUploads($newDl);
+                                        }
+                                    }
+                                }
+                                $this->kursanmeldungRepository->update($kursanmeldung);
+                            }
+                        }
+                    }
+                }
+
+                $newUploadsLink = $this->request->hasArgument('new_uploads_link') ? $this->request->getArgument(
+                    'new_uploads_link'
+                ) : '';
+                if (!empty($newUploadsLink)) {
+                    $newUploadsKat = $this->request->hasArgument('new_uploads_kat') ? $this->request->getArgument(
+                        'new_uploads_kat'
+                    ) : 'link';
+                    if (in_array($newUploadsKat, ['link', 'youtube'])) {
+                        $srcBn = pathinfo($newUploadsLink);
+                        $newDl = GeneralUtility::makeInstance(Uploads::class);
+                        $newDl->setPid($kursanmeldung->getPid());
+                        $newDl->setKurs($kursanmeldung->getKurs());
+                        $newDl->setKat($newUploadsKat);
+                        $newDl->setName($srcBn['basename'] ?? 'Link');
+                        $newDl->setPfad($newUploadsLink);
+                        $newDl->setDatein(new \DateTime());
+                        $kursanmeldung->addUploads($newDl);
+                        $this->kursanmeldungRepository->update($kursanmeldung);
+                    }
+                }
+
                 $this->persistenceManager->persistAll();
             }
 
@@ -836,37 +919,37 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                             $banktransfer['invoice_account_name'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_account_name'
                             );
-                            if($banktransfer['invoice_account_name'] === 'tx_kursanmeldung.complete.invoicemail.invoice_account_name'){
+                            if ($banktransfer['invoice_account_name'] === 'tx_kursanmeldung.complete.invoicemail.invoice_account_name') {
                                 $banktransfer['invoice_account_name'] = '';
                             }
                             $banktransfer['invoice_bankcode'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_bankcode'
                             );
-                            if($banktransfer['invoice_bankcode'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankcode'){
+                            if ($banktransfer['invoice_bankcode'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankcode') {
                                 $banktransfer['invoice_bankcode'] = '';
                             }
                             $banktransfer['invoice_iban'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_iban'
                             );
-                            if($banktransfer['invoice_iban'] === 'tx_kursanmeldung.complete.invoicemail.invoice_iban'){
+                            if ($banktransfer['invoice_iban'] === 'tx_kursanmeldung.complete.invoicemail.invoice_iban') {
                                 $banktransfer['invoice_iban'] = '';
                             }
                             $banktransfer['invoice_bic'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_bic'
                             );
-                            if($banktransfer['invoice_bic'] === 'tx_kursanmeldung.complete.invoicemail.invoicemail'){
+                            if ($banktransfer['invoice_bic'] === 'tx_kursanmeldung.complete.invoicemail.invoicemail') {
                                 $banktransfer['invoice_bic'] = '';
                             }
                             $banktransfer['invoice_bankname'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_bankname'
                             );
-                            if($banktransfer['invoice_bankname'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankname'){
+                            if ($banktransfer['invoice_bankname'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankname') {
                                 $banktransfer['invoice_bankname'] = '';
                             }
                             $banktransfer['invoice_bankplace'] = $this->translate(
                                 'tx_kursanmeldung.complete.invoicemail.invoice_bankplace'
                             );
-                            if($banktransfer['invoice_bankplace'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankplace'){
+                            if ($banktransfer['invoice_bankplace'] === 'tx_kursanmeldung.complete.invoicemail.invoice_bankplace') {
                                 $banktransfer['invoice_bankplace'] = '';
                             }
                             $this->logger->info('banktransfer suc CURL:' . print_r($banktransfer, true));
