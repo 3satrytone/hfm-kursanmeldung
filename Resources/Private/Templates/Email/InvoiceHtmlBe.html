@@ -58,14 +58,16 @@
 	</tr>
 	<tr style="border-bottom:1px solid #000000;padding-bottom:10px;">
 		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:sanitize.html>Anmeldegebühr / registration fee</f:sanitize.html></td>
-		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:sanitize.html>{amount} &euro;</f:sanitize.html></td>
+		<td style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:sanitize.html>{amount ->
+			f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')} &euro;</f:sanitize.html></td>
 	</tr>
 	<tr>
 		<td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;"><f:sanitize.html>Umsatzsteuerbefreit aufgrund § 4 Nr. 22b UStG / Auf Rechnung der Hochschule für Musik FRANZ LISZT Weimar</f:sanitize.html></td>
 	</tr>
 	<tr>
 		<td><f:sanitize.html><strong>Rechnungsbetrag / invoice amount:</strong></f:sanitize.html></td>
-		<td><f:sanitize.html><strong>{amount} &euro;</strong></f:sanitize.html></td>
+		<td><f:sanitize.html><strong>{amount ->
+			f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')} &euro;</strong></f:sanitize.html></td>
 	</tr>
 	<tr>
 		<td colspan="2"><f:sanitize.html>&nbsp;</f:sanitize.html></td>
@@ -132,7 +134,7 @@
 		<f:link.email email="michael.prager@uni-weimar.de" style="font-family:Helvetica,Arial;font-size:11px;text-decoration:none;">michael.prager@uni-weimar.de</f:link.email><br /><br />
 		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Telefon: +49 (0) 3643 58 42 38</span><br />
 		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Telefax: +49 (0) 3643 58 42 26</span></f:sanitize.html></td>
-		<td style="width:50%;vertical-align:top;"><f:sanitize.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">Bauhaus Weiterbildungsakademie Weimar e.V.</span><br />
+		<td style="width:50%;vertical-align:top;"><f:sanitize.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</span><br />
 		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Eingetragen im Vereinsregister Amtsgericht Weimar VR 130613</span><br /><br />
 		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Vorsitzende des Vorstandes Dipl.-Kulturwiss. (Medien) Gudrun Kopf</span><br /><br />
 		<span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Bankverbindung</span><br />

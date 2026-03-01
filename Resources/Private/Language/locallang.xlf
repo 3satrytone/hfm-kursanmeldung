@@ -1514,8 +1514,8 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
         </trans-unit>        		
         <!-- tx_kursanmeldung_jokursanmeldungfe Frontend getBanktransferData-->
         <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_account_name">
-            <source>WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</source>
-            <target>WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</target>
+            <source>Bauhaus Weiterbildungsakademie Weimar e.V.</source>
+            <target>Bauhaus Weiterbildungsakademie Weimar e.V.</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung.complete.invoicemail.invoice_bankname">
             <source>Deutsche Bank Weimar</source>
