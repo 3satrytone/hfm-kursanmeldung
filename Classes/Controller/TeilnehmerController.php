@@ -8,7 +8,6 @@ use Exception;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Mail\Business\MailFacade;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
-use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
@@ -31,7 +30,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use Hfm\Kursanmeldung\Domain\Model\Uploads;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -58,8 +56,8 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         7 => 'nopayment'
     ];
     protected $nameVeranstaltung = 'Weimarer Meisterkurse';
-    protected $emailHostAddress = 'wiebke.eckardt@hfm-weimar.de';
-    protected $emailHostAddressAdmin = 'wiebke.eckardt@hfm-weimar.de';
+    protected $emailHostAddress = 'meisterkurse@hfm-weimar.de';
+    protected $emailHostAddressAdmin = 'meisterkurse@hfm-weimar.de';
     protected $emailHostAddressCc = 'info@schneider-software-service.de';
     protected $emailHostName = '';
     protected $emailSubject = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte bestätigen';
@@ -965,61 +963,6 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                             );
 
                             return $this->redirect('edit', null, null, ['kursanmeldung' => $competition]);
-                        case 6:
-                            $competition->setZahlart('6');
-                            $novalnetArr = $this->novalnetArray($competition);
-                            $novalnetXML[1]['url'] = 'https://payport.novalnet.de/payport.xml';
-                            $novalnetXML[1]['path'] = 'Novalnet/VorkassePayport.html';
-                            $extConf = $this->configurationManager->getConfiguration(
-                                \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-                            );
-                            $templPath = str_replace(
-                                'Templates/Backend/',
-                                'Templates/',
-                                $extConf['view']['templateRootPath']
-                            );
-                            $novalnetXML[1]['doc'] = $this->getContent(
-                                $templPath . $novalnetXML[1]['path'],
-                                $novalnetArr
-                            );
-                            $request = $novalnetXML[1];
-
-                            $xml_response = $this->curl_xml_post(
-                                $request
-                            ); // Die Variable $request enthält den XML-Aufruf. Sehen Sie sich dazu das Aufrufbeispiel oben an
-
-                            $response = new \SimpleXMLElement($xml_response);
-                            $this->logger->info('novalnetredirect suc CURL:' . print_r($response, true));
-
-                            $novalnet['status'] = (string)$response->{transaction_response}->status;
-                            $novalnet['tid'] = (string)$response->{transaction_response}->tid;
-                            $novalnet['amount'] = (string)$response->{transaction_response}->amount;
-                            $novalnet['invoice_account_name'] = 'NOVALNET AG';
-                            $novalnet['customer_no'] = (string)$response->{transaction_response}->{customer_no};
-                            $novalnet['invoice_account'] = (string)$response->{transaction_response}->{invoice_account};
-                            $novalnet['invoice_bankcode'] = (string)$response->{transaction_response}->{invoice_bankcode};
-                            $novalnet['invoice_iban'] = (string)$response->{transaction_response}->{invoice_iban};
-                            $novalnet['invoice_bic'] = (string)$response->{transaction_response}->{invoice_bic};
-                            $novalnet['invoice_bankname'] = (string)$response->{transaction_response}->{invoice_bankname};
-                            $novalnet['invoice_bankplace'] = (string)$response->{transaction_response}->{invoice_bankplace};
-
-                            $competition->setNovalnettid($novalnet['tid']);
-                            $competition->setNovalnetcno($novalnet['customer_no']);
-
-                            $this->logger->info('novalnetcurl suc POST:' . print_r($novalnet, true));
-
-                            $this->kursanmeldungRepository->update($competition);
-                            $this->persistenceManager->persistAll();
-
-                            // emails versenden
-                            $this->sendInvoiceMail($competition, $novalnet);
-                            $this->addFlashMessage(
-                                '',
-                                'Daten erfolgreich versendet.',
-                                ContextualFeedbackSeverity::OK
-                            );
-                            return $this->redirect('edit', null, null, ['kursanmeldung' => $competition]);
-                            break;
                         default:
                             $this->addFlashMessage(
                                 'Zahlungsart nicht erlaubt.',

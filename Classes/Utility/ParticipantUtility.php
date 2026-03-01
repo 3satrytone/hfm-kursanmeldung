@@ -9,7 +9,10 @@ use Hfm\Kursanmeldung\Domain\Model\Prof;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
 use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -23,6 +26,8 @@ class ParticipantUtility
     public function __construct(
         protected readonly KursanmeldungRepository $kursanmeldungRepository,
         protected readonly HotelRepository $hotelRepository,
+        protected readonly CountryProvider $countryProvider,
+        protected readonly LanguageServiceFactory $languageServiceFactory,
     ) {
     }
 
@@ -218,9 +223,12 @@ class ParticipantUtility
         $assignments['address'] = trim($address->getAdresse1() . ' ' . $address->getHausnr());
         $assignments['addressadd'] = $address->getAdresse2();
 
-        $assignments['country'] = $address->getLand();
-        $assignments['invoiceDate'] = $register->getDatein()->format('d.m.Y');
+        $landCountry = $this->countryProvider->getByIsoCode($address->getLand());
+        $locale = $address->getSprache() === 'English' ? new Locale('en') : new Locale('de');
+        $languageService = $this->languageServiceFactory->create($locale);
+        $assignments['country'] = $languageService->sl($landCountry->getLocalizedNameLabel());
 
+        $assignments['invoiceDate'] = $register->getDatein()->format('d.m.Y');
         $assignments['no'] = $register->getUid();
         $assignments['amount'] = $register->getGebuehr();
         $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m.Y');
