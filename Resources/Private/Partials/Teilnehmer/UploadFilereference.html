@@ -1,6 +1,9 @@
 <f:if condition="{ul.pfad != ''}">
     <div class="p-1">
         {ul.kat}:
-        <a href="{ul.pfad}" target="_blank">{ul.name}</a>
+        <f:contains value="fileadmin/" subject="{ul.pfad}">
+            <f:then><a href="{ul.pfad}" target="_blank">{ul.name}</a></f:then>
+            <f:else><a href="/fileadmin{ul.pfad}" target="_blank">{ul.name}</a></f:else>
+        </f:contains>
     </div>
 </f:if>

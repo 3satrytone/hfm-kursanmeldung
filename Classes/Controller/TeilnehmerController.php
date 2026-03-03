@@ -1293,7 +1293,6 @@ final class TeilnehmerController extends ActionController implements LoggerAware
 
     /**
      * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $newKursanmeldung
-     * @param \Hfm\Kursanmeldung\Domain\Model\Teilnehmer $newTn
      * @param array $banktransfer
      * @return void
      */

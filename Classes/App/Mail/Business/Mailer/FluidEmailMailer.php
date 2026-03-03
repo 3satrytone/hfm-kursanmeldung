@@ -7,6 +7,10 @@ namespace Hfm\Kursanmeldung\App\Mail\Business\Mailer;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator;
 use Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader;
+use Hfm\Kursanmeldung\Domain\Model\Mailhist;
+use Hfm\Kursanmeldung\Domain\Model\Mailhistrecipients;
+use Hfm\Kursanmeldung\Domain\Repository\MailhistrecipientsRepository;
+use Hfm\Kursanmeldung\Domain\Repository\MailhistRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -21,10 +25,14 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
     /**
      * @param \Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader $contentReader
      * @param \Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator $mailBodyHydrator
+     * @param \Hfm\Kursanmeldung\Domain\Repository\MailhistRepository $mailhistRepository
+     * @param \Hfm\Kursanmeldung\Domain\Repository\MailhistrecipientsRepository $mailhistrecipientsRepository
      */
     public function __construct(
         private readonly ContentReader $contentReader,
         private readonly MailBodyHydrator $mailBodyHydrator,
+        private readonly MailhistRepository $mailhistRepository,
+        private readonly MailhistrecipientsRepository $mailhistrecipientsRepository,
     ) {
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
@@ -40,6 +48,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
             $email = $this->setupMail($mailDto);
 
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
+            $this->persistMail($mailDto, $email->getHtmlBody());
         } catch (\Exception $e) {
             $this->logger?->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
             $mailDto->setSendResponse(['error' => $e->getMessage()]);
@@ -64,10 +73,39 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
 
             $email = $this->setupMail($mailDto);
             GeneralUtility::makeInstance(TypoMailerInterface::class)->send($email);
+            $this->persistMail($mailDto, $htmlBody);
+            $mailDto->setSendResponse(['success' => true]);
         } catch (\Exception $e) {
             $this->logger?->error('FluidEmailMailer: ', ['message' => $e->getMessage(), 'trace' => $e->getTrace()]);
             $mailDto->setSendResponse(['error' => $e->getMessage()]);
         }
+    }
+
+    private function persistMail(MailDto $mailDto, string $htmlBody): void
+    {
+        $mailhist = new Mailhist();
+        $mailhist->setSubject($mailDto->getSubject());
+        $mailhist->setSendername($mailDto->getSendFrom()->getName());
+        $mailhist->setSendermail($mailDto->getSendFrom()->getAddress());
+        $mailhist->setPageid((string)$mailDto->getPageUid());
+        $mailhist->setMailtype((string)($mailDto->getAssignments()['mailtyp'] ?? ''));
+        $mailhist->setNachricht($htmlBody);
+        $mailhist->setRecipients(1);
+
+        $this->mailhistRepository->add($mailhist);
+        // We need to persist to get the UID for the recipient record
+        $persistenceManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+        $persistenceManager->persistAll();
+
+        $recipient = new Mailhistrecipients();
+        $recipient->setMailuid($mailhist->getUid());
+        $recipient->setRecipient($mailDto->getSendTo());
+        $recipient->setDatesend(new \DateTime());
+        if ($mailDto->getKursanmeldung() !== null) {
+            $recipient->setRegid($mailDto->getKursanmeldung()->getUid());
+        }
+
+        $this->mailhistrecipientsRepository->add($recipient);
     }
 
     private function setupMail(MailDto $mailDto): FluidEmail

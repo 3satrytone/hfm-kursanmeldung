@@ -13,6 +13,7 @@ use Hfm\Kursanmeldung\Utility\ParticipantUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Model\Mailhist;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
@@ -37,6 +38,7 @@ class MailingController extends ActionController
     protected $emailSubjectInfo = 'Ihre Kursanmeldung bei der Hochschule für Musik';
     protected $emailSubjectInvoice = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte Rechnung begleichen';
     protected $nameVeranstaltung = 'Weimarer Meisterkurse';
+    protected $anmeldeGebuehrPrefix = 'AG';
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -73,11 +75,7 @@ class MailingController extends ActionController
                 }
             }
         }
-        switch($GLOBALS['TSFE']->sys_language_isocode){
-            case "de": $cntrName= 'getShortNameDe';break;
-            case "en": $cntrName= 'getShortNameEn';break;
-            default: $cntrName= 'getShortNameLocal';
-        }
+
         $containsEmailPages = 1;
         if($this->settings != NULL && isset($this->settings['mailpagesparent'])){
             $containsEmailPages = $this->settings['mailpagesparent'];
@@ -135,6 +133,12 @@ class MailingController extends ActionController
         $errorList = [];
         $doubleList = [];
 
+        // Get additional email addresses
+        $additionalEmails = [];
+        if ($sendmailto !== '') {
+            $additionalEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $sendmailto, true);
+        }
+
         // Process selected participants
         foreach ($sendmail as $uid) {
             /** @var \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $kursanmeldung */
@@ -150,6 +154,11 @@ class MailingController extends ActionController
                 continue;
             }
 
+            if(in_array($teilnehmer->getEmail(), $doubleList)){
+                $doubleCount++;
+                continue;
+            }
+
             $mailDto = new MailDto();
             $mailDto->setRequest($this->request);
             $mailDto->setSendFrom($fromAddress);
@@ -157,74 +166,72 @@ class MailingController extends ActionController
             $mailDto->setSubject($subject);
             $mailDto->setKursanmeldung($kursanmeldung);
             $mailDto->setFormat(FluidEmail::FORMAT_HTML);
-            $mailDto->setAssignments([
+            $assignments = $this->participantUtility->getFluidAssignments($kursanmeldung);
+            $assignments = array_merge($assignments, [
                 'htmlBody' => $nachricht,
+                'nachricht' => $nachricht,
                 'mailtyp' => $mailtyp,
                 'pagemailinvoice' => $pagemailinvoice
             ]);
 
-            if(in_array($teilnehmer->getEmail(), $doubleList)){
-                $doubleCount++;
-                continue;
+            if($mailtyp === 'ZulassungR'){
+                $assignments['no'] = $this->anmeldeGebuehrPrefix . '.' . $assignments['no'];
             }
 
+            $mailDto->setAssignments($assignments);
+
             try {
-                if ($pagemail === 'message') {
-                    $mailDto->setTemplate('MailingHtml'); // Or a specific template for messages
+                $mailDto->setTemplate('MailingHtml');
+                if ($pagemail === 'message') {// Or a specific template for messages
                     $this->mailFacade->sendFluidEmail($mailDto);
-                    $sendResponse = $mailDto->getSendResponse();
-                    if(isset($sendResponse['error'])){
-                        $errorCount++;
-                        $errorList[] = $uid;
-                    }
                 } else {
                     $mailDto->setPageUid((int)$pagemail);
                     $this->mailFacade->sendFluidMailWithPageContent($mailDto);
                 }
+
+                $sendResponse = $mailDto->getSendResponse();
+                if(isset($sendResponse['error'])){
+                    $errorCount++;
+                    $errorList[] = $uid;
+                }
+
                 $count++;
                 $doubleList[] = $teilnehmer->getEmail();
                 $sendList[] = $uid;
+
+                // Send the exact same mail to additional email addresses (admins)
+                foreach ($additionalEmails as $adminEmail) {
+                    if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($adminEmail)) {
+                        $adminMailDto = clone $mailDto;
+                        $adminMailDto->setSendTo($adminEmail);
+                        try {
+                            if ($pagemail === 'message') {
+                                $this->mailFacade->sendFluidEmail($adminMailDto);
+                            } else {
+                                $this->mailFacade->sendFluidMailWithPageContent($adminMailDto);
+                            }
+                            $count++;
+                        } catch (\Exception $e) {
+                            $errorCount++;
+                            $errorList[] = $adminEmail . ' (for ' . $uid . ')';
+                        }
+                    }
+                }
+
+                if($mailtyp === 'ZulassungR'){
+                    $gebuehr = ($assignments['matrikel'] != '') ? $assignments['aktivengeberm'] : $assignments['aktivengeb'];
+                    $assignments['amount'] = $gebuehr;
+                    $assignments['embedLogo'] = GeneralUtility::getFileAbsFileName(
+                        'EXT:kursanmeldung/Resources/Public/Images/logo_wba_112x25px.png'
+                    );
+                    $mailDto->setAssignments($assignments);
+                    $mailDto->setTemplate('InvoiceAktivengebuehrHtml');
+                    $mailDto->setPageUid((int)$pagemailinvoice);
+                    $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+                }
             } catch (\Exception $e) {
                 $errorCount++;
                 $errorList[] = $uid;
-            }
-        }
-
-        // Process additional email addresses
-        if ($sendmailto !== '') {
-            $additionalEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $sendmailto, true);
-            foreach ($additionalEmails as $email) {
-                if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($email)) {
-                    $mailDto = new MailDto();
-                    $mailDto->setRequest($this->request);
-                    $mailDto->setSendFrom($fromAddress);
-                    $mailDto->setSendTo($email);
-                    $mailDto->setSubject($subject);
-                    $mailDto->setFormat(FluidEmail::FORMAT_HTML);
-                    $mailDto->setAssignments([
-                        'nachricht' => $nachricht,
-                        'mailtyp' => $mailtyp,
-                        'pagemailinvoice' => $pagemailinvoice
-                    ]);
-
-                    try {
-                        if ($pagemail === 'message') {
-                            $mailDto->setTemplate('MailingHtml');
-                            $this->mailFacade->sendFluidEmail($mailDto);
-                        } else {
-                            $mailDto->setPageUid((int)$pagemail);
-                            $this->mailFacade->sendFluidMailWithPageContent($mailDto);
-                        }
-                        $count++;
-                        $sendList[] = $email;
-                    } catch (\Exception $e) {
-                        $errorCount++;
-                        $errorList[] = $email;
-                    }
-                } else {
-                    $errorCount++;
-                    $errorList[] = $email;
-                }
             }
         }
 

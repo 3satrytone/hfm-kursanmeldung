@@ -1,248 +1,208 @@
 <f:layout name='DefaultEmail'/>
-
 <f:section name='Main'>
     <table class="header">
         <tr>
-            <td>
-                <f:sanitize.html><img src="{logoCid}" alt="logo"/></f:sanitize.html>
-            </td>
+            <td><f:transform.html><img src="{logoCid}" alt="logo"/></f:transform.html></td>
             <td style="padding-left:10px;">
-                <f:sanitize.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</span><br/>
+                <f:transform.html><span style="font-family:Helvetica,Arial;font-size:11px;color:#e95e28;">WBA | Bauhaus Weiterbildungsakademie Weimar e.V.</span><br/>
                     <span style="font-family:Helvetica,Arial;font-size:11px;color:#666666;">Institut an der Bauhaus-Universität Weimar</span><br/><span
                             style="font-size:11px;color:#666666;"><f:link.external uri="http://www.wba-weimar.de"
                                                                                    target="_blank"
                                                                                    style="font-family:Helvetica,Arial;font-size:11px;color:#666666;text-decoration:none;">www.wba-weimar.de</f:link.external></span>
-                </f:sanitize.html>
+                </f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
     </table>
     <table class="content" style="font-family:Helvetica,Arial;font-size:14px;color:#000000;">
         <tr>
             <td colspan="2" style="border-top:1px solid #000000;padding-top:10px;">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html><strong>RECHNUNG / INVOICE - {no}</strong></f:sanitize.html>
+                <f:transform.html><strong>RECHNUNG / INVOICE - {no}</strong></f:transform.html>
             </td>
         </tr>
         <tr>
             <td>
-                <f:sanitize.html>Rechnungsdatum / Date of invoice</f:sanitize.html>
+                <f:transform.html>Rechnungsdatum / Date of invoice</f:transform.html>
             </td>
             <td>
-                <f:sanitize.html>{invoiceDate}</f:sanitize.html>
+                <f:transform.html>{invoiceDate}</f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
         <tr>
             <td style="vertical-align:top">
-                <f:sanitize.html>Empfänger / recipient:<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;</f:sanitize.html>
+                <f:transform.html>Empfänger / recipient:<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;</f:transform.html>
             </td>
             <td>
-                <f:sanitize.html>{firstname} {lastname}<br/>{address}<br/>{addressadd}<br/>{zip} {city}<br/>{country}
-                </f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>Veranstaltung / event:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>
-                    <f:if condition="{novalnet.invoicedata_event}">
-                        <f:then>{novalnet.invoicedata_event}</f:then>
-                        <f:else>{kurs}</f:else>
-                    </f:if>
-                </f:sanitize.html>
+                <f:transform.html>{firstname} {lastname}<br/>{address}<br/>{addressadd}<br/>{zip} {location}<br/>{country}
+                </f:transform.html>
             </td>
         </tr>
         <tr>
             <td>
-                <f:sanitize.html>Datum / date:</f:sanitize.html>
+                <f:transform.html>Veranstaltung / event:<br/>&nbsp;</f:transform.html>
             </td>
             <td>
-                <f:sanitize.html>
-                    <f:if condition="{novalnet.invoicedata_date}">
-                        <f:then>{novalnet.invoicedata_date}</f:then>
-                        <f:else>{kursstart}</f:else>
-                    </f:if>
-                </f:sanitize.html>
+                <f:transform.html>{kurs}</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>Datum / date:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>{kursstart} bis {kursend}</f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
-        <f:if condition="{novalnet.invoicedata_text1}">
-            <f:then>
-                <tr>
-                    <td colspan="2">
-                        <f:sanitize.html>{novalnet.invoicedata_text1}</f:sanitize.html>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <f:sanitize.html>&nbsp;</f:sanitize.html>
-                    </td>
-                </tr>
-            </f:then>
-        </f:if>
         <tr>
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html><strong>Posten / entry</strong></f:sanitize.html>
+                <f:transform.html><strong>Posten / entry</strong></f:transform.html>
             </td>
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html><strong>Betrag / amount in Euro</strong></f:sanitize.html>
+                <f:transform.html><strong>Betrag / amount in Euro</strong></f:transform.html>
             </td>
         </tr>
         <tr style="border-bottom:1px solid #000000;padding-bottom:10px;">
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html>Anmeldegebühr / registration fee</f:sanitize.html>
+                <f:transform.html>Anmeldegebühr / registration fee</f:transform.html>
             </td>
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html>{amount ->
-                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')} &euro;
-                </f:sanitize.html>
+                <f:transform.html>{amount -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} €
+                </f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html>Umsatzsteuerbefreit aufgrund § 4 Nr. 22b UStG / Auf Rechnung der Hochschule für Musik
-                    FRANZ LISZT Weimar
-                </f:sanitize.html>
+                <f:transform.html>Umsatzsteuerbefreit aufgrund § 4 Nr. 22b UStG</f:transform.html>
             </td>
         </tr>
         <tr>
             <td>
-                <f:sanitize.html><strong>Rechnungsbetrag / invoice amount:</strong></f:sanitize.html>
+                <f:transform.html><strong>Rechnungsbetrag / invoice amount:</strong></f:transform.html>
             </td>
             <td>
-                <f:sanitize.html><strong>{amount ->
-                    f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'.')} &euro;</strong>
-                </f:sanitize.html>
+                <f:transform.html><strong>{amount -> f:format.number(decimals:2, decimalSeparator:',',
+                    thousandsSeparator:'')} €</strong></f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
-        <f:if condition="{novalnet.invoicedata_text2}">
-            <f:then>
-                <tr>
-                    <td colspan="2">
-                        <f:sanitize.html>{novalnet.invoicedata_text2}</f:sanitize.html>
-                    </td>
-                </tr>
-            </f:then>
-            <f:else>
-                <tr>
-                    <td colspan="2">
-                        <f:sanitize.html>Bitte überweisen Sie den Rechnungsbetrag innerhalb von 3 Tagen unter<br/>Angabe
-                            der Rechnungsnummer auf folgendes Konto:<br/><br/>
-                            Please transfer the invoice amount within 3 days (see bank details below)<br/>by specifying
-                            your invoice number:
-                        </f:sanitize.html>
-                    </td>
-                </tr>
-            </f:else>
+        <tr>
+            <td colspan="2">
+                <f:transform.html>Bitte überweisen Sie den Rechnungsbetrag innerhalb von 10 Tagen unter<br/>Angabe der
+                    Rechnungsnummer auf folgendes Konto:<br/><br/>
+                    Please transfer the invoice amount by 10 days (see bank details below)<br/>by specifying your
+                    invoice number:
+                </f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <f:transform.html>&nbsp;</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <f:transform.html>&nbsp;</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>Empfänger / account holder:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>Bauhaus WBA</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>IBAN:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>DE80 8207 0024 0287 7066 05</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>BIC:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>DEUTDEDBERF</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>Kreditinstitut / bank:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>Deutsche Bank Weimar</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>Verwendungszweck / Payment reason:</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>{no} {firstname} {lastname}</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <f:transform.html>&nbsp;</f:transform.html>
+            </td>
+            <td>
+                <f:transform.html>Bitte unbedingt angeben! / Definitely required!</f:transform.html>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;">
+                <f:transform.html>&nbsp;</f:transform.html>
+            </td>
+        </tr>
+        <f:if condition="{htmlBody} != ''">
+            <tr>
+                <td colspan="2">
+                    <f:transform.html>&nbsp;</f:transform.html>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><f:transform.html>{htmlBody}</f:transform.html></td>
+            </tr>
         </f:if>
         <tr>
             <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>Empfänger / account holder:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.invoice_account_name}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>IBAN:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.invoice_iban}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>BIC:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.invoice_bic}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>Kreditinstitut / bank:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.invoice_bankname}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.invoice_bankplace}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>Verwendungszweck / Payment reason:</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>{novalnet.tid}</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
-            </td>
-            <td>
-                <f:sanitize.html>Bitte unbedingt angeben! / Definitely required!</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <f:sanitize.html>&nbsp;</f:sanitize.html>
+                <f:transform.html>&nbsp;</f:transform.html>
             </td>
         </tr>
     </table>
