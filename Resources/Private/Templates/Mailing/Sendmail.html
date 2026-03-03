@@ -1,4 +1,4 @@
-<f:layout name="Default" />
+<f:layout name="Mailing" />
 
 This Template is responsible for creating a table of domain objects.
 
@@ -16,10 +16,11 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 <f:flashMessages />
 
-<div class="joMailing">
-	<div class="joRow joSend">Versendet: <f:count>{send}</f:count></div>	
-	<div class="joRow joError">Fehler: <f:count>{error}</f:count></div>	
-	<div class="joRow joDouble">Doppelt: <f:count>{double}</f:count></div>	
-	<f:link.action controller="Backend" action="general" class="joBack">zur Backendauswahl</f:link.action>
+<div class="hfmMailing">
+	<div class="hfmRow hfmSend">Versendet: <f:count>{send}</f:count></div>
+	<div class="hfmRow hfmError">Fehler: <f:count>{error}</f:count></div>
+	<div class="hfmRow hfmDouble">Doppelt: {double}</div>
+	<f:link.action controller="General" action="index" class="hfmBack btn btn-secondary">zur Backendauswahl</f:link.action>
+    <f:link.action controller="Mailing" action="list" class="hfmSubmit btn btn-primary ms-3">zur Mailingübersicht</f:link.action>
 </div>
 </f:section>

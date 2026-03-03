@@ -24,7 +24,7 @@ return [
             Controller\ProfController::class => ['list','show','new','create','edit','update','delete'],
             Controller\KursController::class => ['list','show','new','create','edit','update','delete'],
             Controller\TeilnehmerController::class => ['list','edit','delete','update','updateAnmeldestatus','paybyadmin','export'],
-            Controller\MailingController::class => ['list'],
+            Controller\MailingController::class => ['list', 'sendmail'],
         ],
     ],
 ];

@@ -98,3 +98,71 @@ ul.hfm-general li {
     left: 0;
     padding: 10px 0;
 }
+
+.hfmMailing .hfmBack{
+    background-color:#484848;
+    float:left;
+}
+.hfmFormWrapper .hfmBack:hover,
+.hfmMailing .hfmBack:hover{
+    background-color: #9D0633;
+}
+.hfmFormWrapper .f3-form-error{
+    border: 1px solid red;
+    box-shadow: 0 0 5px -1px red;
+}
+.hfmMailing{
+    width: 800px;
+}
+.hfmMailing .hfmSubmitField{
+    width: 600px;
+    height: 5rem;
+}
+.hfmMailing .hfmUserScroll{
+    width:100%;
+    height:300px;
+    overflow:hide;
+    overflow-y:scroll;
+}
+.hfmUserScroll table{
+    width: 100%;
+}
+.hfmUserScroll table td{
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 5px;
+}
+.hfmUserScroll tr:nth-child(even){
+    background-color:#efefef;
+}
+.hfmMailing .hfmRow{
+    margin: 1rem 0;
+}
+.hfmMailing .hfmBox,
+.hfmMailing .hfmScrollBox{
+    padding: 0.5rem;
+    background-color:#e0e0e0;
+}
+.hfmMailing .hfmBox input,
+.hfmMailing .hfmBox select{
+    width: 100%;
+    height: 2rem;
+}
+.hfmMailing .hfmBox textarea{
+    width: 100%;
+    height: 15rem;
+}
+.hfmMailing label{
+    font-size:14px;
+    float: none;
+    display: block;
+}
+.hfmMailing input[type="radio"]{
+    width:2rem;
+}
+.hfmMailing .filter{
+    background-color:#efefef;
+    border-color: #e0e0e0 1px solid;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}

@@ -189,6 +189,43 @@
             <source>Frau</source>
             <target>Ms</target>
         </trans-unit>
+        <!-- be mailings -->
+        <trans-unit id="kursanmeldung_mail.confirm">
+            <source>Wirklich SO senden?</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.user">
+            <source>Hier können Sie die zu benachrichtigen Teilnehmer auswählen:</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.pagesprepend">
+            <source>Text aus dem Nachrichtenfeld versenden.</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.mailtypprepend">
+            <source>Standardnachricht</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.pagemailinvoiceprepend">
+            <source>Kein Text an Rechnung anhängen</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.sendmailto">
+            <source>Weitere E-Mailadressen kommaseppariert hinzufügen (mail1@test.de,mail2@test.de)</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.pagemail">
+            <source>Seite mit der E-Mailvorlage auswählen oder Text aus nachstehender Nachrichtenfeld verwenden</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.pagemailinvoice">
+            <source>Seite mit der E-Mailvorlage auswählen die under die Rechnung eingefügt werden soll.</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.subject">
+            <source>Betreff der E-Mail</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.fromemail">
+            <source>E-Mailadresse des Absenders (Spamprotection: muss zwingend auf @hfm-weimar.de enden)</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.fromname">
+            <source>Name des Absenders</source>
+        </trans-unit>
+        <trans-unit id="kursanmeldung_mail.nachricht">
+            <source>Nachricht:</source>
+        </trans-unit>
     </body>
   </file>
 </xliff>

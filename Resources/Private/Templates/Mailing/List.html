@@ -1,4 +1,4 @@
-<f:layout name="Default" />
+<f:layout name="Mailing" />
 
 This Template is responsible for creating a table of domain objects.
 
@@ -14,33 +14,33 @@ Otherwise your changes will be overwritten the next time you save the extension 
 <f:section name="Main">
 <h1>Mailings Teilnehmer</h1>
 <f:flashMessages />
-<div class="joMailing">
-	<f:form action="sendmail" name="sendmail" onsubmit="return confirm('{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.confirm')}')">
-		<div class="joSubject joRow">
+<div class="hfmMailing">
+	<f:form action="sendmail" name="sendmail" data="{confirm: '{f:translate(key: \'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.confirm\')}'}">
+		<div class="hfmSubject hfmRow">
 			<label for="subject">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.subject" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.textfield name="subject" />
 			</div>
 		</div>
-		<div class="joFrom joRow">
+		<div class="hfmFrom hfmRow">
 			<label for="fromemail">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.fromemail" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.textfield name="fromemail" value="{mailpremail}" />
 			</div>
 		</div>
-		<div class="joFromName joRow">
+		<div class="hfmFromName hfmRow">
 			<label for="fromname">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.fromname" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.textfield name="fromname" value="{mailprename}" />
 			</div>
 		</div>
-		<div class="joUser joRow">
+		<div class="hfmUser hfmRow">
 			<label for="sendmail">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.user" />
 			</label>
@@ -60,7 +60,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 				Nur ohne DV fak.: <input type="radio" name="dv" value="0">
 				Nur mit DV fak.: <input type="radio" name="dv" value="1"><br />
 			</div>
-			<div class="joUserScroll joScrollBox">
+			<div class="hfmUserScroll hfmScrollBox">
 				<table>
 				    <thead>
 				        <tr>
@@ -94,49 +94,49 @@ Otherwise your changes will be overwritten the next time you save the extension 
 				</table>
 			</div>
 		</div>
-		<div class="joMailsto joRow">
+		<div class="hfmMailsto hfmRow">
 			<label for="sendmailto">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.sendmailto" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.textfield name="sendmailto" />
 			</div>
 		</div>
-		<div class="joPages joRow">
+		<div class="hfmPages hfmRow">
 			<label for="pagemail">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemail" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.select name="pagemail" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagesprepend')}" prependOptionValue="message" />
 			</div>
 		</div>
-		<div class="joTyp joRow">
+		<div class="hfmTyp hfmRow">
 			<label for="mailtyp">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.mailtyp" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.select name="mailtyp" options="{mailTyps}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.mailtypprepend')}" prependOptionValue="" />
 			</div>
 		</div>
-		<div class="joPagesInvoice joRow joHide">
+		<div class="hfmPagesInvoice hfmRow hfmHide">
 			<label for="pagemailinvoice">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemailinvoice" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.select name="pagemailinvoice" options="{PageIds}" optionValueField="uid" optionLabelField="title" prependOptionLabel="{f:translate(key:'LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.pagemailinvoiceprepend')}" prependOptionValue="" />
 			</div>
 		</div>
-		<div class="joMessage joRow">
+		<div class="hfmMessage hfmRow">
 			<label for="nachricht">
 				<f:translate key="LLL:EXT:kursanmeldung/Resources/Private/Language/locallang_be.xlf:kursanmeldung_mail.nachricht" />
 			</label>
-			<div class="joBox">
+			<div class="hfmBox">
 				<f:form.textarea name="nachricht" value="" />
 			</div>
 		</div>
-		<div class="joSubmitField joRow">
-			<f:link.action controller="Backend" action="general" class="joBack">zur Backendauswahl</f:link.action>
-			<f:form.submit value="Absenden" class="joSubmit" />
+		<div class="hfmSubmitField hfmRow">
+			<f:link.action controller="General" action="index" class="btn btn-secondary">zur Backendauswahl</f:link.action>
+			<f:form.submit value="Absenden" class="hfmSubmit btn btn-primary" />
 		</div>
 	</f:form>
 </div>

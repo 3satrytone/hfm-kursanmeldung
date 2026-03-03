@@ -19,6 +19,7 @@ class MailDto
     private array $assignments = [];
     private ?int $pageUid;
     private ?Kursanmeldung $kursanmeldung;
+    private array $sendResponse;
 
     /**
      * @return \TYPO3\CMS\Extbase\Mvc\RequestInterface
@@ -163,5 +164,21 @@ class MailDto
     public function setAssignments(array $assignments): void
     {
         $this->assignments = $assignments;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSendResponse(): array
+    {
+        return $this->sendResponse;
+    }
+
+    /**
+     * @param array $sendResponse
+     */
+    public function setSendResponse(array $sendResponse): void
+    {
+        $this->sendResponse = $sendResponse;
     }
 }
