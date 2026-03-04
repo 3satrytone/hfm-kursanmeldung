@@ -206,6 +206,8 @@ class MailingController extends ActionController
                 foreach ($additionalEmails as $adminEmail) {
                     if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($adminEmail)) {
                         $adminMailDto = clone $mailDto;
+                        $fromAddressAdmin = new Address($teilnehmer->getEmail(), $teilnehmer->getNachname());
+                        $adminMailDto->setSendFrom($fromAddressAdmin);
                         $adminMailDto->setSendTo($adminEmail);
                         try {
                             if ($pagemail === 'message') {
@@ -233,6 +235,8 @@ class MailingController extends ActionController
 
                     if ($this->adminmail){
                         $adminMailDto = clone $mailDto;
+                        $fromAddressAdmin = new Address($teilnehmer->getEmail(), $teilnehmer->getNachname());
+                        $adminMailDto->setSendFrom($fromAddressAdmin);
                         $adminMailDto->setSendTo($this->adminmail);
                         $this->mailFacade->sendFluidMailWithPageContent($adminMailDto);
                     }
