@@ -28,8 +28,8 @@ class MailingController extends ActionController
     protected $zahlungsartNovalnetArr = array(3=>'paypal', 4=>'onlinetransfer', 5=>'giropay', 6=>'invoice');
     protected $mailprename = 'Hochschule für Musik FRANZ LISZT Weimar';
     protected $mailpremail = 'meisterkurse@hfm-weimar.de';
-    protected $adminmail = 'wiebke.eckardt@hfm-weimar.de';
-    protected $emailHostAddress = 'wiebke.eckardt@hfm-weimar.de';
+    protected $adminmail = 'meisterkurse@hfm-weimar.de';
+    protected $emailHostAddress = 'meisterkurse@hfm-weimar.de';
     protected $emailHostAddressAdmin = 'wiebke.eckardt@hfm-weimar.de';
     protected $emailHostAddressCc = 'info@schneider-software-service.de';
     protected $emailHostName = '';
@@ -138,6 +138,9 @@ class MailingController extends ActionController
         if ($sendmailto !== '') {
             $additionalEmails = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $sendmailto, true);
         }
+        if($this->adminmail){
+            $additionalEmails[] = $this->adminmail;
+        }
 
         // Process selected participants
         foreach ($sendmail as $uid) {
@@ -227,6 +230,12 @@ class MailingController extends ActionController
                     $mailDto->setTemplate('InvoiceAktivengebuehrHtml');
                     $mailDto->setPageUid((int)$pagemailinvoice);
                     $this->mailFacade->sendFluidMailWithPageContent($mailDto);
+
+                    if ($this->adminmail){
+                        $adminMailDto = clone $mailDto;
+                        $adminMailDto->setSendTo($this->adminmail);
+                        $this->mailFacade->sendFluidMailWithPageContent($adminMailDto);
+                    }
                 }
             } catch (\Exception $e) {
                 $errorCount++;

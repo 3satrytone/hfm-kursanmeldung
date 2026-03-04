@@ -146,7 +146,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
         preg_match($pattern, $subject, $matches, PREG_OFFSET_CAPTURE);
         if(!empty($matches)){
             if(isset($var[$matches[1][0]])){
-                if($var[$matches[1][0]] == 0){
+                if($var[$matches[1][0]] === ''){
                     $mailtext = preg_replace('/(\{if:'.$matches[1][0].'\})(.*)(\{\/if:'.$matches[1][0].'\})(\{else:'.$matches[1][0].'\})(.*)(\{\/else:'.$matches[1][0].'\})/Usi', $matches[2][0], $mailtext);
                 }else{
                     $mailtext = preg_replace('/(\{if:'.$matches[1][0].'\})(.*)(\{\/if:'.$matches[1][0].'\})(\{else:'.$matches[1][0].'\})(.*)(\{\/else:'.$matches[1][0].'\})/Usi', $matches[5][0], $mailtext);

@@ -209,11 +209,11 @@ class ParticipantUtility
         }
 
         $assignments['room'] = $register->getRoom();
-        $assignments['room_de'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getRoom(), 'kursanmeldung', 'de') : '';
-        $assignments['room_en'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getRoom(), 'kursanmeldung') : '';
+        $assignments['room_de'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer.' . $register->getRoom(), 'kursanmeldung', 'de') : '';
+        $assignments['room_en'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer.' . $register->getRoom(), 'kursanmeldung') : '';
         $assignments['roomwith'] = $register->getRoomwith() ?: '';
-        $assignments['roomfrom'] = $register->getRoomfrom() ?: '';
-        $assignments['roomto'] = $register->getRoomTo() ?: '';
+        $assignments['roomfrom'] = $register->getRoomfrom() ? (new DateTime($register->getRoomfrom()))->format('d.m.Y') : '';
+        $assignments['roomto'] = $register->getRoomTo() ? (new DateTime($register->getRoomTo()))->format('d.m.Y') : '';
 
         $tn = $register->getTn();
         $tn->rewind();
@@ -279,8 +279,8 @@ class ParticipantUtility
         $assignments['comment'] = $register->getComment();
         $assignments['uid'] = $register->getUid();
 
-
-        $assignments['gebuehr'] = $register->getGebuehr() ? number_format($register->getGebuehr(), 2, ',', '.') : '0,00';
+        $gebuehr = $register->getGebuehr() ?: '0,00';
+        $assignments['gebuehr'] = (is_string($register->getGebuehr())) ? $gebuehr : number_format($register->getGebuehr(), 2, ',', '.');
         $assignments['bezahlt'] = $register->getBezahlt() ? 'Ja' : 'Nein';
         $assignments['zahlart'] = $register->getZahlart();
         $assignments['zahltbis'] = $register->getZahltbis() ? $register->getZahltbis()->format('d.m.Y') : '';
