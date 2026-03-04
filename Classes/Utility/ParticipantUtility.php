@@ -185,19 +185,27 @@ class ParticipantUtility
     {
         $assignments = [];
 
-        $hotel = '';
+        $assignments['hotel'] = '';
+        $assignments['hotel_name'] = '';
         $hotelId = $register->getHotel();
         if ($hotelId > 0) {
             $hotelObj = $this->hotelRepository->findByUid($hotelId);
             if (!empty($hotelObj) && $hotelObj != null) {
                 $roomFromDate = new DateTime($register->getRoomfrom());
                 $roomToDate = new DateTime($register->getRoomTo());
-                $hotel = $hotelObj->getHotel() . ", " . $this->translateFromXlf(
+                $assignments['hotel_name'] = $hotelObj->getHotel();
+                $assignments['hotel'] = $hotelObj->getHotel() . ", " . $this->translateFromXlf(
                         'tx_kursanmeldung_domain_model_kursanmeldung.step2.val' . $register->getRoom()
                     ) . ', ' . $roomFromDate->format('d.m.Y') . '-' . $roomToDate->format('d.m.Y');
             }
         }
-        $assignments['hotel'] = $hotel;
+
+        $assignments['room'] = $register->getRoom();
+        $assignments['room_de'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getRoom(), 'kursanmeldung', 'de') : '';
+        $assignments['room_en'] = $register->getRoom() ? $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getRoom(), 'kursanmeldung') : '';
+        $assignments['roomwith'] = $register->getRoomwith() ?: '';
+        $assignments['roomfrom'] = $register->getRoomfrom() ?: '';
+        $assignments['roomto'] = $register->getRoomTo() ?: '';
 
         $tn = $register->getTn();
         $tn->rewind();
@@ -207,9 +215,11 @@ class ParticipantUtility
         $gender = $address->getAnrede();
         $genderText = $this->translateFromXlf('tx_kursanmeldung_domain_model_kursanmeldung.email.gender.' . $gender);
         $assignments['gender'] = $genderText;
+        $assignments['titel'] = $address->getTitel() ?: '';
+        $assignments['matrikel'] = $address->getMatrikel() ?: '';
+        $assignments['gebdate'] = $address->getGebdate() ? $address->getGebdate()->format('d.m.Y') : '';
         $assignments['firstname'] = ucfirst($address->getVorname());
         $assignments['lastname'] = ucfirst($address->getNachname());
-        $assignments['comment'] = $register->getComment();
         $assignments['fee'] = $register->getGebuehr() . ' EUR';
         $assignments['kurs'] = $this->getKursname($register->getKurs(), true);
         $assignments['city'] = $address->getOrt();
@@ -217,23 +227,69 @@ class ParticipantUtility
         $assignments['phone'] = $address->getTelefon();
         $assignments['mobile'] = $address->getMobil();
         $assignments['email'] = $address->getEmail();
+        $assignments['telefon'] = $address->getTelefon();
+        $assignments['mobil'] = $address->getMobil();
         $assignments['emailfrom'] = $address->getEmail();
         $assignments['addressObj'] = $address;
         $assignments['registerObj'] = $register;
         $assignments['address'] = trim($address->getAdresse1() . ' ' . $address->getHausnr());
         $assignments['addressadd'] = $address->getAdresse2();
+        $assignments['adresse1'] = $address->getAdresse1();
+        $assignments['adresse2'] = $address->getAdresse2();
+        $assignments['plz'] = $address->getPlz();
+        $assignments['ort'] = $address->getOrt();
+        $assignments['hausnr'] = $address->getHausnr();
+        $assignments['anrede_de'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung', 'de');
+        $assignments['anrede_en'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung');
+        $assignments['anrede_add_de'] = $this->translateFromXlf('anrede.add' . $address->getAnrede(), 'kursanmeldung', 'de');
+        $assignments['anrede_add_en'] = $this->translateFromXlf('anrede.add' . $address->getAnrede(), 'kursanmeldung');
+        $assignments['anrede'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung');
 
-        $landCountry = $this->countryProvider->getByIsoCode($address->getLand());
+
         $locale = $address->getSprache() === 'English' ? new Locale('en') : new Locale('de');
         $languageService = $this->languageServiceFactory->create($locale);
+        $landCountry = $this->countryProvider->getByIsoCode($address->getLand());
         $assignments['country'] = $languageService->sl($landCountry->getLocalizedNameLabel());
+        $landNation = $this->countryProvider->getByIsoCode($address->getNation());
+        $assignments['nation'] = $languageService->sl($landNation->getLocalizedNameLabel());
 
-        $assignments['invoiceDate'] = $register->getDatein()->format('d.m.Y');
+        $assignments['invoiceDate'] = $register->getDatein() ? $register->getDatein()->format('d.m.Y') : '';
+        $assignments['datein'] = $register->getDatein() ? $register->getDatein()->format('d.m.Y') : '';
         $assignments['no'] = $register->getUid();
         $assignments['amount'] = $register->getGebuehr();
         $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m.Y');
         $assignments['kursend'] = $register->getKurs()->getKurszeitend()->format('d.m.Y');
-        $assignments['instrument'] = $register->getKurs()->getInstrument();
+        $assignments['teilnahmeart'] = $register->getTeilnahmeart();
+        $assignments['teilnahmeart_de'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getTeilnahmeart(), 'kursanmeldung', 'de');
+        $assignments['teilnahmeart_en'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getTeilnahmeart(), 'kursanmeldung');
+        $assignments['instrument'] = $register->getKurs() ? $register->getKurs()->getInstrument() : '';
+        $assignments['anmeldestatus'] = $register->getAnmeldestatus();
+        $assignments['programm'] = $register->getProgramm();
+        $assignments['duo'] = $register->getDuo();
+        $assignments['duoname'] = $register->getDuoname();
+        $assignments['duosel'] = $register->getDuosel();
+        $assignments['comment'] = $register->getComment();
+        $assignments['uid'] = $register->getUid();
+
+
+        $assignments['gebuehr'] = $register->getGebuehr() ? number_format($register->getGebuehr(), 2, ',', '.') : '0,00';
+        $assignments['bezahlt'] = $register->getBezahlt() ? 'Ja' : 'Nein';
+        $assignments['zahlart'] = $register->getZahlart();
+        $assignments['zahltbis'] = $register->getZahltbis() ? $register->getZahltbis()->format('d.m.Y') : '';
+        $assignments['gezahlt'] = $register->getGezahlt() ? number_format($register->getGezahltos(), 2, ',', '.') : '0,00';
+        $assignments['gezahltag'] = $register->getGezahltag() ? number_format($register->getGezahltag(), 2, ',', '.') : '0,00';
+        $assignments['gezahltos'] = $register->getGezahltos() ? number_format($register->getGezahltos(), 2, ',', '.') : '0,00';
+
+        $kurs = $register->getKurs();
+
+        if(!empty($kurs)){
+            $prof = $kurs->getProfessor();
+            $assignments['professor'] = $prof ? $prof->getName() : '';
+            $assignments['kurszeitstart'] = ($kurs->getKurszeitstart()->format('d.m.Y') == '01.01.1970')? '' : $kurs->getKurszeitstart()->format('d.m.Y');
+            $assignments['kurszeitend'] = ($kurs->getKurszeitend()->format('d.m.Y') == '01.01.1970')? '' : $kurs->getKurszeitend()->format('d.m.Y');
+            $assignments['anreisedate'] = ($kurs->getAnreisedate()->format('d.m.Y') == '01.01.1970')? '' : $kurs->getAnreisedate()->format('d.m.Y');
+            $assignments['kursuid'] = $kurs->getUid();
+        }
 
         return $assignments;
     }
