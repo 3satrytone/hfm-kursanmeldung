@@ -87,7 +87,7 @@
         </tr>
         <tr style="border-bottom:1px solid #000000;padding-bottom:10px;">
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
-                <f:transform.html>Anmeldegebühr / registration fee</f:transform.html>
+                <f:transform.html>Teilnahmegebühr / participation fee</f:transform.html>
             </td>
             <td style="border-bottom:1px solid #000000;padding-bottom:10px;">
                 <f:transform.html>{amount -> f:format.number(decimals:2, decimalSeparator:',', thousandsSeparator:'')} €
@@ -120,9 +120,9 @@
         </tr>
         <tr>
             <td colspan="2">
-                <f:transform.html>Bitte überweisen Sie den Rechnungsbetrag innerhalb von 10 Tagen unter<br/>Angabe der
+                <f:transform.html>Bitte überweisen Sie den Rechnungsbetrag innerhalb von 5 Tagen unter<br/>Angabe der
                     Rechnungsnummer auf folgendes Konto:<br/><br/>
-                    Please transfer the invoice amount by 10 days (see bank details below)<br/>by specifying your
+                    Please transfer the invoice amount by 5 days (see bank details below)<br/>by specifying your
                     invoice number:
                 </f:transform.html>
             </td>
@@ -197,7 +197,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><f:transform.html>{htmlBody}</f:transform.html></td>
+                <td colspan="2"><f:sanitize.html>{htmlBody}</f:sanitize.html></td>
             </tr>
         </f:if>
         <tr>

@@ -38,7 +38,7 @@ class MailingController extends ActionController
     protected $emailSubjectInfo = 'Ihre Kursanmeldung bei der Hochschule für Musik';
     protected $emailSubjectInvoice = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte Rechnung begleichen';
     protected $nameVeranstaltung = 'Weimarer Meisterkurse';
-    protected $anmeldeGebuehrPrefix = 'AG';
+    protected $anmeldeGebuehrPrefix = 'TG';
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -57,8 +57,8 @@ class MailingController extends ActionController
     public function initializeAction(): void
     {
         if(isset($this->settings['dataPages'])){
-            if(isset($this->KursanmeldungKursRepository))$this->kursanmeldungRepository->setStoragePageIds($this->settings['dataPages']);
-            if(isset($this->AnmeldestatusRepository))$this->anmeldestatusRepository->setStoragePageIds($this->settings['dataPages']);
+            if(isset($this->kursanmeldungRepository))$this->kursanmeldungRepository->setStoragePageIds($this->settings['dataPages']);
+            if(isset($this->anmeldestatusRepository))$this->anmeldestatusRepository->setStoragePageIds($this->settings['dataPages']);
         }
     }
 
@@ -219,8 +219,7 @@ class MailingController extends ActionController
                 }
 
                 if($mailtyp === 'ZulassungR'){
-                    $gebuehr = ($assignments['matrikel'] != '') ? $assignments['aktivengeberm'] : $assignments['aktivengeb'];
-                    $assignments['amount'] = $gebuehr;
+                    $assignments['amount'] = ($assignments['matrikel'] !== '') ? $assignments['aktivengeberm'] : $assignments['aktivengeb'];
                     $assignments['embedLogo'] = GeneralUtility::getFileAbsFileName(
                         'EXT:kursanmeldung/Resources/Public/Images/logo_wba_112x25px.png'
                     );

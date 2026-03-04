@@ -7,6 +7,7 @@ use Hfm\Kursanmeldung\Domain\Model\Kurs;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Model\Prof;
 use Hfm\Kursanmeldung\Domain\Model\Step1Data;
+use Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository;
 use Hfm\Kursanmeldung\Domain\Repository\HotelRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use TYPO3\CMS\Core\Country\CountryProvider;
@@ -22,9 +23,11 @@ class ParticipantUtility
 {
     /**
      * @param \Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository $kursanmeldungRepository
+     * @param \Hfm\Kursanmeldung\Domain\Repository\GebuehrenRepository $gebuehrenRepository
      */
     public function __construct(
         protected readonly KursanmeldungRepository $kursanmeldungRepository,
+        protected readonly GebuehrenRepository $gebuehrenRepository,
         protected readonly HotelRepository $hotelRepository,
         protected readonly CountryProvider $countryProvider,
         protected readonly LanguageServiceFactory $languageServiceFactory,
@@ -72,7 +75,12 @@ class ParticipantUtility
         $args = func_get_args();
         $key = array_shift($args);
 
-        return LocalizationUtility::translate($key, 'kursanmeldung', $args) ?? '';
+        $lang = null;
+        if(isset($args[1]) && in_array($args[1],['de','en'])){
+            $lang = $args[1];
+        }
+
+        return LocalizationUtility::translate($key, 'kursanmeldung', $args, $lang) ?? '';
     }
 
     /**
@@ -239,10 +247,10 @@ class ParticipantUtility
         $assignments['plz'] = $address->getPlz();
         $assignments['ort'] = $address->getOrt();
         $assignments['hausnr'] = $address->getHausnr();
-        $assignments['anrede_de'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung', 'de');
-        $assignments['anrede_en'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung');
-        $assignments['anrede_add_de'] = $this->translateFromXlf('anrede.add' . $address->getAnrede(), 'kursanmeldung', 'de');
-        $assignments['anrede_add_en'] = $this->translateFromXlf('anrede.add' . $address->getAnrede(), 'kursanmeldung');
+        $assignments['anrede_de'] = $this->translateFromXlf('anrede.' . $address->getAnrede(), 'kursanmeldung', 'de');
+        $assignments['anrede_en'] = $this->translateFromXlf('anrede.' . $address->getAnrede(), 'kursanmeldung');
+        $assignments['anrede_add_de'] = $this->translateFromXlf('anrede.add.' . $address->getAnrede(), 'kursanmeldung', 'de');
+        $assignments['anrede_add_en'] = $this->translateFromXlf('anrede.add.' . $address->getAnrede(), 'kursanmeldung');
         $assignments['anrede'] = $this->translateFromXlf('anrede' . $address->getAnrede(), 'kursanmeldung');
 
 
@@ -260,8 +268,8 @@ class ParticipantUtility
         $assignments['kursstart'] = $register->getKurs()->getKurszeitstart()->format('d.m.Y');
         $assignments['kursend'] = $register->getKurs()->getKurszeitend()->format('d.m.Y');
         $assignments['teilnahmeart'] = $register->getTeilnahmeart();
-        $assignments['teilnahmeart_de'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getTeilnahmeart(), 'kursanmeldung', 'de');
-        $assignments['teilnahmeart_en'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer' . $register->getTeilnahmeart(), 'kursanmeldung');
+        $assignments['teilnahmeart_de'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer.tnart.' . $register->getTeilnahmeart(), 'kursanmeldung', 'de');
+        $assignments['teilnahmeart_en'] = $this->translateFromXlf('tx_kursanmeldung_domain_model_teilnehmer.tnart.' . $register->getTeilnahmeart(), 'kursanmeldung');
         $assignments['instrument'] = $register->getKurs() ? $register->getKurs()->getInstrument() : '';
         $assignments['anmeldestatus'] = $register->getAnmeldestatus();
         $assignments['programm'] = $register->getProgramm();
@@ -276,9 +284,9 @@ class ParticipantUtility
         $assignments['bezahlt'] = $register->getBezahlt() ? 'Ja' : 'Nein';
         $assignments['zahlart'] = $register->getZahlart();
         $assignments['zahltbis'] = $register->getZahltbis() ? $register->getZahltbis()->format('d.m.Y') : '';
-        $assignments['gezahlt'] = $register->getGezahlt() ? number_format($register->getGezahltos(), 2, ',', '.') : '0,00';
-        $assignments['gezahltag'] = $register->getGezahltag() ? number_format($register->getGezahltag(), 2, ',', '.') : '0,00';
-        $assignments['gezahltos'] = $register->getGezahltos() ? number_format($register->getGezahltos(), 2, ',', '.') : '0,00';
+        $assignments['gezahlt'] = $register->getGezahlt() ? $register->getGezahltos() : '0,00';
+        $assignments['gezahltag'] = $register->getGezahltag() ? $register->getGezahltag() : '0,00';
+        $assignments['gezahltos'] = $register->getGezahltos() ? $register->getGezahltos() : '0,00';
 
         $kurs = $register->getKurs();
 
@@ -289,6 +297,18 @@ class ParticipantUtility
             $assignments['kurszeitend'] = ($kurs->getKurszeitend()->format('d.m.Y') == '01.01.1970')? '' : $kurs->getKurszeitend()->format('d.m.Y');
             $assignments['anreisedate'] = ($kurs->getAnreisedate()->format('d.m.Y') == '01.01.1970')? '' : $kurs->getAnreisedate()->format('d.m.Y');
             $assignments['kursuid'] = $kurs->getUid();
+        }
+
+        $gebuehr = $this->gebuehrenRepository->findByUid($kurs->getGebuehr());
+        if(!empty($gebuehr)){
+            $assignments['anmeldung'] = $gebuehr->getAnmeldung() ? number_format($gebuehr->getAnmeldung(), 2, ',','.') : '0,00';
+            $assignments['anmeldungerm'] = $gebuehr->getAnmeldungerm() ? number_format($gebuehr->getAnmeldungerm(), 2, ',','.') : '0,00';
+            $assignments['aktivengeb'] = $gebuehr->getAktivengeb() ? number_format($gebuehr->getAktivengeb(), 2, ',','.') : '0,00';
+            $assignments['aktivengeberm'] = $gebuehr->getAktivengeberm() ? number_format($gebuehr->getAktivengeberm(), 2, ',','.') : '0,00';
+            $assignments['passivgeb'] = $gebuehr->getPassivgeb() ? number_format($gebuehr->getPassivgeb(), 2, ',','.') : '0,00';
+            $assignments['passivgeberm'] = $gebuehr->getPassivgeberm() ? number_format($gebuehr->getPassivgeberm(), 2, ',','.') : '0,00';
+            $assignments['teilnehmergeb'] = (!empty($assignments['matrikel'])) ? $assignments['aktivengeberm'] : $assignments['aktivengeb'];
+            if($register->getStipendiat() == 1) $assignments['teilnehmergeb'] = '';
         }
 
         return $assignments;

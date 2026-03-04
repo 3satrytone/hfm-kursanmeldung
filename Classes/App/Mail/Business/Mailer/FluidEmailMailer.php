@@ -67,6 +67,7 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
             $htmlBody = $this->mailBodyHydrator->hydrate($htmlBody, $mailDto);
 
             $assignments = $mailDto->getAssignments();
+            $htmlBody = $this->replaceConditions($htmlBody, $assignments);
             $assignments['htmlBody'] = $htmlBody;
             $assignments['txtBody'] = strip_tags($htmlBody);
             $mailDto->setAssignments($assignments);
@@ -136,5 +137,23 @@ class FluidEmailMailer implements MailerInterface, LoggerAwareInterface
         }
 
         return $email;
+    }
+
+    private function replaceConditions(string $mailtext, array $var=[]): string
+    {
+        $subject = $mailtext;
+        $pattern = '#\{if:(.*)\}(.*)\{\/if:(.*)\}\{else:(.*)\}(.*)\{\/else:(.*)\}#Usi';
+        preg_match($pattern, $subject, $matches, PREG_OFFSET_CAPTURE);
+        if(!empty($matches)){
+            if(isset($var[$matches[1][0]])){
+                if($var[$matches[1][0]] == 0){
+                    $mailtext = preg_replace('/(\{if:'.$matches[1][0].'\})(.*)(\{\/if:'.$matches[1][0].'\})(\{else:'.$matches[1][0].'\})(.*)(\{\/else:'.$matches[1][0].'\})/Usi', $matches[2][0], $mailtext);
+                }else{
+                    $mailtext = preg_replace('/(\{if:'.$matches[1][0].'\})(.*)(\{\/if:'.$matches[1][0].'\})(\{else:'.$matches[1][0].'\})(.*)(\{\/else:'.$matches[1][0].'\})/Usi', $matches[5][0], $mailtext);
+                }
+            }
+        }
+
+        return $mailtext;
     }
 }
