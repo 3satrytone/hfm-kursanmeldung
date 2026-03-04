@@ -36,7 +36,7 @@ class MailingController extends ActionController
     protected $emailSubject = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte bestätigen';
     protected $emailSubjectAdmin = 'Admin: Kursanmeldung bei der Hochschule für Musik';
     protected $emailSubjectInfo = 'Ihre Kursanmeldung bei der Hochschule für Musik';
-    protected $emailSubjectInvoice = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte Rechnung begleichen';
+    protected $emailSubjectInvoice = 'Weimar Master Classes | Invoice';
     protected $nameVeranstaltung = 'Weimarer Meisterkurse';
     protected $anmeldeGebuehrPrefix = 'TG';
 
@@ -229,6 +229,7 @@ class MailingController extends ActionController
                         'EXT:kursanmeldung/Resources/Public/Images/logo_wba_112x25px.png'
                     );
                     $mailDto->setAssignments($assignments);
+                    $mailDto->setSubject($this->emailSubjectInvoice);
                     $mailDto->setTemplate('InvoiceAktivengebuehrHtml');
                     $mailDto->setPageUid((int)$pagemailinvoice);
                     $this->mailFacade->sendFluidMailWithPageContent($mailDto);
