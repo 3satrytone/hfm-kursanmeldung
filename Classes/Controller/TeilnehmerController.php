@@ -192,6 +192,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         $fieldsKurs = [];
         $openKursUid = null; // erste Kurs-UID mit aktiver Suche
         $kursanmeldungMailings = [];
+        $regMailings = [];
         if ($this->request->hasArgument('searchKurs')) {
             $sk = $this->request->getArgument('searchKurs');
             if (is_array($sk)) {
@@ -258,6 +259,12 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         } else {
             $allParticipants = $this->kursanmeldungRepository->findAllSortedByUid();
         }
+
+        if(!empty($allParticipants)){
+            foreach ($allParticipants as $registration) {
+                $kursanmeldungMailings[$registration->getUid()] = $this->mailFacade->getHistoryByUid($registration->getUid());
+            }
+        }
         $paginator = new QueryResultPaginator($allParticipants, $currentPage, $itemsPerPage);
         $pagination = new SimplePagination($paginator);
 
@@ -280,7 +287,16 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             }
             if(!empty($registrations)){
                 foreach ($registrations as $registration) {
-                    $kursanmeldungMailings[$registration->getUid()] = $this->mailFacade->getHistoryByUid($registration->getUid());
+                    if(isset($regMailings[$registration->getUid()])) {
+                        continue;
+                    }
+
+                    if(isset($kursanmeldungMailings[$registration->getUid()])){
+                        $regMailings[$registration->getUid()] = $kursanmeldungMailings[$registration->getUid()];
+                        continue;
+                    }
+
+                    $regMailings[$registration->getUid()] = $this->mailFacade->getHistoryByUid($registration->getUid());
                 }
             }
             // selected map für Kurs
@@ -327,6 +343,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'selectedMapAll' => $selectedMapAll,
             'openKursUid' => $openKursUid,
             'kursanmeldungMailings' => $kursanmeldungMailings,
+            'regMailings' => $regMailings,
             'profStatusSum' => $profStatusExplained,
             'lang' => $language,
         ]);
