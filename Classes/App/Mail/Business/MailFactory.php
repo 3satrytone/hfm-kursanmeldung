@@ -8,6 +8,7 @@ use Hfm\Kursanmeldung\App\Mail\Business\Hydrator\MailBodyHydrator;
 use Hfm\Kursanmeldung\App\Mail\Business\Mailer\FluidEmailMailer;
 use Hfm\Kursanmeldung\App\Mail\Business\Mailer\MailerInterface;
 use Hfm\Kursanmeldung\App\Mail\Business\Reader\ContentReader;
+use Hfm\Kursanmeldung\App\Mail\Business\Reader\MailHistoryReader;
 use Hfm\Kursanmeldung\Domain\Repository\MailhistrecipientsRepository;
 use Hfm\Kursanmeldung\Domain\Repository\MailhistRepository;
 
@@ -18,6 +19,7 @@ class MailFactory
         private readonly MailBodyHydrator $mailBodyHydrator,
         private readonly MailhistRepository $mailhistRepository,
         private readonly MailhistrecipientsRepository $mailhistrecipientsRepository,
+        private readonly MailHistoryReader $mailHistoryReader,
     ) {
     }
 
@@ -32,5 +34,13 @@ class MailFactory
             $this->mailhistRepository,
             $this->mailhistrecipientsRepository
         );
+    }
+
+    /**
+     * @return \Hfm\Kursanmeldung\App\Mail\Business\Reader\MailHistoryReader
+     */
+    public function createMailHistoryReader(): MailHistoryReader
+    {
+        return $this->mailHistoryReader;
     }
 }

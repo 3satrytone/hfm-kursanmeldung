@@ -191,6 +191,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         $searchKurs = [];
         $fieldsKurs = [];
         $openKursUid = null; // erste Kurs-UID mit aktiver Suche
+        $kursanmeldungMailings = [];
         if ($this->request->hasArgument('searchKurs')) {
             $sk = $this->request->getArgument('searchKurs');
             if (is_array($sk)) {
@@ -277,11 +278,17 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             } else {
                 $registrations = $this->kursanmeldungRepository->getParticipantsByKurs($kUid);
             }
+            if(!empty($registrations)){
+                foreach ($registrations as $registration) {
+                    $kursanmeldungMailings[$registration->getUid()] = $this->mailFacade->getHistoryByUid($registration->getUid());
+                }
+            }
             // selected map für Kurs
             $selectedMapKurs = [];
             foreach ($kFields as $f) {
                 $selectedMapKurs[str_replace('.', '_', $f)] = true;
             }
+
             $participantsByCourse[] = [
                 'kurs' => $kurs,
                 'registrations' => $registrations,
@@ -319,6 +326,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'selectedFieldsAll' => $fieldsAll,
             'selectedMapAll' => $selectedMapAll,
             'openKursUid' => $openKursUid,
+            'kursanmeldungMailings' => $kursanmeldungMailings,
             'profStatusSum' => $profStatusExplained,
             'lang' => $language,
         ]);

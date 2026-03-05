@@ -76,5 +76,7 @@ services:
     public: true
   Hfm\Kursanmeldung\Controller\MailingController:
     public: true
+  Hfm\Kursanmeldung\App\Mail\Business\Reader\MailHistoryReader:
+    public: true
 
 

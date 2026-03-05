@@ -33,4 +33,13 @@ class MailFacade
     {
         $this->factory->createFluidEmailMailer()->sendWithPageContent($mailDto);
     }
+
+    /**
+     * @param int $uid
+     * @return array
+     */
+    public function getHistoryByUid(int $uid): array
+    {
+        return $this->factory->createMailHistoryReader()->getHistoryByUid($uid);
+    }
 }
