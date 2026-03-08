@@ -1073,12 +1073,12 @@ Sollten Sie die Anmeldung trotzdem abschließen, wird Ihnen die Anmeldegebühr b
             <target>Meine Matrikelnummer der HfM Weimar</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm.head">
-            <source>Preferred instrumentation, first and second choices, for category 1 with partial instrumentation if applicable</source>
-            <target>Besetzungspräferenzen, 1. und 2. Wahl, bei Kategorie 1 ggf. mit Teilbesetzung</target>
+            <source>Please indicate the programme you would like to work with in the course</source>
+            <target>Bitte geben Sie Ihr Programm an, welches Sie im Kurs arbeiten möchten</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.programm">
-            <source></source>
-            <target></target>
+            <source>e.g. Composer, Name of Work, Key, Opus/KV/BWV</source>
+            <target>z. B. Komponist, Name des Werks, Tonart, Opus/KV/BWV</target>
         </trans-unit>
         <trans-unit id="tx_kursanmeldung_domain_model_kursanmeldung.step2.orchesterstudio.head">
             <source>I apply also for Orchesta Studio:</source>

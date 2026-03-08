@@ -76,7 +76,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
     protected $emailSubject = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte bestätigen';
     protected $emailSubjectAdmin = 'Admin: Kursanmeldung bei der Hochschule für Musik';
     protected $emailSubjectInfo = 'Ihre Kursanmeldung bei der Hochschule für Musik';
-    protected $emailSubjectInvoice = 'Ihre Kursanmeldung bei der Hochschule für Musik, bitte Rechnung begleichen';
+    protected $emailSubjectInvoice = 'Weimar Master Class / Invoice';
     protected $setup = array();
     protected $userMailId = 28;
     protected $infoMailId = 128;

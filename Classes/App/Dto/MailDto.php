@@ -17,7 +17,7 @@ class MailDto
     private string $format;
     private string $template;
     private array $assignments = [];
-    private ?int $pageUid;
+    private ?int $pageUid = null;
     private ?Kursanmeldung $kursanmeldung;
     private array $sendResponse;
 
