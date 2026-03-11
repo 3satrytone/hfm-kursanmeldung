@@ -341,7 +341,7 @@
                 <div class="btn btn-primary" data-bs-toggle="collapse"
                      data-bs-target="#collapseWidthId-{group.kurs.uid}"
                      aria-expanded="false" aria-controls="collapseWidthExample"><h3>Kurs {group.kurs.kursnr} –
-                    {group.kurs.instrument}</h3>
+                    {group.kurs.instrument} {group.kurs.professor.name}</h3>
                 </div>
                 <div class="collapse{f:if(condition: '{openKursUid} == {group.kurs.uid}', then: ' show')}"
                      id="collapseWidthId-{group.kurs.uid}"
@@ -421,7 +421,7 @@
                                 <td>
                                     <f:link.action action="edit"
                                                    arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
-                                        {reg.tn.0.anrede}
+                                        <f:translate key="anrede.{reg.tn.0.anrede}"/>
                                     </f:link.action>
                                 </td>
                                 <td>
@@ -471,7 +471,7 @@
                                 <td>
                                     <f:link.action action="edit"
                                                    arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
-                                        <f:if condition="{reg.gebuehr}>0">{reg.gebuehr -> f:format.number(decimals:2,
+                                        <f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2,
                                             decimalSeparator:',', thousandsSeparator:'.')}
                                         </f:if>
                                     </f:link.action>
@@ -479,7 +479,7 @@
                                 <td>
                                     <f:link.action action="edit"
                                                    arguments="{kursanmeldung: reg, page: paginator.currentPageNumber}">
-                                        <f:if condition="{reg.gezahlt}>0">{reg.gezahlt -> f:format.number(decimals:2,
+                                        <f:if condition="{reg.gezahltag}>0">{reg.gezahltag -> f:format.number(decimals:2,
                                             decimalSeparator:',', thousandsSeparator:'.')}
                                         </f:if>
                                     </f:link.action>

@@ -26,7 +26,7 @@ class MailHistoryReader
         foreach ($recipients as $recipient) {
             $mailhist = $this->mailhistRepository->findByUid($recipient->getMailuid());
             if ($mailhist !== null) {
-                $history[$mailhist->getMailtype()] = ($history[$mailhist->getMailtype()]) ? $history[$mailhist->getMailtype()] + 1 : 1;
+                $history[$mailhist->getMailtype()] = isset($history[$mailhist->getMailtype()]) ? $history[$mailhist->getMailtype()] + 1 : 1;
             }
         }
 

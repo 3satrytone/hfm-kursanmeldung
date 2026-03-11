@@ -322,6 +322,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
 
         $this->profStatusRepository->setRespectStoragePage(false);
         $profStatuus = $this->profStatusRepository->findAll();
+        $profStatusExplained = [];
         foreach ($profStatuus as $profStatus) {
             if (!isset($profStatusExplained[$profStatus->getKursanmeldung()])) {
                 $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()] = 0;
