@@ -1092,6 +1092,10 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $kursanmeldungUid = $this->sessionUtility->getData(SessionUtility::FORM_SESSION_ANMELDUNG_UID);
         }
 
+        if (isset($_POST['order_no'])) {
+            $kursanmeldungUid = (int)$_POST['order_no'];
+        }
+
         // if payment error or not send
         $kursAnmeldung = $this->kursanmeldungRepository->findByUid($kursanmeldungUid);
 
@@ -1107,7 +1111,7 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $this->sessionUtility->setData(SessionUtility::FORM_SESSION_PL, '');
         }
 
-        if ((isset($_POST['input2']) && $_POST['input2'] == 'pl') && isset($_POST['inputval2'])) {
+        if ((isset($_POST['input2']) && $_POST['input2'] === 'pl') && isset($_POST['inputval2'])) {
             $paylaterType = $_POST['inputval2'];
         }
 
@@ -1115,12 +1119,12 @@ class FrontendController extends ActionController implements LoggerAwareInterfac
             $paylaterType = $_POST['pl'];
         }
 
-        if ($p == 'suc') {
+        if ($p === 'suc') {
             // if payment successfully
             // save paymentstatus
             $this->logger->info('Step4 redirect POST:' . print_r($_POST, true));
 
-            $kurs = (empty($kursAnmeldung)) ? 0 : $kursAnmeldung->getKurs()->current()->getUid();
+            $kurs = (empty($kursAnmeldung)) ? 0 : $kursAnmeldung->getKurs()->getUid();
             $this->logger->info('Step 4 redirect Kurs:' . $kurs);
 
             $kursActive = $this->kursRepository->findByUid($kurs);
