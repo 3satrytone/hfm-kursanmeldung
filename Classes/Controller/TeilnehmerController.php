@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Hfm\Kursanmeldung\Domain\Repository\KursRepository;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
+use Hfm\Kursanmeldung\Domain\Repository\UploadsRepository;
 use Hfm\Kursanmeldung\Utility\TypeConverter\IntegerConverter;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
@@ -73,6 +74,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
+        private readonly UploadsRepository $uploadsRepository,
         private readonly ProfStatusRepository $profStatusRepository,
         private readonly PersistenceManagerInterface $persistenceManager,
         protected UriBuilder $uriBuilder,
@@ -699,6 +701,27 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         } catch (\Throwable $e) {
             // still: keine harte Ausnahme im Initializer auslösen
         }
+    }
+
+    /**
+     * @param \Hfm\Kursanmeldung\Domain\Model\Kursanmeldung $kursanmeldung
+     * @param \Hfm\Kursanmeldung\Domain\Model\Uploads $upload
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteUploadAction(Kursanmeldung $kursanmeldung, Uploads $upload): ResponseInterface
+    {
+        $kursanmeldung->removeUploads($upload);
+        $this->kursanmeldungRepository->update($kursanmeldung);
+        $this->uploadsRepository->remove($upload);
+        $this->persistenceManager->persistAll();
+
+        $this->addFlashMessage(
+            'Upload erfolgreich gelöscht.',
+            'Erfolg',
+            ContextualFeedbackSeverity::OK
+        );
+
+        return $this->redirect('edit', null, null, ['kursanmeldung' => $kursanmeldung]);
     }
 
     /**

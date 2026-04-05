@@ -74,4 +74,81 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1500);
     });
   });
+
+  // Bootstrap Confirm-Modal für Delete-Links einrichten
+  const ensureConfirmModal = () => {
+    let modal = document.getElementById('hfmConfirmModal');
+    if (modal) return modal;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = `
+<div class="modal fade" id="hfmConfirmModal" tabindex="-1" aria-labelledby="hfmConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hfmConfirmModalLabel">Löschen bestätigen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+      <div class="modal-body">
+        <p id="hfmConfirmModalMessage">Möchten Sie diesen Datensatz wirklich löschen?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+        <button type="button" class="btn btn-danger" id="hfmConfirmModalOk">Löschen</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+    const el = wrapper.firstElementChild;
+    document.body.appendChild(el);
+    return el;
+  };
+
+  const attachDeleteConfirm = () => {
+    const links = document.querySelectorAll('a.js-confirm-delete');
+    if (!links.length) return;
+
+    links.forEach((a) => {
+      if (a.dataset.confirmBound === '1') return;
+      a.dataset.confirmBound = '1';
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if (!href) return;
+        try {
+          if (typeof bootstrap === 'undefined' || !bootstrap.Modal) {
+            // Fallback auf native confirm
+            if (window.confirm('Möchten Sie diesen Datensatz wirklich löschen?')) {
+              window.location.href = href;
+            }
+            e.preventDefault();
+            return;
+          }
+          e.preventDefault();
+          const modalEl = ensureConfirmModal();
+          const okBtn = modalEl.querySelector('#hfmConfirmModalOk');
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl, {backdrop: 'static'});
+
+          // Vorherige Handler entfernen
+          const newOkHandler = () => {
+            modal.hide();
+            window.location.href = href;
+          };
+          // setze einmaligen Handler
+          okBtn.replaceWith(okBtn.cloneNode(true));
+          const okBtnFresh = modalEl.querySelector('#hfmConfirmModalOk');
+          okBtnFresh.addEventListener('click', newOkHandler, {once: true});
+
+          modal.show();
+        } catch (err) {
+          // falls irgendetwas schiefgeht, nativen Confirm verwenden
+          if (window.confirm('Möchten Sie diesen Datensatz wirklich löschen?')) {
+            window.location.href = href;
+          }
+          e.preventDefault();
+        }
+      });
+    });
+  };
+
+  attachDeleteConfirm();
+
 });

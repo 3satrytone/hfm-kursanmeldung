@@ -3,9 +3,10 @@ services:
     autowire: true
     autoconfigure: true
     public: false
+
   Hfm\Kursanmeldung\:
-    resource: '..\Classes\*'
-    exclude: '..\Classes\Domain\Model\*'
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
   Hfm\Kursanmeldung\Controller\GeneralController:
     public: true
   Hfm\Kursanmeldung\Controller\GebuehrenController:
@@ -73,6 +74,8 @@ services:
   Hfm\Kursanmeldung\Domain\Repository\MailhistRepository:
     public: true
   Hfm\Kursanmeldung\Domain\Repository\MailhistrecipientsRepository:
+    public: true
+  Hfm\Kursanmeldung\Domain\Repository\UploadsRepository:
     public: true
   Hfm\Kursanmeldung\Controller\MailingController:
     public: true

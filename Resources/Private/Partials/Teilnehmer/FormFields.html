@@ -638,7 +638,7 @@
                 <td>
                     <f:if condition="{kursanmeldung.uploads.count > 0}">
                         <f:for each="{kursanmeldung.uploads}" as="ul">
-                            <div>
+                            <div class="d-flex align-items-center mb-1">
                                 <f:switch expression="{ul.kat}">
                                     <f:case value="download">
                                         <f:render partial="Teilnehmer/UploadFilereference" arguments="{ul: ul}"/>
@@ -653,6 +653,13 @@
                                         <f:render partial="Teilnehmer/UploadLink" arguments="{ul: ul}"/>
                                     </f:case>
                                 </f:switch>
+                                <f:link.action action="deleteUpload" arguments="{kursanmeldung: kursanmeldung, upload: ul}" class="btn btn-danger btn-sm ms-2 js-confirm-delete" title="Löschen">
+                                    <span class="icon icon-size-small icon-state-default">
+                                       <span class="icon-markup">
+                                          <core:icon identifier="actions-delete" size="small" />
+                                       </span>
+                                    </span>
+                                </f:link.action>
                             </div>
                         </f:for>
                     </f:if>
