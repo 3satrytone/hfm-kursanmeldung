@@ -239,19 +239,9 @@
                             </select>
                         </td>
                         <td>
-                            <span title="prof_ja">
-                            <f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_ja}">
-                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_ja}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span> -
-                            <span title="prof_vlt"><f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_vlt}">
-                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_vlt}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span> -
-                            <span title="prof_nein"><f:if condition="{profStatusSum.{kursanmeldung.uid}.prof_nein}">
-                                <f:then>{profStatusSum.{kursanmeldung.uid}.prof_nein}</f:then>
-                                <f:else>0</f:else>
-                            </f:if></span>
+                            <f:if condition="{profStatusMax.{kursanmeldung.uid}} == 'prof_ja'">ja</f:if>
+                            <f:if condition="{profStatusMax.{kursanmeldung.uid}} == 'prof_vlt'">vlt</f:if>
+                            <f:if condition="{profStatusMax.{kursanmeldung.uid}} == 'prof_nein'">nein</f:if>
                         </td>
                         <td class="text-end">
                             <f:link.action action="edit"
@@ -520,24 +510,9 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <span title="prof_ja">
-                                        <f:if condition="{profStatusSum.{reg.uid}.prof_ja}">
-                                            <f:then>{profStatusSum.{reg.uid}.prof_ja}</f:then>
-                                            <f:else>0</f:else>
-                                        </f:if>
-                                    </span> -
-                                    <span title="prof_vlt">
-                                        <f:if condition="{profStatusSum.{reg.uid}.prof_vlt}">
-                                            <f:then>{profStatusSum.{reg.uid}.prof_vlt}</f:then>
-                                            <f:else>0</f:else>
-                                        </f:if>
-                                    </span> -
-                                    <span title="prof_nein">
-                                        <f:if condition="{profStatusSum.{reg.uid}.prof_nein}">
-                                            <f:then>{profStatusSum.{reg.uid}.prof_nein}</f:then>
-                                            <f:else>0</f:else>
-                                        </f:if>
-                                    </span>
+                                    <f:if condition="{profStatusMax.{reg.uid}} == 'prof_ja'">ja</f:if>
+                                    <f:if condition="{profStatusMax.{reg.uid}} == 'prof_vlt'">vlt</f:if>
+                                    <f:if condition="{profStatusMax.{reg.uid}} == 'prof_nein'">nein</f:if>
                                 </td>
                                 <td class="text-end">
                                     <f:link.action action="edit"

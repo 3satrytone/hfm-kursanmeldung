@@ -327,9 +327,35 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         $profStatusExplained = [];
         foreach ($profStatuus as $profStatus) {
             if (!isset($profStatusExplained[$profStatus->getKursanmeldung()])) {
-                $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()] = 0;
+                $profStatusExplained[$profStatus->getKursanmeldung()]['prof_ja'] = 0;
+                $profStatusExplained[$profStatus->getKursanmeldung()]['prof_vlt'] = 0;
+                $profStatusExplained[$profStatus->getKursanmeldung()]['prof_nein'] = 0;
             }
-            $profStatusExplained[$profStatus->getKursanmeldung()][$profStatus->getKurz()]++;
+            $kurz = $profStatus->getKurz();
+            if (isset($profStatusExplained[$profStatus->getKursanmeldung()][$kurz])) {
+                $profStatusExplained[$profStatus->getKursanmeldung()][$kurz]++;
+            } else {
+                $profStatusExplained[$profStatus->getKursanmeldung()][$kurz] = 1;
+            }
+        }
+
+        $profStatusMax = [];
+        foreach ($profStatusExplained as $kursanmeldungUid => $counts) {
+            $maxVal = -1;
+            $maxKey = '';
+            // Priorität: ja > vlt > nein bei Gleichstand?
+            // Oder einfach der erste mit dem höchsten Wert.
+            foreach (['prof_ja', 'prof_vlt', 'prof_nein'] as $key) {
+                if (isset($counts[$key]) && $counts[$key] > $maxVal) {
+                    $maxVal = $counts[$key];
+                    $maxKey = $key;
+                }
+            }
+            if ($maxVal > 0) {
+                $profStatusMax[$kursanmeldungUid] = $maxKey;
+            } else {
+                $profStatusMax[$kursanmeldungUid] = '';
+            }
         }
 
         $language =
@@ -348,6 +374,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'kursanmeldungMailings' => $kursanmeldungMailings,
             'regMailings' => $regMailings,
             'profStatusSum' => $profStatusExplained,
+            'profStatusMax' => $profStatusMax,
             'lang' => $language,
         ]);
 
