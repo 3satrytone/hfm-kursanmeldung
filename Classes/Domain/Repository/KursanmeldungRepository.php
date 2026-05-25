@@ -296,7 +296,7 @@ class KursanmeldungRepository extends Repository
         return $query->execute();
     }
 
-    public function findByKursNotPassive(int $kurs): QueryResultInterface
+    public function findByKursNotPassive(int $kurs, $allowedStatusUids): QueryResultInterface
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
@@ -306,9 +306,7 @@ class KursanmeldungRepository extends Repository
         $joQuery = $query->logicalAnd(
             $query->equals('kurs', $kurs),
             $query->equals('teilnahmeart', 0),
-            $query->logicalNot(
-                $query->in('anmeldestatus', array(2, 5))
-            )
+            $query->in('anmeldestatus', $allowedStatusUids)
         );
 
         $query->matching(

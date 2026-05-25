@@ -20,6 +20,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    private const STATUS_ALLOWED_KURZ = ['AkA', 'AZ', 'STP', 'WL'];
     /**
      * hideIfClassMemberArr
      *
@@ -44,7 +45,11 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
                     $this->profStatusRepository->setStoragePageIds(explode(',', $this->settings['records']['tn']));
                 }
             }
+            if(isset($this->settings['status'])){
+                $this->anmeldestatusRepository->setStoragePageIds([$this->settings['status']]);
+            }
         }
+
         $disStat = $this->anmeldestatusRepository->findByReducetnart(1);
 
         if ($disStat->count() > 0) {
@@ -75,9 +80,25 @@ class KursListeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 
         $feUserUid = $this->getCurrentFeUserUid();
 
+        $allowedKurz = self::STATUS_ALLOWED_KURZ;
+        $allowedStatusUids = [];
+        $profStatuusAll = $this->anmeldestatusRepository->findAll();
+        foreach ($profStatuusAll as $ps) {
+            $kurzClean = str_replace('prof_', '', $ps->getKurz());
+            if (in_array($kurzClean, $allowedKurz)) {
+                $allowedStatusUids[] = $ps->getUid();
+            }
+        }
+
+        if (empty($allowedStatusUids)) {
+            // Wenn keine Status gefunden wurden, geben wir ein leeres Ergebnis zurück
+            // um zu verhindern, dass alle oder falsche Daten angezeigt werden.
+            $allowedStatusUids = [0];
+        }
+
         if (!empty($kurse)) {
             foreach ($kurse as $kursid) {
-                $kursanmeldungen = $this->kursanmeldungRepository->findByKursNotPassive((int)$kursid);
+                $kursanmeldungen = $this->kursanmeldungRepository->findByKursNotPassive((int)$kursid, $allowedStatusUids);
                 if (!empty($kursanmeldungen)) {
                     foreach ($kursanmeldungen as $kursanmeldung) {
                         // nicht in der Liste Anzeigen wenn Status Abgesagt oder Abgemeldet ist
