@@ -112,7 +112,7 @@ ul.hfm-general li {
     box-shadow: 0 0 5px -1px red;
 }
 .hfmMailing{
-    width: 800px;
+    width: 100%;
 }
 .hfmMailing .hfmSubmitField{
     width: 600px;
