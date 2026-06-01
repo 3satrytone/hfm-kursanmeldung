@@ -226,6 +226,27 @@ class Kurs extends AbstractEntity
     }
 
     /**
+     * @var string
+     */
+    protected string $prof = '';
+
+    /**
+     * @return string
+     */
+    public function getProf(): string
+    {
+        return $this->prof;
+    }
+
+    /**
+     * @param string $prof
+     */
+    public function setProf(string $prof): void
+    {
+        $this->prof = $prof;
+    }
+
+    /**
      * @return \Hfm\Kursanmeldung\Domain\Model\Prof|null
      */
     public function getProfessor(): ?Prof

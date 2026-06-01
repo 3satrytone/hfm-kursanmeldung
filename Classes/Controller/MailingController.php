@@ -66,12 +66,13 @@ class MailingController extends ActionController
     {
         $kursanmeldungen = $this->kursanmeldungRepository->findAll();
         if(!empty($kursanmeldungen)){
-            foreach ($kursanmeldungen as $key => $value) {
+            foreach ($kursanmeldungen as $value) {
                 $kurs = $value->getKurs();
-                if(!empty($kurs)){
-                    $profname = '';
-                    $prof = $this->profRepository->findByUid($kurs->getProfessor());
-                    if(!empty($prof))$kurs->setProf($prof->getName());
+                if($kurs !== null){
+                    $professor = $kurs->getProfessor();
+                    if($professor !== null){
+                        $kurs->setProf($professor->getName());
+                    }
                 }
             }
         }

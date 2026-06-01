@@ -80,13 +80,13 @@ Otherwise your changes will be overwritten the next time you save the extension 
 			<f:for each="{Kursanmeldungen}" as="anmeldung"><tr>
 				            <td><f:form.checkbox name="sendmail[]" value="{anmeldung.uid}" /></td>
 				            <td class="all uid">{anmeldung.uid}</td>
-				            <td class="all kurs">{anmeldung.kurs.0.prof}</td>
+				            <td class="all kurs">{anmeldung.kurs.prof}</td>
 				            <td class="all name">{anmeldung.tn.0.vorname}</td>
 				            <td class="all name">{anmeldung.tn.0.nachname}</td>
 				            <td class="all email">{anmeldung.tn.0.email}</td>
 				            <td class="bezahlt">{anmeldung.bezahlt}</td>
 							<td class="bezahltag">{anmeldung.bezahltag}</td>
-				            <td class="status status_{anmeldung.anmeldestatus.0.uid}">{anmeldung.anmeldestatus.0.anmeldestatus}</td>
+				            <td class="status status_{anmeldung.anmeldestatus.uid}">{anmeldung.anmeldestatus.anmeldestatus}</td>
 							<td class="dv">{anmeldung.savedata}</td>
 				        </tr>
 			</f:for>
