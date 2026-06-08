@@ -32,6 +32,8 @@ use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use Hfm\Kursanmeldung\Domain\Model\Uploads;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -425,7 +427,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             } else {
                 $participants = $this->kursanmeldungRepository->getParticipantsByKurs($kursUid);
             }
-            $filename = 'kurs_' . $kursUid . '_export_' . date('Y-m-d_H-i') . '.csv';
+            $filename = 'kurs_' . $kursUid . '_export_' . date('Y-m-d_H-i') . '.xlsx';
         } else {
             $searchAll = $getSession($sessionSearchAllKey);
             $fieldsAll = $getSession($sessionFieldsAllKey) ?: ['tn.vorname', 'tn.nachname'];
@@ -435,11 +437,11 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             } else {
                 $participants = $this->kursanmeldungRepository->findAllSortedByUid();
             }
-            $filename = 'alle_teilnehmer_export_' . date('Y-m-d_H-i') . '.csv';
+            $filename = 'alle_teilnehmer_export_' . date('Y-m-d_H-i') . '.xlsx';
         }
 
-        $handle = fopen('php://temp', 'r+');
-        fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
         $header = [
             'Lfd. Nr.',
@@ -486,7 +488,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'Orchesterstudio',
             'Notiz'
         ];
-        fputcsv($handle, $header, ';');
+        $sheet->fromArray($header, NULL, 'A1');
 
         $languageService = $this->languageServiceFactory->create(new Locale('de'));
 
@@ -523,7 +525,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $tn?->getPlz() ?? '',
                 $tn?->getOrt() ?? '',
                 $tn?->getLand() ?? '',
-                $tn?->getMobil() ? '"' . $tn?->getMobil() . '"' : '',
+                $tn?->getMobil() ? (string)$tn?->getMobil() : '',
                 $tn?->getEmail() ?? '',
                 $reg->getSavedata() === 0 ? 'Ja' : 'Nein',
                 $reg->getHotel(),
@@ -537,10 +539,10 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $reg->getDuo(),
                 $reg->getDuosel(),
                 $reg->getDuoname(),
-                '"' . (string)$reg->getGebuehr() . '"',
-                '"' . $reg->getGezahlt() . '"',
-                '"' . (string)$reg->getGezahltag() . '"',
-                '"' . (string)$reg->getGezahltos() . '"',
+                (string)$reg->getGebuehr(),
+                (string)$reg->getGezahlt(),
+                (string)$reg->getGezahltag(),
+                (string)$reg->getGezahltos(),
                 $reg->getComment(),
                 $reg->getKurs()?->getKursnr() ?? '',
                 $reg->getKurs()?->getInstrument() ?? '',
@@ -551,20 +553,27 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $reg->getOrchesterstudio(),
                 $reg->getNotice(),
             ];
-            fputcsv($handle, $row, ';');
+            $sheet->fromArray($row, NULL, 'A' . ($i + 1));
         }
 
-        rewind($handle);
-        $csvContent = stream_get_contents($handle);
-        fclose($handle);
+        foreach (range('A', $sheet->getHighestDataColumn()) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $stream = fopen('php://temp', 'r+');
+        $writer->save($stream);
+        rewind($stream);
+        $content = stream_get_contents($stream);
+        fclose($stream);
 
         $response = $this->responseFactory->createResponse()
-            ->withHeader('Content-Type', 'text/csv; charset=utf-8')
+            ->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->withHeader('Pragma', 'no-cache')
             ->withHeader('Expires', '0');
 
-        $response->getBody()->write($csvContent);
+        $response->getBody()->write($content);
         return $response;
     }
 
