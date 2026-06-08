@@ -32,6 +32,9 @@ use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use Hfm\Kursanmeldung\Domain\Model\Uploads;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
@@ -80,6 +83,8 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         protected UriBuilder $uriBuilder,
         private readonly ParticipantUtility $participantUtility,
         private readonly MailFacade $mailFacade,
+        private readonly CountryProvider $countryProvider,
+        private readonly LanguageServiceFactory $languageServiceFactory,
     ) {
     }
 
@@ -483,9 +488,21 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         ];
         fputcsv($handle, $header, ';');
 
+        $languageService = $this->languageServiceFactory->create(new Locale('de'));
+
         $i = 0;
         foreach ($participants as $reg) {
             $tn = $reg->getTn()->current();
+            $nation = '';
+            if ($tn?->getNation()) {
+                try {
+                    $nationCountry = $this->countryProvider->getByIsoCode($tn->getNation());
+                    $nation = $languageService->sl($nationCountry->getLocalizedNameLabel());
+                } catch (\Exception $e) {
+                    $nation = $tn->getNation();
+                }
+            }
+
             $row = [
                 ++$i,
                 $reg->getUid(),
@@ -500,7 +517,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $tn?->getTitel() ?? '',
                 $tn?->getGebdate()?->format('d.m.Y') ?? '',
                 $tn?->getMatrikel() ?? '',
-                $tn?->getNation() ?? '',
+                $nation,
                 $tn?->getAdresse1() ?? '' . $tn?->getHausnr() ?? '',
                 $tn?->getAdresse2() ?? '',
                 $tn?->getPlz() ?? '',
