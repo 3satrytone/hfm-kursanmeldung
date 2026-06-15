@@ -412,6 +412,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $kursUid = (int)$this->request->getArgument('kurs');
         }
 
+        $participantsByKurs = [];
         if ($kursUid > 0) {
             $searchKurs = $getSession($sessionSearchKursKey);
             $fieldsKurs = $getSession($sessionFieldsKursKey);
@@ -428,6 +429,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $participants = $this->kursanmeldungRepository->getParticipantsByKurs($kursUid);
             }
             $filename = 'kurs_' . $kursUid . '_export_' . date('Y-m-d_H-i') . '.xlsx';
+            $participantsByKurs[$kursUid] = $participants;
         } else {
             $searchAll = $getSession($sessionSearchAllKey);
             $fieldsAll = $getSession($sessionFieldsAllKey) ?: ['tn.vorname', 'tn.nachname'];
@@ -438,10 +440,16 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $participants = $this->kursanmeldungRepository->findAllSortedByUid();
             }
             $filename = 'alle_teilnehmer_export_' . date('Y-m-d_H-i') . '.xlsx';
+
+            foreach ($participants as $reg) {
+                $kUid = $reg->getKurs()?->getUid() ?: 0;
+                $participantsByKurs[$kUid][] = $reg;
+            }
+            ksort($participantsByKurs);
         }
 
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        $spreadsheet->removeSheetByIndex(0);
 
         $header = [
             'Lfd. Nr.',
@@ -488,76 +496,107 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'Orchesterstudio',
             'Notiz'
         ];
-        $sheet->fromArray($header, NULL, 'A1');
 
         $languageService = $this->languageServiceFactory->create(new Locale('de'));
 
-        $i = 0;
-        foreach ($participants as $reg) {
-            $tn = $reg->getTn()->current();
-            $nation = '';
-            if ($tn?->getNation()) {
-                try {
-                    $nationCountry = $this->countryProvider->getByIsoCode($tn->getNation());
-                    $nation = $languageService->sl($nationCountry->getLocalizedNameLabel());
-                } catch (\Exception $e) {
-                    $nation = $tn->getNation();
+        foreach ($participantsByKurs as $kUid => $kursParticipants) {
+            $sheet = $spreadsheet->createSheet();
+            $title = 'Kurs ' . $kUid;
+            if ($kUid === 0) {
+                $title = 'Ohne Kurs';
+            } else {
+                $firstReg = is_array($kursParticipants) ? ($kursParticipants[0] ?? null) : $kursParticipants->getFirst();
+                if ($firstReg && $firstReg->getKurs()) {
+                    $profName = $firstReg->getKurs()->getProfessor() ? $firstReg->getKurs()->getProfessor()->getName() : '';
+                    $title = trim($firstReg->getKurs()->getKursnr() . ' ' . $profName);
+                    if (empty($title)) {
+                        $title = 'Kurs ' . $kUid;
+                    }
                 }
             }
+            // Sheet-Titel auf 31 Zeichen begrenzen und ungültige Zeichen entfernen
+            $title = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $title);
+            $sheet->setTitle(mb_substr($title, 0, 31));
 
-            $row = [
-                ++$i,
-                $reg->getUid(),
-                $reg->getDatein()?->format('d.m.Y H:i') ?? '',
-                $reg->getTeilnahmeart() === 0 ? 'passiv' : 'aktiv',
-                $reg->getAnmeldestatus()->current()?->getKurz() ?? '',
-                $reg->getStipendiat() === 0 ? 'Nein' : 'Ja',
-                $reg->getBezahlt() === 0 ? 'Nein' : 'Ja',
-                $tn?->getAnrede() === 0 ? 'Frau' : 'Herr',
-                $tn?->getVorname() ?? '',
-                $tn?->getNachname() ?? '',
-                $tn?->getTitel() ?? '',
-                $tn?->getGebdate()?->format('d.m.Y') ?? '',
-                $tn?->getMatrikel() ?? '',
-                $nation,
-                $tn?->getAdresse1() ?? '' . $tn?->getHausnr() ?? '',
-                $tn?->getAdresse2() ?? '',
-                $tn?->getPlz() ?? '',
-                $tn?->getOrt() ?? '',
-                $tn?->getLand() ?? '',
-                $tn?->getMobil() ? (string)$tn?->getMobil() : '',
-                $tn?->getEmail() ?? '',
-                $reg->getSavedata() === 0 ? 'Ja' : 'Nein',
-                $reg->getHotel(),
-                LocalizationUtility::translate(
-                    'be_export.room.' . $reg->getRoom(),
-                    'kursanmeldung'
-                ),
-                $reg->getRoomwith(),
-                ($reg->getRoom() !== '0' && $reg->getRoom() !== '' && $reg->getRoomfrom() !== '') ? (new \DateTime($reg->getRoomfrom()))->format('d.m.Y') : '',
-                ($reg->getRoom() !== '0' && $reg->getRoom() !== '' && $reg->getRoomto() !== '') ? (new \DateTime($reg->getRoomto()))->format('d.m.Y') : '',
-                $reg->getDuo(),
-                $reg->getDuosel(),
-                $reg->getDuoname(),
-                (string)$reg->getGebuehr(),
-                (string)$reg->getGezahlt(),
-                (string)$reg->getGezahltag(),
-                (string)$reg->getGezahltos(),
-                $reg->getComment(),
-                $reg->getKurs()?->getKursnr() ?? '',
-                $reg->getKurs()?->getInstrument() ?? '',
-                $reg->getKurs()?->getProfessor()->getName() ?? '',
-                $reg->getKurs()?->getKurszeitstart()?->format('d.m.Y') ?? '',
-                $reg->getKurs()?->getKurszeitend()?->format('d.m.Y') ?? '',
-                $reg->getProgramm(),
-                $reg->getOrchesterstudio(),
-                $reg->getNotice(),
-            ];
-            $sheet->fromArray($row, NULL, 'A' . ($i + 1));
-        }
+            $sheet->fromArray($header, NULL, 'A1');
 
-        foreach (range('A', $sheet->getHighestDataColumn()) as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
+            $i = 0;
+            foreach ($kursParticipants as $reg) {
+                $tn = $reg->getTn()->current();
+                $nation = '';
+                if ($tn?->getNation()) {
+                    try {
+                        $nationCountry = $this->countryProvider->getByIsoCode($tn->getNation());
+                        $nation = $languageService->sl($nationCountry->getLocalizedNameLabel());
+                    } catch (\Exception $e) {
+                        $nation = $tn->getNation();
+                    }
+                }
+
+                $country = '';
+                if ($tn?->getLand()) {
+                    try {
+                        $nationCountry = $this->countryProvider->getByIsoCode($tn->getLand());
+                        $country = $languageService->sl($nationCountry->getLocalizedNameLabel());
+                    } catch (\Exception $e) {
+                        $country = $tn->getLand();
+                    }
+                }
+
+                $row = [
+                    ++$i,
+                    $reg->getUid(),
+                    $reg->getDatein()?->format('d.m.Y H:i') ?? '',
+                    $reg->getTeilnahmeart() === 0 ? 'passiv' : 'aktiv',
+                    $reg->getAnmeldestatus()->current()?->getKurz() ?? '',
+                    $reg->getStipendiat() === 0 ? 'Nein' : 'Ja',
+                    $reg->getBezahlt() === 0 ? 'Nein' : 'Ja',
+                    $tn?->getAnrede() === 0 ? 'Frau' : 'Herr',
+                    $tn?->getVorname() ?? '',
+                    $tn?->getNachname() ?? '',
+                    $tn?->getTitel() ?? '',
+                    $tn?->getGebdate()?->format('d.m.Y') ?? '',
+                    $tn?->getMatrikel() ?? '',
+                    $nation,
+                    ($tn?->getAdresse1() ?? '') . ' ' . ($tn?->getHausnr() ?? ''),
+                    $tn?->getAdresse2() ?? '',
+                    $tn?->getPlz() ?? '',
+                    $tn?->getOrt() ?? '',
+                    $country,
+                    $tn?->getMobil() ? (string)$tn?->getMobil() : '',
+                    $tn?->getEmail() ?? '',
+                    $reg->getSavedata() === 0 ? 'Ja' : 'Nein',
+                    $reg->getHotel(),
+                    LocalizationUtility::translate(
+                        'be_export.room.' . $reg->getRoom(),
+                        'kursanmeldung'
+                    ),
+                    $reg->getRoomwith(),
+                    ($reg->getRoom() !== '0' && $reg->getRoom() !== '' && $reg->getRoomfrom() !== '') ? (new \DateTime($reg->getRoomfrom()))->format('d.m.Y') : '',
+                    ($reg->getRoom() !== '0' && $reg->getRoom() !== '' && $reg->getRoomto() !== '') ? (new \DateTime($reg->getRoomto()))->format('d.m.Y') : '',
+                    $reg->getDuo(),
+                    $reg->getDuosel(),
+                    $reg->getDuoname(),
+                    (string)$reg->getGebuehr(),
+                    (string)$reg->getGezahlt(),
+                    (string)$reg->getGezahltag(),
+                    (string)$reg->getGezahltos(),
+                    $reg->getComment(),
+                    $reg->getKurs()?->getKursnr() ?? '',
+                    $reg->getKurs()?->getInstrument() ?? '',
+                    $reg->getKurs()?->getProfessor()?->getName() ?? '',
+                    $reg->getKurs()?->getKurszeitstart()?->format('d.m.Y') ?? '',
+                    $reg->getKurs()?->getKurszeitend()?->format('d.m.Y') ?? '',
+                    $reg->getProgramm(),
+                    $reg->getOrchesterstudio(),
+                    $reg->getNotice(),
+                ];
+                $sheet->fromArray($row, NULL, 'A' . ($i + 1));
+            }
+
+            foreach (range('A', $sheet->getHighestDataColumn()) as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
         }
 
         $writer = new Xlsx($spreadsheet);
