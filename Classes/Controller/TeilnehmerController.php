@@ -8,6 +8,7 @@ use Exception;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Mail\Business\MailFacade;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
+use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
@@ -37,6 +38,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
@@ -87,6 +90,8 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         private readonly MailFacade $mailFacade,
         private readonly CountryProvider $countryProvider,
         private readonly LanguageServiceFactory $languageServiceFactory,
+        protected \Psr\Http\Message\ResponseFactoryInterface $responseFactory,
+        protected \Psr\Http\Message\StreamFactoryInterface $streamFactory,
     ) {
     }
 
@@ -108,6 +113,68 @@ final class TeilnehmerController extends ActionController implements LoggerAware
 
     public function listAction(): ResponseInterface
     {
+        $exportFieldsGrouped = [
+            'Anmeldung' => [
+                'register.uid' => 'Reg. Nr.',
+                'register.datein' => 'Anmeldedatum',
+                'register.teilnahmeart' => 'Teilnahmeart',
+                'register.gebuehr' => 'ANG Gebühr',
+                'register.gezahlt' => 'ANG Gezahlt',
+                'register.gebuehrag' => 'TNG Gebühr',
+                'register.gezahltag' => 'TNG Gezahlt',
+                'register.zahlart' => 'Zahlart',
+                'register.zahltbis' => 'Zahlt bis',
+                'register.room' => 'Zimmer',
+                'register.roomwith' => 'Zimmer mit',
+                'register.roomfrom' => 'Zimmer von',
+                'register.roomto' => 'Zimmer bis',
+                'register.comment' => 'Kommentar',
+                'register.notice' => 'Notiz',
+                'register.programm' => 'Programm',
+                'register.orchesterstudio' => 'Orchesterstudio',
+                'register.stipendiat' => 'Stipendiat',
+                'register.studentship' => 'Studentship',
+                'register.studystat' => 'Studienstatus',
+                'register.ensemble' => 'Ensemble',
+            ],
+            'Teilnehmer' => [
+                'tn.vorname' => 'Vorname',
+                'tn.nachname' => 'Nachname',
+                'tn.anrede' => 'Anrede',
+                'tn.titel' => 'Titel',
+                'tn.gebdate' => 'Geb. Datum',
+                'tn.matrikel' => 'Matrikel',
+                'tn.email' => 'E-Mail',
+                'tn.mobil' => 'Mobil',
+                'tn.telefon' => 'Telefon',
+                'tn.telefax' => 'Telefax',
+                'tn.adresse1' => 'Strasse',
+                'tn.hausnr' => 'Hausnr.',
+                'tn.adresse2' => 'Adresszusatz',
+                'tn.plz' => 'PLZ',
+                'tn.ort' => 'Ort',
+                'tn.land' => 'Land',
+                'tn.nation' => 'Nationalität',
+                'tn.sprache' => 'Sprache',
+            ],
+            'Kurs' => [
+                'kurs.kursnr' => 'Kurs Nr.',
+                'kurs.instrument' => 'Instrument',
+                'kurs.professor.name' => 'Professor',
+                'kurs.kurszeitstart' => 'Kursstart',
+                'kurs.kurszeitend' => 'Kursende',
+                'kurs.gebuehr' => 'Kurs Gebühr',
+                'kurs.kursort' => 'Kursort',
+            ],
+        ];
+
+        $exportFields = [];
+        foreach ($exportFieldsGrouped as $group) {
+            foreach ($group as $field => $label) {
+                $exportFields[$field] = $label;
+            }
+        }
+
         // Filter-Parameter – getrennt für Gesamtliste und Kurslisten
         // Session-Handling: Filter in Session persistieren und bei fehlenden Request-Parametern daraus laden
         $sessionSearchAllKey = 'hfm.kursanmeldung.teilnehmer.searchAll';
@@ -383,15 +450,237 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'profStatusSum' => $profStatusExplained,
             'profStatusMax' => $profStatusMax,
             'lang' => $language,
+            'exportFields' => $exportFields,
+            'exportFieldsGrouped' => $exportFieldsGrouped,
         ]);
 
         return $this->htmlResponse();
     }
 
+    protected function getExportFieldsMapping(): array
+    {
+        return [
+            'register.uid' => 'Reg. Nr.',
+            'register.datein' => 'Anmeldedatum',
+            'register.teilnahmeart' => 'Teilnahmeart',
+            'register.gebuehr' => 'ANG Gebühr',
+            'register.gezahlt' => 'ANG Gezahlt',
+            'register.gebuehrag' => 'TNG Gebühr',
+            'register.gezahltag' => 'TNG Gezahlt',
+            'register.zahlart' => 'Zahlart',
+            'register.zahltbis' => 'Zahlt bis',
+            'register.room' => 'Zimmer',
+            'register.roomwith' => 'Zimmer mit',
+            'register.roomfrom' => 'Zimmer von',
+            'register.roomto' => 'Zimmer bis',
+            'register.comment' => 'Kommentar',
+            'register.notice' => 'Notiz',
+            'register.programm' => 'Programm',
+            'register.orchesterstudio' => 'Orchesterstudio',
+            'register.stipendiat' => 'Stipendiat',
+            'register.studentship' => 'Studentship',
+            'register.studystat' => 'Studienstatus',
+            'register.ensemble' => 'Ensemble',
+            'tn.vorname' => 'Vorname',
+            'tn.nachname' => 'Nachname',
+            'tn.anrede' => 'Anrede',
+            'tn.titel' => 'Titel',
+            'tn.gebdate' => 'Geb. Datum',
+            'tn.matrikel' => 'Matrikel',
+            'tn.email' => 'E-Mail',
+            'tn.mobil' => 'Mobil',
+            'tn.telefon' => 'Telefon',
+            'tn.telefax' => 'Telefax',
+            'tn.adresse1' => 'Strasse',
+            'tn.hausnr' => 'Hausnr.',
+            'tn.adresse2' => 'Adresszusatz',
+            'tn.plz' => 'PLZ',
+            'tn.ort' => 'Ort',
+            'tn.land' => 'Land',
+            'tn.nation' => 'Nationalität',
+            'tn.sprache' => 'Sprache',
+            'kurs.kursnr' => 'Kurs Nr.',
+            'kurs.instrument' => 'Instrument',
+            'kurs.professor.name' => 'Professor',
+            'kurs.kurszeitstart' => 'Kursstart',
+            'kurs.kurszeitend' => 'Kursende',
+            'kurs.gebuehr' => 'Kurs Gebühr',
+            'kurs.kursort' => 'Kursort',
+        ];
+    }
+
+    public function exportPreviewAction(): ResponseInterface
+    {
+        $fieldsParam = $this->request->hasArgument('fields') ? $this->request->getArgument('fields') : '';
+        if (is_array($fieldsParam)) {
+            $fields = $fieldsParam;
+        } else {
+            $fields = array_values(array_filter(array_map('trim', explode(',', (string)$fieldsParam))));
+        }
+
+        if (empty($fields)) {
+            return $this->htmlResponse('<div class="alert alert-warning">Keine Felder ausgewählt.</div>');
+        }
+
+        $exportFieldsMapping = $this->getExportFieldsMapping();
+
+        $participants = $this->kursanmeldungRepository->findAllSortedByUid();
+        // Limit to 20 for preview
+        $previewData = [];
+        $count = 0;
+        foreach ($participants as $reg) {
+            if ($count >= 20) break;
+            $row = [];
+            foreach ($fields as $field) {
+                $row[] = $this->getFieldValue($reg, $field);
+            }
+            $previewData[] = $row;
+            $count++;
+        }
+
+        $html = '<table class="table table-sm table-striped"><thead><tr>';
+        foreach ($fields as $field) {
+            $html .= '<th>' . ($exportFieldsMapping[$field] ?? $field) . '</th>';
+        }
+        $html .= '</tr></thead><tbody>';
+        foreach ($previewData as $row) {
+            $html .= '<tr>';
+            foreach ($row as $val) {
+                $html .= '<td>' . htmlspecialchars((string)$val) . '</td>';
+            }
+            $html .= '</tr>';
+        }
+        $html .= '</tbody></table>';
+
+        return $this->htmlResponse($html);
+    }
+
+    protected function getFieldValue(Kursanmeldung $reg, string $fieldPath): string
+    {
+        $parts = explode('.', $fieldPath);
+        $current = $reg;
+
+        if ($parts[0] === 'register') {
+            array_shift($parts);
+        } elseif ($parts[0] === 'tn') {
+            $tnStorage = $reg->getTn();
+            if ($tnStorage instanceof ObjectStorage && $tnStorage->count() > 0) {
+                $tnStorage->rewind();
+                $current = $tnStorage->current();
+            } else {
+                $current = null;
+            }
+            array_shift($parts);
+        } elseif ($parts[0] === 'kurs') {
+            $current = $reg->getKurs();
+            array_shift($parts);
+        }
+
+        foreach ($parts as $part) {
+            if (!$current) return '';
+            $getter = 'get' . ucfirst($part);
+            if (method_exists($current, $getter)) {
+                $current = $current->$getter();
+            } else {
+                return '';
+            }
+        }
+
+        switch($fieldPath){
+            case 'tn.land':
+            case 'tn.nation':
+                $current = $this->getLocalizedCountryIsoCode($current);
+                break;
+            case 'tn.anrede':
+                $current = $current === 0 ? 'Frau' : 'Herr';
+                break;
+            case 'register.datein':
+                $current = $current?->format('d.m.Y H:i') ?? '';
+                break;
+            case 'register.teilnahmeart':
+                $current = $current === 0 ? 'passiv' : 'aktiv';
+                break;
+            case 'register.savedata':
+                $current = $current === 0 ? 'Ja' : 'Nein';
+                break;
+            case 'register.room':
+                $current = LocalizationUtility::translate(
+                        'be_export.room.' . $current,
+                        'kursanmeldung'
+                    );
+                break;
+            case 'register.roomfrom':
+            case 'register.roomto':
+                $current = $current != '' ? (new \DateTime($current))->format('d.m.Y') : '';
+                break;
+            case 'register.gezahlt':
+            case 'register.gezahltag':
+            case 'register.gebuehr':
+            case 'register.gezahltos':
+                $current = (string)$current;
+                break;
+
+        }
+
+        if ($current instanceof \DateTime) {
+            return $current->format('d.m.Y');
+        }
+        if ($current === true) {
+            return 'Ja';
+        }
+        if ($current === false) {
+            return 'Nein';
+        }
+        if ($current instanceof ObjectStorage) {
+            $items = [];
+            foreach ($current as $item) {
+                if (method_exists($item, 'getName')) {
+                    $items[] = $item->getName();
+                } elseif (method_exists($item, 'getHotel')) {
+                    $items[] = $item->getHotel();
+                } elseif (method_exists($item, 'getEnname')) {
+                    $items[] = $item->getEnname();
+                } elseif (method_exists($item, 'getTitel')) {
+                    $items[] = $item->getTitel();
+                } else {
+                    $items[] = (string)$item->getUid();
+                }
+            }
+            return implode(', ', $items);
+        }
+
+        return (string)$current;
+    }
+
     public function exportAction(): ResponseInterface
     {
+        $fieldsParam = $this->request->hasArgument('fields')
+            ? $this->request->getArgument('fields')
+            : '';
+
+        if (is_array($fieldsParam)) {
+            $fieldsArray = $fieldsParam;
+        } else {
+            $fieldsArray = array_values(array_filter(array_map('trim', explode(',', (string)$fieldsParam))));
+        }
+
+        $format = $this->request->hasArgument('format')
+            ? (string)$this->request->getArgument('format')
+            : 'xlsx';
+
+        $exportFieldsMapping = $this->getExportFieldsMapping();
+
+        // Nur gültige, bekannte Felder zulassen (Whitelist-Schutz)
+        $fields = array_values(array_intersect($fieldsArray, array_keys($exportFieldsMapping)));
+
+        // KEIN automatischer Fallback mehr auf "alle Felder",
+        // wenn explizit nichts (oder nur Ungültiges) übergeben wurde:
+        if (empty($fields) && $this->request->hasArgument('fields')) {
+            return $this->htmlResponse('Keine gültigen Felder für den Export übergeben.')
+                ->withStatus(400);
+        }
+
         $sessionSearchAllKey = 'hfm.kursanmeldung.teilnehmer.searchAll';
-        $sessionFieldsAllKey = 'hfm.kursanmeldung.teilnehmer.fieldsAll';
         $sessionSearchKursKey = 'hfm.kursanmeldung.teilnehmer.searchKurs';
         $sessionFieldsKursKey = 'hfm.kursanmeldung.teilnehmer.fieldsKurs';
 
@@ -407,12 +696,11 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         };
 
         $kursUid = 0;
-
         if ($this->request->hasArgument('kurs')) {
             $kursUid = (int)$this->request->getArgument('kurs');
         }
 
-        $participantsByKurs = [];
+        $participants = [];
         if ($kursUid > 0) {
             $searchKurs = $getSession($sessionSearchKursKey);
             $fieldsKurs = $getSession($sessionFieldsKursKey);
@@ -428,29 +716,121 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             } else {
                 $participants = $this->kursanmeldungRepository->getParticipantsByKurs($kursUid);
             }
-            $filename = 'kurs_' . $kursUid . '_export_' . date('Y-m-d_H-i') . '.xlsx';
-            $participantsByKurs[$kursUid] = $participants;
         } else {
             $searchAll = $getSession($sessionSearchAllKey);
-            $fieldsAll = $getSession($sessionFieldsAllKey) ?: ['tn.vorname', 'tn.nachname'];
+            $fieldsAll = ['tn.vorname', 'tn.nachname']; // Default fields for search
 
             if ($searchAll !== null && trim((string)$searchAll) !== '') {
                 $participants = $this->kursanmeldungRepository->searchAll((string)$searchAll, $fieldsAll);
             } else {
                 $participants = $this->kursanmeldungRepository->findAllSortedByUid();
             }
-            $filename = 'alle_teilnehmer_export_' . date('Y-m-d_H-i') . '.xlsx';
-
-            foreach ($participants as $reg) {
-                $kUid = $reg->getKurs()?->getUid() ?: 0;
-                $participantsByKurs[$kUid][] = $reg;
-            }
-            ksort($participantsByKurs);
         }
 
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->removeSheetByIndex(0);
+        if (empty($fields)) {
+            // Fallback to all mapping fields if none provided
+            $fields = array_keys($exportFieldsMapping);
+        }
 
+        if ($this->request->hasArgument('format')) {
+            $format = (string)$this->request->getArgument('format');
+        }
+
+        $header = [];
+        foreach ($fields as $field) {
+            $header[] = $exportFieldsMapping[$field] ?? $field;
+        }
+
+        if ($format === 'csv') {
+            return $this->generateCsvResponse($participants, $fields, $header);
+        }
+
+        return $this->generateExcelResponse($participants, $fields, $header);
+    }
+
+    protected function generateCsvResponse($participants, $fields, $header): ResponseInterface
+    {
+        $filename = 'export_' . date('Y-m-d_H-i') . '.csv';
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'text/csv; charset=utf-8')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->withHeader('Pragma', 'no-cache')
+            ->withHeader('Expires', '0');
+
+        $body = $response->getBody();
+        $handle = fopen('php://temp', 'r+');
+        fputcsv($handle, $header, ';');
+
+        foreach ($participants as $reg) {
+            $row = [];
+            foreach ($fields as $field) {
+                $row[] = $this->getFieldValue($reg, $field);
+            }
+            fputcsv($handle, $row, ';');
+        }
+
+        rewind($handle);
+        $body->write(stream_get_contents($handle));
+        fclose($handle);
+
+        return $response;
+    }
+
+    protected function generateExcelResponse($participants, $fields, $header): ResponseInterface
+    {
+        $filename = 'export_' . date('Y-m-d_H-i') . '.xlsx';
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getDefaultStyle()->getFont()->setSize(14);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header
+        $col = 1;
+        foreach ($header as $title) {
+            $sheet->setCellValue([$col, 1], $title);
+            $col++;
+        }
+
+        // Data
+        $rowIdx = 2;
+        foreach ($participants as $reg) {
+            $col = 1;
+            foreach ($fields as $field) {
+                $sheet->setCellValue([$col, $rowIdx], $this->getFieldValue($reg, $field));
+                $col++;
+            }
+            $rowIdx++;
+        }
+
+        $highestColumnIndex = count($header);
+        for ($colIdx = 1; $colIdx <= $highestColumnIndex; $colIdx++) {
+            $sheet->getColumnDimensionByColumn($colIdx)->setAutoSize(true);
+        }
+        $spreadsheet->getActiveSheet()->calculateColumnWidths();
+
+        $writer = new Xlsx($spreadsheet);
+        $response = $this->responseFactory->createResponse()
+            ->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"')
+            ->withHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->withHeader('Pragma', 'no-cache')
+            ->withHeader('Expires', '0');
+
+        $body = $response->getBody();
+        $stream = fopen('php://temp', 'r+');
+        $writer->save($stream);
+        rewind($stream);
+        $body->write(stream_get_contents($stream));
+        fclose($stream);
+
+        return $response;
+    }
+
+    public function xlsxExportAction(): ResponseInterface
+    {
+        $filename = 'export_' . date('Y-m-d_H-i') . '.xlsx';
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getDefaultStyle()->getFont()->setSize(14);
         $header = [
             'Lfd. Nr.',
             'Reg. Nr.',
@@ -496,8 +876,14 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'Orchesterstudio',
             'Notiz'
         ];
-
         $languageService = $this->languageServiceFactory->create(new Locale('de'));
+
+        $participants = $this->kursanmeldungRepository->findAllSortedByUid();
+        $participantsByKurs = [];
+        foreach ($participants as $reg) {
+            $kUid = $reg->getKurs() ? $reg->getKurs()->getUid() : 0;
+            $participantsByKurs[$kUid][] = $reg;
+        }
 
         foreach ($participantsByKurs as $kUid => $kursParticipants) {
             $sheet = $spreadsheet->createSheet();
@@ -523,25 +909,9 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $i = 0;
             foreach ($kursParticipants as $reg) {
                 $tn = $reg->getTn()->current();
-                $nation = '';
-                if ($tn?->getNation()) {
-                    try {
-                        $nationCountry = $this->countryProvider->getByIsoCode($tn->getNation());
-                        $nation = $languageService->sl($nationCountry->getLocalizedNameLabel());
-                    } catch (\Exception $e) {
-                        $nation = $tn->getNation();
-                    }
-                }
 
-                $country = '';
-                if ($tn?->getLand()) {
-                    try {
-                        $nationCountry = $this->countryProvider->getByIsoCode($tn->getLand());
-                        $country = $languageService->sl($nationCountry->getLocalizedNameLabel());
-                    } catch (\Exception $e) {
-                        $country = $tn->getLand();
-                    }
-                }
+                $nation = $this->getLocalizedCountryIsoCode((string)$tn?->getNation());
+                $country = $this->getLocalizedCountryIsoCode((string)$tn?->getLand());
 
                 $row = [
                     ++$i,
@@ -594,9 +964,11 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $sheet->fromArray($row, NULL, 'A' . ($i + 1));
             }
 
-            foreach (range('A', $sheet->getHighestDataColumn()) as $col) {
-                $sheet->getColumnDimension($col)->setAutoSize(true);
+            $highestColumnIndex = count($header);
+            for ($colIdx = 1; $colIdx <= $highestColumnIndex; $colIdx++) {
+                $sheet->getColumnDimensionByColumn($colIdx)->setAutoSize(true);
             }
+            $sheet->calculateColumnWidths();
         }
 
         $writer = new Xlsx($spreadsheet);
@@ -613,7 +985,28 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             ->withHeader('Expires', '0');
 
         $response->getBody()->write($content);
+
         return $response;
+    }
+
+    /**
+     * @param string $countryIsoCode
+     * @return string
+     */
+    private function getLocalizedCountryIsoCode(string $countryIsoCode): string
+    {
+        $translation = '';
+        $languageService = $this->languageServiceFactory->create(new Locale('de'));
+        if ($countryIsoCode) {
+            try {
+                $nationCountry = $this->countryProvider->getByIsoCode($countryIsoCode);
+                $translation = $languageService->sl($nationCountry->getLocalizedNameLabel());
+            } catch (\Exception $e) {
+                $translation = $countryIsoCode;
+            }
+        }
+
+        return $translation;
     }
 
     public function editAction(Kursanmeldung $kursanmeldung): ResponseInterface

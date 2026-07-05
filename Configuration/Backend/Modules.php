@@ -23,7 +23,7 @@ return [
             Controller\OrteController::class => ['list','show','new','create','edit','update','delete'],
             Controller\ProfController::class => ['list','show','new','create','edit','update','delete'],
             Controller\KursController::class => ['list','show','new','create','edit','update','delete'],
-            Controller\TeilnehmerController::class => ['list','edit','delete','update','updateAnmeldestatus','paybyadmin','export','deleteUpload'],
+            Controller\TeilnehmerController::class => ['list','edit','delete','update','updateAnmeldestatus','paybyadmin','export','xlsxExport','exportPreview','deleteUpload'],
             Controller\MailingController::class => ['list', 'sendmail'],
         ],
     ],

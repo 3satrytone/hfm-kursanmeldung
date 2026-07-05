@@ -14,6 +14,7 @@ export function init() {
     const table = document.querySelector('table.table');
     if (!table) {
         // Seite ohne Tabelle: trotzdem ggf. Confirm-Handler registrieren
+        return;
     }
     const thead = table.tHead;
     const tbody = table.tBodies[0];
@@ -352,6 +353,250 @@ export function init() {
             // still
         }
     };
+
+    console.log('ja');
+    const availableSelect = document.getElementById('availableFields');
+    const selectedList = document.getElementById('selectedFieldsList');
+    const moveRightBtn = document.getElementById('moveRight');
+    const moveLeftBtn = document.getElementById('moveLeft');
+    const exportPreview = document.getElementById('exportPreview');
+    const listTabBtn = document.getElementById('list-tab');
+
+    if (availableSelect && selectedList && moveRightBtn && moveLeftBtn) {
+        function moveRight() {
+        const selectedOptions = Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
+        selectedOptions.forEach(option => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.dataset.value = option.value;
+            li.draggable = true;
+            li.innerHTML = `<span>${option.text}</span> <button type="button" class="btn-close btn-sm remove-field"></button>`;
+            selectedList.appendChild(li);
+            option.disabled = true;
+            option.style.display = 'none';
+            option.selected = false;
+
+            li.querySelector('.remove-field').addEventListener('click', function() {
+                li.remove();
+                option.disabled = false;
+                
+                // Re-apply filter if searching
+                const filter = (searchInput?.value || '').toLowerCase();
+                if (filter === '' || option.text.toLowerCase().includes(filter)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+                
+                // Also update optgroup visibility
+                const group = option.closest('optgroup');
+                if (group) {
+                    const hasVisible = Array.from(group.querySelectorAll('option')).some(opt => opt.style.display !== 'none');
+                    group.style.display = hasVisible ? '' : 'none';
+                }
+            });
+
+            li.addEventListener('dragstart', handleDragStart);
+            li.addEventListener('dragover', handleDragOver);
+            li.addEventListener('dragenter', handleDragEnter);
+            li.addEventListener('dragleave', handleDragLeave);
+            li.addEventListener('drop', handleDrop);
+            li.addEventListener('dragend', handleDragEnd);
+        });
+    }
+
+    function moveLeft() {
+        // Find active item if any, or just move the last one?
+        // The requirement mentions a "moveLeft" button (<<), let's make it work for selected items in the list.
+        const items = selectedList.querySelectorAll('.list-group-item');
+        items.forEach(li => {
+            if (li.classList.contains('active')) {
+                const option = availableSelect.querySelector(`option[value="${li.dataset.value}"]`);
+                if (option) {
+                    option.disabled = false;
+                    
+                    // Re-apply filter if searching
+                    const filter = (searchInput?.value || '').toLowerCase();
+                    if (filter === '' || option.text.toLowerCase().includes(filter)) {
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                    
+                    // Also update optgroup visibility
+                    const group = option.closest('optgroup');
+                    if (group) {
+                        const hasVisible = Array.from(group.querySelectorAll('option')).some(opt => opt.style.display !== 'none');
+                        group.style.display = hasVisible ? '' : 'none';
+                    }
+                }
+                li.remove();
+            }
+        });
+    }
+
+    // Add click-to-select functionality for list items to support moveLeft
+    selectedList.addEventListener('click', function(e) {
+        const li = e.target.closest('.list-group-item');
+        if (li && !e.target.classList.contains('remove-field')) {
+            li.classList.toggle('active');
+        }
+    });
+
+    moveRightBtn.addEventListener('click', moveRight);
+    moveLeftBtn.addEventListener('click', moveLeft);
+    availableSelect.addEventListener('dblclick', moveRight);
+
+    // Drag and Drop Logic
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+        this.style.opacity = '0.4';
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+        e.dataTransfer.setData('value', this.dataset.value);
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+
+    function handleDragEnter(e) {
+        this.classList.add('over');
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('over');
+    }
+
+    function handleDrop(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        this.classList.remove('over');
+        if (dragSrcEl !== this) {
+            const allItems = Array.from(selectedList.children);
+            const dragIdx = allItems.indexOf(dragSrcEl);
+            const dropIdx = allItems.indexOf(this);
+
+            if (dragIdx < dropIdx) {
+                this.parentNode.insertBefore(dragSrcEl, this.nextSibling);
+            } else {
+                this.parentNode.insertBefore(dragSrcEl, this);
+            }
+        }
+        return false;
+    }
+
+    function handleDragEnd(e) {
+        this.style.opacity = '1';
+    }
+
+    // Preview logic
+    if (listTabBtn && exportPreview) {
+        listTabBtn.addEventListener('show.bs.tab', function() {
+            const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
+            if (selectedFields.length === 0) {
+                exportPreview.innerHTML = '<div class="alert alert-warning">Bitte wählen Sie mindestens eine Spalte im Setup aus.</div>';
+                return;
+            }
+
+            exportPreview.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+            const url = new URL(window.location.origin + window.location.pathname);
+            const params = new URLSearchParams(window.location.search);
+            params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[action]', 'exportPreview');
+            params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[fields]', selectedFields.join(','));
+
+            const previewUrl = url.origin + url.pathname + '?' + params.toString();
+
+            fetch(previewUrl)
+                .then(response => response.text())
+                .then(html => {
+                    exportPreview.innerHTML = html;
+                })
+                .catch(err => {
+                    exportPreview.innerHTML = '<div class="alert alert-danger">Fehler beim Laden der Vorschau.</div>';
+                });
+        });
+    }
+
+    // Download logic
+    const downloadExcelBtn = document.getElementById('downloadExcel');
+    const downloadCsvBtn = document.getElementById('downloadCsv');
+    if (downloadExcelBtn) {
+        downloadExcelBtn.addEventListener('click', function() {
+            triggerDownload('xlsx');
+        });
+    }
+    if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', function() {
+            triggerDownload('csv');
+        });
+    }
+
+    function triggerDownload(format) {
+        const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
+        if (selectedFields.length === 0) {
+            alert('Bitte wählen Sie mindestens eine Spalte aus.');
+            return;
+        }
+
+        let baseUrl = downloadExcelBtn?.getAttribute('data-export-url-xlsx');
+
+        if(format === 'csv'){
+            baseUrl = downloadCsvBtn?.getAttribute('data-export-url-csv');
+        }
+
+        if (!baseUrl) return;
+
+        const url = new URL(baseUrl, window.location.origin);
+        url.searchParams.set('fields', selectedFields.join(','));
+        window.open(url.toString());
+    }
+
+        // Search/Filter logic for availableFields
+        const searchInput = document.getElementById('availableFieldsSearch');
+        if (searchInput && availableSelect) {
+            searchInput.addEventListener('input', function() {
+                const filter = searchInput.value.toLowerCase();
+                const optgroups = availableSelect.querySelectorAll('optgroup');
+                
+                optgroups.forEach(group => {
+                    const options = Array.from(group.querySelectorAll('option'));
+                    let groupVisible = false;
+
+                    options.forEach(option => {
+                        const isVisibleByFilter = option.text.toLowerCase().includes(filter);
+                        if (option.disabled) {
+                            // Already selected fields should stay hidden regardless of search
+                            // but we must ensure they remain display: 'none'
+                            option.style.display = 'none';
+                            return;
+                        }
+                        if (isVisibleByFilter) {
+                            option.style.display = '';
+                            groupVisible = true;
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+
+                    // Hide/show the optgroup based on whether it has visible options
+                    if (groupVisible) {
+                        group.style.display = '';
+                    } else {
+                        group.style.display = 'none';
+                    }
+                });
+            });
+        }
+    }
 
     // etwas verzögert, damit Bootstrap/DOM fertig ist
     setTimeout(openFirstSearchedCourse, 0);

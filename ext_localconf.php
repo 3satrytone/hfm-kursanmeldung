@@ -6,6 +6,7 @@ defined('TYPO3') or die('Access denied.');
 
 use Hfm\Kursanmeldung\Controller\FrontendController;
 use Hfm\Kursanmeldung\Controller\KursListeController;
+use Hfm\Kursanmeldung\Controller\TeilnehmerController;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
@@ -96,6 +97,18 @@ ExtensionUtility::configurePlugin(
         ],
     ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
+);
+
+ExtensionUtility::configurePlugin(
+    'Kursanmeldung',
+    'Kursanmeldungteilnehmer',
+    [
+        TeilnehmerController::class => 'list, edit, update, delete, export, xlsxExport, exportPreview, updateAnmeldestatus, deleteUpload, paybyadmin'
+    ],
+    // Zweites Array = uncached actions
+    [
+        TeilnehmerController::class => 'edit, update, delete, export, xlsxExport, exportPreview, updateAnmeldestatus, deleteUpload, paybyadmin'
+    ]
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Hfm']['Kursanmeldung']['writerConfiguration'] = [

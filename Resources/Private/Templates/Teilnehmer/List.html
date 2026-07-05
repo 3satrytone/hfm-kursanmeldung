@@ -10,9 +10,79 @@
 
     <div class="row mb-3">
         <div class="col">
-            <f:link.action action="export" class="btn btn-outline-success">
+            <f:link.action action="xlsxExport" class="btn btn-outline-success">
                 <core:icon identifier="actions-document-export-csv" size="small" /> Excel Export (XLSX)
             </f:link.action>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                <core:icon identifier="actions-document-export-csv" size="small" /> Export (CSV/Excel)
+            </button>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export Teilnehmer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="exportTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="setup-tab" data-bs-toggle="tab" data-bs-target="#setup" type="button" role="tab" aria-controls="setup" aria-selected="true">Setup</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="exportTabContent">
+                        <div class="tab-pane fade show active" id="setup" role="tabpanel" aria-labelledby="setup-tab">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <h6>Verfügbare Objekte</h6>
+                                    <div class="mb-2">
+                                        <input type="text" id="availableFieldsSearch" class="form-control" placeholder="Suchen...">
+                                    </div>
+                                    <select id="availableFields" class="form-select" size="15" multiple>
+                                        <f:for each="{exportFieldsGrouped}" as="fields" key="group">
+                                            <optgroup label="{group}">
+                                                <f:for each="{fields}" as="label" key="field">
+                                                    <option value="{field}">{label}</option>
+                                                </f:for>
+                                            </optgroup>
+                                        </f:for>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
+                                    <button type="button" id="moveRight" class="btn btn-primary mb-2">&gt;&gt;</button>
+                                    <button type="button" id="moveLeft" class="btn btn-primary">&lt;&lt;</button>
+                                </div>
+                                <div class="col-md-5">
+                                    <h6>Ausgewählte Spalten (Drag & Drop zum Sortieren)</h6>
+                                    <style>
+                                        #selectedFieldsList .list-group-item.active { background-color: #0d6efd; color: white; }
+                                        #selectedFieldsList .list-group-item.active .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+                                        #selectedFieldsList .list-group-item.over { border-top: 2px solid #0d6efd !important; }
+                                        #availableFields optgroup { font-weight: bold; color: #666; background-color: #f8f9fa; }
+                                        #availableFields option { padding-left: 10px; }
+                                    </style>
+                                    <ul id="selectedFieldsList" class="list-group border p-2" style="min-height: 300px; cursor: move;">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <button type="button" id="downloadExcel" class="btn btn-success"
+                            data-export-url-xlsx="{f:uri.action(action: 'export', arguments: '{format: \'xlsx\'}')}">
+                        Excel Download
+                    </button>
+                    <button type="button" id="downloadCsv" class="btn btn-info text-white"
+                            data-export-url-csv="{f:uri.action(action: 'export', arguments: '{format: \'csv\'}')}">
+                        CSV Download
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
