@@ -273,6 +273,7 @@ class ParticipantUtility
         $assignments['instrument'] = $register->getKurs() ? $register->getKurs()->getInstrument() : '';
         $assignments['anmeldestatus'] = $register->getAnmeldestatus();
         $assignments['programm'] = $register->getProgramm();
+        $assignments['orchesterstudio'] = $register->getOrchesterstudio();
         $assignments['duo'] = $register->getDuo();
         $assignments['duoname'] = $register->getDuoname();
         $assignments['duosel'] = $register->getDuosel();
