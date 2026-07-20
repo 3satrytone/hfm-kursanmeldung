@@ -8,7 +8,6 @@ use Exception;
 use Hfm\Kursanmeldung\App\Dto\MailDto;
 use Hfm\Kursanmeldung\App\Mail\Business\MailFacade;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
-use Hfm\Kursanmeldung\Domain\Model\Teilnehmer;
 use Hfm\Kursanmeldung\Domain\Repository\AnmeldestatusRepository;
 use Hfm\Kursanmeldung\Domain\Repository\ProfStatusRepository;
 use Hfm\Kursanmeldung\Utility\ParticipantUtility;
@@ -19,6 +18,8 @@ use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Page\AssetCollector;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,8 +39,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Http\StreamFactory;
-use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter;
@@ -79,6 +78,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
 
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly PageRenderer $pageRenderer,
         private readonly AnmeldestatusRepository $anmeldestatusRepository,
         private readonly KursRepository $kursRepository,
         private readonly KursanmeldungRepository $kursanmeldungRepository,
@@ -136,6 +136,9 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 'register.studentship' => 'Studentship',
                 'register.studystat' => 'Studienstatus',
                 'register.ensemble' => 'Ensemble',
+                'register.anmeldestatus' => 'Anmeldestatus',
+                'register.bezahlt' => 'Bezahlt',
+                'register.profstatus' => 'Prof-Status',
             ],
             'Teilnehmer' => [
                 'tn.vorname' => 'Vorname',
@@ -436,7 +439,14 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $this->request->getAttribute('language')
             ?? $this->request->getAttribute('site')->getDefaultLanguage();
 
-        $this->view->assignMultiple([
+        $this->pageRenderer->addCssFile('EXT:kursanmeldung/Resources/Public/Css/Backend.css');
+        $this->pageRenderer->addCssFile('EXT:kursanmeldung/Resources/Public/Css/hfmMain.css');
+        $this->pageRenderer->addJsFile('EXT:kursanmeldung/Resources/Public/JavaScript/Contrib/bootstrap.bundle.min.js');
+        $this->pageRenderer->loadJavaScriptModule('@hfm/kursanmeldung/Teilnehmer.js');
+        $this->pageRenderer->loadJavaScriptModule('@hfm/kursanmeldung/ecma6/AjaxHandler.js');
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assignMultiple([
             'paginator' => $paginator,
             'pagination' => $pagination,
             'participantsByCourse' => $participantsByCourse,
@@ -454,7 +464,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'exportFieldsGrouped' => $exportFieldsGrouped,
         ]);
 
-        return $this->htmlResponse();
+        return $moduleTemplate->renderResponse('Teilnehmer/List');
     }
 
     protected function getExportFieldsMapping(): array
@@ -525,22 +535,19 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         $exportFieldsMapping = $this->getExportFieldsMapping();
 
         $participants = $this->kursanmeldungRepository->findAllSortedByUid();
-        // Limit to 20 for preview
         $previewData = [];
-        $count = 0;
         foreach ($participants as $reg) {
-            if ($count >= 20) break;
             $row = [];
             foreach ($fields as $field) {
                 $row[] = $this->getFieldValue($reg, $field);
             }
             $previewData[] = $row;
-            $count++;
         }
 
-        $html = '<table class="table table-sm table-striped"><thead><tr>';
+        $html = '<input type="text" id="exportlisteFilter" class="form-control mb-2" placeholder="Filtern...">';
+        $html .= '<table class="table table-sm table-striped" id="exportlisteTable"><thead><tr>';
         foreach ($fields as $field) {
-            $html .= '<th>' . ($exportFieldsMapping[$field] ?? $field) . '</th>';
+            $html .= '<th>' . htmlspecialchars($exportFieldsMapping[$field] ?? $field) . '</th>';
         }
         $html .= '</tr></thead><tbody>';
         foreach ($previewData as $row) {
@@ -724,6 +731,20 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $participants = $this->kursanmeldungRepository->searchAll((string)$searchAll, $fieldsAll);
             } else {
                 $participants = $this->kursanmeldungRepository->findAllSortedByUid();
+            }
+        }
+
+        // UID-Filter: nur ausgewählte Zeilen exportieren
+        $uidsParam = $this->request->hasArgument('uids')
+            ? (string)$this->request->getArgument('uids')
+            : '';
+        if ($uidsParam !== '') {
+            $allowedUids = array_filter(array_map('intval', explode(',', $uidsParam)));
+            if (!empty($allowedUids)) {
+                $participants = array_filter(
+                    is_array($participants) ? $participants : iterator_to_array($participants),
+                    static fn($reg) => in_array((int)$reg->getUid(), $allowedUids, true)
+                );
             }
         }
 

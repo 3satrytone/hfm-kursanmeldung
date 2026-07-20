@@ -12,12 +12,8 @@ export function init() {
 
     // Table sorting for Teilnehmer/List.html
     const table = document.querySelector('table.table');
-    if (!table) {
-        // Seite ohne Tabelle: trotzdem ggf. Confirm-Handler registrieren
-        return;
-    }
-    const thead = table.tHead;
-    const tbody = table.tBodies[0];
+    const thead = table?.tHead;
+    const tbody = table?.tBodies[0];
     if (thead && tbody) {
         // Sortierlogik nur wenn Thead/Body vorhanden sind
     }
@@ -86,7 +82,7 @@ export function init() {
     // Add click handlers to sortable headers
     if (thead) {
         const headers = thead.querySelectorAll('th.hdr-srt');
-        headers.forEach((th, idx) => {
+        headers.forEach((th) => {
             th.setAttribute('aria-sort', 'none');
             const indicator = th.querySelector('.srt-ico');
             const updateIndicator = (dir) => {
@@ -101,11 +97,12 @@ export function init() {
 
             let currentDir = 'asc';
             const type = th.getAttribute('data-type') || 'text';
+            const colIdx = th.cellIndex;
             const handler = (e) => {
                 e.preventDefault();
                 currentDir = currentDir === 'asc' ? 'desc' : 'asc';
                 updateIndicator(currentDir);
-                doSort(idx, type, currentDir);
+                doSort(colIdx, type, currentDir);
             };
             th.addEventListener('click', handler);
             th.addEventListener('keydown', (e) => {
@@ -354,67 +351,32 @@ export function init() {
         }
     };
 
-    console.log('ja');
     const availableSelect = document.getElementById('availableFields');
     const selectedList = document.getElementById('selectedFieldsList');
     const moveRightBtn = document.getElementById('moveRight');
     const moveLeftBtn = document.getElementById('moveLeft');
     const exportPreview = document.getElementById('exportPreview');
     const listTabBtn = document.getElementById('list-tab');
+    const searchInput = document.getElementById('availableFieldsSearch');
 
     if (availableSelect && selectedList && moveRightBtn && moveLeftBtn) {
         function moveRight() {
-        const selectedOptions = Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
-        selectedOptions.forEach(option => {
-            const li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between align-items-center';
-            li.dataset.value = option.value;
-            li.draggable = true;
-            li.innerHTML = `<span>${option.text}</span> <button type="button" class="btn-close btn-sm remove-field"></button>`;
-            selectedList.appendChild(li);
-            option.disabled = true;
-            option.style.display = 'none';
-            option.selected = false;
+            const selectedOptions = Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
+            selectedOptions.forEach(option => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.dataset.value = option.value;
+                li.draggable = true;
+                li.innerHTML = `<span>${option.text}</span> <button type="button" class="btn-close btn-sm remove-field"></button>`;
+                selectedList.appendChild(li);
+                option.disabled = true;
+                option.style.display = 'none';
+                option.selected = false;
 
-            li.querySelector('.remove-field').addEventListener('click', function() {
-                li.remove();
-                option.disabled = false;
-                
-                // Re-apply filter if searching
-                const filter = (searchInput?.value || '').toLowerCase();
-                if (filter === '' || option.text.toLowerCase().includes(filter)) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
-                }
-                
-                // Also update optgroup visibility
-                const group = option.closest('optgroup');
-                if (group) {
-                    const hasVisible = Array.from(group.querySelectorAll('option')).some(opt => opt.style.display !== 'none');
-                    group.style.display = hasVisible ? '' : 'none';
-                }
-            });
-
-            li.addEventListener('dragstart', handleDragStart);
-            li.addEventListener('dragover', handleDragOver);
-            li.addEventListener('dragenter', handleDragEnter);
-            li.addEventListener('dragleave', handleDragLeave);
-            li.addEventListener('drop', handleDrop);
-            li.addEventListener('dragend', handleDragEnd);
-        });
-    }
-
-    function moveLeft() {
-        // Find active item if any, or just move the last one?
-        // The requirement mentions a "moveLeft" button (<<), let's make it work for selected items in the list.
-        const items = selectedList.querySelectorAll('.list-group-item');
-        items.forEach(li => {
-            if (li.classList.contains('active')) {
-                const option = availableSelect.querySelector(`option[value="${li.dataset.value}"]`);
-                if (option) {
+                li.querySelector('.remove-field').addEventListener('click', function() {
+                    li.remove();
                     option.disabled = false;
-                    
+
                     // Re-apply filter if searching
                     const filter = (searchInput?.value || '').toLowerCase();
                     if (filter === '' || option.text.toLowerCase().includes(filter)) {
@@ -422,151 +384,223 @@ export function init() {
                     } else {
                         option.style.display = 'none';
                     }
-                    
+
                     // Also update optgroup visibility
                     const group = option.closest('optgroup');
                     if (group) {
                         const hasVisible = Array.from(group.querySelectorAll('option')).some(opt => opt.style.display !== 'none');
                         group.style.display = hasVisible ? '' : 'none';
                     }
+                });
+
+                li.addEventListener('dragstart', handleDragStart);
+                li.addEventListener('dragover', handleDragOver);
+                li.addEventListener('dragenter', handleDragEnter);
+                li.addEventListener('dragleave', handleDragLeave);
+                li.addEventListener('drop', handleDrop);
+                li.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        function moveLeft() {
+            const items = selectedList.querySelectorAll('.list-group-item');
+            items.forEach(li => {
+                if (li.classList.contains('active')) {
+                    const option = availableSelect.querySelector(`option[value="${li.dataset.value}"]`);
+                    if (option) {
+                        option.disabled = false;
+
+                        // Re-apply filter if searching
+                        const filter = (searchInput?.value || '').toLowerCase();
+                        if (filter === '' || option.text.toLowerCase().includes(filter)) {
+                            option.style.display = '';
+                        } else {
+                            option.style.display = 'none';
+                        }
+
+                        // Also update optgroup visibility
+                        const group = option.closest('optgroup');
+                        if (group) {
+                            const hasVisible = Array.from(group.querySelectorAll('option')).some(opt => opt.style.display !== 'none');
+                            group.style.display = hasVisible ? '' : 'none';
+                        }
+                    }
+                    li.remove();
                 }
-                li.remove();
+            });
+        }
+
+        // Add click-to-select functionality for list items to support moveLeft
+        selectedList.addEventListener('click', function(e) {
+            const li = e.target.closest('.list-group-item');
+            if (li && !e.target.classList.contains('remove-field')) {
+                li.classList.toggle('active');
             }
         });
-    }
 
-    // Add click-to-select functionality for list items to support moveLeft
-    selectedList.addEventListener('click', function(e) {
-        const li = e.target.closest('.list-group-item');
-        if (li && !e.target.classList.contains('remove-field')) {
-            li.classList.toggle('active');
+        moveRightBtn.addEventListener('click', moveRight);
+        moveLeftBtn.addEventListener('click', moveLeft);
+        availableSelect.addEventListener('dblclick', moveRight);
+
+        // Drag and Drop Logic
+        let dragSrcEl = null;
+
+        function handleDragStart(e) {
+            this.style.opacity = '0.4';
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            e.dataTransfer.setData('value', this.dataset.value);
         }
-    });
 
-    moveRightBtn.addEventListener('click', moveRight);
-    moveLeftBtn.addEventListener('click', moveLeft);
-    availableSelect.addEventListener('dblclick', moveRight);
-
-    // Drag and Drop Logic
-    let dragSrcEl = null;
-
-    function handleDragStart(e) {
-        this.style.opacity = '0.4';
-        dragSrcEl = this;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.innerHTML);
-        e.dataTransfer.setData('value', this.dataset.value);
-    }
-
-    function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-        e.dataTransfer.dropEffect = 'move';
-        return false;
-    }
-
-    function handleDragEnter(e) {
-        this.classList.add('over');
-    }
-
-    function handleDragLeave(e) {
-        this.classList.remove('over');
-    }
-
-    function handleDrop(e) {
-        if (e.stopPropagation) {
-            e.stopPropagation();
-        }
-        this.classList.remove('over');
-        if (dragSrcEl !== this) {
-            const allItems = Array.from(selectedList.children);
-            const dragIdx = allItems.indexOf(dragSrcEl);
-            const dropIdx = allItems.indexOf(this);
-
-            if (dragIdx < dropIdx) {
-                this.parentNode.insertBefore(dragSrcEl, this.nextSibling);
-            } else {
-                this.parentNode.insertBefore(dragSrcEl, this);
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
             }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
         }
-        return false;
-    }
 
-    function handleDragEnd(e) {
-        this.style.opacity = '1';
-    }
+        function handleDragEnter(e) {
+            this.classList.add('over');
+        }
 
-    // Preview logic
-    if (listTabBtn && exportPreview) {
-        listTabBtn.addEventListener('show.bs.tab', function() {
+        function handleDragLeave(e) {
+            this.classList.remove('over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            this.classList.remove('over');
+            if (dragSrcEl !== this) {
+                const allItems = Array.from(selectedList.children);
+                const dragIdx = allItems.indexOf(dragSrcEl);
+                const dropIdx = allItems.indexOf(this);
+
+                if (dragIdx < dropIdx) {
+                    this.parentNode.insertBefore(dragSrcEl, this.nextSibling);
+                } else {
+                    this.parentNode.insertBefore(dragSrcEl, this);
+                }
+            }
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+        }
+
+        // Exportliste Tab: Filterbare Tabelle via AjaxHandler (ECMAScript6-Modul) laden
+        const exportlisteTabBtn = document.getElementById('exportliste-tab');
+        const exportlisteContent = document.getElementById('exportlisteContent');
+        if (exportlisteTabBtn && exportlisteContent) {
+            exportlisteTabBtn.addEventListener('show.bs.tab', function () {
+                const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js')
+                    .then(mod => mod.loadExportliste(selectedFields, exportlisteContent))
+                    .catch(() => {
+                        exportlisteContent.innerHTML = '<div class="alert alert-danger">Exportliste konnte nicht geladen werden.</div>';
+                    });
+            });
+        }
+
+        // Preview logic
+        if (listTabBtn && exportPreview) {
+            listTabBtn.addEventListener('show.bs.tab', function() {
+                const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
+                if (selectedFields.length === 0) {
+                    exportPreview.innerHTML = '<div class="alert alert-warning">Bitte wählen Sie mindestens eine Spalte im Setup aus.</div>';
+                    return;
+                }
+
+                exportPreview.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+                const url = new URL(window.location.origin + window.location.pathname);
+                const params = new URLSearchParams(window.location.search);
+                params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[action]', 'exportPreview');
+                params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[fields]', selectedFields.join(','));
+
+                const previewUrl = url.origin + url.pathname + '?' + params.toString();
+
+                fetch(previewUrl)
+                    .then(response => response.text())
+                    .then(html => {
+                        exportPreview.innerHTML = html;
+                    })
+                    .catch(err => {
+                        exportPreview.innerHTML = '<div class="alert alert-danger">Fehler beim Laden der Vorschau.</div>';
+                    });
+            });
+        }
+
+        // Download logic
+        const downloadExcelBtn = document.getElementById('downloadExcel');
+        const downloadCsvBtn = document.getElementById('downloadCsv');
+        if (downloadExcelBtn) {
+            downloadExcelBtn.addEventListener('click', function() {
+                triggerDownload('xlsx');
+            });
+        }
+        if (downloadCsvBtn) {
+            downloadCsvBtn.addEventListener('click', function() {
+                triggerDownload('csv');
+            });
+        }
+
+        function triggerDownload(format) {
             const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
             if (selectedFields.length === 0) {
-                exportPreview.innerHTML = '<div class="alert alert-warning">Bitte wählen Sie mindestens eine Spalte im Setup aus.</div>';
+                alert('Bitte wählen Sie mindestens eine Spalte aus.');
                 return;
             }
 
-            exportPreview.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+            let baseUrl = downloadExcelBtn?.getAttribute('data-export-url-xlsx');
 
-            const url = new URL(window.location.origin + window.location.pathname);
-            const params = new URLSearchParams(window.location.search);
-            params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[action]', 'exportPreview');
-            params.set('tx_kursanmeldung_kursanmeldung_kursanmeldungteilnehmer[fields]', selectedFields.join(','));
+            if (format === 'csv') {
+                baseUrl = downloadCsvBtn?.getAttribute('data-export-url-csv');
+            }
 
-            const previewUrl = url.origin + url.pathname + '?' + params.toString();
+            if (!baseUrl) return;
 
-            fetch(previewUrl)
-                .then(response => response.text())
-                .then(html => {
-                    exportPreview.innerHTML = html;
-                })
-                .catch(err => {
-                    exportPreview.innerHTML = '<div class="alert alert-danger">Fehler beim Laden der Vorschau.</div>';
-                });
-        });
-    }
+            const url = new URL(baseUrl, window.location.origin);
+            url.searchParams.set('fields', selectedFields.join(','));
 
-    // Download logic
-    const downloadExcelBtn = document.getElementById('downloadExcel');
-    const downloadCsvBtn = document.getElementById('downloadCsv');
-    if (downloadExcelBtn) {
-        downloadExcelBtn.addEventListener('click', function() {
-            triggerDownload('xlsx');
-        });
-    }
-    if (downloadCsvBtn) {
-        downloadCsvBtn.addEventListener('click', function() {
-            triggerDownload('csv');
-        });
-    }
+            // Ausgewählte Zeilen (Checkboxen) als UID-Filter übergeben
+            const checkedBoxes = document.querySelectorAll('table.table input.row-select:checked');
+            if (checkedBoxes.length > 0) {
+                const uids = Array.from(checkedBoxes).map(cb => cb.dataset.uid).filter(Boolean);
+                url.searchParams.set('uids', uids.join(','));
+            }
 
-    function triggerDownload(format) {
-        const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
-        if (selectedFields.length === 0) {
-            alert('Bitte wählen Sie mindestens eine Spalte aus.');
-            return;
+            window.open(url.toString());
         }
 
-        let baseUrl = downloadExcelBtn?.getAttribute('data-export-url-xlsx');
-
-        if(format === 'csv'){
-            baseUrl = downloadCsvBtn?.getAttribute('data-export-url-csv');
+        // Alle-auswählen Checkbox
+        const selectAllRows = document.getElementById('selectAllRows');
+        if (selectAllRows) {
+            selectAllRows.addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('table.table tbody input.row-select');
+                checkboxes.forEach(cb => { cb.checked = selectAllRows.checked; });
+            });
+            // Sync selectAll wenn einzelne Checkboxen geändert werden
+            document.querySelector('table.table tbody')?.addEventListener('change', function(e) {
+                if (e.target.classList.contains('row-select')) {
+                    const all = document.querySelectorAll('table.table tbody input.row-select');
+                    const checked = document.querySelectorAll('table.table tbody input.row-select:checked');
+                    selectAllRows.indeterminate = checked.length > 0 && checked.length < all.length;
+                    selectAllRows.checked = checked.length === all.length;
+                }
+            });
         }
-
-        if (!baseUrl) return;
-
-        const url = new URL(baseUrl, window.location.origin);
-        url.searchParams.set('fields', selectedFields.join(','));
-        window.open(url.toString());
-    }
 
         // Search/Filter logic for availableFields
-        const searchInput = document.getElementById('availableFieldsSearch');
         if (searchInput && availableSelect) {
             searchInput.addEventListener('input', function() {
                 const filter = searchInput.value.toLowerCase();
                 const optgroups = availableSelect.querySelectorAll('optgroup');
-                
+
                 optgroups.forEach(group => {
                     const options = Array.from(group.querySelectorAll('option'));
                     let groupVisible = false;
@@ -574,8 +608,6 @@ export function init() {
                     options.forEach(option => {
                         const isVisibleByFilter = option.text.toLowerCase().includes(filter);
                         if (option.disabled) {
-                            // Already selected fields should stay hidden regardless of search
-                            // but we must ensure they remain display: 'none'
                             option.style.display = 'none';
                             return;
                         }
@@ -587,7 +619,6 @@ export function init() {
                         }
                     });
 
-                    // Hide/show the optgroup based on whether it has visible options
                     if (groupVisible) {
                         group.style.display = '';
                     } else {
@@ -602,6 +633,10 @@ export function init() {
     setTimeout(openFirstSearchedCourse, 0);
 }
 
-// Auto-Initialisierung nach DOM-Ladung
-document.addEventListener('DOMContentLoaded', init);
+// Auto-Initialisierung: ES-Module laufen nach DOM-Parsen, daher direkt aufrufen
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
 

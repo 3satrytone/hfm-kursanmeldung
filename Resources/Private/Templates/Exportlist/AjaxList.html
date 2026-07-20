@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{exportlists}">
+    <f:then>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Tabellen</th>
+                    <th>Hinweis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{exportlists}" as="exportlist">
+                    <tr>
+                        <td>{exportlist.name}</td>
+                        <td>{exportlist.tables}</td>
+                        <td><f:format.html>{exportlist.notice}</f:format.html></td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </f:then>
+    <f:else>
+        <div class="alert alert-info">Keine Exportlisten vorhanden.</div>
+    </f:else>
+</f:if>
+</html>
