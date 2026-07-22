@@ -532,6 +532,9 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             return $this->htmlResponse('<div class="alert alert-warning">Keine Felder ausgewählt.</div>');
         }
 
+        $filtersParam = $this->request->hasArgument('filters') ? $this->request->getArgument('filters') : [];
+        $filters = is_array($filtersParam) ? $filtersParam : [];
+
         $exportFieldsMapping = $this->getExportFieldsMapping();
 
         $participants = $this->kursanmeldungRepository->findAllSortedByUid();
@@ -539,15 +542,32 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         foreach ($participants as $reg) {
             $row = [];
             foreach ($fields as $field) {
-                $row[] = $this->getFieldValue($reg, $field);
+                $row[$field] = $this->getFieldValue($reg, $field);
             }
-            $previewData[] = $row;
+            // Apply filters
+            $match = true;
+            foreach ($filters as $filterField => $filterValue) {
+                if ($filterValue === '' || $filterValue === null) continue;
+                $cellValue = isset($row[$filterField]) ? mb_strtolower((string)$row[$filterField]) : '';
+                if (strpos($cellValue, mb_strtolower((string)$filterValue)) === false) {
+                    $match = false;
+                    break;
+                }
+            }
+            if ($match) {
+                $previewData[] = array_values($row);
+            }
         }
 
-        $html = '<input type="text" id="exportlisteFilter" class="form-control mb-2" placeholder="Filtern...">';
-        $html .= '<table class="table table-sm table-striped" id="exportlisteTable"><thead><tr>';
+        $filtersJson = htmlspecialchars(json_encode($filters), ENT_QUOTES);
+        $html = '<table class="table table-sm table-striped" id="exportlisteTable" data-fields="' . htmlspecialchars(implode(',', $fields)) . '" data-filters="' . $filtersJson . '"><thead><tr>';
         foreach ($fields as $field) {
             $html .= '<th>' . htmlspecialchars($exportFieldsMapping[$field] ?? $field) . '</th>';
+        }
+        $html .= '</tr><tr class="exportliste-filter-row">';
+        foreach ($fields as $field) {
+            $currentFilter = $filters[$field] ?? '';
+            $html .= '<th><input type="text" class="form-control form-control-sm exportliste-col-filter" placeholder="Filter..." data-col="' . htmlspecialchars($field) . '" value="' . htmlspecialchars($currentFilter) . '"></th>';
         }
         $html .= '</tr></thead><tbody>';
         foreach ($previewData as $row) {

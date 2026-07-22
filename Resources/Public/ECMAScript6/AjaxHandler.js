@@ -5,8 +5,9 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
  *
  * @param {string[]} selectedFields - Liste der ausgewählten Felder
  * @param {HTMLElement} targetElement - Zielelement für den geladenen HTML-Inhalt
+ * @param {Object} [filters] - Optionale Filterwerte (field => value)
  */
-export function loadExportliste(selectedFields, targetElement) {
+export function loadExportliste(selectedFields, targetElement, filters) {
     if (!selectedFields || selectedFields.length === 0) {
         targetElement.innerHTML = '<div class="alert alert-warning">Bitte wählen Sie mindestens eine Spalte im Setup aus.</div>';
         return;
@@ -14,25 +15,35 @@ export function loadExportliste(selectedFields, targetElement) {
 
     targetElement.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Laden...</span></div>';
 
+    const queryArgs = {fields: selectedFields.join(',')};
+    if (filters) {
+        Object.keys(filters).forEach(function(field) {
+            if (filters[field] !== '') {
+                queryArgs['filters[' + field + ']'] = filters[field];
+            }
+        });
+    }
+
     new AjaxRequest(TYPO3.settings.ajaxUrls.kursanmeldung_exportlist_ajaxlist)
-        .withQueryArguments({fields: selectedFields.join(',')})
+        .withQueryArguments(queryArgs)
         .get()
         .then(async function (response) {
             const html = await response.resolve('text/html');
             targetElement.innerHTML = html;
 
-            // Filterlogik für die geladene Tabelle einrichten
-            const filterInput = targetElement.querySelector('#exportlisteFilter');
-            const table = targetElement.querySelector('#exportlisteTable');
-            if (filterInput && table) {
-                filterInput.addEventListener('input', function () {
-                    const filter = filterInput.value.toLowerCase();
-                    Array.from(table.tBodies[0].rows).forEach(function (row) {
-                        const text = row.textContent.toLowerCase();
-                        row.style.display = text.includes(filter) ? '' : 'none';
+            // Blur-basierte Filterlogik: bei Verlassen des Feldes neuen AJAX-Call senden
+            const colFilters = targetElement.querySelectorAll('.exportliste-col-filter');
+            colFilters.forEach(function(input) {
+                input.addEventListener('blur', function() {
+                    const currentFilters = {};
+                    colFilters.forEach(function(inp) {
+                        if (inp.value !== '') {
+                            currentFilters[inp.dataset.col] = inp.value;
+                        }
                     });
+                    loadExportliste(selectedFields, targetElement, currentFilters);
                 });
-            }
+            });
         })
         .catch(function () {
             targetElement.innerHTML = '<div class="alert alert-danger">Fehler beim Laden der Exportliste.</div>';

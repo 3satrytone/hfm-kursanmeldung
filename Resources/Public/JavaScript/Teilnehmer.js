@@ -360,8 +360,11 @@ export function init() {
     const searchInput = document.getElementById('availableFieldsSearch');
 
     if (availableSelect && selectedList && moveRightBtn && moveLeftBtn) {
+        let pendingMoveOptions = [];
+
         function moveRight() {
-            const selectedOptions = Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
+            const selectedOptions = pendingMoveOptions.length > 0 ? pendingMoveOptions : Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
+            pendingMoveOptions = [];
             selectedOptions.forEach(option => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -438,6 +441,11 @@ export function init() {
             }
         });
 
+        moveRightBtn.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            pendingMoveOptions = Array.from(availableSelect.options).filter(opt => opt.selected && !opt.disabled);
+        });
+        moveLeftBtn.addEventListener('mousedown', function(e) { e.preventDefault(); });
         moveRightBtn.addEventListener('click', moveRight);
         moveLeftBtn.addEventListener('click', moveLeft);
         availableSelect.addEventListener('dblclick', moveRight);
@@ -492,17 +500,16 @@ export function init() {
             this.style.opacity = '1';
         }
 
-        // Exportliste Tab: Filterbare Tabelle via AjaxHandler (ECMAScript6-Modul) laden
+        // Exportliste Tab: Filterbare Tabelle laden via AjaxHandler
         const exportlisteTabBtn = document.getElementById('exportliste-tab');
         const exportlisteContent = document.getElementById('exportlisteContent');
+
         if (exportlisteTabBtn && exportlisteContent) {
             exportlisteTabBtn.addEventListener('show.bs.tab', function () {
                 const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
-                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js')
-                    .then(mod => mod.loadExportliste(selectedFields, exportlisteContent))
-                    .catch(() => {
-                        exportlisteContent.innerHTML = '<div class="alert alert-danger">Exportliste konnte nicht geladen werden.</div>';
-                    });
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                    module.loadExportliste(selectedFields, exportlisteContent);
+                });
             });
         }
 

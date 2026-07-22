@@ -36,6 +36,8 @@ class ExportlistController extends ActionController
         $queryParams = $request->getQueryParams();
         $fieldsParam = $queryParams['fields'] ?? '';
         $fields = array_values(array_filter(array_map('trim', explode(',', (string)$fieldsParam))));
+        $filtersParam = $queryParams['filters'] ?? [];
+        $filters = is_array($filtersParam) ? $filtersParam : [];
 
         if (empty($fields)) {
             return new HtmlResponse('<div class="alert alert-warning">Keine Felder ausgewählt.</div>');
@@ -45,18 +47,37 @@ class ExportlistController extends ActionController
         $this->kursanmeldungRepository->setRespectStoragePage(false);
         $participants = $this->kursanmeldungRepository->findAllSortedByUid();
 
-        $html = '<input type="text" id="exportlisteFilter" class="form-control mb-2" placeholder="Filtern...">';
-        $html .= '<table class="table table-sm table-striped" id="exportlisteTable"><thead><tr>';
+        $html = '<table class="table table-sm table-striped" id="exportlisteTable"><thead><tr>';
         foreach ($fields as $field) {
             $html .= '<th>' . htmlspecialchars($exportFieldsMapping[$field] ?? $field) . '</th>';
         }
+        $html .= '</tr><tr class="exportliste-filter-row">';
+        foreach ($fields as $field) {
+            $currentFilter = $filters[$field] ?? '';
+            $html .= '<th><input type="text" class="form-control form-control-sm exportliste-col-filter" placeholder="Filter..." data-col="' . htmlspecialchars($field) . '" value="' . htmlspecialchars($currentFilter) . '"></th>';
+        }
         $html .= '</tr></thead><tbody>';
         foreach ($participants as $reg) {
-            $html .= '<tr>';
+            $row = [];
             foreach ($fields as $field) {
-                $html .= '<td>' . htmlspecialchars((string)$this->getFieldValue($reg, $field)) . '</td>';
+                $row[$field] = $this->getFieldValue($reg, $field);
             }
-            $html .= '</tr>';
+            $match = true;
+            foreach ($filters as $filterField => $filterValue) {
+                if ($filterValue === '' || $filterValue === null) continue;
+                $cellValue = isset($row[$filterField]) ? mb_strtolower((string)$row[$filterField]) : '';
+                if (strpos($cellValue, mb_strtolower((string)$filterValue)) === false) {
+                    $match = false;
+                    break;
+                }
+            }
+            if ($match) {
+                $html .= '<tr>';
+                foreach ($fields as $field) {
+                    $html .= '<td>' . htmlspecialchars((string)$row[$field]) . '</td>';
+                }
+                $html .= '</tr>';
+            }
         }
         $html .= '</tbody></table>';
 
