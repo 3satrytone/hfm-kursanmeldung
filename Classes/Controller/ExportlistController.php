@@ -72,7 +72,7 @@ class ExportlistController extends ActionController
                 }
             }
             if ($match) {
-                $html .= '<tr>';
+                $html .= '<tr data-uid="' . (int)$reg->getUid() . '">';
                 foreach ($fields as $field) {
                     $html .= '<td>' . htmlspecialchars((string)$row[$field]) . '</td>';
                 }

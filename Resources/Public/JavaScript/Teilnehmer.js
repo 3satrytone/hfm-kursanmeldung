@@ -581,6 +581,17 @@ export function init() {
                 url.searchParams.set('uids', uids.join(','));
             }
 
+            // UIDs der gefilterten Zeilen aus dem Exportliste-Tab übergeben
+            if (exportlisteContent) {
+                const visibleRows = exportlisteContent.querySelectorAll('#exportlisteTable tbody tr[data-uid]');
+                if (visibleRows.length > 0) {
+                    const uidsFromTable = Array.from(visibleRows).map(tr => tr.dataset.uid).filter(Boolean);
+                    if (uidsFromTable.length > 0) {
+                        url.searchParams.set('uids', uidsFromTable.join(','));
+                    }
+                }
+            }
+
             window.open(url.toString());
         }
 

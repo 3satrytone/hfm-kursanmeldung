@@ -491,6 +491,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             'register.studentship' => 'Studentship',
             'register.studystat' => 'Studienstatus',
             'register.ensemble' => 'Ensemble',
+            'register.anmeldestatus' => 'Anmeldestatus',
             'tn.vorname' => 'Vorname',
             'tn.nachname' => 'Nachname',
             'tn.anrede' => 'Anrede',
@@ -588,6 +589,15 @@ final class TeilnehmerController extends ActionController implements LoggerAware
         $current = $reg;
 
         if ($parts[0] === 'register') {
+            // Sonderfall: anmeldestatus ist ein verknüpftes Objekt (ObjectStorage)
+            if (isset($parts[1]) && $parts[1] === 'anmeldestatus') {
+                $anmeldestatusStorage = $reg->getAnmeldestatus();
+                if (!$anmeldestatusStorage instanceof ObjectStorage || $anmeldestatusStorage->count() === 0) return '';
+                $anmeldestatusStorage->rewind();
+                $anmeldestatus = $anmeldestatusStorage->current();
+                if (!$anmeldestatus) return '';
+                return (string)($anmeldestatus->getKurz() ?: $anmeldestatus->getAnmeldestatus() ?: '');
+            }
             array_shift($parts);
         } elseif ($parts[0] === 'tn') {
             $tnStorage = $reg->getTn();
@@ -766,6 +776,23 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                     static fn($reg) => in_array((int)$reg->getUid(), $allowedUids, true)
                 );
             }
+        }
+
+        // Spaltenfilter: nur gefilterte Zeilen exportieren
+        $filtersParam = $this->request->hasArgument('filters') ? $this->request->getArgument('filters') : [];
+        $filters = is_array($filtersParam) ? $filtersParam : [];
+        if (!empty($filters)) {
+            $participantsArray = is_array($participants) ? $participants : iterator_to_array($participants);
+            $participants = array_filter($participantsArray, function ($reg) use ($filters, $fields) {
+                foreach ($filters as $filterField => $filterValue) {
+                    if ($filterValue === '' || $filterValue === null) continue;
+                    $cellValue = mb_strtolower((string)$this->getFieldValue($reg, $filterField));
+                    if (strpos($cellValue, mb_strtolower((string)$filterValue)) === false) {
+                        return false;
+                    }
+                }
+                return true;
+            });
         }
 
         if (empty($fields)) {
