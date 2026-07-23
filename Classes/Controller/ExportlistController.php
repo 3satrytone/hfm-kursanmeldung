@@ -3,18 +3,25 @@ declare(strict_types=1);
 
 namespace Hfm\Kursanmeldung\Controller;
 
+use Doctrine\DBAL\ParameterType;
 use Hfm\Kursanmeldung\Domain\Model\Kursanmeldung;
 use Hfm\Kursanmeldung\Domain\Repository\KursanmeldungRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Country\CountryProvider;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class ExportlistController extends ActionController
 {
+    private const SETUP_TABLE = 'tx_kursanmeldung_domain_model_setup';
+    private const SETUP_PROPNAME_PREFIX = 'kursanmeldung_exportlist_setup:';
+
     public function __construct(
         private readonly KursanmeldungRepository $kursanmeldungRepository,
         private readonly CountryProvider $countryProvider,
@@ -82,6 +89,186 @@ class ExportlistController extends ActionController
         $html .= '</tbody></table>';
 
         return new HtmlResponse($html);
+    }
+
+    /**
+     * Speichert ein benanntes Setup (ausgewählte Felder inkl. Reihenfolge) für den aktuellen Backend-User in der Datenbank.
+     * Es können mehrere Setups unter verschiedenen Namen gespeichert werden.
+     */
+    public function saveSetupAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $fieldsParam = $parsedBody['fields'] ?? ($queryParams['fields'] ?? '');
+        $name = trim((string)($parsedBody['name'] ?? ($queryParams['name'] ?? 'default')));
+        if ($name === '') {
+            $name = 'default';
+        }
+        $fields = array_values(array_filter(array_map('trim', explode(',', (string)$fieldsParam))));
+
+        $this->persistSetup($name, $fields);
+
+        return new JsonResponse(['success' => true, 'name' => $name, 'fields' => $fields]);
+    }
+
+    /**
+     * Lädt ein zuvor gespeichertes, benanntes Setup (ausgewählte Felder inkl. Reihenfolge) für den aktuellen Backend-User aus der Datenbank.
+     */
+    public function loadSetupAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $name = trim((string)($queryParams['name'] ?? 'default'));
+        if ($name === '') {
+            $name = 'default';
+        }
+        $fields = $this->fetchSetup($name);
+
+        return new JsonResponse(['success' => true, 'name' => $name, 'fields' => $fields]);
+    }
+
+    /**
+     * Liefert die Namen aller gespeicherten Setups des aktuellen Backend-Users aus der Datenbank.
+     */
+    public function listSetupsAction(): ResponseInterface
+    {
+        $names = array_keys($this->getAllSetups());
+
+        return new JsonResponse(['success' => true, 'names' => $names]);
+    }
+
+    /**
+     * Löscht ein benanntes Setup des aktuellen Backend-Users aus der Datenbank.
+     */
+    public function deleteSetupAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $name = trim((string)($parsedBody['name'] ?? ($queryParams['name'] ?? '')));
+
+        if ($name !== '') {
+            $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::SETUP_TABLE);
+            $queryBuilder
+                ->delete(self::SETUP_TABLE)
+                ->where(
+                    $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($this->getBackendUserId(), ParameterType::INTEGER)),
+                    $queryBuilder->expr()->eq('propname', $queryBuilder->createNamedParameter($this->buildPropname($name)))
+                )
+                ->executeStatement();
+        }
+
+        return new JsonResponse(['success' => true, 'names' => array_keys($this->getAllSetups())]);
+    }
+
+    /**
+     * Liefert alle gespeicherten Setups (Name => Felder) des aktuellen Backend-Users aus der Datenbank.
+     */
+    private function getAllSetups(): array
+    {
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::SETUP_TABLE);
+        $rows = $queryBuilder
+            ->select('propname', 'propvalue')
+            ->from(self::SETUP_TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($this->getBackendUserId(), ParameterType::INTEGER)),
+                $queryBuilder->expr()->like('propname', $queryBuilder->createNamedParameter(self::SETUP_PROPNAME_PREFIX . '%'))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $setups = [];
+        foreach ($rows as $row) {
+            $name = substr((string)$row['propname'], strlen(self::SETUP_PROPNAME_PREFIX));
+            $fields = json_decode((string)$row['propvalue'], true);
+            $setups[$name] = is_array($fields) ? $fields : [];
+        }
+
+        return $setups;
+    }
+
+    /**
+     * Lädt die Felder eines benannten Setups des aktuellen Backend-Users aus der Datenbank.
+     */
+    private function fetchSetup(string $name): array
+    {
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::SETUP_TABLE);
+        $row = $queryBuilder
+            ->select('propvalue')
+            ->from(self::SETUP_TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($this->getBackendUserId(), ParameterType::INTEGER)),
+                $queryBuilder->expr()->eq('propname', $queryBuilder->createNamedParameter($this->buildPropname($name)))
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (!$row) {
+            return [];
+        }
+
+        $fields = json_decode((string)$row['propvalue'], true);
+
+        return is_array($fields) ? $fields : [];
+    }
+
+    /**
+     * Speichert (Insert oder Update) ein benanntes Setup des aktuellen Backend-Users in der Datenbank.
+     */
+    private function persistSetup(string $name, array $fields): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionForTable(self::SETUP_TABLE);
+        $userId = $this->getBackendUserId();
+        $propname = $this->buildPropname($name);
+        $now = time();
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable(self::SETUP_TABLE);
+        $existingUid = $queryBuilder
+            ->select('uid')
+            ->from(self::SETUP_TABLE)
+            ->where(
+                $queryBuilder->expr()->eq('cruser_id', $queryBuilder->createNamedParameter($userId, ParameterType::INTEGER)),
+                $queryBuilder->expr()->eq('propname', $queryBuilder->createNamedParameter($propname))
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        if ($existingUid) {
+            $connection->update(
+                self::SETUP_TABLE,
+                ['propvalue' => json_encode($fields), 'tstamp' => $now],
+                ['uid' => (int)$existingUid]
+            );
+        } else {
+            $connection->insert(
+                self::SETUP_TABLE,
+                [
+                    'pid' => 0,
+                    'tstamp' => $now,
+                    'crdate' => $now,
+                    'cruser_id' => $userId,
+                    'propname' => $propname,
+                    'propvalue' => json_encode($fields),
+                ]
+            );
+        }
+    }
+
+    private function buildPropname(string $name): string
+    {
+        return self::SETUP_PROPNAME_PREFIX . $name;
+    }
+
+    private function getBackendUserId(): int
+    {
+        if (isset($GLOBALS['BE_USER']) && is_object($GLOBALS['BE_USER']) && isset($GLOBALS['BE_USER']->user['uid'])) {
+            return (int)$GLOBALS['BE_USER']->user['uid'];
+        }
+
+        return 0;
+    }
+
+    private function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 
     private function getExportFieldsMapping(): array

@@ -43,6 +43,29 @@
                             </div>
                         </div>
                         <div class="tab-pane fade show active" id="setup" role="tabpanel" aria-labelledby="setup-tab">
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <label for="savedSetupsSelect" class="form-label">Gespeicherte Listen</label>
+                                    <div class="input-group">
+                                        <select id="savedSetupsSelect" class="form-select">
+                                            <option value="">-- Liste wählen --</option>
+                                        </select>
+                                        <button type="button" id="loadSetup" class="btn btn-outline-secondary" title="Liste laden">
+                                            <core:icon identifier="actions-refresh" size="small" />
+                                        </button>
+                                        <button type="button" id="deleteSetup" class="btn btn-outline-danger" title="Liste löschen">
+                                            <core:icon identifier="actions-delete" size="small" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="setupNameInput" class="form-label">Name der Liste</label>
+                                    <div class="input-group">
+                                        <input type="text" id="setupNameInput" class="form-control" placeholder="z.B. Standard-Export" value="default">
+                                        <button type="button" id="saveSetup" class="btn btn-secondary">Speichern</button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-5">
                                     <h6>Verfügbare Objekte</h6>

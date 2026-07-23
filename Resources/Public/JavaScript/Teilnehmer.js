@@ -513,6 +513,129 @@ export function init() {
             });
         }
 
+        // Setup speichern/laden/löschen (mehrere benannte Listen) via AjaxHandler
+        const saveSetupBtn = document.getElementById('saveSetup');
+        const loadSetupBtn = document.getElementById('loadSetup');
+        const deleteSetupBtn = document.getElementById('deleteSetup');
+        const setupNameInput = document.getElementById('setupNameInput');
+        const savedSetupsSelect = document.getElementById('savedSetupsSelect');
+
+        function applyFieldsToSelectedList(fields) {
+            if (!fields || fields.length === 0) return;
+            // Zuerst aktuelle Auswahl zurücksetzen
+            Array.from(selectedList.children).slice().forEach(function(li) {
+                const option = availableSelect.querySelector(`option[value="${li.dataset.value}"]`);
+                li.remove();
+                if (option) {
+                    option.selected = false;
+                    option.disabled = false;
+                }
+            });
+            fields.forEach(function(field) {
+                const option = availableSelect.querySelector(`option[value="${field}"]`);
+                if (option && !option.disabled) {
+                    option.selected = true;
+                    moveRight();
+                }
+            });
+        }
+
+        function refreshSavedSetupsSelect(selectName) {
+            if (!savedSetupsSelect) return;
+            import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                module.listSetups().then(function(names) {
+                    savedSetupsSelect.innerHTML = '<option value="">-- Liste wählen --</option>';
+                    names.forEach(function(name) {
+                        const opt = document.createElement('option');
+                        opt.value = name;
+                        opt.textContent = name;
+                        savedSetupsSelect.appendChild(opt);
+                    });
+                    if (selectName) {
+                        savedSetupsSelect.value = selectName;
+                    }
+                });
+            });
+        }
+
+        if (saveSetupBtn) {
+            saveSetupBtn.addEventListener('click', function() {
+                const selectedFields = Array.from(selectedList.children).map(li => li.dataset.value);
+                const name = (setupNameInput && setupNameInput.value.trim()) || 'default';
+                const oldText = saveSetupBtn.textContent;
+                saveSetupBtn.disabled = true;
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                    module.saveSetup(name, selectedFields).then(function() {
+                        saveSetupBtn.textContent = 'Gespeichert!';
+                        refreshSavedSetupsSelect(name);
+                        setTimeout(function() {
+                            saveSetupBtn.textContent = oldText;
+                            saveSetupBtn.disabled = false;
+                        }, 1200);
+                    }).catch(function() {
+                        saveSetupBtn.textContent = 'Fehler!';
+                        setTimeout(function() {
+                            saveSetupBtn.textContent = oldText;
+                            saveSetupBtn.disabled = false;
+                        }, 1200);
+                    });
+                });
+            });
+        }
+
+        if (loadSetupBtn) {
+            loadSetupBtn.addEventListener('click', function() {
+                const name = savedSetupsSelect ? savedSetupsSelect.value : '';
+                if (!name) return;
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                    module.loadSetup(name).then(function(fields) {
+                        applyFieldsToSelectedList(fields);
+                        if (setupNameInput) {
+                            setupNameInput.value = name;
+                        }
+                    });
+                });
+            });
+        }
+
+        if (savedSetupsSelect) {
+            savedSetupsSelect.addEventListener('change', function() {
+                const name = savedSetupsSelect.value;
+                if (name && setupNameInput) {
+                    setupNameInput.value = name;
+                }
+            });
+        }
+
+        if (deleteSetupBtn) {
+            deleteSetupBtn.addEventListener('click', function() {
+                const name = savedSetupsSelect ? savedSetupsSelect.value : '';
+                if (!name) return;
+                if (!window.confirm('Liste "' + name + '" wirklich löschen?')) return;
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                    module.deleteSetup(name).then(function() {
+                        refreshSavedSetupsSelect();
+                    });
+                });
+            });
+        }
+
+        // Gespeicherte Listen beim Öffnen des Export-Modals laden, Standard-Setup vorbelegen
+        const exportModalEl = document.getElementById('exportModal');
+        if (exportModalEl) {
+            let setupLoaded = false;
+            exportModalEl.addEventListener('show.bs.modal', function() {
+                if (setupLoaded) return;
+                setupLoaded = true;
+                refreshSavedSetupsSelect();
+                import('@hfm/kursanmeldung/ecma6/AjaxHandler.js').then(function(module) {
+                    module.loadSetup('default').then(function(fields) {
+                        applyFieldsToSelectedList(fields);
+                    });
+                });
+            });
+        }
+
         // Preview logic
         if (listTabBtn && exportPreview) {
             listTabBtn.addEventListener('show.bs.tab', function() {
