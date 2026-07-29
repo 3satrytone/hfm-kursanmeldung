@@ -953,21 +953,8 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $participantsByKurs[$kUid][] = $reg;
         }
 
-        foreach ($participantsByKurs as $kUid => $kursParticipants) {
-            $sheet = $spreadsheet->createSheet();
-            $title = 'Kurs ' . $kUid;
-            if ($kUid === 0) {
-                $title = 'Ohne Kurs';
-            } else {
-                $firstReg = is_array($kursParticipants) ? ($kursParticipants[0] ?? null) : $kursParticipants->getFirst();
-                if ($firstReg && $firstReg->getKurs()) {
-                    $profName = $firstReg->getKurs()->getProfessor() ? $firstReg->getKurs()->getProfessor()->getName() : '';
-                    $title = trim($firstReg->getKurs()->getKursnr() . ' ' . $profName);
-                    if (empty($title)) {
-                        $title = 'Kurs ' . $kUid;
-                    }
-                }
-            }
+        // Befüllt ein Worksheet mit Header und den übergebenen Kursanmeldungen
+        $fillSheet = function ($sheet, string $title, iterable $registrations) use ($header): void {
             // Sheet-Titel auf 31 Zeichen begrenzen und ungültige Zeichen entfernen
             $title = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $title);
             $sheet->setTitle(mb_substr($title, 0, 31));
@@ -975,7 +962,7 @@ final class TeilnehmerController extends ActionController implements LoggerAware
             $sheet->fromArray($header, NULL, 'A1');
 
             $i = 0;
-            foreach ($kursParticipants as $reg) {
+            foreach ($registrations as $reg) {
                 $tn = $reg->getTn()->current();
 
                 $nation = $this->getLocalizedCountryIsoCode((string)$tn?->getNation());
@@ -1037,6 +1024,29 @@ final class TeilnehmerController extends ActionController implements LoggerAware
                 $sheet->getColumnDimensionByColumn($colIdx)->setAutoSize(true);
             }
             $sheet->calculateColumnWidths();
+        };
+
+        // 1. Worksheet: Alle Kursanmeldungen der Seite
+        $fillSheet($spreadsheet->getActiveSheet(), 'Alle Kursanmeldungen', $participants);
+
+        // Weitere Worksheets: je Kurs
+        foreach ($participantsByKurs as $kUid => $kursParticipants) {
+            $sheet = $spreadsheet->createSheet();
+            $title = 'Kurs ' . $kUid;
+            if ($kUid === 0) {
+                $title = 'Ohne Kurs';
+            } else {
+                $firstReg = is_array($kursParticipants) ? ($kursParticipants[0] ?? null) : $kursParticipants->getFirst();
+                if ($firstReg && $firstReg->getKurs()) {
+                    $profName = $firstReg->getKurs()->getProfessor() ? $firstReg->getKurs()->getProfessor()->getName() : '';
+                    $title = trim($firstReg->getKurs()->getKursnr() . ' ' . $profName);
+                    if (empty($title)) {
+                        $title = 'Kurs ' . $kUid;
+                    }
+                }
+            }
+
+            $fillSheet($sheet, $title, $kursParticipants);
         }
 
         $writer = new Xlsx($spreadsheet);
